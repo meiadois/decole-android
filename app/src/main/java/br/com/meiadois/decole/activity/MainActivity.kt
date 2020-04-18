@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (v.id == nextBtn.id) {
             val intent = Intent(this, PasswordDefinitionActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
