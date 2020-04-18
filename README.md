@@ -3,9 +3,12 @@ Decole is a company focused on inserting people in the online sales market, teac
 
 This repository holds our App.
 
+## Requirements
+Android: 6.0 or above
+
 ## Installation
 
-Just clone and run the project!
+Set-up an android emulator or get a real device that meet the requirements then clone and run the project!
 
 <!--## Usage-->
 
