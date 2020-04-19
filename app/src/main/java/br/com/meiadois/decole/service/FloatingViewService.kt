@@ -78,38 +78,26 @@ class FloatingViewService : Service() {
         when (currentStepIndex) {
             0 -> {
                 prevButton.isEnabled = false
-                prevButton.setColorFilter(
-                    mFloatingView.context.resources.getColor(
-                        R.color.disabledButton,
-                        this.theme
-                    )
+                prevButton.setImageResource(
+                    R.drawable.ic_arrow_left_disabled
                 )
             }
             steps.size - 1 -> {
                 nextButton.isEnabled = false
-                nextButton.setColorFilter(
-                    mFloatingView.context.resources.getColor(
-                        R.color.disabledButton,
-                        this.theme
-                    )
+                nextButton.setImageResource(
+                    R.drawable.ic_arrow_right_disabled
                 )
                 doneButton.visibility = View.VISIBLE
                 closeButtonExpanded.visibility = View.GONE
             }
             else -> {
                 prevButton.isEnabled = true
-                prevButton.setColorFilter(
-                    mFloatingView.context.resources.getColor(
-                        R.color.activeButton,
-                        this.theme
-                    )
+                prevButton.setImageResource(
+                    R.drawable.ic_arrow_left
                 )
                 nextButton.isEnabled = true
-                nextButton.setColorFilter(
-                    mFloatingView.context.resources.getColor(
-                        R.color.activeButton,
-                        this.theme
-                    )
+                nextButton.setImageResource(
+                    R.drawable.ic_arrow_right
                 )
                 doneButton.visibility = View.GONE
                 closeButtonExpanded.visibility = View.VISIBLE
@@ -188,6 +176,7 @@ class FloatingViewService : Service() {
 
         closeButtonExpanded.setOnClickListener {
             collapsedView.visibility = View.VISIBLE
+            closeButtonCollapsed.visibility = View.VISIBLE
             expandedView.visibility = View.GONE
         }
 
@@ -224,7 +213,7 @@ class FloatingViewService : Service() {
                                 if (isViewCollapsed()) { //When user clicks on the image view of the collapsed layout,
                                     //visibility of the collapsed layout will be changed to "View.GONE"
                                     //and expanded view will become visible.
-                                    collapsedView.visibility = View.GONE
+                                    closeButtonCollapsed.visibility = View.GONE
                                     expandedView.visibility = View.VISIBLE
                                 }
                             }
