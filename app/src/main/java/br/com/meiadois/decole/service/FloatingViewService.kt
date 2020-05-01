@@ -5,6 +5,7 @@ import android.animation.ValueAnimator
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.res.Resources
 import android.graphics.PixelFormat
 import android.os.Build
@@ -17,6 +18,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.activity.MainActivity
+import br.com.meiadois.decole.activity.user.UserHomeActivity
+import br.com.meiadois.decole.activity.welcome.PasswordDefinitionActivity
 import br.com.meiadois.decole.model.Step
 import br.com.meiadois.decole.util.Constants
 
@@ -30,9 +33,7 @@ class FloatingViewService : Service() {
     private lateinit var stepDescription: TextView
     private lateinit var prevButton: ImageView
     private lateinit var nextButton: ImageView
-    private lateinit var doneButton: ImageView
     private lateinit var closeButtonCollapsed: ImageView
-    private lateinit var closeButtonExpanded: ImageView
     private lateinit var collapsedView: View
     private lateinit var expandedView: View
 
@@ -87,8 +88,6 @@ class FloatingViewService : Service() {
                 nextButton.setImageResource(
                     R.drawable.ic_arrow_right_disabled
                 )
-                doneButton.visibility = View.VISIBLE
-                closeButtonExpanded.visibility = View.GONE
             }
             else -> {
                 prevButton.isEnabled = true
@@ -99,8 +98,6 @@ class FloatingViewService : Service() {
                 nextButton.setImageResource(
                     R.drawable.ic_arrow_right
                 )
-                doneButton.visibility = View.GONE
-                closeButtonExpanded.visibility = View.VISIBLE
             }
 
         }
@@ -118,13 +115,6 @@ class FloatingViewService : Service() {
         closeButtonCollapsed =
             mFloatingView.findViewById<View>(R.id.close_btn) as ImageView
 
-        //Set the close button expanded
-        closeButtonExpanded =
-            mFloatingView.findViewById<View>(R.id.close_button) as ImageView
-
-        //Set the done button
-        doneButton =
-            mFloatingView.findViewById<View>(R.id.done_button) as ImageView
 
         //Set the pause button.
         prevButton =
@@ -168,23 +158,14 @@ class FloatingViewService : Service() {
 
         closeButtonCollapsed.setOnClickListener {
             //close the service and remove the from from the window
+            val intent = Intent(this, UserHomeActivity::class.java)
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
             stopSelf()
         }
         nextButton.setOnClickListener { changeStep(currentStepIndex + 1) }
 
         prevButton.setOnClickListener { changeStep(currentStepIndex - 1) }
-
-        closeButtonExpanded.setOnClickListener {
-            collapsedView.visibility = View.VISIBLE
-            closeButtonCollapsed.visibility = View.VISIBLE
-            expandedView.visibility = View.GONE
-        }
-
-        doneButton.setOnClickListener {
-            val intent = Intent(mFloatingView.context, MainActivity::class.java)
-            startActivity(intent)
-        }
-
 
         //Drag and move floating view using user's touch action.
         mFloatingView.findViewById<View>(R.id.root_container)
@@ -209,12 +190,16 @@ class FloatingViewService : Service() {
                             val yDiff = (event.rawY - initialTouchY).toInt()
                             //The check for Xdiff <10 && YDiff< 10 because sometime elements moves a little while clicking.
                             //So that is click event.
-                            if (xDiff < 10 && yDiff < 10) {
+                            if (xDiff == 0 && yDiff == 0) {
                                 if (isViewCollapsed()) { //When user clicks on the image view of the collapsed layout,
                                     //visibility of the collapsed layout will be changed to "View.GONE"
                                     //and expanded view will become visible.
                                     closeButtonCollapsed.visibility = View.GONE
                                     expandedView.visibility = View.VISIBLE
+                                }else{
+                                    collapsedView.visibility = View.VISIBLE
+                                    closeButtonCollapsed.visibility = View.VISIBLE
+                                    expandedView.visibility = View.GONE
                                 }
                             }
                             return true
@@ -239,7 +224,7 @@ class FloatingViewService : Service() {
      * @return true if the floating view is collapsed.
      */
     private fun isViewCollapsed(): Boolean {
-        return mFloatingView == null || mFloatingView.findViewById<View>(R.id.collapse_view).visibility == View.VISIBLE
+        return mFloatingView == null || mFloatingView.findViewById<View>(R.id.expanded_container).visibility == View.GONE
     }
 
     override fun onDestroy() {
