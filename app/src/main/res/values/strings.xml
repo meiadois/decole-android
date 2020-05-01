@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Decole</string>
+    <string name="next">Prosseguir</string>
+    <string name="skip">Pular</string>
+    <string name="ask_for_overlay_permission">
+        As próximas etapas serão <b>interativas</b>, para isso precisamos da sua permissão para mostrar nosso assistente na tela.
+    </string>
+    <string name="ask_for_nickname">como podemos te chamar?</string>
+    <string name="welcome_info_label">Massa! Vamos decolar seu negócio no mundo digital, e para aumentar suas vendas podemos usar as <b>redes sociais</b>, ou uma <b>plataforma própria</b>.</string>
+    <string name="welcome_slide_title">Como podemos te ajudar a vender mais?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="education_slide_label">Podemos começar melhorando seu perfil nas redes sociais, para te ajudar a atrair clientes.</string>
+    <string name="marketplace_slide_label">Podemos trazer seu négocio para as principais plataformas de vendas no mundo digital.</string>
+    <string name="partnership_slide_label">Podemos aproximar vocês de outros micro empreendedores, para te ajudar a firmar parcerias.</string>
+    <string name="drag_more_options_slide">Arraste para o lado para mais opções!</string>
+    <string name="ask_for_email">qual o seu e-mail?</string>
+    <string name="instagram_intro">Para começar, vamos te acompanhar na construção de um perfil comercial no <b>Instagram</b>.</string>
+    <string name="ask_for_instagram_account">Muito legal! Só de possuir um <b>perfil para seu negócio</b> você já está na frente de muitos outros. A gente vai precisar do @ tá bom?</string>
 </resources>

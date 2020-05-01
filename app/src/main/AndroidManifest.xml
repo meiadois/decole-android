@@ -11,8 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.StartInteractiveModeActivity" />
-        <activity android:name=".activity.PasswordDefinitionActivity" />
+        <activity android:name=".activity.user.UserHomeActivity" />
+        <activity android:name=".activity.instagram.HasInstagramAccountActivity" />
+        <activity android:name=".activity.instagram.InstagramIntroActivity" />
+        <activity android:name=".activity.welcome.WelcomeSlideActivity" />
+        <activity android:name=".activity.welcome.WelcomeInfoActivity" />
+        <activity android:name=".activity.AskForInteractiveModePermissionActivity" />
+        <activity android:name=".activity.welcome.PasswordDefinitionActivity" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".service.FloatingViewService" />
     </application>
 

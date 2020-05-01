@@ -7,20 +7,70 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:windowAnimationStyle">@style/slide_activity_animation</item>
     </style>
 
-    <style name="btn_next">
-        <item name="android:layout_width">250dp</item>
+    <style name="white_text_display">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_marginRight">4dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:background">@drawable/button_next</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:text">Avançar</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:background">@drawable/white_text_display_card</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="btn_primary" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:text">@string/next</item>
+        <item name="strokeColor">@color/colorPrimaryDark</item>
+        <item name="strokeWidth">1.8dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:textColor">@color/colorTextIcons</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="btn_secondary" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:text">@string/skip</item>
+        <item name="backgroundTint">@color/colorTextIcons</item>
+        <item name="strokeColor">@color/colorDivider</item>
+        <item name="strokeWidth">1.8dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="normal_input_single_layout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColorHint">@color/colorDivider</item>
+
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="hintTextColor">@color/colorPrimaryLight</item>
+    </style>
+
+    <style name="normal_input_single" parent="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+    </style>
+
+    <style name="progress_bar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:progressTint">@color/colorPrimary</item>
+        <item name="android:progressBackgroundTint">@color/colorPrimaryDarker</item>
+    </style>
+
+    <style name="slide_activity_animation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
     <style name="ErrorText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@android:color/holo_red_dark</item>
