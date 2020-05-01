@@ -12,13 +12,13 @@ import br.com.meiadois.decole.fragments.user.EducationHomeBottomFragment
 import br.com.meiadois.decole.fragments.user.EducationHomeTopFragment
 import br.com.meiadois.decole.fragments.user.PartnershipHomeBottomFragment
 import br.com.meiadois.decole.fragments.user.PartnershipHomeTopFragment
-import kotlinx.android.synthetic.main.activity_user_home.*
+import kotlinx.android.synthetic.main.activity_home.*
 
-class UserHomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_home)
+        setContentView(R.layout.activity_home)
 
         val newFragment: Fragment = EducationHomeTopFragment()
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()

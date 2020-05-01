@@ -10,16 +10,13 @@ import android.content.res.Resources
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.activity.MainActivity
-import br.com.meiadois.decole.activity.user.UserHomeActivity
-import br.com.meiadois.decole.activity.welcome.PasswordDefinitionActivity
+import br.com.meiadois.decole.activity.user.HomeActivity
 import br.com.meiadois.decole.model.Step
 import br.com.meiadois.decole.util.Constants
 
@@ -158,7 +155,7 @@ class FloatingViewService : Service() {
 
         closeButtonCollapsed.setOnClickListener {
             //close the service and remove the from from the window
-            val intent = Intent(this, UserHomeActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             stopSelf()

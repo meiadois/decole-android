@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.activity.user.UserHomeActivity
+import br.com.meiadois.decole.activity.user.HomeActivity
+import br.com.meiadois.decole.activity.welcome.PasswordDefinitionActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -20,8 +21,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         if (v.id == loginNextBtn.id) {
-//            val intent = Intent(this, PasswordDefinitionActivity::class.java)
-            val intent = Intent(this, UserHomeActivity::class.java)
+            val intent = Intent(this, PasswordDefinitionActivity::class.java)
+//            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
         }
