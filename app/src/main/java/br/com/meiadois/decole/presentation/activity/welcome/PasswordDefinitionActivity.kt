@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.com.meiadois.decole.R
-import kotlinx.android.synthetic.main.activity_password_definition.*
+import kotlinx.android.synthetic.main.activity_register.*
 
 class PasswordDefinitionActivity : AppCompatActivity(), View.OnClickListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_password_definition)
+        setContentView(R.layout.activity_register)
 
         btn_next.setOnClickListener(this)
     }

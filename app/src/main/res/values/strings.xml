@@ -34,4 +34,5 @@
     <string name="has_no_account">Não possuo conta</string>
     <string name="has_account">Possuo conta</string>
     <string name="search">Buscar</string>
+    <string name="ask_for_register_email">digite seu melhor email</string>
 </resources>
