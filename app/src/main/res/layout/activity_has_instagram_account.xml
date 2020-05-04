@@ -131,7 +131,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_password"
-            style="@style/normal_input_single" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

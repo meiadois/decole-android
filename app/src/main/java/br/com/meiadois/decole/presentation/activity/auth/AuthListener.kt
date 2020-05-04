@@ -6,5 +6,5 @@ import br.com.meiadois.decole.data.http.response.LoginResponse
 interface AuthListener {
     fun onStarted()
     fun onSuccess(jwt: String)
-    fun onFailure(message: String)
+    fun onFailure(message: String?)
 }
