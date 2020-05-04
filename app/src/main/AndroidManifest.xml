@@ -3,7 +3,7 @@
     package="br.com.meiadois.decole">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +19,7 @@
         <activity android:name="br.com.meiadois.decole.presentation.activity.welcome.WelcomeInfoActivity" />
         <activity android:name="br.com.meiadois.decole.presentation.activity.AskForInteractiveModePermissionActivity" />
         <activity android:name="br.com.meiadois.decole.presentation.activity.welcome.PasswordDefinitionActivity" />
-        <activity android:name="br.com.meiadois.decole.presentation.activity.MainActivity">
+        <activity android:name="br.com.meiadois.decole.presentation.activity.auth.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

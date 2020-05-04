@@ -4,6 +4,7 @@
     <string name="app_name">Decole</string>
     <string name="next">Prosseguir</string>
     <string name="skip"><u>Pular</u></string>
+    <string name="default_font">sans-serif-light</string>
 
     <!-- Welcome -->
     <string name="ask_for_overlay_permission">
@@ -21,6 +22,9 @@
     <!-- Login/Registration -->
     <string name="ask_for_email">qual o seu e-mail?</string>
     <string name="ask_for_nickname">como podemos te chamar?</string>
+    <string name="ask_for_password">insira sua senha</string>
+    <string name="ask_for_new_password">escolha uma senha</string>
+    <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
 
     <!-- Instagram -->
     <string name="instagram_intro">Para começar, vamos te acompanhar na construção de um perfil comercial no <b>Instagram</b>.</string>
@@ -29,7 +33,5 @@
     <string name="have_instagram_account_question">Possui uma conta para seu negócio?</string>
     <string name="has_no_account">Não possuo conta</string>
     <string name="has_account">Possuo conta</string>
-    <string name="ask_for_password">escolha uma senha</string>
-    <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
     <string name="search">Buscar</string>
 </resources>
