@@ -14,11 +14,11 @@ class PasswordDefinitionActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        btn_next.setOnClickListener(this)
+        btn_register_next.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        if (v.id == btn_next.id) {
+        if (v.id == btn_register_next.id) {
             val intent = Intent(this, WelcomeInfoActivity::class.java)
             startActivity(intent)
             finish()

@@ -7,13 +7,13 @@
             name="viewModel"
             type="br.com.meiadois.decole.presentation.activity.auth.viewmodel.RegisterViewModel" />
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/standard_bg"
         android:scaleType="centerInside"
         tools:context=".presentation.activity.welcome.PasswordDefinitionActivity">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,31 +85,33 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/layout_register_username_input"
-                            style="@style/normal_input_single_layout"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginEnd="48dp"
-                            android:hint="@string/ask_for_nickname">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/input_register_username"
-                                style="@style/normal_input_single"
-                                android:text="@={viewModel.username}"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/layout_register_email_input"
                             style="@style/normal_input_single_layout"
                             android:layout_marginStart="48dp"
-                            android:layout_marginTop="15dp"
                             android:layout_marginEnd="48dp"
                             android:hint="@string/ask_for_register_email">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/input_register_email"
-                                style="@style/normal_input_single"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="@={viewModel.email}"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/layout_register_username_input"
+                            style="@style/normal_input_single_layout"
+                            android:layout_marginStart="48dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="48dp"
+                            android:hint="@string/ask_for_nickname">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_register_username"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@={viewModel.name}"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,7 +125,8 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/input_register_password"
-                                style="@style/normal_input_single"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="@={viewModel.password}"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -138,18 +141,27 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/input_register_confirm_password"
-                                style="@style/normal_input_single"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="@={viewModel.confirmPassword}"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
-
+                        <ProgressBar
+                            android:visibility="gone"
+                            android:id="@+id/progress_bar_register"
+                            android:layout_marginTop="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/colorPrimary"/>
                         <Button
                             android:id="@+id/btn_register_next"
                             style="@style/btn_primary"
                             android:layout_marginStart="72dp"
                             android:layout_marginTop="40dp"
                             android:layout_marginEnd="72dp"
-                            android:layout_marginBottom="25dp" />
+                            android:layout_marginBottom="25dp"
+                            android:onClick="@{viewModel::onRegisterButtonClick}"/>
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -169,6 +181,5 @@
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 </layout>
 

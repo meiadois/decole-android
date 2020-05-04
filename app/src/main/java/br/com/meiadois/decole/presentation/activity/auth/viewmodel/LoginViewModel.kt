@@ -16,6 +16,7 @@ class LoginViewModel : ViewModel() {
     var password: String = ""
     var authListener: AuthListener? = null
 
+
     fun onLoginButtonClick(view: View) {
         authListener?.onStarted()
         validateEmail()
@@ -29,7 +30,7 @@ class LoginViewModel : ViewModel() {
 
             try {
                 val res = UserRepository().login(email, password)
-                res.jwt?.let {
+                res.user?.let {
                     authListener?.onSuccess(it)
                     return@main
                 }

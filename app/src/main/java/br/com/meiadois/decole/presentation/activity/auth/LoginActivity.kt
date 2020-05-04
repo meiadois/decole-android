@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.data.model.User
 import br.com.meiadois.decole.databinding.ActivityLoginBinding
 import br.com.meiadois.decole.presentation.activity.auth.viewmodel.LoginViewModel
 import br.com.meiadois.decole.presentation.activity.user.HomeActivity
@@ -35,7 +36,7 @@ class LoginActivity : AppCompatActivity(), AuthListener {
         toggleLoading(true)
     }
 
-    override fun onSuccess(jwt: String) {
+    override fun onSuccess(user: User) {
         toggleLoading(false)
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
