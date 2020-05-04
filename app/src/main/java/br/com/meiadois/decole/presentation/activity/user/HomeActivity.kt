@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.activity.user
+package br.com.meiadois.decole.presentation.activity.user
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,10 +8,10 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.fragments.user.EducationHomeBottomFragment
-import br.com.meiadois.decole.fragments.user.EducationHomeTopFragment
-import br.com.meiadois.decole.fragments.user.PartnershipHomeBottomFragment
-import br.com.meiadois.decole.fragments.user.PartnershipHomeTopFragment
+import br.com.meiadois.decole.presentation.fragments.user.EducationHomeBottomFragment
+import br.com.meiadois.decole.presentation.fragments.user.EducationHomeTopFragment
+import br.com.meiadois.decole.presentation.fragments.user.PartnershipHomeBottomFragment
+import br.com.meiadois.decole.presentation.fragments.user.PartnershipHomeTopFragment
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -40,8 +40,8 @@ class HomeActivity : AppCompatActivity() {
         FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                1 -> PartnershipHomeBottomFragment()
-                else -> EducationHomeBottomFragment()
+                0 -> EducationHomeBottomFragment()
+                else -> PartnershipHomeBottomFragment()
             }
         }
 

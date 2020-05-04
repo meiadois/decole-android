@@ -11,15 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.user.RouteDetailsActivity"/>
-        <activity android:name=".activity.user.HomeActivity" />
-        <activity android:name=".activity.instagram.HasInstagramAccountActivity" />
-        <activity android:name=".activity.instagram.InstagramIntroActivity" />
-        <activity android:name=".activity.welcome.WelcomeSlideActivity" />
-        <activity android:name=".activity.welcome.WelcomeInfoActivity" />
-        <activity android:name=".activity.AskForInteractiveModePermissionActivity" />
-        <activity android:name=".activity.welcome.PasswordDefinitionActivity" />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name="br.com.meiadois.decole.presentation.activity.user.RouteDetailsActivity"/>
+        <activity android:name="br.com.meiadois.decole.presentation.activity.user.HomeActivity" />
+        <activity android:name="br.com.meiadois.decole.presentation.activity.instagram.HasInstagramAccountActivity" />
+        <activity android:name="br.com.meiadois.decole.presentation.activity.instagram.InstagramIntroActivity" />
+        <activity android:name="br.com.meiadois.decole.presentation.activity.welcome.WelcomeSlideActivity" />
+        <activity android:name="br.com.meiadois.decole.presentation.activity.welcome.WelcomeInfoActivity" />
+        <activity android:name="br.com.meiadois.decole.presentation.activity.AskForInteractiveModePermissionActivity" />
+        <activity android:name="br.com.meiadois.decole.presentation.activity.welcome.PasswordDefinitionActivity" />
+        <activity android:name="br.com.meiadois.decole.presentation.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

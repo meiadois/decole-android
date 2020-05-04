@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.fragments.user
+package br.com.meiadois.decole.presentation.fragments.user
 
 import android.content.Context
 import android.content.Intent
@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.activity.user.RouteDetailsActivity
-import br.com.meiadois.decole.model.Route
+import br.com.meiadois.decole.data.model.Route
+import br.com.meiadois.decole.presentation.activity.user.RouteDetailsActivity
 import kotlinx.android.synthetic.main.card_route.view.*
 import kotlinx.android.synthetic.main.fragment_education_home_bottom.*
 
@@ -35,8 +35,10 @@ class EducationHomeBottomFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = route_recycler_view
-        recyclerView.adapter = RouteRecyclerAdapter(routes(), view.context,
+        with(route_recycler_view){
+            layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+            setHasFixedSize(true)
+            adapter = RouteRecyclerAdapter(routes(), view.context,
             object : OnClickListener {
                 override fun onItemClick(position: Int) {
                     Log.i("assertClick", "$position")
@@ -44,9 +46,7 @@ class EducationHomeBottomFragment : Fragment() {
                     startActivity(intent)
                 }
             })
-
-        val layoutManager = LinearLayoutManager(context)
-        recyclerView.layoutManager = layoutManager
+        }
     }
 
     private fun routes(): List<Route> {
@@ -66,6 +66,30 @@ class EducationHomeBottomFragment : Fragment() {
             Route(
                 "Primeiros passos no MercadoLivre",
                 "Aprenda a como apresentar seu negócio no MercadoLivre", true, 0
+            ),
+            Route(
+                "Primeiros passos no MercadoLivre",
+                "Aprenda a como apresentar seu negócio no MercadoLivre", true, 0
+            ),
+            Route(
+                "Primeiros passos no MercadoLivre",
+                "Aprenda a como apresentar seu negócio no MercadoLivre", true, 0
+            ),
+            Route(
+                "Primeiros passos no MercadoLivre",
+                "Aprenda a como apresentar seu negócio no MercadoLivre", true, 0
+            ),
+            Route(
+                "Primeiros passos no MercadoLivre",
+                "Aprenda a como apresentar seu negócio no MercadoLivre", true, 0
+            ),
+            Route(
+                "Primeiros passos no MercadoLivre",
+                "Aprenda a como apresentar seu negócio no MercadoLivre", true, 0
+            ),
+            Route(
+                "Últimos passos no MercadoLivreMercadoLivre",
+                "Aprenda a como apresentar seu negócio no MercadoLivre,Aprenda a como apresentar seu negócio no MercadoLivre", true, 0
             )
         )
     }

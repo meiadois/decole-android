@@ -1,11 +1,11 @@
-package br.com.meiadois.decole.activity.instagram
+package br.com.meiadois.decole.presentation.activity.instagram
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.activity.AskForInteractiveModePermissionActivity
+import br.com.meiadois.decole.presentation.activity.AskForInteractiveModePermissionActivity
 import kotlinx.android.synthetic.main.activity_has_instagram_account.*
 
 class HasInstagramAccountActivity : AppCompatActivity(), View.OnClickListener {

@@ -1,12 +1,12 @@
-package br.com.meiadois.decole.activity
+package br.com.meiadois.decole.presentation.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.activity.user.HomeActivity
-import br.com.meiadois.decole.activity.welcome.PasswordDefinitionActivity
+import br.com.meiadois.decole.presentation.activity.user.HomeActivity
+import br.com.meiadois.decole.presentation.activity.welcome.PasswordDefinitionActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -16,11 +16,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        loginNextBtn.setOnClickListener(this)
+        btn_next.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        if (v.id == loginNextBtn.id) {
+        if (v.id == btn_next.id) {
             val intent = Intent(this, PasswordDefinitionActivity::class.java)
 //            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)

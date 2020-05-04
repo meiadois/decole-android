@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingTop="20dp"
-        android:paddingStart="50dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingStart="50dp"
+        android:paddingTop="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry">
+
         <ImageView
-            android:id="@+id/partner_image"
+            android:id="@+id/image_partner"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/ic_circle_logo"
-            app:layout_constraintEnd_toStartOf="@+id/partner_segment"
+            app:layout_constraintEnd_toStartOf="@+id/text_partner_segment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/partner_name"
+            android:id="@+id/text_partner_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -29,11 +32,11 @@
             android:textColor="@color/colorTextIcons"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/partner_image"
+            app:layout_constraintStart_toEndOf="@+id/image_partner"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/partner_segment"
+            android:id="@+id/text_partner_segment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -43,44 +46,44 @@
             android:textColor="@color/colorDivider"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/partner_image"
-            app:layout_constraintTop_toBottomOf="@+id/partner_name" />
+            app:layout_constraintStart_toEndOf="@+id/image_partner"
+            app:layout_constraintTop_toBottomOf="@+id/text_partner_name" />
 
         <TextView
-            android:id="@+id/label1"
+            android:id="@+id/text_partners"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
             android:layout_marginTop="10dp"
             android:text="1 Parceria firmada"
-            app:layout_constraintTop_toBottomOf="@id/partner_segment"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_partner_segment" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/label2"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textSize="13sp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:text="2 Negociações em andamento"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/label1"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"/>-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/label2"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:textSize="13sp"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:text="2 Negociações em andamento"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/label1"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.0"/>-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/label3"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textSize="13sp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:text="1 Negociação cancelada"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/label2"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"/>-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/label3"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:textSize="13sp"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:text="1 Negociação cancelada"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/label2"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.0"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

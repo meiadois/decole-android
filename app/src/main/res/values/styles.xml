@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -13,10 +12,11 @@
 
     <style name="white_text_display">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/white_text_display_card</item>
         <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
     </style>
 
     <style name="btn_primary" parent="Widget.MaterialComponents.Button">

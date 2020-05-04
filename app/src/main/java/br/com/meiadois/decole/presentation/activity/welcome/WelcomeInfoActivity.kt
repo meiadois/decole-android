@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.activity.welcome
+package br.com.meiadois.decole.presentation.activity.welcome
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,11 +13,11 @@ class WelcomeInfoActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome_info)
 
-        nextBtn.setOnClickListener(this)
+        btn_next.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        if (v.id == nextBtn.id) {
+        if (v.id == btn_next.id) {
             val intent = Intent(this, WelcomeSlideActivity::class.java)
             startActivity(intent)
             finish()

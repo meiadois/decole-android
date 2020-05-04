@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.activity.welcome
+package br.com.meiadois.decole.presentation.activity.welcome
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,11 +14,11 @@ class PasswordDefinitionActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_definition)
 
-        passDefNextBtn.setOnClickListener(this)
+        btn_next.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        if (v.id == passDefNextBtn.id) {
+        if (v.id == btn_next.id) {
             val intent = Intent(this, WelcomeInfoActivity::class.java)
             startActivity(intent)
             finish()

@@ -6,24 +6,22 @@
     android:layout_height="match_parent"
     android:background="@drawable/standard_bg"
     android:scaleType="centerCrop"
-    tools:context=".activity.instagram.InstagramIntroActivity">
+    tools:context=".presentation.activity.instagram.InstagramIntroActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#BF34494F"
         android:orientation="horizontal" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/panel"
-        android:background="@color/colorPrimary"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/bottom_panel_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/guideline">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/dots_guideline_top"
@@ -33,7 +31,6 @@
             app:layout_constraintGuide_percent="0.08" />
 
         <LinearLayout
-            android:id="@+id/dots"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center"
@@ -75,86 +72,103 @@
             app:layout_constraintGuide_percent="0.10" />
 
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/inner_image_guideline_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/inner_image_guideline_top"
-            app:layout_constraintGuide_percent="0.2"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/main_image"
             android:layout_width="250dp"
             android:layout_height="0dp"
             android:src="@drawable/ic_social_user"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/inner_image_guideline_bottom"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/inner_image_guideline_top"
-            app:layout_constraintBottom_toTopOf="@id/inner_image_guideline_bottom"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inner_image_guideline_top" />
 
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/inner_image_guideline_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/inner_image_guideline_bottom"
-            app:layout_constraintGuide_percent="0.65"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.65" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/instagram_intro"
-            android:textAlignment="center"
+            android:layout_marginStart="48dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="48dp"
-            android:layout_marginStart="48dp"
+            android:text="@string/instagram_intro"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_parent_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/main_image"
+            app:layout_constraintVertical_bias=".2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_parent_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.87" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_max_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guideline"
-        app:layout_constraintGuide_percent="0.65"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.62" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_panel_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
 
     <TextView
-        android:id="@+id/nameDisplay"
+        android:id="@+id/text_name"
         style="@style/white_text_display"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:text="Possui uma conta para seu negócio?"
+        android:text="@string/have_instagram_account_question"
+        app:layout_constraintBottom_toTopOf="@+id/label_guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/label_guideline_bottom" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline_max_top" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/label_guideline_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/label_guideline_bottom"
-        app:layout_constraintGuide_percent="0.68"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.68" />
 
     <Button
         android:id="@+id/does_not_have_account_btn"
         style="@style/btn_primary"
-        android:text="Não possuo conta"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="65dp"
+        android:layout_marginEnd="48dp"
+        android:text="@string/has_no_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/panel"/>
+        app:layout_constraintTop_toBottomOf="@+id/bottom_panel_guideline" />
 
     <Button
         android:id="@+id/have_account_btn"
         style="@style/btn_secondary"
-        android:text="Possuo conta"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:text="@string/has_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/does_not_have_account_btn"/>
+        app:layout_constraintTop_toBottomOf="@+id/does_not_have_account_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

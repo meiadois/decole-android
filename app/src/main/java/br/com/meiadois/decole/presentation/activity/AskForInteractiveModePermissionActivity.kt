@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.activity
+package br.com.meiadois.decole.presentation.activity
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.service.FloatingViewService
+import kotlinx.android.synthetic.main.activity_ask_for_interactive_mode_permission.*
 
 class AskForInteractiveModePermissionActivity : AppCompatActivity() {
 
@@ -48,7 +49,7 @@ class AskForInteractiveModePermissionActivity : AppCompatActivity() {
      * Set and initialize the view elements.
      */
     private fun initializeView() {
-        findViewById<View>(R.id.ask_permission).setOnClickListener {
+        btn_next.setOnClickListener {
             if (isOverLaysAllowed(this@AskForInteractiveModePermissionActivity)) {
                 startFloatingView(this@AskForInteractiveModePermissionActivity)
                 finish()

@@ -1,7 +1,5 @@
-package br.com.meiadois.decole.activity.user
+package br.com.meiadois.decole.presentation.activity.user
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.model.Lesson
+import br.com.meiadois.decole.data.model.Lesson
 import kotlinx.android.synthetic.main.activity_route_details.*
 import kotlinx.android.synthetic.main.card_step.view.*
 
@@ -32,17 +29,16 @@ class RouteDetailsActivity : AppCompatActivity() {
             scroll_container.smoothScrollTo(0, Int.MAX_VALUE)
         }
 
-        val recyclerView = lesson_recycler_view
-        recyclerView.adapter = LessonRecyclerAdapter(lessons(), this,
-            object : OnClickListener {
-                override fun onItemClick(position: Int) {
-                    Log.i("assertClick", "$position")
-                }
-            })
+        with(lesson_recycler_view){
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
 
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.stackFromEnd = true
-        recyclerView.layoutManager = layoutManager
+            adapter = LessonRecyclerAdapter(lessons(), context,
+                object : OnClickListener {
+                    override fun onItemClick(position: Int) {
+                        Log.i("assertClick", "$position")
+                    }
+                })
+        }
 
     }
 
@@ -52,7 +48,7 @@ class RouteDetailsActivity : AppCompatActivity() {
                 "Alterando sua foto de perfil", true
             ),
             Lesson(
-                "Alterando sua bio", false
+                "Alterando sua bio", true
             ),
             Lesson(
                 "Lorem ipsum dolor sit amet", false
@@ -84,7 +80,7 @@ class RouteDetailsActivity : AppCompatActivity() {
             Lesson(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", false
             )
-        ).reversed()
+        )
     }
 
     inner class LessonRecyclerAdapter(

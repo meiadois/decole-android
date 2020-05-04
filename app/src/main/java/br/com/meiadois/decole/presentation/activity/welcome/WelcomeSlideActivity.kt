@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.activity.welcome
+package br.com.meiadois.decole.presentation.activity.welcome
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +8,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.activity.instagram.InstagramIntroActivity
-import br.com.meiadois.decole.fragments.welcome.EducationSlideFragment
-import br.com.meiadois.decole.fragments.welcome.MarketplaceSlideFragment
-import br.com.meiadois.decole.fragments.welcome.PartnershipSlideFragment
+import br.com.meiadois.decole.presentation.activity.instagram.InstagramIntroActivity
+import br.com.meiadois.decole.presentation.fragments.welcome.EducationSlideFragment
+import br.com.meiadois.decole.presentation.fragments.welcome.MarketplaceSlideFragment
+import br.com.meiadois.decole.presentation.fragments.welcome.PartnershipSlideFragment
 import kotlinx.android.synthetic.main.activity_welcome_slide.*
 
 class WelcomeSlideActivity : AppCompatActivity() {
@@ -42,7 +42,7 @@ class WelcomeSlideActivity : AppCompatActivity() {
 
         })
 
-        nextBtn.setOnClickListener {
+        btn_next.setOnClickListener {
             confirmSelection()
         }
     }
@@ -57,7 +57,7 @@ class WelcomeSlideActivity : AppCompatActivity() {
 
     private fun selectPage(position: Int) {
 
-        nextBtn.isEnabled = position == 0
+        btn_next.isEnabled = position == 0
 
         pageSelected = position
     }

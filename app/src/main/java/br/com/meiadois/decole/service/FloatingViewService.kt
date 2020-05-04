@@ -16,8 +16,8 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.activity.user.HomeActivity
-import br.com.meiadois.decole.model.Step
+import br.com.meiadois.decole.data.model.Step
+import br.com.meiadois.decole.presentation.activity.user.HomeActivity
 import br.com.meiadois.decole.util.Constants
 
 class FloatingViewService : Service() {
@@ -193,7 +193,7 @@ class FloatingViewService : Service() {
                                     //and expanded view will become visible.
                                     closeButtonCollapsed.visibility = View.GONE
                                     expandedView.visibility = View.VISIBLE
-                                }else{
+                                } else {
                                     collapsedView.visibility = View.VISIBLE
                                     closeButtonCollapsed.visibility = View.VISIBLE
                                     expandedView.visibility = View.GONE

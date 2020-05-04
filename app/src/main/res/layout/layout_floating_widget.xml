@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <!--Root container-->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,18 +13,18 @@
         tools:ignore="UselessParent">
 
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/image_guideline_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/image_guideline_end"
-            app:layout_constraintGuide_percent="0.18"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.18" />
 
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/image_guideline_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/image_guideline_top"
-            app:layout_constraintGuide_percent="0.7"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
 
         <!--View while view is expanded-->
         <LinearLayout
@@ -35,9 +35,9 @@
             android:orientation="vertical"
             android:padding="8dp"
             android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@id/image_guideline_end"
+            app:layout_constraintBottom_toTopOf="@+id/image_guideline_top"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/image_guideline_top">
+            app:layout_constraintStart_toEndOf="@id/image_guideline_end">
 
 
             <ProgressBar
@@ -90,8 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <!--Icon of floating widget -->
             <ImageView
