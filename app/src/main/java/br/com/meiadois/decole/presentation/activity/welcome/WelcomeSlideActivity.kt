@@ -9,9 +9,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.presentation.activity.instagram.InstagramIntroActivity
-import br.com.meiadois.decole.presentation.fragments.welcome.EducationSlideFragment
-import br.com.meiadois.decole.presentation.fragments.welcome.MarketplaceSlideFragment
-import br.com.meiadois.decole.presentation.fragments.welcome.PartnershipSlideFragment
+import br.com.meiadois.decole.presentation.fragment.welcome.EducationSlideFragment
+import br.com.meiadois.decole.presentation.fragment.welcome.MarketplaceSlideFragment
+import br.com.meiadois.decole.presentation.fragment.welcome.PartnershipSlideFragment
 import kotlinx.android.synthetic.main.activity_welcome_slide.*
 
 class WelcomeSlideActivity : AppCompatActivity() {

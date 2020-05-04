@@ -1,12 +1,13 @@
-package br.com.meiadois.decole.data.http.client
+package br.com.meiadois.decole.data.network
 
+import br.com.meiadois.decole.util.exception.ClientException
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
 
 abstract class RequestHandler {
-    suspend fun <T : Any> handle(call: suspend () -> Response<T>): T {
-        val response = call.invoke()
+    suspend fun <T : Any> callClient(operation: suspend () -> Response<T>): T {
+        val response = operation.invoke()
         if (response.isSuccessful) {
             return response.body()!!
         } else {
@@ -20,7 +21,10 @@ abstract class RequestHandler {
                 }
             }
 
-            throw ClientException(response.code(), message)
+            throw ClientException(
+                response.code(),
+                message
+            )
         }
     }
 

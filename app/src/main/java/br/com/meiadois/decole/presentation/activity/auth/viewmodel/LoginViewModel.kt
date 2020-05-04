@@ -3,18 +3,22 @@ package br.com.meiadois.decole.presentation.activity.auth.viewmodel
 import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.ViewModel
-import br.com.meiadois.decole.data.http.client.ClientException
+import br.com.meiadois.decole.util.exception.ClientException
+import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.presentation.activity.auth.AuthListener
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.NoInternetException
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     var email: String = ""
     var emailErrorMessage: String? = null
     var passwordErrorMessage: String? = null
     var password: String = ""
     var authListener: AuthListener? = null
+
+    fun getLoggedInUser() = userRepository.getUser()
 
     fun onLoginButtonClick(view: View) {
         authListener?.onStarted()
@@ -28,13 +32,17 @@ class LoginViewModel : ViewModel() {
         Coroutines.main {
 
             try {
-                val res = UserRepository().login(email, password)
-                res.jwt?.let {
-                    authListener?.onSuccess(it)
+                val res = userRepository.login(email, password)
+
+                res.user?.let {
+                    userRepository.saveUser(User(it.jwt, it.name, it.email))
+                    authListener?.onSuccess(it.jwt)
                     return@main
                 }
                 authListener?.onFailure(res.message!!)
             } catch (ex: ClientException) {
+                authListener?.onFailure(ex.message!!)
+            } catch (ex: NoInternetException){
                 authListener?.onFailure(ex.message!!)
             }
 

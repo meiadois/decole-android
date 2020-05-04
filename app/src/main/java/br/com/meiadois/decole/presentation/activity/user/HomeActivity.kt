@@ -8,10 +8,10 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.presentation.fragments.user.EducationHomeBottomFragment
-import br.com.meiadois.decole.presentation.fragments.user.EducationHomeTopFragment
-import br.com.meiadois.decole.presentation.fragments.user.PartnershipHomeBottomFragment
-import br.com.meiadois.decole.presentation.fragments.user.PartnershipHomeTopFragment
+import br.com.meiadois.decole.presentation.fragment.user.EducationHomeBottomFragment
+import br.com.meiadois.decole.presentation.fragment.user.EducationHomeTopFragment
+import br.com.meiadois.decole.presentation.fragment.user.PartnershipHomeBottomFragment
+import br.com.meiadois.decole.presentation.fragment.user.PartnershipHomeTopFragment
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {

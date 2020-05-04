@@ -1,15 +1,24 @@
 package br.com.meiadois.decole.data.repository
 
-import br.com.meiadois.decole.data.http.client.DecoleClient
-import br.com.meiadois.decole.data.http.client.RequestHandler
-import br.com.meiadois.decole.data.http.request.LoginRequest
-import br.com.meiadois.decole.data.http.response.LoginResponse
+import br.com.meiadois.decole.data.network.client.DecoleClient
+import br.com.meiadois.decole.data.network.RequestHandler
+import br.com.meiadois.decole.data.network.request.LoginRequest
+import br.com.meiadois.decole.data.network.response.LoginResponse
+import br.com.meiadois.decole.data.localdb.AppDatabase
+import br.com.meiadois.decole.data.localdb.entity.User
 
-class UserRepository : RequestHandler() {
+class UserRepository(
+    private val client: DecoleClient,
+    private val db: AppDatabase
+) : RequestHandler() {
 
     suspend fun login(email: String, password: String): LoginResponse {
-        return handle {
-            DecoleClient().login(LoginRequest(email, password))
+        return callClient {
+            client.login(LoginRequest(email, password))
         }
     }
+
+    suspend fun saveUser(user: User) = db.getUserDao().upsert(user)
+
+    fun getUser() = db.getUserDao().find()
 }

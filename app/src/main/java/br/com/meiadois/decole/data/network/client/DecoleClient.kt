@@ -1,7 +1,9 @@
-package br.com.meiadois.decole.data.http.client
+package br.com.meiadois.decole.data.network.client
 
-import br.com.meiadois.decole.data.http.request.LoginRequest
-import br.com.meiadois.decole.data.http.response.LoginResponse
+import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
+import br.com.meiadois.decole.data.network.request.LoginRequest
+import br.com.meiadois.decole.data.network.response.LoginResponse
+import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -15,8 +17,13 @@ interface DecoleClient {
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 
     companion object {
-        operator fun invoke(): DecoleClient {
+        operator fun invoke(interceptor: NetworkConnectionInterceptor): DecoleClient {
+            val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build()
+
             return Retrofit.Builder()
+                .client(okHttpClient)
                 .baseUrl("https://decoleapi.herokuapp.com/v1/")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()

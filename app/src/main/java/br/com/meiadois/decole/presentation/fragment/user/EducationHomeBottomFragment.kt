@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.presentation.fragments.user
+package br.com.meiadois.decole.presentation.fragment.user
 
 import android.content.Context
 import android.content.Intent

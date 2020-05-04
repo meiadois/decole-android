@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.presentation.fragments.welcome
+package br.com.meiadois.decole.presentation.fragment.welcome
 
 import android.os.Bundle
 import android.view.LayoutInflater
