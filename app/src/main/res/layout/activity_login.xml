@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.50" />
+            app:layout_constraintGuide_percent="0.45" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,7 +76,8 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_email"
-                    style="@style/normal_input_single"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@={viewModel.email}" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -94,12 +95,20 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_password"
-                    style="@style/normal_input_single"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:text="@={viewModel.password}" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progress_bar"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/colorPrimary"/>
             <Button
                 android:id="@+id/btn_next"
                 style="@style/btn_primary"
