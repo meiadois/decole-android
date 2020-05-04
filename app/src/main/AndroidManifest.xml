@@ -20,7 +20,8 @@
         <activity android:name="br.com.meiadois.decole.presentation.activity.welcome.WelcomeSlideActivity" />
         <activity android:name="br.com.meiadois.decole.presentation.activity.welcome.WelcomeInfoActivity" />
         <activity android:name="br.com.meiadois.decole.presentation.activity.AskForInteractiveModePermissionActivity" />
-        <activity android:name="br.com.meiadois.decole.presentation.activity.welcome.PasswordDefinitionActivity" />
+        <activity android:name="br.com.meiadois.decole.presentation.activity.auth.RegisterActivity" />
+
         <activity android:name="br.com.meiadois.decole.presentation.activity.auth.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

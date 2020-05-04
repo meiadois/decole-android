@@ -1,5 +1,7 @@
 package br.com.meiadois.decole.data.network.client
 
+import br.com.meiadois.decole.data.http.request.RegisterRequest
+import br.com.meiadois.decole.data.http.response.RegisterResponse
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.response.LoginResponse
@@ -15,6 +17,10 @@ interface DecoleClient {
     @Headers("Content-Type: application/json")
     @POST("login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("register")
+    suspend fun register(@Body request: RegisterRequest): Response<RegisterResponse>
 
     companion object {
         operator fun invoke(interceptor: NetworkConnectionInterceptor): DecoleClient {

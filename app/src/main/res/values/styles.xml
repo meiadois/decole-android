@@ -42,6 +42,12 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="btn_text_secondary" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorTextIcons</item>
+    </style>
+
     <style name="normal_input_single_layout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="materialThemeOverlay">@style/MyThemeOverlayOutlinedDense</item>
         <item name="android:layout_width">match_parent</item>

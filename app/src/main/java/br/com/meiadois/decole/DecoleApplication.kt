@@ -6,6 +6,7 @@ import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.presentation.activity.auth.viewmodel.LoginViewModelFactory
+import br.com.meiadois.decole.presentation.activity.auth.viewmodel.RegisterViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -22,5 +23,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { AppDatabase(instance()) }
         bind() from singleton { UserRepository(instance(), instance()) }
         bind() from singleton { LoginViewModelFactory(instance()) }
+        bind() from singleton { RegisterViewModelFactory(instance()) }
     }
 }

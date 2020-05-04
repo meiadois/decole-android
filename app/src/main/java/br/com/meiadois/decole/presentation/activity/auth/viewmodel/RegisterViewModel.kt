@@ -1,32 +1,36 @@
 package br.com.meiadois.decole.presentation.activity.auth.viewmodel
 
-import android.content.Intent
 import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.ViewModel
-import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.presentation.activity.auth.AuthListener
-import br.com.meiadois.decole.presentation.activity.auth.RegisterActivity
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 
-class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
+class RegisterViewModel(private val userRepository: UserRepository) : ViewModel() {
 
+    var name: String = ""
     var email: String = ""
+    var password: String = ""
+    var confirmPassword: String = ""
+    var nameErrorMessage: String? = null
     var emailErrorMessage: String? = null
     var passwordErrorMessage: String? = null
-    var password: String = ""
+    var confirmPasswordErrorMessage: String? = null
+
     var authListener: AuthListener? = null
 
-    fun getLoggedInUser() = userRepository.getUser()
-
-    fun onLoginButtonClick(view: View) {
+    fun onRegisterButtonClick(view: View) {
         authListener?.onStarted()
+        validateUsername()
         validateEmail()
         validatePassword()
-        if (emailErrorMessage != null || passwordErrorMessage != null) {
+        validateConfirmPassword()
+
+        if (nameErrorMessage != null || emailErrorMessage != null || passwordErrorMessage != null || confirmPasswordErrorMessage != null) {
             authListener?.onFailure(null)
             return
         }
@@ -34,8 +38,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
         Coroutines.main {
 
             try {
-                val res = userRepository.login(email, password)
-
+                val res = userRepository.register(name, email, password)
                 res.user?.let {
                     userRepository.saveUser(User(it.jwt, it.name, it.email))
                     authListener?.onSuccess(it.jwt)
@@ -51,15 +54,27 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
-    fun onRegisterButtonClick(view: View){
-        Intent(view.context, RegisterActivity::class.java).also {
-            view.context.startActivity(it)
-        }
+    private fun validateUsername() {
+        nameErrorMessage = if (name.trim().isEmpty()) "Você precisa inserir um nome."
+        else null
     }
 
     private fun validatePassword() {
         passwordErrorMessage = if (password.trim().isEmpty()) "Você precisa inserir uma senha."
         else null
+    }
+
+    private fun validateConfirmPassword() {
+        if (confirmPassword.trim().isEmpty()) {
+            confirmPasswordErrorMessage = "Você precisa inserir a confirmação da senha."
+            return
+        }
+        if (password.compareTo(confirmPassword) != 0) {
+            confirmPasswordErrorMessage = "As senhas não coincidem."
+            return
+        }
+        confirmPasswordErrorMessage = null
+        return
     }
 
     private fun validateEmail() {

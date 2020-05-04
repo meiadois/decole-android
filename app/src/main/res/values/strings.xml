@@ -21,9 +21,11 @@
 
     <!-- Login/Registration -->
     <string name="ask_for_email">qual o seu e-mail?</string>
-    <string name="ask_for_nickname">como podemos te chamar?</string>
     <string name="ask_for_password">insira sua senha</string>
-    <string name="ask_for_new_password">escolha uma senha</string>
+    <string name="have_no_account_question">Não possui conta?</string>
+    <string name="ask_for_register_email">digite seu melhor email</string>
+    <string name="ask_for_nickname">como podemos te chamar?</string>
+    <string name="ask_for_new_password">escolha sua senha</string>
     <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
 
     <!-- Instagram -->

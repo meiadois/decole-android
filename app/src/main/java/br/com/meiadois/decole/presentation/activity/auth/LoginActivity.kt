@@ -67,10 +67,10 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
     private fun toggleLoading(boolean: Boolean) {
         if (boolean) {
             progress_bar.visibility = View.VISIBLE
-            btn_next.visibility = View.GONE
+            button_group.visibility = View.GONE
         } else {
             progress_bar.visibility = View.GONE
-            btn_next.visibility = View.VISIBLE
+            button_group.visibility = View.VISIBLE
         }
     }
 
