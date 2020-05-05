@@ -4,13 +4,13 @@ import android.content.Intent
 import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.ViewModel
-import br.com.meiadois.decole.util.exception.ClientException
-import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.presentation.activity.auth.AuthListener
 import br.com.meiadois.decole.presentation.activity.auth.RegisterActivity
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
+import br.com.meiadois.decole.util.extension.parseEntity
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
@@ -37,21 +37,21 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
                 val res = userRepository.login(email, password)
 
                 res.user?.let {
-                    userRepository.saveUser(User(it.jwt, it.name, it.email))
-                    authListener?.onSuccess(it.jwt)
+                    userRepository.saveUser(it.parseEntity())
+                    authListener?.onSuccess(it.parseEntity())
                     return@main
                 }
                 authListener?.onFailure(res.message!!)
             } catch (ex: ClientException) {
                 authListener?.onFailure(ex.message!!)
-            } catch (ex: NoInternetException){
+            } catch (ex: NoInternetException) {
                 authListener?.onFailure(ex.message!!)
             }
 
         }
     }
 
-    fun onRegisterButtonClick(view: View){
+    fun onRegisterButtonClick(view: View) {
         Intent(view.context, RegisterActivity::class.java).also {
             view.context.startActivity(it)
         }

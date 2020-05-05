@@ -1,7 +1,7 @@
 package br.com.meiadois.decole.data.network.client
 
-import br.com.meiadois.decole.data.http.request.RegisterRequest
-import br.com.meiadois.decole.data.http.response.RegisterResponse
+import br.com.meiadois.decole.data.network.request.RegisterRequest
+import br.com.meiadois.decole.data.network.response.RegisterResponse
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.response.LoginResponse

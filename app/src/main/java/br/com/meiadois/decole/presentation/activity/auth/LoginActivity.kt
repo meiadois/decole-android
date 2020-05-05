@@ -8,10 +8,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.databinding.ActivityLoginBinding
 import br.com.meiadois.decole.presentation.activity.auth.viewmodel.LoginViewModel
 import br.com.meiadois.decole.presentation.activity.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.activity.user.HomeActivity
+import br.com.meiadois.decole.presentation.activity.welcome.WelcomeInfoActivity
 import br.com.meiadois.decole.util.extension.longSnackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import org.kodein.di.KodeinAware
@@ -41,7 +43,7 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
         loginViewModel.getLoggedInUser().observe(this, Observer { user ->
             user?.let {
-                startNextActivity()
+                startNextActivity(it)
             }
         })
     }
@@ -50,9 +52,9 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
         toggleLoading(true)
     }
 
-    override fun onSuccess(jwt: String) {
+    override fun onSuccess(user: User) {
         toggleLoading(false)
-        startNextActivity()
+        startNextActivity(user)
     }
 
     override fun onFailure(message: String?) {
@@ -74,11 +76,19 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
         }
     }
 
-    private fun startNextActivity() {
-        Intent(this, HomeActivity::class.java).also {
+    private fun startNextActivity(user: User) {
+        if (user.introduced) {
+            Intent(this, HomeActivity::class.java).also {
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(it)
+            }
+        }
+
+        Intent(this, WelcomeInfoActivity::class.java).also {
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(it)
         }
+
     }
 
 }

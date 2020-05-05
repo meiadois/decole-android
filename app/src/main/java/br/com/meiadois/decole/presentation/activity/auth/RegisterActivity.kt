@@ -7,15 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.databinding.ActivityRegisterBinding
-import br.com.meiadois.decole.presentation.activity.auth.viewmodel.LoginViewModel
-import br.com.meiadois.decole.presentation.activity.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.activity.auth.viewmodel.RegisterViewModel
 import br.com.meiadois.decole.presentation.activity.auth.viewmodel.RegisterViewModelFactory
-import br.com.meiadois.decole.presentation.activity.user.HomeActivity
 import br.com.meiadois.decole.presentation.activity.welcome.WelcomeInfoActivity
 import br.com.meiadois.decole.util.extension.longSnackbar
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -47,7 +44,7 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
         toggleLoading(true)
     }
 
-    override fun onSuccess(jwt: String) {
+    override fun onSuccess(user: User) {
         toggleLoading(false)
         Intent(this, WelcomeInfoActivity::class.java).also {
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -67,11 +64,11 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
         }
     }
 
-    private fun toggleLoading(boolean: Boolean){
-        if(boolean){
+    private fun toggleLoading(boolean: Boolean) {
+        if (boolean) {
             progress_bar_register.visibility = View.VISIBLE
             btn_register_next.visibility = View.GONE
-        }else{
+        } else {
             progress_bar_register.visibility = View.GONE
             btn_register_next.visibility = View.VISIBLE
         }

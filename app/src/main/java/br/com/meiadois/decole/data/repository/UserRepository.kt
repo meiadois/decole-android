@@ -1,7 +1,7 @@
 package br.com.meiadois.decole.data.repository
 
-import br.com.meiadois.decole.data.http.request.RegisterRequest
-import br.com.meiadois.decole.data.http.response.RegisterResponse
+import br.com.meiadois.decole.data.network.request.RegisterRequest
+import br.com.meiadois.decole.data.network.response.RegisterResponse
 import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.network.RequestHandler

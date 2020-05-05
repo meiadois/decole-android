@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.data.http.request
+package br.com.meiadois.decole.data.network.request
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

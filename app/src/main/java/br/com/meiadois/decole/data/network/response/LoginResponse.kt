@@ -10,13 +10,3 @@ data class LoginResponse(
     @Json(name = "user")
     val user: UserDTO?
 )
-
-@JsonClass(generateAdapter = true)
-data class UserDTO(
-    @Json(name = "name")
-    val name: String,
-    @Json(name = "email")
-    val email: String,
-    @Json(name = "token")
-    val jwt: String
-)
