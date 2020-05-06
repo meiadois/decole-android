@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="br.com.meiadois.decole.presentation.activity.auth.viewmodel.RegisterViewModel" />
+            type="br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/standard_bg"
         android:scaleType="centerInside"
-        tools:context=".presentation.activity.auth.RegisterActivity">
+        tools:context=".presentation.auth.RegisterActivity">
 
         <LinearLayout
             android:layout_width="match_parent"

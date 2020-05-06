@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/standard_bg"
     android:scaleType="centerCrop"
-    tools:context=".presentation.activity.AskForInteractiveModePermissionActivity">
+    tools:context=".presentation.AskForInteractiveModePermissionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

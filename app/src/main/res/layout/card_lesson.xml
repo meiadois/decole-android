@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="lesson"
+            type="br.com.meiadois.decole.data.model.Lesson" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/status_rect"
+            android:layout_width="5dp"
+            android:layout_height="60dp"
+            android:src="@{lesson.completed? @drawable/light_timeline_rect : @drawable/dark_timeline_rect}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/card"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@drawable/dark_timeline_rect" />
+
+        <ImageView
+            android:id="@+id/status_image"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:src="@{lesson.completed? @drawable/ic_light_dot_timeline : @drawable/ic_dark_dot_timeline}"
+            app:layout_constraintBottom_toTopOf="@+id/status_rect"
+            app:layout_constraintEnd_toStartOf="@+id/card"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@drawable/ic_dark_dot_timeline" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDarker"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/step_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:gravity="center"
+                    android:text="@{lesson.title}"
+                    android:textColor="@color/colorTextIcons"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

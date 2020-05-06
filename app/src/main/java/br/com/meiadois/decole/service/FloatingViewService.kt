@@ -17,7 +17,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Step
-import br.com.meiadois.decole.presentation.activity.user.HomeActivity
+import br.com.meiadois.decole.presentation.user.HomeActivity
 import br.com.meiadois.decole.util.Constants
 
 class FloatingViewService : Service() {

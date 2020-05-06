@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/standard_bg"
     android:scaleType="centerInside"
-    tools:context=".presentation.activity.welcome.WelcomeSlideActivity">
+    tools:context=".presentation.welcome.WelcomeSlideActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
