@@ -78,6 +78,8 @@ dependencies {
     implementation "com.xwray:groupie-kotlin-android-extensions:$groupieVersion"
     implementation "com.xwray:groupie-databinding:$groupieVersion"
 
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

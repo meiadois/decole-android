@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.presentation.user.education
+package br.com.meiadois.decole.presentation.user.education.binding
 
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.localdb.entity.Route

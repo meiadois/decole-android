@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
@@ -37,7 +38,8 @@ class RouteListFragment : Fragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mFragmentViewModel = ViewModelProvider(this, factoryFragment).get(RouteListViewModel::class.java)
+        mFragmentViewModel =
+            ViewModelProvider(this, factoryFragment).get(RouteListViewModel::class.java)
         bindUi()
 
     }

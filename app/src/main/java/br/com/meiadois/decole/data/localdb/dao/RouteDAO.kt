@@ -10,9 +10,13 @@ import br.com.meiadois.decole.data.localdb.entity.Route
 @Dao
 interface RouteDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun updateRoutes(routes: List<Route>)
+    @Query("SELECT * FROM Route WHERE id = :id")
+    fun findByPk(id: Long): LiveData<Route>
 
     @Query("SELECT * FROM Route")
     fun findAll(): LiveData<List<Route>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateRoutes(routes: List<Route>)
+
 }

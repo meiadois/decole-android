@@ -7,7 +7,7 @@
 
         <variable
             name="lesson"
-            type="br.com.meiadois.decole.data.model.Lesson" />
+            type="br.com.meiadois.decole.data.localdb.entity.Lesson" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

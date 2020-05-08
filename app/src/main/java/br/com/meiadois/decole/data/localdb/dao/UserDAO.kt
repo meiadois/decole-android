@@ -16,4 +16,7 @@ interface UserDAO {
 
     @Query("SELECT * FROM User WHERE uid = $CURRENT_USER_ID")
     fun find(): LiveData<User>
+
+    @Query("SELECT jwt FROM User WHERE uid = $CURRENT_USER_ID")
+    fun findJWT(): String?
 }

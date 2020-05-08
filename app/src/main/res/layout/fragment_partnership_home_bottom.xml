@@ -5,55 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:focusableInTouchMode="true"
-                app:layout_constraintTop_toTopOf="parent"
-                android:descendantFocusability="beforeDescendants" >
+            <Button
+                android:id="@+id/btn_search"
+                style="@style/btn_primary"
+                android:layout_marginStart="42dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="42dp"
+                android:focusable="true"
+                android:text="@string/search"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/btn_search"
-                    style="@style/btn_primary"
-                    android:focusable="true"
-                    android:layout_marginStart="42dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="42dp"
-                    android:text="@string/search"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/divider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:src="@drawable/ic_partner_divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_search" />
 
-                <ImageView
-                    android:id="@+id/divider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:src="@drawable/ic_partner_divider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_search" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/partner_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider"
+                tools:listitem="@layout/card_partner" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/partner_recycler_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:clipToPadding="false"
-                    app:layout_constraintTop_toBottomOf="@+id/divider"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:listitem="@layout/card_partner" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

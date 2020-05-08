@@ -130,12 +130,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_info">
 
-<!--                <TextView-->
-<!--                    android:id="@+id/btn_skip"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/skip"-->
-<!--                    android:textAlignment="center" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/btn_skip"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="@string/skip"-->
+                <!--                    android:textAlignment="center" />-->
 
                 <Button
                     android:id="@+id/btn_next"

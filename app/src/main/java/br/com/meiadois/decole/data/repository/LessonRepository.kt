@@ -2,58 +2,42 @@ package br.com.meiadois.decole.data.repository
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
-import br.com.meiadois.decole.data.localdb.entity.Route
+import br.com.meiadois.decole.data.localdb.entity.Lesson
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.preferences.PreferenceProvider
-import br.com.meiadois.decole.util.Coroutines
-import br.com.meiadois.decole.util.extension.parseToRouteEntity
+import br.com.meiadois.decole.util.extension.parseToLessonEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-class RouteRepository(
+class LessonRepository(
     private val client: DecoleClient,
     private val db: AppDatabase,
     private val prefs: PreferenceProvider
 ) : RequestHandler() {
 
-    private val routes = MutableLiveData<List<Route>>()
-
-    init {
-        routes.observeForever {
-            saveRoutes(it)
-        }
-    }
-
-    suspend fun getRoutes(): LiveData<List<Route>> {
+    suspend fun getLessons(routeId: Long): LiveData<List<Lesson>> {
         return withContext(Dispatchers.IO) {
-            val lastFetch = prefs.getLastRouteFetch()
-            if (lastFetch == 0L || isRouteFetchNeeded(Date(lastFetch))) {
-                fetchRoutes()
+            val lastFetch = prefs.getLastLessonFetch(routeId)
+            if (lastFetch == 0L || isLessonFetchNeeded(Date(lastFetch))) {
+                fetchLessons(routeId)
             }
-            db.getRouteDao().findAll()
+            db.getLessonDao().findLessonsByRoute(routeId)
         }
     }
 
-    suspend fun fetchRoutes() {
-        val res = callClient { client.routes() }
-        routes.postValue(res.parseToRouteEntity())
-    }
-
-    private fun saveRoutes(routes: List<Route>) {
-        prefs.saveLastRouteFetch(System.currentTimeMillis())
-        Coroutines.io {
-            db.getRouteDao().updateRoutes(routes)
-        }
+    suspend fun fetchLessons(routeId: Long) {
+        val res = callClient { client.routeDetails(routeId) }
+        val time = System.currentTimeMillis()
+        prefs.saveLastLessonFetch(routeId, System.currentTimeMillis())
+        db.getLessonDao().updateLessons(res.lessons.parseToLessonEntity(routeId))
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun isRouteFetchNeeded(lastFetch: Date): Boolean {
+    private fun isLessonFetchNeeded(lastFetch: Date): Boolean {
         val formatter = SimpleDateFormat("dd/MM/yyyy")
         val now = Date()
         val nowWithZeroTime = formatter.parse(formatter.format(now))

@@ -1,19 +1,18 @@
 package br.com.meiadois.decole.data.network.client
 
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
+import br.com.meiadois.decole.data.network.RequestInterceptor
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.request.RegisterRequest
 import br.com.meiadois.decole.data.network.response.LoginResponse
 import br.com.meiadois.decole.data.network.response.RegisterResponse
 import br.com.meiadois.decole.data.network.response.RouteDTO
+import br.com.meiadois.decole.data.network.response.RouteDetailsResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface DecoleClient {
     @Headers("Content-Type: application/json")
@@ -25,13 +24,21 @@ interface DecoleClient {
     suspend fun register(@Body request: RegisterRequest): Response<RegisterResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("routes")
+    @GET("me/routes")
     suspend fun routes(): Response<List<RouteDTO>>
 
+    @Headers("Content-Type: application/json")
+    @GET("me/routes/{id}")
+    suspend fun routeDetails(@Path("id") id: Long): Response<RouteDetailsResponse>
+
     companion object {
-        operator fun invoke(interceptor: NetworkConnectionInterceptor): DecoleClient {
+        operator fun invoke(
+            interceptor: NetworkConnectionInterceptor,
+            requestInterceptor: RequestInterceptor
+        ): DecoleClient {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(requestInterceptor)
                 .build()
 
             return Retrofit.Builder()

@@ -10,7 +10,7 @@ import br.com.meiadois.decole.presentation.auth.RegisterActivity
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
-import br.com.meiadois.decole.util.extension.parseEntity
+import br.com.meiadois.decole.util.extension.parseToUserEntity
 import java.net.SocketTimeoutException
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
@@ -38,8 +38,8 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
                 val res = userRepository.login(email, password)
 
                 res.user?.let {
-                    userRepository.saveUser(it.parseEntity())
-                    authListener?.onSuccess(it.parseEntity())
+                    userRepository.saveUser(it.parseToUserEntity())
+                    authListener?.onSuccess(it.parseToUserEntity())
                     return@main
                 }
                 authListener?.onFailure(res.message!!)
