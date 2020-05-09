@@ -75,6 +75,12 @@
         <item name="android:progressBackgroundTint">@color/colorPrimaryDarker</item>
     </style>
 
+    <style name="circle_progress_bar" parent="@style/Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminateTint">@color/colorPrimaryDarker</item>
+    </style>
+
     <style name="slide_activity_animation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>

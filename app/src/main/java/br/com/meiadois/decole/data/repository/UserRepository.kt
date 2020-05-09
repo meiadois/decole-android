@@ -7,6 +7,7 @@ import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.network.request.LoginRequest
+import br.com.meiadois.decole.data.network.response.CompanyResponse
 import br.com.meiadois.decole.data.network.response.LoginResponse
 
 class UserRepository(
@@ -23,6 +24,12 @@ class UserRepository(
     suspend fun register(username: String, email: String, password: String): RegisterResponse {
         return callClient {
             client.register(RegisterRequest(username, email, password))
+        }
+    }
+
+    suspend fun listUserCompanies(): List<CompanyResponse> {
+        return callClient {
+            client.listUserCompanies()
         }
     }
 

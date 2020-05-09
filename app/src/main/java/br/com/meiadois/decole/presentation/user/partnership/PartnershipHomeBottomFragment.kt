@@ -2,18 +2,33 @@ package br.com.meiadois.decole.presentation.user.partnership
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Partner
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
+import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
 import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
+import java.net.SocketException
 
-class PartnershipHomeBottomFragment : Fragment() {
+class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
+    override val kodein by kodein()
+    private val factory: PartnershipHomeBottomViewModelFactory by instance<PartnershipHomeBottomViewModelFactory>()
+    private lateinit var viewModel: PartnershipHomeBottomViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,59 +41,40 @@ class PartnershipHomeBottomFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(partner_recycler_view) {
-            layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
-            setHasFixedSize(true)
-            adapter =
-                PartnerRecyclerAdapter(
-                    partners(),
-                    view.context
-                )
+        viewModel = ViewModelProvider(this, factory).get(PartnershipHomeBottomViewModel::class.java)
+
+        Coroutines.io {
+            try{
+                val companies = viewModel.getUserCompanies()
+                if (companies.isNotEmpty())
+                    showPartnershipList(view)
+                else
+                    showInviteToRegister()
+            }catch (ex: SocketException){
+                Log.i("Coroutines.io", ex.message!!)
+            }catch (ex: ClientException){
+                Log.i("Coroutines.io", ex.message!!)
+            }catch (ex: Exception){
+                Log.i("Coroutines.io", ex.message!!)
+            }
         }
-
     }
 
-
-    private fun partners(): List<Partner> {
-        return listOf(
-            Partner(
-                "First lorem ipsum",
-                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsum"
-            ),
-            Partner(
-                "Lorem ipsum",
-                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsum"
-            ),
-            Partner(
-                "Lorem ipsum",
-                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsum"
-            ),
-            Partner(
-                "Lorem ipsum",
-                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsum"
-            ),
-            Partner(
-                "Lorem ipsum",
-                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsum"
-            ),
-            Partner(
-                "Lorem ipsum",
-                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsum"
-            ),
-            Partner(
-                "Lorem ipsum",
-                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsum"
-            ),
-            Partner(
-                "Lorem ipsum",
-                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsum"
-            ),
-            Partner(
-                "Last lorem ipsum",
-                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsum"
-            )
-        )
+    private fun showPartnershipList(view: View){
+        partnership_scroolable_view.visibility = View.VISIBLE
+        viewModel.partnershipLiveData.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                with(partner_recycler_view) {
+                    layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+                    setHasFixedSize(true)
+                    adapter = PartnerRecyclerAdapter(it, view.context)
+                }
+            }
+        })
+        viewModel.getPartnerships()
     }
+
+    private fun showInviteToRegister(){ }
 
     class PartnerRecyclerAdapter(private val dataset: List<Partner>, private val context: Context) :
         RecyclerView.Adapter<PartnerRecyclerAdapter.PartnerViewHolder>() {

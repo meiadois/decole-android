@@ -10,6 +10,7 @@ import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -30,5 +31,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { RegisterViewModelFactory(instance()) }
         bind() from singleton { RouteListViewModelFactory(instance()) }
         bind() from singleton { RouteDetailsViewModelFactory(instance()) }
+        bind() from singleton { PartnershipHomeBottomViewModelFactory(instance()) }
     }
 }

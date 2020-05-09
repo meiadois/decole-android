@@ -36,4 +36,5 @@
     <string name="has_no_account">Não possuo conta</string>
     <string name="has_account">Possuo conta</string>
     <string name="search">Buscar</string>
+    <string name="ic_partner_divider_content_description">título da seção de listagem de parceiros</string>
 </resources>
