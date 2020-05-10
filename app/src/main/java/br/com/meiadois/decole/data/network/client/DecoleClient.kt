@@ -1,6 +1,7 @@
 package br.com.meiadois.decole.data.network.client
 
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
+import br.com.meiadois.decole.data.network.RequestInterceptor
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.request.RegisterRequest
 import br.com.meiadois.decole.data.network.response.*
@@ -20,17 +21,25 @@ interface DecoleClient {
     suspend fun register(@Body request: RegisterRequest): Response<RegisterResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("routes")
+    @GET("me/routes")
     suspend fun routes(): Response<List<RouteDTO>>
+
+    @Headers("Content-Type: application/json")
+    @GET("me/routes/{id}")
+    suspend fun routeDetails(@Path("id") id: Long): Response<RouteDetailsResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/companies")
     suspend fun listUserCompanies(): Response<List<CompanyResponse>>
 
     companion object {
-        operator fun invoke(interceptor: NetworkConnectionInterceptor): DecoleClient {
+        operator fun invoke(
+            interceptor: NetworkConnectionInterceptor,
+            requestInterceptor: RequestInterceptor
+        ): DecoleClient {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(requestInterceptor)
                 .build()
 
             return Retrofit.Builder()

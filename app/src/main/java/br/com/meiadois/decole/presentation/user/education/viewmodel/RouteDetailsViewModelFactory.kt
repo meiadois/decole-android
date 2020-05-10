@@ -2,10 +2,10 @@ package br.com.meiadois.decole.presentation.user.education.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import br.com.meiadois.decole.data.repository.RouteRepository
+import br.com.meiadois.decole.data.repository.LessonRepository
 
 class RouteDetailsViewModelFactory(
-    private val repository: RouteRepository
+    private val repository: LessonRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

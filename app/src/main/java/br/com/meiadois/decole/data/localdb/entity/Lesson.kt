@@ -4,10 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Route(
+data class Lesson(
     @PrimaryKey(autoGenerate = false) val id: Long,
     val title: String,
-    val description: String,
-    val locked: Boolean,
-    val progress: Int
+    val completed: Boolean,
+    val routeId: Long
 )

@@ -81,9 +81,8 @@ class FloatingViewService : Service() {
                 )
             }
             steps.size - 1 -> {
-                nextButton.isEnabled = false
                 nextButton.setImageResource(
-                    R.drawable.ic_arrow_right_disabled
+                    R.drawable.ic_arrow_check
                 )
             }
             else -> {
@@ -155,64 +154,39 @@ class FloatingViewService : Service() {
 
         closeButtonCollapsed.setOnClickListener {
             //close the service and remove the from from the window
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            stopSelf()
+            exitInteractiveMode()
         }
-        nextButton.setOnClickListener { changeStep(currentStepIndex + 1) }
+        nextButton.setOnClickListener {
+            when (val nextStep = currentStepIndex + 1) {
+                steps.size -> exitInteractiveMode()
+                else -> changeStep(nextStep)
+            }
+        }
 
         prevButton.setOnClickListener { changeStep(currentStepIndex - 1) }
 
         //Drag and move floating view using user's touch action.
         mFloatingView.findViewById<View>(R.id.root_container)
-            .setOnTouchListener(object : OnTouchListener {
-                private var initialX = 0
-                private var initialY = 0
-                private var initialTouchX = 0f
-                private var initialTouchY = 0f
-                override fun onTouch(v: View, event: MotionEvent): Boolean {
-                    when (event.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            //remember the initial position.
-                            initialX = params.x
-                            initialY = params.y
-                            //get the touch location
-                            initialTouchX = event.rawX
-                            initialTouchY = event.rawY
-                            return true
-                        }
-                        MotionEvent.ACTION_UP -> {
-                            val xDiff = (event.rawX - initialTouchX).toInt()
-                            val yDiff = (event.rawY - initialTouchY).toInt()
-                            //The check for Xdiff <10 && YDiff< 10 because sometime elements moves a little while clicking.
-                            //So that is click event.
-                            if (xDiff == 0 && yDiff == 0) {
-                                if (isViewCollapsed()) { //When user clicks on the image view of the collapsed layout,
-                                    //visibility of the collapsed layout will be changed to "View.GONE"
-                                    //and expanded view will become visible.
-                                    closeButtonCollapsed.visibility = View.GONE
-                                    expandedView.visibility = View.VISIBLE
-                                } else {
-                                    collapsedView.visibility = View.VISIBLE
-                                    closeButtonCollapsed.visibility = View.VISIBLE
-                                    expandedView.visibility = View.GONE
-                                }
-                            }
-                            return true
-                        }
-                        MotionEvent.ACTION_MOVE -> {
-                            //Calculate the X and Y coordinates of the view.
-                            params.x = initialX + (event.rawX - initialTouchX).toInt()
-                            params.y = initialY + (event.rawY - initialTouchY).toInt()
-                            //Update the layout with new X & Y coordinate
-                            mWindowManager.updateViewLayout(mFloatingView, params)
-                            return true
-                        }
-                    }
-                    return false
-                }
-            })
+            .setOnTouchListener(OnFloatTouchListener())
+
+        collapsedView.setOnTouchListener(OnFloatTouchListener {
+            if (isViewCollapsed()) {
+                closeButtonCollapsed.visibility = View.GONE
+                expandedView.visibility = View.VISIBLE
+            } else {
+                collapsedView.visibility = View.VISIBLE
+                closeButtonCollapsed.visibility = View.VISIBLE
+                expandedView.visibility = View.GONE
+            }
+        })
+    }
+
+    private fun exitInteractiveMode() {
+        Intent(this, HomeActivity::class.java).also {
+            it.addFlags(FLAG_ACTIVITY_NEW_TASK)
+            startActivity(it)
+            stopSelf()
+        }
     }
 
     /**
@@ -221,15 +195,66 @@ class FloatingViewService : Service() {
      * @return true if the floating view is collapsed.
      */
     private fun isViewCollapsed(): Boolean {
-        return mFloatingView == null || mFloatingView.findViewById<View>(R.id.expanded_container).visibility == View.GONE
+        return mFloatingView.findViewById<View>(R.id.expanded_container).visibility == View.GONE
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mFloatingView != null) mWindowManager.removeView(mFloatingView)
+        mWindowManager.removeView(mFloatingView)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+    inner class OnFloatTouchListener(val clickHandler: (() -> Unit) = {}) : OnTouchListener {
+        private var initialX = 0
+        private var initialY = 0
+        private var initialTouchX = 0f
+        private var initialTouchY = 0f
+        override fun onTouch(v: View, event: MotionEvent): Boolean {
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    //remember the initial position.
+                    initialX = params.x
+                    initialY = params.y
+                    //get the touch location
+                    initialTouchX = event.rawX
+                    initialTouchY = event.rawY
+                    return true
+                }
+                MotionEvent.ACTION_UP -> {
+                    val xDiff = (event.rawX - initialTouchX).toInt()
+                    val yDiff = (event.rawY - initialTouchY).toInt()
+                    //The check for Xdiff <10 && YDiff< 10 because sometime elements moves a little while clicking.
+                    //So that is click event.
+                    if (xDiff == 0 && yDiff == 0) {
+                        v.performClick()
+                        clickHandler()
+                    }
+                    return true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    //Calculate the X and Y coordinates of the view.
+                    val newX = initialX + (event.rawX - initialTouchX).toInt()
+                    val newY = initialY + (event.rawY - initialTouchY).toInt()
+                    params.x = when {
+                        newX > maxWidth -> maxWidth
+                        newX < 0 -> 0
+                        else -> newX
+                    }
+                    params.y = when {
+                        newY > maxHeight -> maxHeight
+                        newY < 0 -> 0
+                        else -> newY
+                    }
+
+                    //Update the layout with new X & Y coordinate
+                    mWindowManager.updateViewLayout(mFloatingView, params)
+                    return true
+                }
+            }
+            return false
+        }
     }
 }

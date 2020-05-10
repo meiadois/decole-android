@@ -4,18 +4,21 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import br.com.meiadois.decole.data.localdb.dao.LessonDAO
 import br.com.meiadois.decole.data.localdb.dao.RouteDAO
 import br.com.meiadois.decole.data.localdb.dao.UserDAO
+import br.com.meiadois.decole.data.localdb.entity.Lesson
 import br.com.meiadois.decole.data.localdb.entity.Route
 import br.com.meiadois.decole.data.localdb.entity.User
 
 @Database(
-    entities = [User::class, Route::class],
+    entities = [User::class, Route::class, Lesson::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getUserDao(): UserDAO
     abstract fun getRouteDao(): RouteDAO
+    abstract fun getLessonDao(): LessonDAO
 
     companion object {
         @Volatile

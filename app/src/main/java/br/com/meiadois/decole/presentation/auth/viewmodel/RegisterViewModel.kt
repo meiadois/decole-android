@@ -8,7 +8,7 @@ import br.com.meiadois.decole.presentation.auth.AuthListener
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
-import br.com.meiadois.decole.util.extension.parseEntity
+import br.com.meiadois.decole.util.extension.parseToUserEntity
 import java.net.SocketTimeoutException
 
 class RegisterViewModel(private val userRepository: UserRepository) : ViewModel() {
@@ -41,8 +41,8 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
             try {
                 val res = userRepository.register(name, email, password)
                 res.user?.let {
-                    userRepository.saveUser(it.parseEntity())
-                    authListener?.onSuccess(it.parseEntity())
+                    userRepository.saveUser(it.parseToUserEntity())
+                    authListener?.onSuccess(it.parseToUserEntity())
                     return@main
                 }
                 authListener?.onFailure(res.message!!)

@@ -1,7 +1,7 @@
-package br.com.meiadois.decole.presentation.user.education
+package br.com.meiadois.decole.presentation.user.education.binding
 
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.data.model.Lesson
+import br.com.meiadois.decole.data.localdb.entity.Lesson
 import br.com.meiadois.decole.databinding.CardLessonBinding
 import com.xwray.groupie.databinding.BindableItem
 

@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.databinding.ActivityRouteDetailsBinding
+import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
+import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
@@ -41,18 +43,23 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             viewModel = mViewModel
         }
 
+        mViewModel.routeClicked.postValue(intent.getLongExtra("itemId", 0L))
+
         bindUi()
     }
 
     private fun bindUi() = Coroutines.main {
         toggleLoading(true)
         mViewModel.lessons.await().observe(this, Observer {
-            toggleLoading(false)
-            scroll_container.post {
-                scroll_container.smoothScrollTo(0, Int.MAX_VALUE)
-            }
+            it?.let {
 
-            initRecyclerView(it.toLessonItemList())
+                toggleLoading(false)
+                scroll_container.post {
+                    scroll_container.smoothScrollTo(0, Int.MAX_VALUE)
+                }
+
+                initRecyclerView(it.toLessonItemList())
+            }
         })
     }
 

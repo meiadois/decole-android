@@ -4,77 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="route"
             type="br.com.meiadois.decole.data.localdb.entity.Route" />
     </data>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorTextIcons">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorTextIcons">
+            <TextView
+                android:id="@+id/route_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="32dp"
+                android:text="@{route.title}"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Primeiros passos no Instagram" />
 
-                <TextView
-                    android:id="@+id/route_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginEnd="32dp"
-                    android:text="@{route.title}"
-                    tools:text="Primeiros passos no Instagram"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="15sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/lock_image"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="10dp"
+                android:src="@{route.locked ? @drawable/ic_mdi_lock : @drawable/ic_mdi_lock_open}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/route_description"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_mdi_lock" />
 
-                <ImageView
-                    android:id="@+id/lock_image"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_lock"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/route_description"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/route_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="32dp"
+                android:text="@{route.description}"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/route_title"
+                tools:text="Aprenda a como apresentar seu negócio no instagram" />
 
-                <TextView
-                    android:id="@+id/route_description"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="32dp"
-                    android:text="@{route.description}"
-                    tools:text="Aprenda a como apresentar seu negócio no instagram"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/route_title" />
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/progress_bar"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:progress="@{route.progress}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/route_description"
+                tools:progress="35" />
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    style="@style/progress_bar"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/route_description" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
-        </androidx.cardview.widget.CardView>
-    
 </layout>
