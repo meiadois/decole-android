@@ -43,7 +43,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
         viewModel = ViewModelProvider(this, factory).get(PartnershipHomeBottomViewModel::class.java)
 
-        Coroutines.io {
+        Coroutines.main {
             try{
                 val companies = viewModel.getUserCompanies()
                 if (companies.isNotEmpty())
@@ -56,6 +56,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 Log.i("Coroutines.io", ex.message!!)
             }catch (ex: Exception){
                 Log.i("Coroutines.io", ex.message!!)
+            }finally {
+                progress_bar_parent_layout.visibility = View.INVISIBLE
             }
         }
     }
