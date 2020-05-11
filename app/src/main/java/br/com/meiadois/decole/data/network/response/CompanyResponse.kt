@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class CompanyResponse(
     @Json(name = "id")
-    val id: String,
+    val id: Int,
     @Json(name = "name")
     val name: String,
     @Json(name = "cep")
@@ -16,5 +16,7 @@ data class CompanyResponse(
     @Json(name = "cnpj")
     val cnpj: String,
     @Json(name = "segment_id")
-    val segmentId: String
+    val segmentId: Int,
+    @Json(name = "segment")
+    val segment: SegmentResponse?
 )

@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Partner
+import br.com.meiadois.decole.data.network.response.CompanyResponse
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import org.kodein.di.KodeinAware
@@ -43,6 +46,10 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
         viewModel = ViewModelProvider(this, factory).get(PartnershipHomeBottomViewModel::class.java)
 
+        init(view)
+    }
+
+    private fun init(view: View){
         Coroutines.main {
             try{
                 val companies = viewModel.getUserCompanies()
@@ -76,9 +83,11 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         viewModel.getPartnerships()
     }
 
-    private fun showInviteToRegister(){ }
+    private fun showInviteToRegister(){
+        // TODO not implemented yet, need to show a short message inviting user to create a company profile
+    }
 
-    class PartnerRecyclerAdapter(private val dataset: List<Partner>, private val context: Context) :
+    class PartnerRecyclerAdapter(private val dataset: List<CompanyResponse>, private val context: Context) :
         RecyclerView.Adapter<PartnerRecyclerAdapter.PartnerViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartnerViewHolder {
@@ -100,13 +109,15 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
 
         class PartnerViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
-            val name = parent.text_partner_name
-            val segment = parent.text_partner_segment
-            val image = parent.image_partner
+            private val segment = parent.text_partner_segment
+            private val name = parent.text_partner_name
+            private val image = parent.image_partner
+            private val card = parent
 
-            fun bindView(partner: Partner) {
+            fun bindView(partner: CompanyResponse) {
+                segment.text = if (partner.segment != null) partner.segment.name else ""
+                Glide.with(card).load(partner.thumbnail).apply(RequestOptions.circleCropTransform()).into(image)
                 name.text = partner.name
-                segment.text = partner.segment
             }
         }
     }

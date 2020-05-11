@@ -32,6 +32,10 @@ interface DecoleClient {
     @GET("me/companies")
     suspend fun listUserCompanies(): Response<List<CompanyResponse>>
 
+    @Headers("Content-Type: application/json")
+    @GET("me/matches")
+    suspend fun listUserMatches(): Response<List<CompanyResponse>>
+
     companion object {
         operator fun invoke(
             interceptor: NetworkConnectionInterceptor,

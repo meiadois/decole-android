@@ -33,6 +33,12 @@ class UserRepository(
         }
     }
 
+    suspend fun listUserMatches(): List<CompanyResponse> {
+        return callClient {
+            client.listUserMatches()
+        }
+    }
+
     suspend fun saveUser(user: User) = db.getUserDao().upsert(user)
 
     fun getUser() = db.getUserDao().find()

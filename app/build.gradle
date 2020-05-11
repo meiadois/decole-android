@@ -78,6 +78,10 @@ dependencies {
     implementation "com.xwray:groupie-kotlin-android-extensions:$groupieVersion"
     implementation "com.xwray:groupie-databinding:$groupieVersion"
 
+    // Glide image loader
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt('com.github.bumptech.glide:compiler:4.11.0')
+
     implementation 'androidx.preference:preference-ktx:1.1.1'
 
     testImplementation 'junit:junit:4.12'
