@@ -1,6 +1,7 @@
 package br.com.meiadois.decole.presentation.user.partnership
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.data.model.Partner
 import br.com.meiadois.decole.data.network.response.CompanyResponse
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
@@ -115,9 +115,15 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             private val card = parent
 
             fun bindView(partner: CompanyResponse) {
-                segment.text = if (partner.segment != null) partner.segment.name else ""
+                segment.text = partner.segment!!.name
                 Glide.with(card).load(partner.thumbnail).apply(RequestOptions.circleCropTransform()).into(image)
                 name.text = partner.name
+
+                card.setOnClickListener {
+                    // TODO see what's wrong with this, it only send the first company's id
+                    val intent : Intent = PartnershipPopUpActivity.getStartIntent(card.context, partner.id)
+                    card.context.startActivity(intent)
+                }
             }
         }
     }

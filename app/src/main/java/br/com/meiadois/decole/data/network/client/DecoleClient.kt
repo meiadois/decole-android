@@ -33,6 +33,10 @@ interface DecoleClient {
     suspend fun listUserCompanies(): Response<List<CompanyResponse>>
 
     @Headers("Content-Type: application/json")
+    @GET("companies/{id}")
+    suspend fun getCompanyById(@Path("id") companyId: Int): Response<CompanyResponse>
+
+    @Headers("Content-Type: application/json")
     @GET("me/matches")
     suspend fun listUserMatches(): Response<List<CompanyResponse>>
 

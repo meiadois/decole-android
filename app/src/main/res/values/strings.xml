@@ -37,4 +37,8 @@
     <string name="has_account">Possuo conta</string>
     <string name="search">Buscar</string>
     <string name="ic_partner_divider_content_description">título da seção de listagem de parceiros</string>
+    <string name="confirm">Confirmar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ic_whatsapp_content_description">Whatsapp icon</string>
+    <string name="ic_mail_content_description">Mail icon</string>
 </resources>
