@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
@@ -32,7 +33,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         setContentView(R.layout.popupwindow_partner)
 
         val bundle = intent.extras
-        val partnerId : Int = bundle?.getInt("partnerId", -1) ?: -1
+        val partnerId : Int = bundle?.getInt(EXTRA_PARTNER_ID, -1) ?: -1
 
         viewModel = ViewModelProvider(this, factory).get(PartnershipPopUpViewModel::class.java)
 
@@ -43,16 +44,20 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         viewModel.companyLiveData.observe(this, Observer {
             it?.let {
                 popup_window_partner_name.text = it.name
-                popup_window_partner_segment.text = it.segment!!.name
-                popup_window_description.text = "Lorem Ipsum is simply dummy text of the printing and typesetting " +
-                        "industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, " +
-                        "when an unknown printer took a galley of type and scrambled it to make a type specimen book. " +
-                        "It has survived not only five centuries."
+                popup_window_partner_segment.text = if (it.segment != null) it.segment.name else ""
+                popup_window_description.text = it.description
                 popup_window_phone.text = "(71) 00000-0000"
                 popup_window_mail.text = "contato@empresa.com"
+                showGoneElements()
             }
         })
         viewModel.getCompanyById(partnerId)
+    }
+
+    private fun showGoneElements(){
+        popup_window_button_undo_partnership.visibility = View.VISIBLE
+        mail_contact_icon.visibility = View.VISIBLE
+        wpp_contact_icon.visibility = View.VISIBLE
     }
 
     private fun setBackgroundStartFadeAnimation(){

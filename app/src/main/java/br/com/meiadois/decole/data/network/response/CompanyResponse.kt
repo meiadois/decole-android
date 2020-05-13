@@ -13,10 +13,10 @@ data class CompanyResponse(
     val cep: String,
     @Json(name = "thumbnail")
     val thumbnail: String,
+    @Json(name = "description")
+    val description: String,
     @Json(name = "cnpj")
     val cnpj: String,
-    @Json(name = "segment_id")
-    val segmentId: Int,
     @Json(name = "segment")
     val segment: SegmentResponse?
 )

@@ -13,10 +13,8 @@ class PartnershipPopUpViewModel(
     val companyLiveData : MutableLiveData<CompanyResponse> = MutableLiveData()
 
     fun getCompanyById(companyId: Int) {
-        /* TODO uncomment this when the company endpoint is completed
-        Coroutines.io {
+        Coroutines.main {
             companyLiveData.value = companyRepository.getCompanyById(companyId)
-        }*/
-        companyLiveData.value = CompanyResponse(companyId, "Company $companyId", "", "", "", 1, SegmentResponse("Segment $companyId"))
+        }
     }
 }

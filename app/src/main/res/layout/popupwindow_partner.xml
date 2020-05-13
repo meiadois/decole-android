@@ -119,12 +119,15 @@
                         android:layout_width="match_parent"
                         tools:ignore="UseCompoundDrawables"
                         android:orientation="horizontal">
+
                         <ImageView
-                            android:contentDescription="@string/ic_whatsapp_content_description"
-                            android:src="@drawable/ic_whatsapp_white"
+                            android:visibility="invisible"
+                            android:id="@+id/wpp_contact_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
-                            android:layout_height="20dp"
-                            android:layout_width="20dp"/>
+                            android:contentDescription="@string/ic_whatsapp_content_description"
+                            android:src="@drawable/ic_whatsapp_white" />
                         <TextView
                             android:id="@+id/popup_window_phone"
                             android:layout_height="wrap_content"
@@ -141,6 +144,8 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="8dp">
                         <ImageView
+                            android:visibility="invisible"
+                            android:id="@+id/mail_contact_icon"
                             android:contentDescription="@string/ic_mail_content_description"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/ic_mail_white"
@@ -178,6 +183,8 @@
                         android:layout_width="match_parent"
                         android:orientation="horizontal">
                         <Button
+                            android:visibility="invisible"
+                            android:id="@+id/popup_window_button_undo_partnership"
                             android:layout_marginHorizontal="8dp"
                             android:text="Desfazer Parceria"
                             style="@style/btn_primary"
