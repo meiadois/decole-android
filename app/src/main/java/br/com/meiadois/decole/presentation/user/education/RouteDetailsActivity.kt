@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_route_details.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import android.util.Log
 
 
 class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
@@ -46,11 +47,24 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
         mViewModel.routeClicked.postValue(intent.getLongExtra("itemId", 0L))
 
         bindUi()
+
     }
+   /* fun clickJump( ){
+        btn_jump.setOnClickListener{
+            Log.d("Pular todas as lessons", mViewModel.routeClicked.toString());
+            onBackPressed()
+        }
+    }*/
+
+
 
     private fun bindUi() = Coroutines.main {
         toggleLoading(true)
         btn_back.setOnClickListener {
+            onBackPressed()
+        }
+        btn_jump.setOnClickListener{
+            Log.d("Pular tudo", mViewModel.routeClicked.toString());
             onBackPressed()
         }
 

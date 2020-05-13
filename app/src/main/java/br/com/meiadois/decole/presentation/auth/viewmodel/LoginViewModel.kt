@@ -48,11 +48,11 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
             } catch (ex: NoInternetException) {
                 authListener?.onFailure(ex.message!!)
             } catch (ex: SocketTimeoutException) {
-                authListener?.onFailure(ex.message!!)
-            }
-
-        }
+        authListener?.onFailure(ex.message!!)
     }
+
+}
+}
 
     fun onRegisterButtonClick(view: View) {
         Intent(view.context, RegisterActivity::class.java).also {

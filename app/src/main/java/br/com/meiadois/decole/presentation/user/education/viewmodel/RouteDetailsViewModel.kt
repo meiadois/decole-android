@@ -12,6 +12,7 @@ import br.com.meiadois.decole.presentation.user.education.StartInteractiveModeAc
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.lazyDeferred
 
+
 class RouteDetailsViewModel(
     private val stepRepository: StepRepository,
     private val routeRepository: RouteRepository
@@ -31,5 +32,6 @@ class RouteDetailsViewModel(
             view.context.startActivity(it)
         }
     }
+
 
 }
