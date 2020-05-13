@@ -19,4 +19,7 @@ interface UserDAO {
 
     @Query("SELECT jwt FROM User WHERE uid = $CURRENT_USER_ID")
     fun findJWT(): String?
+
+    @Query("UPDATE User SET introduced = :boolean WHERE jwt = :jwt")
+    fun updateIntroducedStatus(jwt: String, boolean: Boolean)
 }

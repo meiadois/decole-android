@@ -5,19 +5,25 @@
     <string name="next">Prosseguir</string>
     <string name="skip"><u>Pular</u></string>
     <string name="default_font">sans-serif-light</string>
+    <string name="search">Buscar</string>
 
     <!-- Welcome -->
-    <string name="ask_for_overlay_permission">
-        As próximas etapas serão <b>interativas</b>, para isso precisamos da sua permissão para mostrar nosso assistente na tela.
-    </string>
     <string name="welcome_info_label">Massa! Vamos decolar seu negócio no mundo digital, e para aumentar suas vendas podemos usar as <b>redes sociais</b>, ou uma <b>plataforma própria</b>.</string>
 
+    <!-- Route Detais Activity -->
+    <string name="route_details_progress_label" type="id">%d/%d PASSOS</string>
+
+    <!-- Start Interactive Mode Activity -->
+    <string name="ask_for_overlay_permission">
+        As próximas etapas serão <b>interativas</b>, continue usando seu aparelho normalmente enquanto segue os passos do nosso assistente na tela.
+    </string>
+
     <!-- Welcome Slide Activity -->
-    <string name="welcome_slide_title">Como podemos te ajudar a vender mais?</string>
-    <string name="education_slide_label">Podemos começar melhorando seu perfil nas redes sociais, para te ajudar a atrair clientes.</string>
-    <string name="marketplace_slide_label">Podemos trazer seu négocio para as principais plataformas de vendas no mundo digital.</string>
-    <string name="partnership_slide_label">Podemos aproximar vocês de outros micro empreendedores, para te ajudar a firmar parcerias.</string>
-    <string name="drag_more_options_slide">Arraste para o lado para mais opções!</string>
+    <string name="welcome_slide_title">Podemos te ajudar de várias formas!</string>
+    <string name="education_slide_label">Podemos te ajudar a adequar seu perfil nas redes sociais, para engajar seu público e atrair potenciais clientes.</string>
+    <string name="marketplace_slide_label">Podemos te ajudar a trazer seu négocio para as principais plataformas de vendas no mundo digital.</string>
+    <string name="partnership_slide_label">Podemos aproximar você de outros micro empreendedores, para te ajudar a firmar parcerias.</string>
+    <string name="drag_more_options_slide">Arraste para o lado para mais informações!</string>
 
     <!-- Login/Registration -->
     <string name="ask_for_email">qual o seu e-mail?</string>
@@ -35,5 +41,4 @@
     <string name="have_instagram_account_question">Possui uma conta para seu negócio?</string>
     <string name="has_no_account">Não possuo conta</string>
     <string name="has_account">Possuo conta</string>
-    <string name="search">Buscar</string>
 </resources>

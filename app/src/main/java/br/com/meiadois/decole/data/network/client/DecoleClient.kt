@@ -4,10 +4,7 @@ import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.request.RegisterRequest
-import br.com.meiadois.decole.data.network.response.LoginResponse
-import br.com.meiadois.decole.data.network.response.RegisterResponse
-import br.com.meiadois.decole.data.network.response.RouteDTO
-import br.com.meiadois.decole.data.network.response.RouteDetailsResponse
+import br.com.meiadois.decole.data.network.response.*
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -30,6 +27,10 @@ interface DecoleClient {
     @Headers("Content-Type: application/json")
     @GET("me/routes/{id}")
     suspend fun routeDetails(@Path("id") id: Long): Response<RouteDetailsResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("steps/lessons/{id}")
+    suspend fun steps(@Path("id") lessonId: Long): Response<List<StepDTO>>
 
     companion object {
         operator fun invoke(

@@ -9,5 +9,7 @@ data class Route(
     val title: String,
     val description: String,
     val locked: Boolean,
+    val lessonsCompleted: Int,
+    val lessonsAvailable: Int,
     val progress: Int
 )

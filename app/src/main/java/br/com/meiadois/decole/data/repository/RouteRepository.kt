@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.Route
+import br.com.meiadois.decole.data.model.RouteDetails
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.preferences.PreferenceProvider
@@ -37,6 +38,16 @@ class RouteRepository(
                 fetchRoutes()
             }
             db.getRouteDao().findAll()
+        }
+    }
+
+    suspend fun getRoute(id: Long): LiveData<RouteDetails> {
+        return withContext(Dispatchers.IO) {
+            val lastFetch = prefs.getLastRouteFetch()
+            if (lastFetch == 0L || isRouteFetchNeeded(Date(lastFetch))) {
+                fetchRoutes()
+            }
+            db.getRouteDao().getRouteAndLessonsByPk(id)
         }
     }
 

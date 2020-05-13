@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
+// TODO colocar um observable em um companion e observar ele no activity, esse observable vai ter o erro de timeout
 class LessonRepository(
     private val client: DecoleClient,
     private val db: AppDatabase,
@@ -31,7 +32,6 @@ class LessonRepository(
 
     suspend fun fetchLessons(routeId: Long) {
         val res = callClient { client.routeDetails(routeId) }
-        val time = System.currentTimeMillis()
         prefs.saveLastLessonFetch(routeId, System.currentTimeMillis())
         db.getLessonDao().updateLessons(res.lessons.parseToLessonEntity(routeId))
     }

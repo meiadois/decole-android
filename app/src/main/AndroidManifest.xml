@@ -19,7 +19,7 @@
         <activity android:name="br.com.meiadois.decole.presentation.instagram.InstagramIntroActivity" />
         <activity android:name="br.com.meiadois.decole.presentation.welcome.WelcomeSlideActivity" />
         <activity android:name="br.com.meiadois.decole.presentation.welcome.WelcomeInfoActivity" />
-        <activity android:name="br.com.meiadois.decole.presentation.AskForInteractiveModePermissionActivity" />
+        <activity android:name="br.com.meiadois.decole.presentation.user.education.StartInteractiveModeActivity" />
         <activity android:name="br.com.meiadois.decole.presentation.auth.RegisterActivity" />
 
         <activity android:name="br.com.meiadois.decole.presentation.auth.LoginActivity">

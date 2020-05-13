@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.data.localdb.entity.Route
 import br.com.meiadois.decole.databinding.ActivityRouteDetailsBinding
 import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
-import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
@@ -50,15 +50,20 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
 
     private fun bindUi() = Coroutines.main {
         toggleLoading(true)
-        mViewModel.lessons.await().observe(this, Observer {
+        btn_back.setOnClickListener {
+            onBackPressed()
+        }
+
+        mViewModel.routeDetails.await().observe(this, Observer {
             it?.let {
-
-                toggleLoading(false)
-                scroll_container.post {
-                    scroll_container.smoothScrollTo(0, Int.MAX_VALUE)
+                initHeader(it.route)
+                if (it.lessons.isNotEmpty()) {
+                    toggleLoading(false)
+                    scroll_container.post {
+                        scroll_container.smoothScrollTo(0, Int.MAX_VALUE)
+                    }
+                    initRecyclerView(it.lessons.toLessonItemList())
                 }
-
-                initRecyclerView(it.toLessonItemList())
             }
         })
     }
@@ -73,13 +78,22 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
+    private fun initHeader(route: Route) {
+        text_title.text = route.title
+        text_description.text = route.description
+        text_progress.text = getString(R.string.route_details_progress_label).format(
+            route.lessonsCompleted,
+            route.lessonsAvailable
+        )
+    }
+
     private fun initRecyclerView(items: List<LessonItem>) {
         val mAdapter = GroupAdapter<ViewHolder>().apply {
             addAll(items)
 
             setOnItemClickListener { item, view ->
-                if (item is RouteItem) {
-                    mViewModel.onItemClick(item.route, view)
+                if (item is LessonItem) {
+                    mViewModel.onItemClick(item.lesson, view)
                 }
             }
         }

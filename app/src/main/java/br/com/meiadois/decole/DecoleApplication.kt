@@ -8,11 +8,13 @@ import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.preferences.PreferenceProvider
 import br.com.meiadois.decole.data.repository.LessonRepository
 import br.com.meiadois.decole.data.repository.RouteRepository
+import br.com.meiadois.decole.data.repository.StepRepository
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModelFactory
+import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -32,9 +34,11 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { UserRepository(instance(), instance()) }
         bind() from singleton { RouteRepository(instance(), instance(), instance()) }
         bind() from singleton { LessonRepository(instance(), instance(), instance()) }
+        bind() from singleton { StepRepository(instance()) }
         bind() from singleton { LoginViewModelFactory(instance()) }
         bind() from singleton { RegisterViewModelFactory(instance()) }
-        bind() from singleton { RouteListViewModelFactory(instance()) }
-        bind() from singleton { RouteDetailsViewModelFactory(instance()) }
+        bind() from singleton { RouteListViewModelFactory(instance(), instance()) }
+        bind() from singleton { RouteDetailsViewModelFactory(instance(), instance()) }
+        bind() from singleton { StartInteractiveModeViewModelFactory(instance()) }
     }
 }

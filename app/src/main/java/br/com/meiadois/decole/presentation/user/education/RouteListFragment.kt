@@ -1,5 +1,6 @@
 package br.com.meiadois.decole.presentation.user.education
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,13 +41,14 @@ class RouteListFragment : Fragment(), KodeinAware {
         super.onActivityCreated(savedInstanceState)
         mFragmentViewModel =
             ViewModelProvider(this, factoryFragment).get(RouteListViewModel::class.java)
-        bindUi()
 
+        bindUi()
     }
 
+    @SuppressLint("FragmentLiveDataObserve")
     private fun bindUi() = Coroutines.main {
         progress_bar.visibility = View.VISIBLE
-        mFragmentViewModel.routes.await().observe(viewLifecycleOwner, Observer {
+        mFragmentViewModel.routes.await().observe(this, Observer {
             progress_bar.visibility = View.GONE
             initRecyclerView(it.toRouteItemList())
         })
