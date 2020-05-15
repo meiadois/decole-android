@@ -18,7 +18,7 @@ fun List<RouteDTO>.parseToRouteEntity() = this.map { dto ->
         dto.id,
         dto.title,
         dto.description,
-        false,
+        dto.locked,
         dto.progress.done,
         dto.progress.total,
         dto.progress.percentage

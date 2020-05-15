@@ -17,9 +17,11 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Step
+import br.com.meiadois.decole.data.repository.LessonRepository
 import br.com.meiadois.decole.presentation.user.HomeActivity
+import br.com.meiadois.decole.util.Coroutines
 
-class FloatingViewService : Service() {
+class FloatingViewService: Service() {
 
     private lateinit var mWindowManager: WindowManager
     private lateinit var mFloatingView: View
@@ -38,6 +40,10 @@ class FloatingViewService : Service() {
     private val maxHeight =
         Resources.getSystem().displayMetrics.heightPixels
     lateinit var steps: List<Step>
+     private var lessons =0L
+
+
+
     private var currentStepIndex = 0
     private var progressGainByStep = 0
 
@@ -47,6 +53,7 @@ class FloatingViewService : Service() {
 //    }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        lessons= intent.getLongExtra("LessonIdronaldo",0L)
         this.steps = intent.getParcelableArrayListExtra("steps")
         progressGainByStep = 100 / steps.size
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null)
@@ -197,7 +204,14 @@ class FloatingViewService : Service() {
     }
 
     private fun exitInteractiveMode() {
+
+       /* Coroutines.io {
+            lessonRepository.teste1(lessons);
+        }*/
+
+
         Intent(this, HomeActivity::class.java).also {
+
             it.addFlags(FLAG_ACTIVITY_NEW_TASK)
             startActivity(it)
             stopSelf()

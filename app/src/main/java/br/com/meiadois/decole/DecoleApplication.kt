@@ -15,6 +15,7 @@ import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFacto
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModelFactory
+import br.com.meiadois.decole.service.FloatingViewService
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -40,5 +41,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { RouteListViewModelFactory(instance(), instance()) }
         bind() from singleton { RouteDetailsViewModelFactory(instance(), instance()) }
         bind() from singleton { StartInteractiveModeViewModelFactory(instance()) }
+        //bind() from singleton { FloatingViewService(instance()) }
     }
 }

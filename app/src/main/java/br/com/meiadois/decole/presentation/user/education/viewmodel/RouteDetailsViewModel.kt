@@ -24,13 +24,22 @@ class RouteDetailsViewModel(
 
     val routeDetails by lazyDeferred {
         routeRepository.getRoute(routeClicked.value!!)
+
     }
+
+
 
     fun onItemClick(item: Lesson, view: View) = Coroutines.main {
         Intent(view.context, StartInteractiveModeActivity::class.java).also {
             it.putExtra("lessonId", item.id)
             view.context.startActivity(it)
         }
+    }
+     fun onJumpButtonClick (routesId:Long) = Coroutines.main{
+
+
+        routeRepository.routeJump(routesId)
+
     }
 
 

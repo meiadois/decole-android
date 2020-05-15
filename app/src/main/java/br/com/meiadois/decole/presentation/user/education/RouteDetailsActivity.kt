@@ -64,8 +64,11 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             onBackPressed()
         }
         btn_jump.setOnClickListener{
-            Log.d("Pular tudo", mViewModel.routeClicked.toString());
-            onBackPressed()
+
+            mViewModel.onJumpButtonClick(intent.getLongExtra("itemId", 0L))
+            Log.i("Pular tudo", mViewModel.routeClicked.toString());
+
+           onBackPressed()
         }
 
         mViewModel.routeDetails.await().observe(this, Observer {
@@ -80,6 +83,7 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
                 }
             }
         })
+
     }
 
     private fun toggleLoading(boolean: Boolean) {

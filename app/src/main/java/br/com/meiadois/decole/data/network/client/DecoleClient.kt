@@ -32,6 +32,18 @@ interface DecoleClient {
     @GET("steps/lessons/{id}")
     suspend fun steps(@Path("id") lessonId: Long): Response<List<StepDTO>>
 
+
+    @Headers("Content-Type: application/json")
+    @POST("me/done_routes/{id}")
+    suspend fun routesJump(@Path("id") routesId: Long):Response<RouteJUMP>
+
+
+    @Headers("Content-Type: application/json")
+    @POST("me/done_lessons/{id}")
+    suspend fun doneLessons(@Path("id") routesId: Long):Response<RouteJUMP>
+
+
+
     companion object {
         operator fun invoke(
             interceptor: NetworkConnectionInterceptor,
