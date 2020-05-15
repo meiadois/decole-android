@@ -48,10 +48,10 @@ class LessonRepository(
         return lastFetchWithZeroTime!!.before(nowWithZeroTime)
     }
 
-    suspend fun teste1(routesId: Long) {
+   /* suspend fun teste1(routesId: Long) {
 
         val res = callClient { client.doneLessons(routesId) }
         Log.i("error ronaldo",res.toString());
 
-    }
+    }*/
 }

@@ -38,9 +38,9 @@ interface DecoleClient {
     suspend fun routesJump(@Path("id") routesId: Long):Response<RouteJUMP>
 
 
-    @Headers("Content-Type: application/json")
+    /*@Headers("Content-Type: application/json")
     @POST("me/done_lessons/{id}")
-    suspend fun doneLessons(@Path("id") routesId: Long):Response<RouteJUMP>
+    suspend fun doneLessons(@Path("id") routesId: Long):Response<RouteJUMP>*/
 
 
 
