@@ -27,9 +27,9 @@ class UserRepository(
         }
     }
 
-    suspend fun listUserCompanies(): List<CompanyResponse> {
+    suspend fun getUserCompany(): CompanyResponse {
         return callClient {
-            client.listUserCompanies()
+            client.getUserCompany()
         }
     }
 

@@ -32,6 +32,7 @@
                 android:orientation="horizontal" />
 
             <ImageView
+                android:contentDescription="@string/back_arrow_content_description"
                 app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
                 app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +45,7 @@
                 app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
                 app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
                 app:layout_constraintStart_toStartOf="parent"
+                android:contentDescription="@string/app_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:src="@drawable/ic_decole_verde"
                 android:layout_marginStart="32dp"
@@ -119,7 +121,7 @@
                             android:id="@+id/input_me_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@={viewModel.userData.name}" />
+                            android:text="@{viewModel.userData.name}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -136,7 +138,7 @@
                             android:id="@+id/input_me_mail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@={viewModel.userData.email}" />
+                            android:text="@{viewModel.userData.email}" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
                 <!-- User Section -->
@@ -179,12 +181,12 @@
                             android:layout_alignParentStart="true"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Aparecer na busca de parceiros"
+                            android:text="@string/be_shown_in_partner_research"
                             android:textStyle="normal" />
 
                         <Switch
-                            android:onCheckedChanged="@={() -> viewModel.onSearchVisibilityChange}"
-                            android:isChecked="@={viewModel.companyData.shownInPartnersResearch}"
+                            android:onCheckedChanged="@{(button, bool) -> viewModel.onSearchVisibilityChange(bool)}"
+                            android:checked="@={viewModel.companyData.shownInPartnersResearch}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -223,7 +225,7 @@
                             android:id="@+id/input_company_segment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@={viewModel.companyData.segmentId}" />
+                            android:text="@{viewModel.companyData.segmentId}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout

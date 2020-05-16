@@ -13,7 +13,7 @@ class AccountViewModel : ViewModel() {
 
     }
 
-    fun onSearchVisibilityChange(checked: Boolean){
-        companyData.shownInPartnersResearch = checked
+    fun onSearchVisibilityChange(isChecked: Boolean){
+        companyData.shownInPartnersResearch = isChecked
     }
 }

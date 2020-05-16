@@ -53,4 +53,8 @@
     <string name="account_company_cnpj_hint">CNPJ da minha empresa</string>
     <string name="account_company_telephone_hint">telefone da minha empresa</string>
     <string name="account_company_mail_hint">e-mail para contato</string>
+    <string name="data_processing_failed_error_message">Falha durante processamento de dados.</string>
+    <string name="try_again">Tentar novamente</string>
+    <string name="back_arrow_content_description">Voltar</string>
+    <string name="be_shown_in_partner_research">Aparecer na busca de parceiros</string>
 </resources>

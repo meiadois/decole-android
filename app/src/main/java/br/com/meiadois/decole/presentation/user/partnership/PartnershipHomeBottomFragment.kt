@@ -13,13 +13,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.response.CompanyResponse
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
+import br.com.meiadois.decole.util.extension.longSnackbar
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import org.kodein.di.KodeinAware
@@ -52,17 +56,13 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     private fun init(view: View){
         Coroutines.main {
             try{
-                val companies = viewModel.getUserCompanies()
-                if (companies.isNotEmpty())
-                    showPartnershipList(view)
-                else
-                    showInviteToRegister()
-            }catch (ex: SocketException){
-                Log.i("Coroutines.io", ex.message!!)
+                viewModel.getUserCompany()
+                showPartnershipList(view)
             }catch (ex: ClientException){
-                Log.i("Coroutines.io", ex.message!!)
+                if (ex.code == 404)
+                    showInviteToRegister()
             }catch (ex: Exception){
-                Log.i("Coroutines.io", ex.message!!)
+                showGenericErrorMessage()
             }finally {
                 progress_bar_parent_layout.visibility = View.INVISIBLE
             }
@@ -85,6 +85,15 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     private fun showInviteToRegister(){
         // TODO not implemented yet, need to show a short message inviting user to create a company profile
+    }
+
+    private fun showGenericErrorMessage(){
+        Snackbar.make(fragment_bottom_root_layout, getString(R.string.data_processing_failed_error_message), Snackbar.LENGTH_LONG).also { snackbar ->
+            snackbar.setAction(getString(R.string.try_again)) {
+                init(it)
+                snackbar.dismiss()
+            }
+        }.show()
     }
 
     class PartnerRecyclerAdapter(private val dataset: List<CompanyResponse>, private val context: Context) :
@@ -120,7 +129,6 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 name.text = partner.name
 
                 card.setOnClickListener {
-                    // TODO see what's wrong with this, it only send the first company's id
                     val intent : Intent = PartnershipPopUpActivity.getStartIntent(card.context, partner.id)
                     card.context.startActivity(intent)
                 }

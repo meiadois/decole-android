@@ -23,5 +23,5 @@ class PartnershipHomeBottomViewModel(
         )
     }
 
-    suspend fun getUserCompanies() : List<CompanyResponse> = userRepository.listUserCompanies()
+    suspend fun getUserCompany() : CompanyResponse = userRepository.getUserCompany()
 }
