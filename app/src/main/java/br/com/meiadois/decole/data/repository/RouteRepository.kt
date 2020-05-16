@@ -10,6 +10,7 @@ import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.preferences.PreferenceProvider
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.extension.parseEntity
 import br.com.meiadois.decole.util.extension.parseToRouteEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -56,6 +57,11 @@ class RouteRepository(
         routes.postValue(res.parseToRouteEntity())
     }
 
+    suspend fun fetchRoute(routeId: Long) {
+        val res = callClient { client.route(routeId) }
+        db.getRouteDao().updateRoute(res.parseEntity())
+    }
+
     private fun saveRoutes(routes: List<Route>) {
         prefs.saveLastRouteFetch(System.currentTimeMillis())
         Coroutines.io {
@@ -71,7 +77,6 @@ class RouteRepository(
         val lastFetchWithZeroTime = formatter.parse(formatter.format(lastFetch))
 
         return lastFetchWithZeroTime!!.before(nowWithZeroTime)
-//        return false
     }
 
     suspend fun jumpRoute(routesId: Long) {

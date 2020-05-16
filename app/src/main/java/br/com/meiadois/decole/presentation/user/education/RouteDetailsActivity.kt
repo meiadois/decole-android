@@ -1,5 +1,7 @@
 package br.com.meiadois.decole.presentation.user.education
 
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.localdb.entity.Route
 import br.com.meiadois.decole.databinding.ActivityRouteDetailsBinding
+import br.com.meiadois.decole.presentation.user.HomeActivity
 import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModelFactory
@@ -45,6 +48,8 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
 
         mViewModel.routeClicked.postValue(intent.getLongExtra("itemId", 0L))
 
+        mViewModel.handleStart(intent.getLongExtra("lessonDone", 0L))
+
         btn_back.setOnClickListener {
             onBackPressed()
         }
@@ -75,6 +80,14 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             }
         })
 
+    }
+
+    override fun onBackPressed() {
+        Intent(this, HomeActivity::class.java).also {
+            it.addFlags(FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(it)
+            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        }
     }
 
     private fun toggleLoading(boolean: Boolean) {

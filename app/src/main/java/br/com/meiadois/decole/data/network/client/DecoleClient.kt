@@ -25,7 +25,7 @@ interface DecoleClient {
     suspend fun routes(): Response<List<RouteDTO>>
 
     @Headers("Content-Type: application/json")
-    @GET("me/routeS/{id}")
+    @GET("me/routes/{id}")
     suspend fun route(@Path("id") id: Long): Response<RouteDTO>
 
     @Headers("Content-Type: application/json")
@@ -39,6 +39,10 @@ interface DecoleClient {
     @Headers("Content-Type: application/json")
     @POST("me/done_routes/{id}")
     suspend fun jumpRoute(@Path("id") routeId: Long): Response<RouteJumpResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("me/done_lessons/{id}")
+    suspend fun completeLesson(@Path("id") lessonId: Long): Response<CompleteLessonResponse>
 
     companion object {
         operator fun invoke(

@@ -16,6 +16,7 @@ import android.widget.TextView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Step
 import br.com.meiadois.decole.presentation.user.HomeActivity
+import br.com.meiadois.decole.presentation.user.education.RouteDetailsActivity
 
 class FloatingViewService : Service() {
 
@@ -37,6 +38,7 @@ class FloatingViewService : Service() {
         Resources.getSystem().displayMetrics.heightPixels
     lateinit var steps: List<Step>
     private var lessonClicked = 0L
+    private var routeParent = 0L
 
 
     private var currentStepIndex = 0
@@ -44,6 +46,7 @@ class FloatingViewService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         lessonClicked = intent.getLongExtra("lessonId", 0L)
+        routeParent = intent.getLongExtra("routeId", 0L)
         this.steps = intent.getParcelableArrayListExtra("steps")
         progressGainByStep = 100 / steps.size
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null)
@@ -196,9 +199,10 @@ class FloatingViewService : Service() {
     }
 
     private fun exitInteractiveMode() {
-        Intent(this, HomeActivity::class.java).also {
-
+        Intent(this, RouteDetailsActivity::class.java).also {
             it.addFlags(FLAG_ACTIVITY_NEW_TASK)
+            it.putExtra("itemId", routeParent)
+            it.putExtra("lessonDone", lessonClicked)
             startActivity(it)
             stopSelf()
         }

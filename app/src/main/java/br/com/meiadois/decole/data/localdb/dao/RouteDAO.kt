@@ -17,6 +17,9 @@ interface RouteDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateRoutes(routes: List<Route>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateRoute(routes: Route)
+
     @Transaction
     @Query("SELECT * FROM Route WHERE id = :id")
     fun getRouteAndLessonsByPk(id: Long): LiveData<RouteDetails>

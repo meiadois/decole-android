@@ -27,6 +27,7 @@ class RouteDetailsViewModel(
     fun onItemClick(item: Lesson, view: View) = Coroutines.main {
         Intent(view.context, StartInteractiveModeActivity::class.java).also {
             it.putExtra("lessonId", item.id)
+            it.putExtra("routeId", routeClicked.value!!)
             view.context.startActivity(it)
         }
     }
@@ -37,6 +38,16 @@ class RouteDetailsViewModel(
             routeRepository.jumpRoute(routeClicked.value!!)
             lessonRepository.fetchLessons(routeClicked.value!!)
             routeDetails.start()
+        }
+    }
+
+    fun handleStart(lessonDone: Long) {
+        if (lessonDone != 0L) {
+            Coroutines.main {
+                lessonRepository.complete(lessonDone)
+                lessonRepository.fetchLessons(routeClicked.value!!)
+                routeRepository.fetchRoute(routeClicked.value!!)
+            }
         }
     }
 

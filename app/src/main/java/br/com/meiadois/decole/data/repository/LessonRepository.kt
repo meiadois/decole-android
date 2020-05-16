@@ -7,6 +7,7 @@ import br.com.meiadois.decole.data.localdb.entity.Lesson
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.preferences.PreferenceProvider
+import br.com.meiadois.decole.util.extension.parseEntity
 import br.com.meiadois.decole.util.extension.parseToLessonEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -45,5 +46,12 @@ class LessonRepository(
         val lastFetchWithZeroTime = formatter.parse(formatter.format(lastFetch))
 
         return lastFetchWithZeroTime!!.before(nowWithZeroTime)
+    }
+
+    suspend fun complete(lessonId: Long) {
+        callClient {
+            client.completeLesson(lessonId)
+        }
+
     }
 }

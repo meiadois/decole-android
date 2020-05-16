@@ -13,6 +13,16 @@ import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 
 fun UserDTO.parseToUserEntity() = User(this.jwt, this.name, this.email, this.introduced)
 
+fun RouteDTO.parseEntity() = Route (
+    this.id,
+    this.title,
+    this.description,
+    this.locked,
+    this.progress.done,
+    this.progress.total,
+    this.progress.percentage
+)
+
 fun List<RouteDTO>.parseToRouteEntity() = this.map { dto ->
     Route(
         dto.id,

@@ -69,6 +69,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
 
         Intent(c, FloatingViewService::class.java).also {
             it.putExtra("lessonId", mViewModel.lessonClicked.value!!)
+            it.putExtra("routeId", intent.getLongExtra("routeId", 0L))
             it.putExtra("steps", ArrayList(steps))
             startService(it)
             finishAffinity()
