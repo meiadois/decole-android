@@ -41,4 +41,16 @@
     <string name="cancel">Cancelar</string>
     <string name="ic_whatsapp_content_description">Whatsapp icon</string>
     <string name="ic_mail_content_description">Mail icon</string>
+    <string name="account_me_hearder_text">Minha conta decole</string>
+    <string name="account_me_name_hint">meu nome</string>
+    <string name="account_me_mail_hint">meu e-mail</string>
+    <string name="account_company_hearder_text">Minha Empresa</string>
+    <string name="save">Salvar</string>
+    <string name="account_company_name_hint">nome da minha empresa</string>
+    <string name="account_company_segment_hint">segmento da minha empresa</string>
+    <string name="account_company_description_hint">breve descrição da minha empresa</string>
+    <string name="account_company_cep_hint">CEP</string>
+    <string name="account_company_cnpj_hint">CNPJ da minha empresa</string>
+    <string name="account_company_telephone_hint">telefone da minha empresa</string>
+    <string name="account_company_mail_hint">e-mail para contato</string>
 </resources>

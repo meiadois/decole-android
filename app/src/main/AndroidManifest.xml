@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="br.com.meiadois.decole.presentation.user.education.RouteDetailsActivity"/>
         <activity android:name="br.com.meiadois.decole.presentation.user.partnership.PartnershipPopUpActivity"/>
+        <activity android:name="br.com.meiadois.decole.presentation.user.account.AccountActivity"/>
         <activity android:name="br.com.meiadois.decole.presentation.user.HomeActivity" />
         <activity android:name="br.com.meiadois.decole.presentation.instagram.HasInstagramAccountActivity" />
         <activity android:name="br.com.meiadois.decole.presentation.instagram.InstagramIntroActivity" />

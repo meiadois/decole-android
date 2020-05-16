@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context=".presentation.user.account.AccountActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/colorPrimary"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintBottom_toTopOf="@id/bottom_panel_guideline"
+            android:background="@color/colorPrimaryDarker"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="0dp"
+            android:layout_width="0dp">
+
+            <androidx.constraintlayout.widget.Guideline
+                app:layout_constraintGuide_percent="0.42"
+                android:id="@+id/image_guideline_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <ImageView
+                app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
+                app:layout_constraintStart_toStartOf="parent"
+                android:src="@drawable/ic_mdi_back"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_height="0dp" />
+
+            <ImageView
+                app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/ic_decole_verde"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_width="100dp"
+                android:layout_height="0dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                app:layout_constraintGuide_percent="0.89"
+                android:id="@+id/image_guideline_bottom"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_panel_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.10" />
+
+        <androidx.core.widget.NestedScrollView
+            app:layout_constraintTop_toBottomOf="@+id/bottom_panel_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/account_scroolable_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="0dp"
+            android:layout_width="match_parent">
+
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <!-- User Section -->
+                <RelativeLayout
+                    android:background="@color/colorPrimaryDark"
+                    android:id="@+id/account_me_hearder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/account_me_hearder_text"
+                        android:layout_alignParentStart="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="36dp"
+                        android:textAllCaps="true"
+                        android:paddingEnd="0dp"
+                        android:textStyle="bold"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/account_me_form"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:hint="@string/account_me_name_hint"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:id="@+id/account_me_name_input"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_me_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.userData.name}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:hint="@string/account_me_mail_hint"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:id="@+id/account_me_mail_input"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_me_mail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.userData.email}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!-- User Section -->
+
+                <!-- Company Section -->
+                <RelativeLayout
+                    android:background="@color/colorPrimaryDark"
+                    android:id="@+id/account_company_hearder"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="36dp">
+                    <TextView
+                        android:text="@string/account_company_hearder_text"
+                        android:layout_alignParentStart="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="36dp"
+                        android:textAllCaps="true"
+                        android:paddingEnd="0dp"
+                        android:textStyle="bold"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/account_company_form"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        app:layout_constraintTop_toBottomOf="@+id/account_company_hearder"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <TextView
+                            android:layout_alignParentStart="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Aparecer na busca de parceiros"
+                            android:textStyle="normal" />
+
+                        <Switch
+                            android:onCheckedChanged="@={() -> viewModel.onSearchVisibilityChange}"
+                            android:isChecked="@={viewModel.companyData.shownInPartnersResearch}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="10dp" />
+                    </RelativeLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:hint="@string/account_company_name_hint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/account_company_name_input"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.name}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:hint="@string/account_company_segment_hint"
+                        android:id="@+id/account_company_segment_input"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_segment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.segmentId}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:hint="@string/account_company_description_hint"
+                        android:id="@+id/account_company_description_input"
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.description}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:hint="@string/account_company_cep_hint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/account_company_cep_input"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_cep"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.cep}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:hint="@string/account_company_cnpj_hint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/account_company_cnpj_input"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_cnpj"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.cnpj}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:hint="@string/account_company_telephone_hint"
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:id="@+id/account_company_telephone_input"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_telephone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.telephone}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:hint="@string/account_company_mail_hint"
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:id="@+id/account_company_mail_input"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="48dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_mail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.email}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+                <!-- Company Section -->
+
+                <Button
+                    app:layout_constraintTop_toBottomOf="@+id/account_company_form"
+                    android:onClick="@{viewModel::onSaveButtonClick}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="36dp"
+                    android:layout_marginEnd="48dp"
+                    style="@style/btn_secondary"
+                    android:text="@string/save"
+                    android:id="@+id/btn_save"/>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
