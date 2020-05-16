@@ -37,8 +37,8 @@ interface DecoleClient {
     suspend fun getCompanyById(@Path("id") companyId: Int): Response<CompanyResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("me/matches")
-    suspend fun listUserMatches(): Response<List<CompanyResponse>>
+    @GET("likes")
+    suspend fun listUserMatches(@Query("sender_id") companyId: Int, @Query("status") status :String = "accepted"): Response<List<LikeResponse>>
 
     companion object {
         operator fun invoke(

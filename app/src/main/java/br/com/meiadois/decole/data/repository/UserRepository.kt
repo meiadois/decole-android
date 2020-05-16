@@ -8,6 +8,7 @@ import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.response.CompanyResponse
+import br.com.meiadois.decole.data.network.response.LikeResponse
 import br.com.meiadois.decole.data.network.response.LoginResponse
 
 class UserRepository(
@@ -33,9 +34,9 @@ class UserRepository(
         }
     }
 
-    suspend fun listUserMatches(): List<CompanyResponse> {
+    suspend fun listUserMatches(companyId: Int): List<LikeResponse> {
         return callClient {
-            client.listUserMatches()
+            client.listUserMatches(companyId)
         }
     }
 

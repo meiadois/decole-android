@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.response.CompanyResponse
+import br.com.meiadois.decole.data.network.response.LikeResponse
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
@@ -56,8 +57,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     private fun init(view: View){
         Coroutines.main {
             try{
-                viewModel.getUserCompany()
-                showPartnershipList(view)
+                val company : CompanyResponse = viewModel.getUserCompany()
+                showPartnershipList(view, company.id)
             }catch (ex: ClientException){
                 if (ex.code == 404)
                     showInviteToRegister()
@@ -69,7 +70,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         }
     }
 
-    private fun showPartnershipList(view: View){
+    private fun showPartnershipList(view: View, companyId: Int){
         partnership_scroolable_view.visibility = View.VISIBLE
         viewModel.partnershipLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -80,7 +81,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 }
             }
         })
-        viewModel.getPartnerships()
+        viewModel.getPartnerships(companyId)
     }
 
     private fun showInviteToRegister(){
@@ -96,7 +97,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         }.show()
     }
 
-    class PartnerRecyclerAdapter(private val dataset: List<CompanyResponse>, private val context: Context) :
+    class PartnerRecyclerAdapter(private val dataset: List<LikeResponse>, private val context: Context) :
         RecyclerView.Adapter<PartnerRecyclerAdapter.PartnerViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartnerViewHolder {
@@ -116,22 +117,21 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             holder.bindView(partner)
         }
 
-
         class PartnerViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
             private val segment = parent.text_partner_segment
             private val name = parent.text_partner_name
             private val image = parent.image_partner
             private val card = parent
 
-            fun bindView(partner: CompanyResponse) {
-                segment.text = partner.segment!!.name
+            fun bindView(like: LikeResponse) {
+                /*segment.text = like.
                 Glide.with(card).load(partner.thumbnail).apply(RequestOptions.circleCropTransform()).into(image)
                 name.text = partner.name
 
                 card.setOnClickListener {
                     val intent : Intent = PartnershipPopUpActivity.getStartIntent(card.context, partner.id)
                     card.context.startActivity(intent)
-                }
+                }*/
             }
         }
     }
