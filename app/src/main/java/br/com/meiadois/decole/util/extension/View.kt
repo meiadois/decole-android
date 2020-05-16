@@ -10,3 +10,7 @@ fun View.longSnackbar(message: String) {
         }
     }.show()
 }
+
+fun View.longSnackbar(message: String, block: (Snackbar) -> Unit) {
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG).also(block).show()
+}

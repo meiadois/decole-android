@@ -3,7 +3,6 @@ package br.com.meiadois.decole.presentation.user.partnership
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,24 +12,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.data.network.RequestHandler
-import br.com.meiadois.decole.data.network.response.CompanyResponse
-import br.com.meiadois.decole.data.network.response.LikeResponse
+import br.com.meiadois.decole.data.model.Company
+import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
-import java.net.SocketException
 
 class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     override val kodein by kodein()
@@ -57,11 +52,11 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     private fun init(view: View){
         Coroutines.main {
             try{
-                val company : CompanyResponse = viewModel.getUserCompany()
+                val company : Company = viewModel.getUserCompany()
                 showPartnershipList(view, company.id)
             }catch (ex: ClientException){
-                if (ex.code == 404)
-                    showInviteToRegister()
+                if (ex.code == 404) showInviteToRegister()
+                else showGenericErrorMessage()
             }catch (ex: Exception){
                 showGenericErrorMessage()
             }finally {
@@ -89,15 +84,15 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
 
     private fun showGenericErrorMessage(){
-        Snackbar.make(fragment_bottom_root_layout, getString(R.string.data_processing_failed_error_message), Snackbar.LENGTH_LONG).also { snackbar ->
-            snackbar.setAction(getString(R.string.try_again)) {
+        fragment_bottom_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message)){ snackbar ->
+            snackbar.setAction(getString(R.string.reload)) {
                 init(it)
                 snackbar.dismiss()
             }
-        }.show()
+        }
     }
 
-    class PartnerRecyclerAdapter(private val dataset: List<LikeResponse>, private val context: Context) :
+    class PartnerRecyclerAdapter(private val dataset: List<Like>, private val context: Context) :
         RecyclerView.Adapter<PartnerRecyclerAdapter.PartnerViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartnerViewHolder {
@@ -123,15 +118,15 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             private val image = parent.image_partner
             private val card = parent
 
-            fun bindView(like: LikeResponse) {
-                /*segment.text = like.
-                Glide.with(card).load(partner.thumbnail).apply(RequestOptions.circleCropTransform()).into(image)
-                name.text = partner.name
+            fun bindView(like: Like) {
+                segment.text = like.partnerCompany.segment?.name
+                Glide.with(card).load(like.partnerCompany.thumbnail).apply(RequestOptions.circleCropTransform()).into(image)
+                name.text = like.partnerCompany.name
 
                 card.setOnClickListener {
-                    val intent : Intent = PartnershipPopUpActivity.getStartIntent(card.context, partner.id)
+                    val intent : Intent = PartnershipPopUpActivity.getStartIntent(card.context, like.partnerCompany.id)
                     card.context.startActivity(intent)
-                }*/
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
@@ -41,13 +42,14 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         setBackgroundStartFadeAnimation()
         setStartFadeAnimation()
 
+        // TODO: add listeners to cell and email fields to call third party apps
         viewModel.companyLiveData.observe(this, Observer {
             it?.let {
                 popup_window_partner_name.text = it.name
-                popup_window_partner_segment.text = if (it.segment != null) it.segment.name else ""
+                popup_window_partner_segment.text = it.segment?.name
                 popup_window_description.text = it.description
-                popup_window_phone.text = "(71) 00000-0000"
-                popup_window_mail.text = "contato@empresa.com"
+                popup_window_phone.text = it.cellphone
+                popup_window_mail.text = it.email
                 showGoneElements()
             }
         })
@@ -61,8 +63,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun setBackgroundStartFadeAnimation(){
-        val alpha = 100
-        val alphaColor = ColorUtils.setAlphaComponent(Color.parseColor("#000000"), alpha)
+        val alphaColor = ColorUtils.setAlphaComponent(getColor(R.color.popup_background), ALPHA_VALUE)
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), Color.TRANSPARENT, alphaColor)
         colorAnimation.duration = 500
         colorAnimation.addUpdateListener { animator ->
@@ -79,14 +80,11 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     }
 
     override fun onBackPressed() {
-        val alpha = 100
-        val alphaColor = ColorUtils.setAlphaComponent(Color.parseColor("#000000"), alpha)
+        val alphaColor = ColorUtils.setAlphaComponent(getColor(R.color.popup_background), ALPHA_VALUE)
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), alphaColor, Color.TRANSPARENT)
         colorAnimation.duration = 500
         colorAnimation.addUpdateListener { animator ->
-            popup_window_background.setBackgroundColor(
-                animator.animatedValue as Int
-            )
+            popup_window_background.setBackgroundColor(animator.animatedValue as Int)
         }
         popup_window_view_with_border.animate().alpha(0f).setDuration(500).setInterpolator(
             DecelerateInterpolator()
@@ -102,6 +100,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
 
     companion object {
         private const val EXTRA_PARTNER_ID = "PARTNER_ID"
+        private const val ALPHA_VALUE = 100
 
         fun getStartIntent(context: Context, partnerId: Int) : Intent {
             return Intent(context, PartnershipPopUpActivity::class.java).apply {

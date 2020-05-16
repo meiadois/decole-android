@@ -3,7 +3,9 @@
     tools:context=".presentation.user.partnership.PartnershipPopUpActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/popup_background"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/popup_background"
     android:id="@+id/popup_window_background"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
@@ -54,6 +56,7 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:contentDescription="@string/popup_window_button_close"
                         android:id="@+id/popup_window_close_button"
                         android:src="@drawable/ic_close_white"
                         android:layout_height="wrap_content"
@@ -63,24 +66,24 @@
 
                     <TextView
                         android:id="@+id/popup_window_partner_name"
+                        android:textColor="@color/popup_font_color"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:layout_marginBottom="8dp"
                         android:textAlignment="center"
-                        tools:text="NOME DO PERCEITO"
-                        android:textColor="#FFFFFF"
+                        tools:text="NOME DO PERCEIRO"
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/popup_window_partner_segment"
+                        android:textColor="@color/popup_font_color"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:layout_marginBottom="8dp"
-                        tools:text="SEGMENTO DO PERCEITO"
+                        tools:text="SEGMENTO DO PERCEIRO"
                         android:textAlignment="center"
-                        android:textColor="#FFFFFF"
                         android:gravity="center"
                         android:textSize="13sp" />
 
@@ -90,13 +93,13 @@
                     app:layout_constraintBottom_toTopOf="@+id/popup_window_contact_layout"
                     app:layout_constraintTop_toBottomOf="@+id/popup_window_header_layout"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:textColor="@color/popup_font_color"
                     android:id="@+id/popup_window_description"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
                     android:layout_width="match_parent"
                     tools:text="DESCRIÇÃO DO PARCEIRO"
-                    android:textColor="#FFFFFF"
                     android:paddingStart="24dp"
                     android:paddingEnd="0dp"
                     android:textSize="16sp" />
@@ -183,10 +186,10 @@
                         android:layout_width="match_parent"
                         android:orientation="horizontal">
                         <Button
-                            android:visibility="invisible"
                             android:id="@+id/popup_window_button_undo_partnership"
+                            android:text="@string/undo_partnership"
                             android:layout_marginHorizontal="8dp"
-                            android:text="Desfazer Parceria"
+                            android:visibility="invisible"
                             style="@style/btn_primary"
                             android:layout_weight="1"
                             android:textSize="12sp"/>
