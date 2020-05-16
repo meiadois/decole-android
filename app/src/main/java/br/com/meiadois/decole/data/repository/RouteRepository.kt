@@ -71,9 +71,13 @@ class RouteRepository(
         val lastFetchWithZeroTime = formatter.parse(formatter.format(lastFetch))
 
         return lastFetchWithZeroTime!!.before(nowWithZeroTime)
+//        return false
     }
 
-    suspend fun routeJump(routesId: Long) = callClient {
-        client.routesJump(routesId)
+    suspend fun jumpRoute(routesId: Long) {
+        callClient {
+            client.jumpRoute(routesId)
+        }
+        fetchRoutes()
     }
 }

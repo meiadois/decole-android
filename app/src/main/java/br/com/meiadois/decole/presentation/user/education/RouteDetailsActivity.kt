@@ -45,21 +45,22 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
 
         mViewModel.routeClicked.postValue(intent.getLongExtra("itemId", 0L))
 
-        bindUi()
-
-    }
-
-    private fun bindUi() = Coroutines.main {
-        toggleLoading(true)
         btn_back.setOnClickListener {
             onBackPressed()
         }
         btn_jump.setOnClickListener {
 
-            mViewModel.onJumpButtonClick(intent.getLongExtra("itemId", 0L))
+            mViewModel.onJumpButtonClick()
 
             onBackPressed()
         }
+
+        renderData()
+
+    }
+
+    private fun renderData() = Coroutines.main {
+        toggleLoading(true)
 
         mViewModel.routeDetails.await().observe(this, Observer {
             it?.let {
@@ -93,6 +94,13 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             route.lessonsCompleted,
             route.lessonsAvailable
         )
+
+        btn_jump.visibility =
+            if (route.lessonsCompleted != route.lessonsAvailable) View.VISIBLE else View.INVISIBLE
+        btn_jump.setOnClickListener {
+            toggleLoading(true)
+            mViewModel.onJumpButtonClick()
+        }
     }
 
     private fun initRecyclerView(items: List<LessonItem>) {
