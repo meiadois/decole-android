@@ -41,19 +41,27 @@
     <string name="have_instagram_account_question">Possui uma conta para seu negócio?</string>
     <string name="has_no_account">Não possuo conta</string>
     <string name="has_account">Possuo conta</string>
-    <string name="search">Buscar</string>
 
-    <!-- Partner -->
+    <!-- Partnership Home BottomFragment -->
+    <string name="getting_data_failed_error_message">Falha ao obter dados.</string>
+    <string name="reload">Recarregar</string>
     <string name="ic_partner_divider_content_description">título da seção de listagem de parceiros</string>
-    <string name="confirm">Confirmar</string>
-    <string name="cancel">Cancelar</string>
+
+    <!-- Partnership PopUp -->
+    <string name="popup_window_button_close">Fechar</string>
     <string name="ic_whatsapp_content_description">Whatsapp icon</string>
     <string name="ic_mail_content_description">Mail icon</string>
+    <string name="undo_partnership">Desfazer Parceria</string>
+    <string name="confirm">Confirmar</string>
+    <string name="cancel">Cancelar</string>
+
+    <!-- Account -->
+    <string name="back_arrow_content_description">Voltar</string>
     <string name="account_me_hearder_text">Minha conta decole</string>
     <string name="account_me_name_hint">meu nome</string>
     <string name="account_me_mail_hint">meu e-mail</string>
     <string name="account_company_hearder_text">Minha Empresa</string>
-    <string name="save">Salvar</string>
+    <string name="be_shown_in_partner_research">Aparecer na busca de parceiros</string>
     <string name="account_company_name_hint">nome da minha empresa</string>
     <string name="account_company_segment_hint">segmento da minha empresa</string>
     <string name="account_company_description_hint">breve descrição da minha empresa</string>
@@ -61,10 +69,6 @@
     <string name="account_company_cnpj_hint">CNPJ da minha empresa</string>
     <string name="account_company_telephone_hint">telefone da minha empresa</string>
     <string name="account_company_mail_hint">e-mail para contato</string>
-    <string name="getting_data_failed_error_message">Falha ao obter dados.</string>
-    <string name="reload">Recarregar</string>
-    <string name="back_arrow_content_description">Voltar</string>
-    <string name="be_shown_in_partner_research">Aparecer na busca de parceiros</string>
-    <string name="popup_window_button_close">Fechar</string>
-    <string name="undo_partnership">Desfazer Parceria</string>
+    <string name="save">Salvar</string>
+
 </resources>

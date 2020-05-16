@@ -44,8 +44,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { RouteListViewModelFactory(instance(), instance()) }
         bind() from singleton { RouteDetailsViewModelFactory(instance(), instance()) }
         bind() from singleton { StartInteractiveModeViewModelFactory(instance()) }
-        bind() from singleton { RouteListViewModelFactory(instance()) }
-        bind() from singleton { RouteDetailsViewModelFactory(instance()) }
         bind() from singleton { PartnershipHomeBottomViewModelFactory(instance()) }
         bind() from singleton { PartnershipPopUpViewModelFactory(instance()) }
     }
