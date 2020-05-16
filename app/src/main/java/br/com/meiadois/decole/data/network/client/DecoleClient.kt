@@ -26,7 +26,23 @@ interface DecoleClient {
 
     @Headers("Content-Type: application/json")
     @GET("me/routes/{id}")
+    suspend fun route(@Path("id") id: Long): Response<RouteDTO>
+
+    @Headers("Content-Type: application/json")
+    @GET("me/routes/{id}")
     suspend fun routeDetails(@Path("id") id: Long): Response<RouteDetailsResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("steps/lessons/{id}")
+    suspend fun steps(@Path("id") lessonId: Long): Response<List<StepDTO>>
+
+    @Headers("Content-Type: application/json")
+    @POST("me/done_routes/{id}")
+    suspend fun jumpRoute(@Path("id") routeId: Long): Response<RouteJumpResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("me/done_lessons/{id}")
+    suspend fun completeLesson(@Path("id") lessonId: Long): Response<CompleteLessonResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/companies")

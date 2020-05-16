@@ -1,7 +1,5 @@
 package br.com.meiadois.decole.service
 
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -18,7 +16,7 @@ import android.widget.TextView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Step
 import br.com.meiadois.decole.presentation.user.HomeActivity
-import br.com.meiadois.decole.util.Constants
+import br.com.meiadois.decole.presentation.user.education.RouteDetailsActivity
 
 class FloatingViewService : Service() {
 
@@ -38,69 +36,18 @@ class FloatingViewService : Service() {
         Resources.getSystem().displayMetrics.widthPixels
     private val maxHeight =
         Resources.getSystem().displayMetrics.heightPixels
-    private var steps: List<Step> = Constants.steps(maxWidth, maxHeight)
+    lateinit var steps: List<Step>
+    private var lessonClicked = 0L
+    private var routeParent = 0L
+
+
     private var currentStepIndex = 0
     private var progressGainByStep = 0
 
-    private fun makeTransition(oldIndex: Int, newIndex: Int) {
-        val oldStep = steps[oldIndex]
-        val newStep = steps[newIndex]
-
-        val pvhX =
-            PropertyValuesHolder.ofInt("x", oldStep.positionX, newStep.positionX)
-        val pvhY =
-            PropertyValuesHolder.ofInt("y", oldStep.positionY, newStep.positionY)
-
-        val translator = ValueAnimator.ofPropertyValuesHolder(pvhX, pvhY)
-
-        translator.addUpdateListener { valueAnimator ->
-            val layoutParams =
-                mFloatingView.layoutParams as WindowManager.LayoutParams
-            layoutParams.x = (valueAnimator.getAnimatedValue("x") as Int)
-            layoutParams.y = (valueAnimator.getAnimatedValue("y") as Int)
-            mWindowManager.updateViewLayout(mFloatingView, layoutParams)
-        }
-
-        translator.duration = 500
-        translator.start()
-    }
-
-    private fun changeStep(newIndex: Int) {
-        val oldIndex = currentStepIndex
-        if (newIndex != oldIndex) makeTransition(oldIndex, newIndex)
-
-        currentStepIndex = newIndex
-        stepDescription.text = steps[currentStepIndex].text
-
-        progressBar.progress = progressGainByStep * (1 + currentStepIndex)
-        when (currentStepIndex) {
-            0 -> {
-                prevButton.isEnabled = false
-                prevButton.setImageResource(
-                    R.drawable.ic_arrow_left_disabled
-                )
-            }
-            steps.size - 1 -> {
-                nextButton.setImageResource(
-                    R.drawable.ic_arrow_check
-                )
-            }
-            else -> {
-                prevButton.isEnabled = true
-                prevButton.setImageResource(
-                    R.drawable.ic_arrow_left
-                )
-                nextButton.isEnabled = true
-                nextButton.setImageResource(
-                    R.drawable.ic_arrow_right
-                )
-            }
-
-        }
-    }
-
-    override fun onCreate() {
-        super.onCreate()
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        lessonClicked = intent.getLongExtra("lessonId", 0L)
+        routeParent = intent.getLongExtra("routeId", 0L)
+        this.steps = intent.getParcelableArrayListExtra("steps")
         progressGainByStep = 100 / steps.size
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null)
 
@@ -179,23 +126,8 @@ class FloatingViewService : Service() {
                 expandedView.visibility = View.GONE
             }
         })
-    }
 
-    private fun exitInteractiveMode() {
-        Intent(this, HomeActivity::class.java).also {
-            it.addFlags(FLAG_ACTIVITY_NEW_TASK)
-            startActivity(it)
-            stopSelf()
-        }
-    }
-
-    /**
-     * Detect if the floating view is collapsed or expanded.
-     *
-     * @return true if the floating view is collapsed.
-     */
-    private fun isViewCollapsed(): Boolean {
-        return mFloatingView.findViewById<View>(R.id.expanded_container).visibility == View.GONE
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
@@ -205,6 +137,79 @@ class FloatingViewService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+// TODO VERIFICAR SE SERÁ NECESSÁRIO
+
+//    private fun makeTransition(oldIndex: Int, newIndex: Int) {
+//        val oldStep = steps[oldIndex]
+//        val newStep = steps[newIndex]
+//
+//        val pvhX =
+//            PropertyValuesHolder.ofInt("x", oldStep.positionX, newStep.positionX)
+//        val pvhY =
+//            PropertyValuesHolder.ofInt("y", oldStep.positionY, newStep.positionY)
+//
+//        val translator = ValueAnimator.ofPropertyValuesHolder(pvhX, pvhY)
+//
+//        translator.addUpdateListener { valueAnimator ->
+//            val layoutParams =
+//                mFloatingView.layoutParams as WindowManager.LayoutParams
+//            layoutParams.x = (valueAnimator.getAnimatedValue("x") as Int)
+//            layoutParams.y = (valueAnimator.getAnimatedValue("y") as Int)
+//            mWindowManager.updateViewLayout(mFloatingView, layoutParams)
+//        }
+//
+//        translator.duration = 500
+//        translator.start()
+//    }
+
+    private fun changeStep(newIndex: Int) {
+//        val oldIndex = currentStepIndex
+//        if (newIndex != oldIndex) makeTransition(oldIndex, newIndex)
+
+        currentStepIndex = newIndex
+        stepDescription.text = steps[currentStepIndex].text
+
+        progressBar.progress = progressGainByStep * (1 + currentStepIndex)
+        when (currentStepIndex) {
+            0 -> {
+                prevButton.isEnabled = false
+                prevButton.setImageResource(
+                    R.drawable.ic_arrow_left_disabled
+                )
+            }
+            steps.size - 1 -> {
+                nextButton.setImageResource(
+                    R.drawable.ic_arrow_check
+                )
+            }
+            else -> {
+                prevButton.isEnabled = true
+                prevButton.setImageResource(
+                    R.drawable.ic_arrow_left
+                )
+                nextButton.isEnabled = true
+                nextButton.setImageResource(
+                    R.drawable.ic_arrow_right
+                )
+            }
+
+        }
+    }
+
+    private fun exitInteractiveMode() {
+        Intent(this, RouteDetailsActivity::class.java).also {
+            it.addFlags(FLAG_ACTIVITY_NEW_TASK)
+            it.putExtra("itemId", routeParent)
+            it.putExtra("lessonDone", lessonClicked)
+            startActivity(it)
+            stopSelf()
+        }
+    }
+
+    private fun isViewCollapsed(): Boolean {
+        return mFloatingView.findViewById<View>(R.id.expanded_container).visibility == View.GONE
     }
 
     inner class OnFloatTouchListener(val clickHandler: (() -> Unit) = {}) : OnTouchListener {

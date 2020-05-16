@@ -8,7 +8,7 @@ data class RouteDTO(
     @Json(name = "id") val id: Long,
     @Json(name = "title") val title: String,
     @Json(name = "description") val description: String,
-//    @Json(name = "locked") val locked: Boolean = false,
+    @Json(name = "locked") val locked: Boolean,
     @Json(name = "progress") val progress: ProgressDTO
 )
 

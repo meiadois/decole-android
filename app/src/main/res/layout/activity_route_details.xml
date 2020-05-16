@@ -16,46 +16,43 @@
         android:background="@color/colorPrimaryDark"
         tools:context=".presentation.user.education.RouteDetailsActivity">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/bottom_panel_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.35" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_container"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDarker"
-            app:layout_constraintBottom_toTopOf="@id/bottom_panel_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".0">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/image_guideline_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.12" />
+                app:layout_constraintGuide_percent=".13" />
 
             <ImageView
+                android:id="@+id/top_logo"
                 android:layout_width="100dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:src="@drawable/ic_decole_verde"
                 app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
 
             <ImageView
+                android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginStart="50dp"
                 android:src="@drawable/ic_mdi_back"
                 app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
+                app:layout_constraintEnd_toStartOf="@+id/top_logo"
+                app:layout_constraintHorizontal_bias=".3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
 
@@ -64,16 +61,96 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.25" />
+                app:layout_constraintGuide_percent="0.26" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/top_container"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="32dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="32dp"
+                android:paddingBottom="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_guideline_bottom" />
+                app:layout_constraintTop_toBottomOf="@+id/image_guideline_bottom">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/content_middle_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".68" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/content_middle_guideline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/text_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias=".3"
+                        tools:text="Primeiros passos no instagram" />
+
+                    <TextView
+                        android:id="@+id/text_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_title"
+                        app:layout_constraintVertical_bias=".1"
+                        tools:text="Aprenda a como apresentar seu negócio no instagram" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/content_middle_guideline"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/text_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias=".3"
+                        tools:text="1/12" />
+
+                    <Button
+                        android:id="@+id/btn_jump"
+                        style="@style/btn_outlined_primary"
+                        android:layout_height="35dp"
+                        android:padding="0dp"
+                        android:text="@string/skip"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_progress"
+                        app:layout_constraintVertical_bias=".1" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -92,7 +169,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bottom_panel_guideline">
+            app:layout_constraintTop_toBottomOf="@+id/top_container">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/scroll_container"

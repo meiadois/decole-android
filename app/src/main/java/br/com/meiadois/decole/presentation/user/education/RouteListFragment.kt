@@ -1,5 +1,6 @@
 package br.com.meiadois.decole.presentation.user.education
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.toRouteItemList
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -40,13 +42,14 @@ class RouteListFragment : Fragment(), KodeinAware {
         super.onActivityCreated(savedInstanceState)
         mFragmentViewModel =
             ViewModelProvider(this, factoryFragment).get(RouteListViewModel::class.java)
-        bindUi()
 
+        bindUi()
     }
 
+    @SuppressLint("FragmentLiveDataObserve")
     private fun bindUi() = Coroutines.main {
         progress_bar.visibility = View.VISIBLE
-        mFragmentViewModel.routes.await().observe(viewLifecycleOwner, Observer {
+        mFragmentViewModel.routes.await().observe(this, Observer {
             progress_bar.visibility = View.GONE
             initRecyclerView(it.toRouteItemList())
         })
@@ -58,7 +61,11 @@ class RouteListFragment : Fragment(), KodeinAware {
 
             setOnItemClickListener { item, view ->
                 if (item is RouteItem) {
-                    mFragmentViewModel.onItemClick(item.route, view)
+                    if(!item.route.locked){
+                        mFragmentViewModel.onItemClick(item.route, view)
+                    }else{
+                        view.longSnackbar("Você não tem acesso a essa rota")
+                    }
                 }
             }
         }

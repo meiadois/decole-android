@@ -63,7 +63,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ProgressBar"
                 tools:ignore="ContentDescription"
-                tools:text="asdasdasdhbashdaushduashduahsduhaudahsudaudhasud" />
+                tools:text="Exponha claramente o objetivo do perfil,Do que ele trata? É uma empresa de serviços? Uma loja? Qual a sua razão de ser? Deixar isso claro não apenas é o primeiro filtro, mas também prepara o seguidor, ou visitante ao conteúdo o deixando mais confortável e" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_guideline_top"
             app:layout_constraintStart_toStartOf="parent">
 
             <!--Icon of floating widget -->

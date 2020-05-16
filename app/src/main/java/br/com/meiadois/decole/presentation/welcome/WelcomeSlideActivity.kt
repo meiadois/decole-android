@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.presentation.instagram.InstagramIntroActivity
+import br.com.meiadois.decole.presentation.user.HomeActivity
 import kotlinx.android.synthetic.main.activity_welcome_slide.*
 
 class WelcomeSlideActivity : AppCompatActivity() {
@@ -45,16 +45,16 @@ class WelcomeSlideActivity : AppCompatActivity() {
     }
 
     private fun confirmSelection() {
-        if (pageSelected == 0) {
-            val intent = Intent(this, InstagramIntroActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+//        if (pageSelected == 0) {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
+//        }
     }
 
     private fun selectPage(position: Int) {
 
-        btn_next.isEnabled = position == 0
+//        btn_next.isEnabled = position == 0
 
         pageSelected = position
     }

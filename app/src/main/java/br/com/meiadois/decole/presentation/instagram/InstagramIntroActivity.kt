@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.presentation.AskForInteractiveModePermissionActivity
+import br.com.meiadois.decole.presentation.user.education.StartInteractiveModeActivity
 import kotlinx.android.synthetic.main.activity_instagram_intro.*
 
 class InstagramIntroActivity : AppCompatActivity(), View.OnClickListener {
@@ -23,7 +23,7 @@ class InstagramIntroActivity : AppCompatActivity(), View.OnClickListener {
             startActivity(intent)
             finish()
         } else if (v.id == does_not_have_account_btn.id) {
-            val intent = Intent(this, AskForInteractiveModePermissionActivity::class.java)
+            val intent = Intent(this, StartInteractiveModeActivity::class.java)
             startActivity(intent)
             finish()
         }

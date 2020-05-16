@@ -1,11 +1,9 @@
 package br.com.meiadois.decole.data.localdb.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import br.com.meiadois.decole.data.localdb.entity.Route
+import br.com.meiadois.decole.data.model.RouteDetails
 
 @Dao
 interface RouteDAO {
@@ -18,5 +16,12 @@ interface RouteDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateRoutes(routes: List<Route>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateRoute(routes: Route)
+
+    @Transaction
+    @Query("SELECT * FROM Route WHERE id = :id")
+    fun getRouteAndLessonsByPk(id: Long): LiveData<RouteDetails>
 
 }
