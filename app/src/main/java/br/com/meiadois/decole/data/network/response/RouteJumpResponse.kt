@@ -4,10 +4,10 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class RouteJUMP(
+data class RouteJumpResponse(
     @Json(name = "id")
-    val jump_id: String,
+    val id: String,
     @Json(name = "route_id")
-    val jump_idroute: String
+    val jumpedRouteId: String
 
 )

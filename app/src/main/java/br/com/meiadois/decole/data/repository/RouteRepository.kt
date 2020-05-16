@@ -1,7 +1,6 @@
 package br.com.meiadois.decole.data.repository
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
@@ -73,10 +72,8 @@ class RouteRepository(
 
         return lastFetchWithZeroTime!!.before(nowWithZeroTime)
     }
-    suspend fun routeJump(routesId: Long) {
 
-            val res = callClient { client.routesJump(routesId) }
-            Log.i("error ronaldo",res.toString());
-
+    suspend fun routeJump(routesId: Long) = callClient {
+        client.routesJump(routesId)
     }
 }

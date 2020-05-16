@@ -1,7 +1,6 @@
 package br.com.meiadois.decole.data.repository
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.Lesson
@@ -47,11 +46,4 @@ class LessonRepository(
 
         return lastFetchWithZeroTime!!.before(nowWithZeroTime)
     }
-
-   /* suspend fun teste1(routesId: Long) {
-
-        val res = callClient { client.doneLessons(routesId) }
-        Log.i("error ronaldo",res.toString());
-
-    }*/
 }

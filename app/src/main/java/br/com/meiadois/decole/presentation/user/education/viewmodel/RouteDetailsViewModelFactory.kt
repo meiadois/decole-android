@@ -6,12 +6,11 @@ import br.com.meiadois.decole.data.repository.RouteRepository
 import br.com.meiadois.decole.data.repository.StepRepository
 
 class RouteDetailsViewModelFactory(
-    private val stepRepository: StepRepository,
     private val routeRepository: RouteRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return RouteDetailsViewModel(stepRepository, routeRepository) as T
+        return RouteDetailsViewModel(routeRepository) as T
     }
 }

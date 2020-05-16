@@ -1,7 +1,5 @@
 package br.com.meiadois.decole.service
 
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -17,11 +15,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Step
-import br.com.meiadois.decole.data.repository.LessonRepository
 import br.com.meiadois.decole.presentation.user.HomeActivity
-import br.com.meiadois.decole.util.Coroutines
 
-class FloatingViewService: Service() {
+class FloatingViewService : Service() {
 
     private lateinit var mWindowManager: WindowManager
     private lateinit var mFloatingView: View
@@ -40,20 +36,14 @@ class FloatingViewService: Service() {
     private val maxHeight =
         Resources.getSystem().displayMetrics.heightPixels
     lateinit var steps: List<Step>
-     private var lessons =0L
-
+    private var lessonClicked = 0L
 
 
     private var currentStepIndex = 0
     private var progressGainByStep = 0
 
-//    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-//        steps.addAll(intent.getParcelableArrayListExtra("steps"))
-//        return super.onStartCommand(intent, flags, startId)
-//    }
-
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        lessons= intent.getLongExtra("LessonIdronaldo",0L)
+        lessonClicked = intent.getLongExtra("lessonId", 0L)
         this.steps = intent.getParcelableArrayListExtra("steps")
         progressGainByStep = 100 / steps.size
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null)
@@ -146,31 +136,33 @@ class FloatingViewService: Service() {
         return null
     }
 
-    private fun makeTransition(oldIndex: Int, newIndex: Int) {
-        val oldStep = steps[oldIndex]
-        val newStep = steps[newIndex]
+// TODO VERIFICAR SE SERÁ NECESSÁRIO
 
-        val pvhX =
-            PropertyValuesHolder.ofInt("x", oldStep.positionX, newStep.positionX)
-        val pvhY =
-            PropertyValuesHolder.ofInt("y", oldStep.positionY, newStep.positionY)
-
-        val translator = ValueAnimator.ofPropertyValuesHolder(pvhX, pvhY)
-
-        translator.addUpdateListener { valueAnimator ->
-            val layoutParams =
-                mFloatingView.layoutParams as WindowManager.LayoutParams
-            layoutParams.x = (valueAnimator.getAnimatedValue("x") as Int)
-            layoutParams.y = (valueAnimator.getAnimatedValue("y") as Int)
-            mWindowManager.updateViewLayout(mFloatingView, layoutParams)
-        }
-
-        translator.duration = 500
-        translator.start()
-    }
+//    private fun makeTransition(oldIndex: Int, newIndex: Int) {
+//        val oldStep = steps[oldIndex]
+//        val newStep = steps[newIndex]
+//
+//        val pvhX =
+//            PropertyValuesHolder.ofInt("x", oldStep.positionX, newStep.positionX)
+//        val pvhY =
+//            PropertyValuesHolder.ofInt("y", oldStep.positionY, newStep.positionY)
+//
+//        val translator = ValueAnimator.ofPropertyValuesHolder(pvhX, pvhY)
+//
+//        translator.addUpdateListener { valueAnimator ->
+//            val layoutParams =
+//                mFloatingView.layoutParams as WindowManager.LayoutParams
+//            layoutParams.x = (valueAnimator.getAnimatedValue("x") as Int)
+//            layoutParams.y = (valueAnimator.getAnimatedValue("y") as Int)
+//            mWindowManager.updateViewLayout(mFloatingView, layoutParams)
+//        }
+//
+//        translator.duration = 500
+//        translator.start()
+//    }
 
     private fun changeStep(newIndex: Int) {
-        val oldIndex = currentStepIndex
+//        val oldIndex = currentStepIndex
 //        if (newIndex != oldIndex) makeTransition(oldIndex, newIndex)
 
         currentStepIndex = newIndex
@@ -204,12 +196,6 @@ class FloatingViewService: Service() {
     }
 
     private fun exitInteractiveMode() {
-
-       /* Coroutines.io {
-            lessonRepository.teste1(lessons);
-        }*/
-
-
         Intent(this, HomeActivity::class.java).also {
 
             it.addFlags(FLAG_ACTIVITY_NEW_TASK)
