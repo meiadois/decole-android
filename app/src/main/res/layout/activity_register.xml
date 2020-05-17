@@ -24,20 +24,94 @@
             android:background="#BF34494F"
             android:orientation="horizontal" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimaryDarker"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/panel_guideline_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".0">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/image_guideline_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".25" />
+
+            <ImageView
+                android:id="@+id/top_logo"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_decole_verde"
+                app:layout_constraintBottom_toTopOf="@+id/image_guideline_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_mdi_back"
+                app:layout_constraintBottom_toTopOf="@+id/image_guideline_bottom"
+                app:layout_constraintEnd_toStartOf="@+id/top_logo"
+                app:layout_constraintHorizontal_bias=".3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/image_guideline_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.75" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/panel_guideline_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".1" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            app:layout_constraintVertical_bias="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_register_username_input"
+                style="@style/normal_input_single_layout"
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                android:hint="@string/ask_for_nickname">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_register_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.name}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_register_email_input"
                 style="@style/normal_input_single_layout"
                 android:layout_marginStart="48dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="48dp"
                 android:hint="@string/ask_for_register_email">
 
@@ -49,21 +123,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_register_username_input"
-                style="@style/normal_input_single_layout"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="48dp"
-                android:hint="@string/ask_for_nickname">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_register_username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@={viewModel.name}" />
-
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_register_password_input"

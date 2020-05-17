@@ -40,23 +40,31 @@ class WelcomeSlideActivity : AppCompatActivity() {
         })
 
         btn_next.setOnClickListener {
-            confirmSelection()
+            if (btn_next.text == getString(R.string.next)) {
+                view_pager.currentItem = pageSelected + 1
+            } else callNextActivity()
+
         }
     }
 
-    private fun confirmSelection() {
-//        if (pageSelected == 0) {
+    private fun callNextActivity() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finish()
-//        }
     }
 
     private fun selectPage(position: Int) {
-
-//        btn_next.isEnabled = position == 0
-
         pageSelected = position
+        when(position){
+            2 -> btn_next.text = getString(R.string.start)
+            else -> btn_next.text = getString(R.string.next)
+        }
+    }
+
+    private fun nextActivity() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     inner class WelcomeSlideAdapter(fm: FragmentManager) :

@@ -38,6 +38,10 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
         }
 
         registerViewModel.authListener = this
+
+        btn_back.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     override fun onStarted() {
