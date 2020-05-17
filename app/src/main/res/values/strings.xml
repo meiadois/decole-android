@@ -6,6 +6,8 @@
     <string name="skip"><u>Pular</u></string>
     <string name="default_font">sans-serif-light</string>
     <string name="search">Buscar</string>
+    <string name="route_access_denied">Você não tem acesso a essa rota</string>
+    <string name="ask_again_for_overlay_permission">Para seguir adiante, você precisa clicar no botão e realizar a permissão.</string>
 
     <!-- Welcome -->
     <string name="welcome_info_label">Massa! Vamos decolar seu negócio no mundo digital, e para aumentar suas vendas podemos usar as <b>redes sociais</b>, ou uma <b>plataforma própria</b>.</string>
@@ -17,6 +19,12 @@
     <string name="ask_for_overlay_permission">
         As próximas etapas serão <b>interativas</b>, continue usando seu aparelho normalmente enquanto segue os passos do nosso assistente na tela.
     </string>
+
+    <!-- Finished Route Activity -->
+    <string name="finished_route_praise">
+        <b>Parabéns!</b> Você concluiu esta lição. Que tal continuar avançando?
+    </string>
+
 
     <!-- Welcome Slide Activity -->
     <string name="welcome_slide_title">Podemos te ajudar de várias formas!</string>
@@ -41,4 +49,5 @@
     <string name="have_instagram_account_question">Possui uma conta para seu negócio?</string>
     <string name="has_no_account">Não possuo conta</string>
     <string name="has_account">Possuo conta</string>
+    <string name="complete_lesson_error">Houve um erro ao processar a avaliação</string>
 </resources>

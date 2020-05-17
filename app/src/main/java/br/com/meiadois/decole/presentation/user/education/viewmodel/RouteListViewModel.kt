@@ -11,12 +11,12 @@ import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.lazyDeferred
 
 class RouteListViewModel(
-    private val repository: RouteRepository,
+    private val routeRepository: RouteRepository,
     private val lessonRepository: LessonRepository
 ) : ViewModel() {
 
     val routes by lazyDeferred {
-        repository.getRoutes()
+        routeRepository.getRoutes()
     }
 
     fun onItemClick(item: Route, view: View) {
@@ -29,4 +29,7 @@ class RouteListViewModel(
         }
     }
 
+    fun onListRefresh() = Coroutines.io {
+        routeRepository.fetchRoutes()
+    }
 }
