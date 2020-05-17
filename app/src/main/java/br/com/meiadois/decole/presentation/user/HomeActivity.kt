@@ -1,5 +1,6 @@
 package br.com.meiadois.decole.presentation.user
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.presentation.user.account.AccountActivity
 import br.com.meiadois.decole.presentation.user.education.EducationHomeTopFragment
 import br.com.meiadois.decole.presentation.user.education.RouteListFragment
 import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeBottomFragment
@@ -31,6 +33,13 @@ class HomeActivity : AppCompatActivity() {
         bottom_view_pager.addOnPageChangeListener(CustomOnPageChangeListener(supportFragmentManager))
 
         tab_layout.setupWithViewPager(bottom_view_pager)
+
+    /*    account_configuration_button.setOnClickListener {
+            Intent(this, AccountActivity::class.java).also {
+                startActivity(it)
+            }
+        }
+     */
     }
 
     override fun onBackPressed() {

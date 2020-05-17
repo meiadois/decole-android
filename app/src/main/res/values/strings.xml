@@ -71,4 +71,8 @@
     <string name="account_company_mail_hint">e-mail para contato</string>
     <string name="save">Salvar</string>
 
+    <!--Partnership-->
+    <string name="partnership_no_account">Para habilitar esse ferramenta, você precisa ativar o descobrimento de parceiros na tela de configurações e ter seu perfil preenchido</string>
+    <string name="partner_incomplete_register">Você precisa definir como você aparece para os outros usuários</string>
+
 </resources>

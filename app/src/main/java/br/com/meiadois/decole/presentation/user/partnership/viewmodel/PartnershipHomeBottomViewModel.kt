@@ -20,6 +20,5 @@ class PartnershipHomeBottomViewModel(
             partnershipLiveData.value = userRepository.listUserMatches(companyId).toMatchItemList(companyId)
         }
     }
-
     suspend fun getUserCompany() : Company = userRepository.getUserCompany().toCompanyModel()
 }
