@@ -6,13 +6,10 @@ import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.preferences.PreferenceProvider
-import br.com.meiadois.decole.data.repository.CompanyRepository
-import br.com.meiadois.decole.data.repository.LessonRepository
-import br.com.meiadois.decole.data.repository.RouteRepository
-import br.com.meiadois.decole.data.repository.StepRepository
-import br.com.meiadois.decole.data.repository.UserRepository
+import br.com.meiadois.decole.data.repository.*
 import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFactory
+import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModelFactory
@@ -38,6 +35,7 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { RouteRepository(instance(), instance(), instance()) }
         bind() from singleton { LessonRepository(instance(), instance(), instance()) }
         bind() from singleton { CompanyRepository(instance()) }
+        bind() from singleton { SegmentRepository(instance()) }
         bind() from singleton { StepRepository(instance()) }
         bind() from singleton { LoginViewModelFactory(instance()) }
         bind() from singleton { RegisterViewModelFactory(instance()) }
@@ -46,5 +44,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { StartInteractiveModeViewModelFactory(instance()) }
         bind() from singleton { PartnershipHomeBottomViewModelFactory(instance()) }
         bind() from singleton { PartnershipPopUpViewModelFactory(instance()) }
+        bind() from singleton { AccountViewModelFactory(instance(), instance()) }
     }
 }

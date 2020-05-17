@@ -5,6 +5,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class SegmentResponse(
+    @Json(name = "id")
+    val id: Int?,
     @Json(name = "name")
     val name: String
 )

@@ -12,6 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/colorPrimary"
+        android:id="@+id/account_root_layout"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
@@ -121,7 +122,7 @@
                             android:id="@+id/input_me_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.userData.name}" />
+                            android:text="@={viewModel.userData.name}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -137,8 +138,9 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_me_mail"
                             android:layout_width="match_parent"
+                            android:inputType="textEmailAddress"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.userData.email}" />
+                            android:text="@={viewModel.userData.email}" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
                 <!-- User Section -->
@@ -166,7 +168,9 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginTop="16dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingStart="48dp"
+                    android:paddingEnd="48dp">
 
                     <RelativeLayout
                         app:layout_constraintTop_toBottomOf="@+id/account_company_hearder"
@@ -174,25 +178,43 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:layout_marginVertical="4dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
+                        android:layout_marginVertical="4dp">
                         <TextView
                             android:layout_alignParentStart="true"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="@string/be_shown_in_partner_research"
-                            android:textStyle="normal" />
+                            android:textStyle="bold" />
 
                         <Switch
                             android:onCheckedChanged="@{(button, bool) -> viewModel.onSearchVisibilityChange(bool)}"
-                            android:checked="@={viewModel.companyData.shownInPartnersResearch}"
+                            android:checked="@{viewModel.companyData.visible}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:paddingStart="0dp"
                             android:paddingEnd="10dp" />
                     </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/account_company_segment_layout"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="4dp"
+                        android:layout_width="match_parent"
+                        android:orientation="vertical">
+                        <TextView
+                            android:text="@string/account_company_segment_hint"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_marginStart="8dp"
+                            android:id="@+id/account_company_segment_hint"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:text="Prestação de serviços"
+                            tools:text="SEGMENT_NAME"/>
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -201,31 +223,13 @@
                         android:id="@+id/account_company_name_input"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
+                        android:layout_marginVertical="4dp">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@={viewModel.companyData.name}" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        app:layout_constraintTop_toBottomOf="@+id/textView"
-                        android:hint="@string/account_company_segment_hint"
-                        android:id="@+id/account_company_segment_input"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/input_company_segment"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{viewModel.companyData.segmentId}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -235,9 +239,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
+                        android:layout_marginVertical="4dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_description"
                             android:layout_width="match_parent"
@@ -252,9 +254,7 @@
                         android:id="@+id/account_company_cep_input"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
+                        android:layout_marginVertical="4dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_cep"
                             android:layout_width="match_parent"
@@ -264,14 +264,72 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:hint="@string/account_company_address_hint"
+                        android:id="@+id/account_company_street_input"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_street"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.street}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:hint="@string/account_company_neighborhood_hint"
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:id="@+id/account_company_neighborhood_input"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_neighborhood"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.neighborhood}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:hint="@string/account_company_city_hint"
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:id="@+id/account_company_city_input"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.city}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:hint="@string/account_company_state_hint"
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:id="@+id/account_company_state_input"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout"
+                        android:layout_marginVertical="4dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_company_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.companyData.state}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
                         android:hint="@string/account_company_cnpj_hint"
                         app:layout_constraintStart_toStartOf="parent"
                         android:id="@+id/account_company_cnpj_input"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
+                        android:layout_marginVertical="4dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_cnpj"
                             android:layout_width="match_parent"
@@ -286,14 +344,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
+                        android:layout_marginVertical="4dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_telephone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@={viewModel.companyData.telephone}" />
+                            android:text="@={viewModel.companyData.cellphone}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -303,15 +359,84 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
+                        android:layout_marginVertical="4dp">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_mail"
                             android:layout_width="match_parent"
+                            android:inputType="textEmailAddress"
                             android:layout_height="wrap_content"
                             android:text="@={viewModel.companyData.email}" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginVertical="8dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="9">
+                            <TextView
+                                android:text="@string/account_company_thumbnail"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:textStyle="bold"/>
+                            <TextView
+                                tools:text="logo_da_minha_empresa_final_final_v2.png"
+                                android:text="logo_da_minha_empresa_final_final_v2.png"
+                                android:id="@+id/account_company_thumbnail_name"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="5dp"
+                                android:singleLine="true"
+                                android:ellipsize="end"/>
+                        </LinearLayout>
+                        <ImageView
+                            android:src="@drawable/ic_dark_dot_timeline"
+                            android:id="@+id/account_company_thumbnail_image"
+                            android:layout_height="match_parent"
+                            android:layout_width="40sp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginVertical="8dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="9">
+                            <TextView
+                                android:text="@string/account_company_banner"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:textStyle="bold"/>
+                            <TextView
+                                tools:text="promo_da_minha_empresa_final_final_v2.png"
+                                android:text="promo_da_minha_empresa_final_final_v2.png"
+                                android:id="@+id/account_company_banner_name"
+                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="5dp"
+                                android:singleLine="true"
+                                android:ellipsize="end"/>
+                        </LinearLayout>
+                        <ImageView
+                            android:src="@drawable/ic_dark_dot_timeline"
+                            android:id="@+id/account_company_banner_image"
+                            android:layout_height="match_parent"
+                            android:layout_width="40sp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
 
                 </LinearLayout>
                 <!-- Company Section -->
@@ -321,10 +446,10 @@
                     android:onClick="@{viewModel::onSaveButtonClick}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="48dp"
+                    android:layout_marginHorizontal="48dp"
+                    android:layout_marginBottom="36dp"
                     android:layout_marginTop="36dp"
-                    android:layout_marginEnd="48dp"
-                    style="@style/btn_secondary"
+                    style="@style/btn_primary"
                     android:text="@string/save"
                     android:id="@+id/btn_save"/>
             </LinearLayout>

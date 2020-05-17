@@ -56,6 +56,10 @@ interface DecoleClient {
     @GET("likes")
     suspend fun listUserMatches(@Query("sender_id") companyId: Int, @Query("status") status :String = "accepted"): Response<List<LikeResponse>>
 
+    @Headers("Content-Type: application/json")
+    @GET("segments")
+    suspend fun getAllSegments(): Response<List<SegmentResponse>>
+
     companion object {
         operator fun invoke(
             interceptor: NetworkConnectionInterceptor,

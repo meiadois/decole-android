@@ -63,12 +63,18 @@
     <string name="account_company_hearder_text">Minha Empresa</string>
     <string name="be_shown_in_partner_research">Aparecer na busca de parceiros</string>
     <string name="account_company_name_hint">nome da minha empresa</string>
-    <string name="account_company_segment_hint">segmento da minha empresa</string>
+    <string name="account_company_segment_hint">Segmento da minha empresa</string>
     <string name="account_company_description_hint">breve descrição da minha empresa</string>
     <string name="account_company_cep_hint">CEP</string>
     <string name="account_company_cnpj_hint">CNPJ da minha empresa</string>
     <string name="account_company_telephone_hint">telefone da minha empresa</string>
     <string name="account_company_mail_hint">e-mail para contato</string>
     <string name="save">Salvar</string>
+    <string name="account_company_address_hint">logradouro/rua</string>
+    <string name="account_company_neighborhood_hint">bairro</string>
+    <string name="account_company_city_hint">cidade</string>
+    <string name="account_company_state_hint">estado</string>
+    <string name="account_company_thumbnail">Logo da Empresa</string>
+    <string name="account_company_banner">Imagem promocional</string>
 
 </resources>

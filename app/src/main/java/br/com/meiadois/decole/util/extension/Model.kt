@@ -8,6 +8,7 @@ import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.data.model.Segment
 import br.com.meiadois.decole.data.network.response.*
+import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
 import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
 import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 
@@ -60,25 +61,23 @@ fun List<Lesson>.toLessonItemList(): List<LessonItem> {
     }
 }
 
+fun List<SegmentResponse>.toSegmentModelList(): List<Segment> {
+    return this.map {
+        it.toSegmentModel()
+    }
+}
+
 fun SegmentResponse.toSegmentModel() = Segment(this.name)
 
 fun CompanyResponse.toCompanyModel() :Company {
     return Company(
-        this.id,
-        this.name,
-        this.cep,
-        this.thumbnail,
-        this.banner,
-        this.cnpj,
-        this.cellphone,
-        this.email,
-        this.description,
-        this.visible,
-        this.city,
-        this.neighborhood,
-        this.state,
-        this.street,
-        this.segment?.toSegmentModel()
+        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, state, street, segment?.toSegmentModel()
+    )
+}
+
+fun CompanyResponse.toCompanyAccountData(): CompanyAccountData {
+    return CompanyAccountData(
+        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, state, street, segmentName = segment?.name
     )
 }
 

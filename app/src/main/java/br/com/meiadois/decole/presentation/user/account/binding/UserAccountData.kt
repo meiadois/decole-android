@@ -1,8 +1,8 @@
 package br.com.meiadois.decole.presentation.user.account.binding
 
 data class UserAccountData(
-    val name : String = "",
-    val email : String = "",
-    val newPassword : String = "",
-    val confirmPassword : String = ""
+    var name : String = "",
+    var email : String = "",
+    var newPassword : String = "",
+    var confirmPassword : String = ""
 )
