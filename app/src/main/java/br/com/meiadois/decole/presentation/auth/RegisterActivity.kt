@@ -3,6 +3,7 @@ package br.com.meiadois.decole.presentation.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -38,6 +39,14 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
         }
 
         registerViewModel.authListener = this
+
+        input_register_confirm_password.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                registerViewModel.onRegisterButtonClick(v)
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
 
         btn_back.setOnClickListener {
             onBackPressed()

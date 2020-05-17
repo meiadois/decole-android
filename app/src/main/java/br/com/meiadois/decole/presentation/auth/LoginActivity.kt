@@ -3,6 +3,7 @@ package br.com.meiadois.decole.presentation.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -45,6 +46,14 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
                 startNextActivity()
             }
         })
+
+        input_password.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                loginViewModel.onLoginButtonClick(v)
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
     }
 
     override fun onStarted() {
