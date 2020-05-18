@@ -50,7 +50,7 @@ class RouteListFragment : Fragment(), KodeinAware {
     private fun bindUi() = Coroutines.main {
         swipe_refresh.setOnRefreshListener {
             mFragmentViewModel.onListRefresh().invokeOnCompletion {
-                swipe_refresh.isRefreshing = false
+                swipe_refresh?.isRefreshing = false
             }
         }
         progress_bar.visibility = View.VISIBLE

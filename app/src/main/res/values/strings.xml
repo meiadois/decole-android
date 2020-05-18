@@ -5,13 +5,14 @@
     <string name="next">Prosseguir</string>
     <string name="start">Começar</string>
     <string name="skip"><u>Pular</u></string>
+    <string name="logout"><u>Sair</u></string>
     <string name="default_font">sans-serif-light</string>
     <string name="search">Buscar</string>
     <string name="route_access_denied">Você não tem acesso a essa rota</string>
     <string name="ask_again_for_overlay_permission">Para seguir adiante, você precisa clicar no botão e realizar a permissão.</string>
 
     <!-- Welcome -->
-    <string name="welcome_info_label">Massa! Vamos decolar seu negócio no mundo digital, e para aumentar suas vendas podemos usar as <b>redes sociais</b>, ou uma <b>plataforma própria</b>.</string>
+    <string name="welcome_info_label">Massa! Vamos decolar seu negócio no mundo digital, e para aumentar suas vendas podemos usar as <b>redes sociais</b>, <b>plataformas de vendas on-line</b> e <b>parcerias com outros empreendedores</b>.</string>
 
     <!-- Route Detais Activity -->
     <string name="route_details_progress_label" type="id">%d/%d PASSOS</string>

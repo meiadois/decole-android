@@ -52,9 +52,7 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             onBackPressed()
         }
         btn_jump.setOnClickListener {
-
             mViewModel.onJumpButtonClick()
-
             onBackPressed()
         }
 
@@ -91,9 +89,11 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
         if (boolean) {
             progress_bar.visibility = View.VISIBLE
             root_content.visibility = View.GONE
+            btn_jump.isEnabled = false
         } else {
             progress_bar.visibility = View.GONE
             root_content.visibility = View.VISIBLE
+            btn_jump.isEnabled = true
         }
     }
 

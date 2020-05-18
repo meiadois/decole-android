@@ -41,7 +41,7 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
         registerViewModel.authListener = this
 
         input_register_confirm_password.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 registerViewModel.onRegisterButtonClick(v)
                 return@setOnEditorActionListener true
             }
@@ -57,10 +57,11 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
         toggleLoading(true)
     }
 
-    override fun onSuccess(user: User) {
+    override fun onSuccess(user: User, message: String?) {
         toggleLoading(false)
         Intent(this, WelcomeInfoActivity::class.java).also {
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            it.putExtra("message", message)
             startActivity(it)
         }
     }

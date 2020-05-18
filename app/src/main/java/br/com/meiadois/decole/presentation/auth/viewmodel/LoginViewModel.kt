@@ -39,7 +39,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
                 res.user?.let {
                     userRepository.saveUser(it.parseToUserEntity())
-                    authListener?.onSuccess(it.parseToUserEntity())
+                    authListener?.onSuccess(it.parseToUserEntity(), res.message)
                     return@main
                 }
                 authListener?.onFailure(res.message!!)

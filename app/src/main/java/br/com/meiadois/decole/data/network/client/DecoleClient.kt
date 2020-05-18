@@ -44,6 +44,10 @@ interface DecoleClient {
     @POST("me/done_lessons/{id}")
     suspend fun completeLesson(@Path("id") lessonId: Long): Response<CompleteLessonResponse>
 
+    @Headers("Content-Type: application/json")
+    @POST("me/introduce")
+    suspend fun introduce(): Response<IntroduceResponse>
+
     companion object {
         operator fun invoke(
             interceptor: NetworkConnectionInterceptor,

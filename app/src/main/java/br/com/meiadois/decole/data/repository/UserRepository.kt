@@ -6,6 +6,7 @@ import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.request.RegisterRequest
+import br.com.meiadois.decole.data.network.response.IntroduceResponse
 import br.com.meiadois.decole.data.network.response.LoginResponse
 import br.com.meiadois.decole.data.network.response.RegisterResponse
 
@@ -23,6 +24,16 @@ class UserRepository(
     suspend fun register(username: String, email: String, password: String): RegisterResponse {
         return callClient {
             client.register(RegisterRequest(username, email, password))
+        }
+    }
+
+    suspend fun introduce(): IntroduceResponse {
+        db.getUserDao().updateIntroducedStatus(
+            db.getUserDao().findJWT()!!,
+            true
+        )
+        return callClient {
+            client.introduce()
         }
     }
 
