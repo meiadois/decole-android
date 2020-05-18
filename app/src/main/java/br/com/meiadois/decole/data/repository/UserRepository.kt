@@ -34,9 +34,9 @@ class UserRepository(
         }
     }
 
-    suspend fun listUserMatches(companyId: Int): List<LikeResponse> {
+    suspend fun listUserMatches(): List<LikeResponse> {
         return callClient {
-            client.listUserMatches(companyId)
+            client.listUserMatches()
         }
     }
 

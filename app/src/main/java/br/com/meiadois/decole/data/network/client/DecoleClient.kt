@@ -54,8 +54,8 @@ interface DecoleClient {
     suspend fun getCompanyById(@Path("id") companyId: Int): Response<CompanyResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("likes")
-    suspend fun listUserMatches(@Query("sender_id") companyId: Int, @Query("status") status :String = "accepted"): Response<List<LikeResponse>>
+    @GET("me/likes")
+    suspend fun listUserMatches(@Query("status") status :String = "accepted"): Response<List<LikeResponse>>
 
     @Headers("Content-Type: application/json")
     @GET("segments")

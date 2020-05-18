@@ -14,10 +14,8 @@ class PartnershipHomeBottomViewModel(
     val partnershipLiveData : MutableLiveData<List<Like>> = MutableLiveData()
 
     fun getPartnerships(companyId: Int){
-        // TODO: fix the route called here, maybe you will need to change a parameter or the entire route
-        //  (need to search for matches that the recipient or sender is the current user company)
         Coroutines.main {
-            partnershipLiveData.value = userRepository.listUserMatches(companyId).toMatchItemList(companyId)
+            partnershipLiveData.value = userRepository.listUserMatches().toMatchItemList(companyId)
         }
     }
 
