@@ -54,6 +54,8 @@
     <string name="undo_partnership">Desfazer Parceria</string>
     <string name="confirm">Confirmar</string>
     <string name="cancel">Cancelar</string>
+    <string name="undo_partnership_error_message">Falha ao desfazer parceria.</string>
+    <string name="undo_partnership_success_message">A parceria foi desfeita.</string>
 
     <!-- Account -->
     <string name="back_arrow_content_description">Voltar</string>

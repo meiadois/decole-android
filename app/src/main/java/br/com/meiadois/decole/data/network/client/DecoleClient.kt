@@ -2,6 +2,7 @@ package br.com.meiadois.decole.data.network.client
 
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
+import br.com.meiadois.decole.data.network.request.LikeRequest
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.request.RegisterRequest
 import br.com.meiadois.decole.data.network.response.*
@@ -59,6 +60,10 @@ interface DecoleClient {
     @Headers("Content-Type: application/json")
     @GET("segments")
     suspend fun getAllSegments(): Response<List<SegmentResponse>>
+
+    @Headers("Content-Type: application/json")
+    @PUT("likes/{id}")
+    suspend fun undoPartnership(@Path("id") likeId: Int, @Body request: LikeRequest): Response<LikePutResponse>
 
     companion object {
         operator fun invoke(

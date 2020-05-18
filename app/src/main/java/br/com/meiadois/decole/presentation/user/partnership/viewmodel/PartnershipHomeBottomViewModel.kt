@@ -21,5 +21,9 @@ class PartnershipHomeBottomViewModel(
         }
     }
 
+    fun removeLike(likeId: Int){
+        partnershipLiveData.value = partnershipLiveData.value?.filter { like -> like.id != likeId }
+    }
+
     suspend fun getUserCompany() : Company = userRepository.getUserCompany().toCompanyModel()
 }

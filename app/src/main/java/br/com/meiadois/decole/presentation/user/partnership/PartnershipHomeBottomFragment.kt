@@ -43,9 +43,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel = ViewModelProvider(this, factory).get(PartnershipHomeBottomViewModel::class.java)
-
         init(view)
     }
 
@@ -72,7 +70,9 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 with(partner_recycler_view) {
                     layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
                     setHasFixedSize(true)
-                    adapter = PartnerRecyclerAdapter(it, view.context)
+                    adapter = PartnerRecyclerAdapter(it, view.context){
+                        onPartnerItemClick(view.context, it)
+                    }
                 }
             }
         })
@@ -92,7 +92,27 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         }
     }
 
-    class PartnerRecyclerAdapter(private val dataset: List<Like>, private val context: Context) :
+    private fun onPartnerItemClick(context: Context, like: Like){
+        val intent : Intent = PartnershipPopUpActivity.getStartIntent(
+            context, like.id, like.partnerCompany.id, like.userCompany.id, like.isSender
+        )
+        startActivityForResult(intent, UNDO_PARTNERSHIP_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            UNDO_PARTNERSHIP_REQUEST_CODE -> when (resultCode) {
+                UNDO_PARTNERSHIP_DELETED_RESULT_CODE -> {
+                    data?.let {
+                        viewModel.removeLike(it.getIntExtra(UNDO_PARTNERSHIP_DELETED_TAG, 0))
+                    }
+                }
+            }
+        }
+    }
+
+    class PartnerRecyclerAdapter(private val dataset: List<Like>, private val context: Context,
+        private val onItemClickListener: ((like: Like) -> Unit)) :
         RecyclerView.Adapter<PartnerRecyclerAdapter.PartnerViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartnerViewHolder {
@@ -100,9 +120,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 .from(context)
                 .inflate(R.layout.card_partner, parent, false)
 
-            return PartnerViewHolder(
-                view
-            )
+            return PartnerViewHolder(view, onItemClickListener)
         }
 
         override fun getItemCount(): Int = dataset.size
@@ -112,22 +130,24 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             holder.bindView(partner)
         }
 
-        class PartnerViewHolder(parent: View) : RecyclerView.ViewHolder(parent) {
+        class PartnerViewHolder(private val parent: View, private val onItemClickListener: ((like: Like) -> Unit)) : RecyclerView.ViewHolder(parent) {
             private val segment = parent.text_partner_segment
             private val name = parent.text_partner_name
             private val image = parent.image_partner
-            private val card = parent
 
             fun bindView(like: Like) {
+                Glide.with(parent).load(like.partnerCompany.thumbnail).apply(RequestOptions.circleCropTransform()).into(image)
                 segment.text = like.partnerCompany.segment?.name
-                Glide.with(card).load(like.partnerCompany.thumbnail).apply(RequestOptions.circleCropTransform()).into(image)
                 name.text = like.partnerCompany.name
 
-                card.setOnClickListener {
-                    val intent : Intent = PartnershipPopUpActivity.getStartIntent(card.context, like.partnerCompany.id)
-                    card.context.startActivity(intent)
-                }
+                parent.setOnClickListener { onItemClickListener.invoke(like) }
             }
         }
+    }
+
+    companion object{
+        private const val UNDO_PARTNERSHIP_REQUEST_CODE = 11352
+        const val UNDO_PARTNERSHIP_DELETED_RESULT_CODE = 11353
+        const val UNDO_PARTNERSHIP_DELETED_TAG = "DELETED_LIKE_ID"
     }
 }

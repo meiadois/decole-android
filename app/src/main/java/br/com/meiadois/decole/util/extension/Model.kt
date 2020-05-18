@@ -83,11 +83,26 @@ fun CompanyResponse.toCompanyAccountData(): CompanyAccountData {
 
 fun List<LikeResponse>.toMatchItemList(userCompanyId: Int): List<Like> {
     return this.map {
-        val partnerCompany = if (it.sender_company.id == userCompanyId) it.recipient_company else it.sender_company
+        val userCompany: CompanyResponse
+        val partnerCompany: CompanyResponse
+        val isSender: Boolean
+
+        if (it.sender_company.id == userCompanyId){
+            partnerCompany = it.recipient_company
+            userCompany = it.sender_company
+            isSender = true
+        }else{
+            partnerCompany = it.sender_company
+            userCompany = it.recipient_company
+            isSender = false
+        }
+
         Like(
             it.id,
             it.status,
-            partnerCompany.toCompanyModel()
+            partnerCompany.toCompanyModel(),
+            userCompany.toCompanyModel(),
+            isSender
         )
     }
 }

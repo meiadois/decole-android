@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
@@ -18,10 +17,15 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModelFactory
+import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.extension.longSnackbar
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.popupwindow_partner.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import java.lang.Exception
 
 class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     override val kodein by kodein()
@@ -34,14 +38,52 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         setContentView(R.layout.popupwindow_partner)
 
         val bundle = intent.extras
+        val likeId : Int = bundle?.getInt(EXTRA_LIKE_ID, -1) ?: -1
         val partnerId : Int = bundle?.getInt(EXTRA_PARTNER_ID, -1) ?: -1
+        val userCompanyId : Int = bundle?.getInt(EXTRA_USER_COMPANY_ID, -1) ?: -1
+        val isUserSender : Boolean = bundle?.getBoolean(EXTRA_IS_USER_SENDER, false) ?: false
 
         viewModel = ViewModelProvider(this, factory).get(PartnershipPopUpViewModel::class.java)
+
+        getCompany(partnerId)
 
         popup_window_close_button.setOnClickListener { onBackPressed() }
         setBackgroundStartFadeAnimation()
         setStartFadeAnimation()
 
+        setUndoPartnershipListener(likeId, partnerId, userCompanyId, isUserSender)
+    }
+
+    private fun setUndoPartnershipListener(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender : Boolean){
+        popup_window_button_undo_partnership.setOnClickListener{
+            Coroutines.main{
+                try{
+                    viewModel.undoPartnership(likeId,
+                        if (isUserSender) userCompanyId else partnerId,
+                        if (isUserSender) partnerId else userCompanyId
+                    )
+                    showSuccessSnackbar(likeId)
+                }catch (ex: Exception){
+                    popup_window_background.longSnackbar(getString(R.string.undo_partnership_error_message))
+                }
+            }
+        }
+    }
+
+    private fun showSuccessSnackbar(likeId: Int){
+        popup_window_background.longSnackbar(getString(R.string.undo_partnership_success_message)){
+            it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    val nIntent = Intent()
+                    nIntent.putExtra(PartnershipHomeBottomFragment.UNDO_PARTNERSHIP_DELETED_TAG, likeId)
+                    setResult(PartnershipHomeBottomFragment.UNDO_PARTNERSHIP_DELETED_RESULT_CODE, nIntent)
+                    onBackPressed()
+                }
+            })
+        }
+    }
+
+    private fun getCompany(partnerId: Int){
         // TODO: add listeners to cell and email fields to call third party apps
         viewModel.companyLiveData.observe(this, Observer {
             it?.let {
@@ -99,12 +141,18 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     }
 
     companion object {
+        private const val EXTRA_USER_COMPANY_ID = "USER_COMPANY_ID"
+        private const val EXTRA_IS_USER_SENDER = "IS_USER_SENDER"
         private const val EXTRA_PARTNER_ID = "PARTNER_ID"
+        private const val EXTRA_LIKE_ID = "LIKE_ID"
         private const val ALPHA_VALUE = 100
 
-        fun getStartIntent(context: Context, partnerId: Int) : Intent {
+        fun getStartIntent(context: Context, likeId: Int, partnerId: Int, userCompanyId: Int, userIsSender: Boolean) : Intent {
             return Intent(context, PartnershipPopUpActivity::class.java).apply {
+                putExtra(EXTRA_USER_COMPANY_ID, userCompanyId)
+                putExtra(EXTRA_IS_USER_SENDER, userIsSender)
                 putExtra(EXTRA_PARTNER_ID, partnerId)
+                putExtra(EXTRA_LIKE_ID, likeId)
             }
         }
     }

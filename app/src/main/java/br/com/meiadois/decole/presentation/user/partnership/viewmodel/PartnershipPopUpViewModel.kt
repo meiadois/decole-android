@@ -17,4 +17,6 @@ class PartnershipPopUpViewModel(
             companyLiveData.value = companyRepository.getCompanyById(companyId)
         }
     }
+
+    suspend fun undoPartnership(likeId: Int, senderId: Int, recipientId: Int) = companyRepository.undoPartnership(likeId, senderId, recipientId)
 }
