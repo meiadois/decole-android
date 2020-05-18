@@ -14,6 +14,7 @@ import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetails
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModelFactory
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -45,5 +46,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { PartnershipHomeBottomViewModelFactory(instance()) }
         bind() from singleton { PartnershipPopUpViewModelFactory(instance()) }
         bind() from singleton { AccountViewModelFactory(instance(), instance()) }
+        bind() from singleton { PartnershipHomeTopViewModelFactory(instance()) }
     }
 }

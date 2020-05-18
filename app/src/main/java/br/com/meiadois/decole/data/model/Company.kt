@@ -17,3 +17,4 @@ data class Company(
     val street: String,
     val segment: Segment?
 )
+

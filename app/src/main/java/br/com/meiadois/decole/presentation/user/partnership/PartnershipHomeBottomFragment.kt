@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -58,7 +59,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             }catch (ex: Exception){
                 showGenericErrorMessage()
             }finally {
-                progress_bar_parent_layout.visibility = View.INVISIBLE
+                progress_bar_parent_layout?.visibility = View.INVISIBLE
             }
         }
     }
@@ -79,8 +80,10 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         viewModel.getPartnerships(companyId)
     }
 
-    private fun showInviteToRegister(){
-        // TODO not implemented yet, need to show a short message inviting user to create a company profile
+     fun showInviteToRegister(){
+        fragment_bottom_root_layout.removeAllViews()
+        layoutInflater.inflate(R.layout.fragment_partnership_no_account_bottom, fragment_bottom_root_layout)
+
     }
 
     private fun showGenericErrorMessage(){
