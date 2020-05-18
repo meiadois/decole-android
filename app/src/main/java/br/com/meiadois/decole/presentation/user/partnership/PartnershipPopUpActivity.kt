@@ -7,6 +7,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -25,7 +26,6 @@ import kotlinx.android.synthetic.main.popupwindow_partner.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
-import java.lang.Exception
 
 class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     override val kodein by kodein()
@@ -52,6 +52,25 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         setStartFadeAnimation()
 
         setUndoPartnershipListener(likeId, partnerId, userCompanyId, isUserSender)
+        setOpenDialAppListener()
+        setOpenMailAppListener()
+    }
+
+    private fun setOpenMailAppListener() {
+        mail_contact_layout.setOnClickListener{
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(popup_window_mail.text.toString()))
+            startActivity(Intent.createChooser(intent, "Send Email"))
+        }
+    }
+
+    private fun setOpenDialAppListener() {
+        wpp_contact_layout.setOnClickListener{
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:" + popup_window_phone.text.toString())
+            startActivity(intent)
+        }
     }
 
     private fun setUndoPartnershipListener(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender : Boolean){
