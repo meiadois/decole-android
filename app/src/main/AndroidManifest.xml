@@ -17,6 +17,7 @@
         <activity android:name=".presentation.user.education.FinishedRouteActivity"/>
         <activity android:name=".presentation.user.education.RouteDetailsActivity" />
         <activity android:name=".presentation.user.HomeActivity" />
+        <activity android:name=".presentation.user.account.AccountActivity" />
         <activity android:name=".presentation.instagram.HasInstagramAccountActivity" />
         <activity android:name=".presentation.instagram.InstagramIntroActivity" />
         <activity android:name=".presentation.welcome.WelcomeSlideActivity" />

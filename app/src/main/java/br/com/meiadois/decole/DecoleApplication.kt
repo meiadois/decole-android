@@ -9,6 +9,7 @@ import br.com.meiadois.decole.data.preferences.PreferenceProvider
 import br.com.meiadois.decole.data.repository.*
 import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFactory
+import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.FinishedRouteViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteListViewModelFactory
