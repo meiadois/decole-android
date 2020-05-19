@@ -16,6 +16,7 @@ import android.widget.TextView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Step
 import br.com.meiadois.decole.presentation.user.HomeActivity
+import br.com.meiadois.decole.presentation.user.education.FinishedRouteActivity
 import br.com.meiadois.decole.presentation.user.education.RouteDetailsActivity
 
 class FloatingViewService : Service() {
@@ -199,9 +200,9 @@ class FloatingViewService : Service() {
     }
 
     private fun exitInteractiveMode() {
-        Intent(this, RouteDetailsActivity::class.java).also {
+        Intent(this, FinishedRouteActivity::class.java).also {
             it.addFlags(FLAG_ACTIVITY_NEW_TASK)
-            it.putExtra("itemId", routeParent)
+            it.putExtra("targetRouteParent", routeParent)
             it.putExtra("lessonDone", lessonClicked)
             startActivity(it)
             stopSelf()

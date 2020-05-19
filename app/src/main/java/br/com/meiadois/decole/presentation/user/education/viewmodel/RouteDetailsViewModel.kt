@@ -41,15 +41,4 @@ class RouteDetailsViewModel(
         }
     }
 
-    fun handleStart(lessonDone: Long) {
-        if (lessonDone != 0L) {
-            Coroutines.main {
-                lessonRepository.complete(lessonDone)
-                lessonRepository.fetchLessons(routeClicked.value!!)
-                routeRepository.fetchRoute(routeClicked.value!!)
-            }
-        }
-    }
-
-
 }

@@ -3,6 +3,7 @@ package br.com.meiadois.decole.presentation.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -13,6 +14,7 @@ import br.com.meiadois.decole.databinding.ActivityLoginBinding
 import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModel
 import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.user.HomeActivity
+import br.com.meiadois.decole.presentation.welcome.WelcomeInfoActivity
 import br.com.meiadois.decole.util.extension.longSnackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import org.kodein.di.KodeinAware
@@ -42,18 +44,26 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
         loginViewModel.getLoggedInUser().observe(this, Observer { user ->
             user?.let {
-                startNextActivity()
+                startNextActivity(user.introduced)
             }
         })
+
+        input_password.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                loginViewModel.onLoginButtonClick(v)
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
     }
 
     override fun onStarted() {
         toggleLoading(true)
     }
 
-    override fun onSuccess(user: User) {
+    override fun onSuccess(user: User, message: String?) {
         toggleLoading(false)
-        startNextActivity()
+        startNextActivity(user.introduced)
     }
 
     override fun onFailure(message: String?) {
@@ -75,11 +85,17 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
         }
     }
 
-    private fun startNextActivity() {
-        Intent(this, HomeActivity::class.java).also {
-            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(it)
-        }
+    private fun startNextActivity(introduced: Boolean) {
+        if (introduced)
+            Intent(this, HomeActivity::class.java).also {
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(it)
+            }
+        else
+            Intent(this, WelcomeInfoActivity::class.java).also {
+                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(it)
+            }
     }
 
 }

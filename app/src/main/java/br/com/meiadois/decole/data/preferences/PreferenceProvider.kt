@@ -49,4 +49,6 @@ class PreferenceProvider(
 
         return res.toLong()
     }
+
+    fun clear() = preference.edit().clear().apply()
 }

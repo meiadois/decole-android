@@ -3,12 +3,16 @@
     <!-- Common -->
     <string name="app_name">Decole</string>
     <string name="next">Prosseguir</string>
+    <string name="start">Começar</string>
     <string name="skip"><u>Pular</u></string>
+    <string name="logout"><u>Sair</u></string>
     <string name="default_font">sans-serif-light</string>
     <string name="search">Buscar</string>
+    <string name="route_access_denied">Você não tem acesso a essa rota</string>
+    <string name="ask_again_for_overlay_permission">Para seguir adiante, você precisa clicar no botão e realizar a permissão.</string>
 
     <!-- Welcome -->
-    <string name="welcome_info_label">Massa! Vamos decolar seu negócio no mundo digital, e para aumentar suas vendas podemos usar as <b>redes sociais</b>, ou uma <b>plataforma própria</b>.</string>
+    <string name="welcome_info_label">Massa! Vamos decolar seu negócio no mundo digital, e para aumentar suas vendas podemos usar as <b>redes sociais</b>, <b>plataformas de vendas on-line</b> e <b>parcerias com outros empreendedores</b>.</string>
 
     <!-- Route Detais Activity -->
     <string name="route_details_progress_label" type="id">%d/%d PASSOS</string>
@@ -18,20 +22,28 @@
         As próximas etapas serão <b>interativas</b>, continue usando seu aparelho normalmente enquanto segue os passos do nosso assistente na tela.
     </string>
 
+    <!-- Finished Route Activity -->
+    <string name="finished_route_praise">
+        <b>Parabéns!</b> Você concluiu esta lição. Que tal continuar avançando?
+    </string>
+
+
     <!-- Welcome Slide Activity -->
     <string name="welcome_slide_title">Podemos te ajudar de várias formas!</string>
-    <string name="education_slide_label">Podemos te ajudar a adequar seu perfil nas redes sociais, para engajar seu público e atrair potenciais clientes.</string>
-    <string name="marketplace_slide_label">Podemos te ajudar a trazer seu négocio para as principais plataformas de vendas no mundo digital.</string>
-    <string name="partnership_slide_label">Podemos aproximar você de outros micro empreendedores, para te ajudar a firmar parcerias.</string>
+    <string name="welcome_education_title">EDUCAÇÃO</string>
+    <string name="welcome_partnership_title">PARCERIAS</string>
+    <string name="education_slide_label">Podemos acompanhar você em <b>percursos</b> que pretendem demonstrar atitudes que podem impulsionar seu negócio nas mídias digitais.</string>
+    <string name="marketplace_slide_label">Vamos te acompanhar também em percursos que pretendem expor seu negócio nas maiores plataformas de vendas on-line.</string>
+    <string name="partnership_slide_label">E ainda podemos aproximar você de outros micro empreendedores, para te ajudar a firmar parcerias!</string>
     <string name="drag_more_options_slide">Arraste para o lado para mais informações!</string>
 
     <!-- Login/Registration -->
     <string name="ask_for_email">qual o seu e-mail?</string>
-    <string name="ask_for_password">insira sua senha</string>
+    <string name="ask_for_password">qual a sua senha?</string>
     <string name="have_no_account_question">Não possui conta?</string>
     <string name="ask_for_register_email">digite seu melhor email</string>
-    <string name="ask_for_nickname">como podemos te chamar?</string>
-    <string name="ask_for_new_password">escolha sua senha</string>
+    <string name="ask_for_nickname">seu nome (ex. Maria)</string>
+    <string name="ask_for_new_password">sua senha</string>
     <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
 
     <!-- Instagram -->
@@ -41,6 +53,7 @@
     <string name="have_instagram_account_question">Possui uma conta para seu negócio?</string>
     <string name="has_no_account">Não possuo conta</string>
     <string name="has_account">Possuo conta</string>
+    <string name="complete_lesson_error">Houve um erro ao processar a avaliação</string>
 
     <!-- Partnership Home BottomFragment -->
     <string name="getting_data_failed_error_message">Falha ao obter dados.</string>

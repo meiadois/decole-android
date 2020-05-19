@@ -65,6 +65,10 @@ interface DecoleClient {
     @PUT("likes/{id}")
     suspend fun undoPartnership(@Path("id") likeId: Int, @Body request: LikeRequest): Response<LikePutResponse>
 
+    @Headers("Content-Type: application/json")
+    @POST("me/introduce")
+    suspend fun introduce(): Response<IntroduceResponse>
+
     companion object {
         operator fun invoke(
             interceptor: NetworkConnectionInterceptor,

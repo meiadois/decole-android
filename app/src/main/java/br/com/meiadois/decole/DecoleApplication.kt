@@ -9,13 +9,16 @@ import br.com.meiadois.decole.data.preferences.PreferenceProvider
 import br.com.meiadois.decole.data.repository.*
 import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFactory
-import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
-import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModelFactory
-import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModelFactory
-import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModelFactory
+import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.FinishedRouteViewModelFactory
+import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteDetailsViewModelFactory
+import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteListViewModelFactory
+import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.StartInteractiveModeViewModelFactory
+import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeInfoViewModelFactory
+import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewModelFactory
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModelFactory
+import br.com.meiadois.decole.service.LogOutService
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -32,6 +35,7 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { DecoleClient(instance(), instance()) }
         bind() from singleton { AppDatabase(instance()) }
         bind() from singleton { PreferenceProvider(instance()) }
+        bind() from singleton { LogOutService(instance(), instance()) }
         bind() from singleton { UserRepository(instance(), instance()) }
         bind() from singleton { RouteRepository(instance(), instance(), instance()) }
         bind() from singleton { LessonRepository(instance(), instance(), instance()) }
@@ -47,5 +51,8 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { PartnershipPopUpViewModelFactory(instance()) }
         bind() from singleton { AccountViewModelFactory(instance(), instance()) }
         bind() from singleton { PartnershipHomeTopViewModelFactory(instance()) }
+        bind() from singleton { FinishedRouteViewModelFactory(instance(), instance()) }
+        bind() from singleton { WelcomeSlideViewModelFactory(instance()) }
+        bind() from singleton { WelcomeInfoViewModelFactory(instance()) }
     }
 }

@@ -3,21 +3,42 @@ package br.com.meiadois.decole.presentation.welcome
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.databinding.ActivityWelcomeSlideBinding
 import br.com.meiadois.decole.presentation.user.HomeActivity
+import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewModel
+import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewModelFactory
 import kotlinx.android.synthetic.main.activity_welcome_slide.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 
-class WelcomeSlideActivity : AppCompatActivity() {
+class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
+
+    override val kodein by kodein()
+    private val factory: WelcomeSlideViewModelFactory by instance()
+
+    private lateinit var mViewModel: WelcomeSlideViewModel
 
     var pageSelected = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_welcome_slide)
+
+        val binding: ActivityWelcomeSlideBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_welcome_slide)
+
+        mViewModel = ViewModelProvider(this, factory).get(WelcomeSlideViewModel::class.java)
+
+        binding.apply {
+            viewModel = mViewModel
+        }
     }
 
     override fun onResume() {
@@ -40,23 +61,27 @@ class WelcomeSlideActivity : AppCompatActivity() {
         })
 
         btn_next.setOnClickListener {
-            confirmSelection()
+            if (btn_next.text == getString(R.string.next)) {
+                view_pager.currentItem = pageSelected + 1
+            } else callNextActivity()
+
         }
     }
 
-    private fun confirmSelection() {
-//        if (pageSelected == 0) {
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
-        finish()
-//        }
+    private fun callNextActivity() {
+        mViewModel.introduce()
+        Intent(this, HomeActivity::class.java).also {
+            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(it)
+        }
     }
 
     private fun selectPage(position: Int) {
-
-//        btn_next.isEnabled = position == 0
-
         pageSelected = position
+        when (position) {
+            2 -> btn_next.text = getString(R.string.start)
+            else -> btn_next.text = getString(R.string.next)
+        }
     }
 
     inner class WelcomeSlideAdapter(fm: FragmentManager) :

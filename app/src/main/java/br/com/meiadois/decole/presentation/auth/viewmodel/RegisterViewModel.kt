@@ -42,7 +42,7 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
                 val res = userRepository.register(name, email, password)
                 res.user?.let {
                     userRepository.saveUser(it.parseToUserEntity())
-                    authListener?.onSuccess(it.parseToUserEntity())
+                    authListener?.onSuccess(it.parseToUserEntity(), res.message)
                     return@main
                 }
                 authListener?.onFailure(res.message!!)

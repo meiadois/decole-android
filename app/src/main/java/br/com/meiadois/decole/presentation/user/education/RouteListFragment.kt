@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModel
-import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModelFactory
+import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteListViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.toRouteItemList
@@ -48,6 +48,11 @@ class RouteListFragment : Fragment(), KodeinAware {
 
     @SuppressLint("FragmentLiveDataObserve")
     private fun bindUi() = Coroutines.main {
+        swipe_refresh.setOnRefreshListener {
+            mFragmentViewModel.onListRefresh().invokeOnCompletion {
+                swipe_refresh?.isRefreshing = false
+            }
+        }
         progress_bar.visibility = View.VISIBLE
         mFragmentViewModel.routes.await().observe(this, Observer {
             progress_bar.visibility = View.GONE
@@ -61,10 +66,10 @@ class RouteListFragment : Fragment(), KodeinAware {
 
             setOnItemClickListener { item, view ->
                 if (item is RouteItem) {
-                    if(!item.route.locked){
+                    if (!item.route.locked) {
                         mFragmentViewModel.onItemClick(item.route, view)
-                    }else{
-                        view.longSnackbar("Você não tem acesso a essa rota")
+                    } else {
+                        view.longSnackbar(getString(R.string.route_access_denied))
                     }
                 }
             }

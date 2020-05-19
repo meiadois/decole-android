@@ -16,7 +16,7 @@ import br.com.meiadois.decole.databinding.ActivityRouteDetailsBinding
 import br.com.meiadois.decole.presentation.user.HomeActivity
 import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModel
-import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModelFactory
+import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.extension.toLessonItemList
 import com.xwray.groupie.GroupAdapter
@@ -48,15 +48,11 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
 
         mViewModel.routeClicked.postValue(intent.getLongExtra("itemId", 0L))
 
-        mViewModel.handleStart(intent.getLongExtra("lessonDone", 0L))
-
         btn_back.setOnClickListener {
             onBackPressed()
         }
         btn_jump.setOnClickListener {
-
             mViewModel.onJumpButtonClick()
-
             onBackPressed()
         }
 
@@ -65,9 +61,8 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun renderData() = Coroutines.main {
-        toggleLoading(true)
-
         mViewModel.routeDetails.await().observe(this, Observer {
+            toggleLoading(true)
             it?.let {
                 initHeader(it.route)
                 if (it.lessons.isNotEmpty()) {
@@ -94,9 +89,11 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
         if (boolean) {
             progress_bar.visibility = View.VISIBLE
             root_content.visibility = View.GONE
+            btn_jump.isEnabled = false
         } else {
             progress_bar.visibility = View.GONE
             root_content.visibility = View.VISIBLE
+            btn_jump.isEnabled = true
         }
     }
 

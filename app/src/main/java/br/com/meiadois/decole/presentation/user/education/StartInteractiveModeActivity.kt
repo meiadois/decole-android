@@ -15,10 +15,11 @@ import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Step
 import br.com.meiadois.decole.databinding.ActivityStartInteractiveModeBinding
 import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModel
-import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModelFactory
+import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.StartInteractiveModeViewModelFactory
 import br.com.meiadois.decole.service.FloatingViewService
 import br.com.meiadois.decole.util.Coroutines
 import kotlinx.android.synthetic.main.activity_start_interactive_mode.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -49,6 +50,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
         initializeViewComponents()
     }
 
+    @ExperimentalCoroutinesApi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == drawOverAppPermissionCode) {
             if (isOverLaysAllowed(this)) {
@@ -56,7 +58,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
             } else {
                 Toast.makeText(
                     this,
-                    "Para seguir adiante, você precisa clicar no botão e realizar a permissão.",
+                    getString(R.string.ask_again_for_overlay_permission),
                     Toast.LENGTH_SHORT
                 ).show()
             }

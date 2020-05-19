@@ -4,6 +4,6 @@ import br.com.meiadois.decole.data.localdb.entity.User
 
 interface AuthListener {
     fun onStarted()
-    fun onSuccess(user: User)
+    fun onSuccess(user: User, message: String?)
     fun onFailure(message: String?)
 }
