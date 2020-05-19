@@ -38,7 +38,9 @@ class AccountActivity : AppCompatActivity(), KodeinAware {
         // para implementar o dialog va nesse site https://levelup.gitconnected.com/android-alert-dialogs-in-kotlin-tutorial-fbbe1f787015
         // e pesquise por showRadioButtonListDialog e veja tambem uma forma bonita de mostrar a escolha
 
-        // veja esse aqui tb q o cara la mandou https://material.io/develop/android/components/dialogs/
+        // veja esse aqui tb mandou https://material.io/develop/android/components/dialogs/
+
+        toolbar_back_button.setOnClickListener { finish() }
     }
 
     private fun showErrorMessageAndFinish(){

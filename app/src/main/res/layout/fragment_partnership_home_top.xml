@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="32dp"
-            android:text="NOME DA EMPRESA"
+            tools:text="NOME DA EMPRESA"
             android:textColor="@color/colorTextIcons"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,48 +45,48 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="32dp"
-            android:text="SEGMENTO DA EMPRESA"
+            tools:text="SEGMENTO DA EMPRESA"
             android:textColor="@color/colorDivider"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_partner"
             app:layout_constraintTop_toBottomOf="@+id/text_partner_name" />
-
+        <!--
         <TextView
             android:id="@+id/text_partners"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="1 Parceria firmada"
+            tools:text="1 Parceria firmada"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_partner_segment" />
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/label2"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:textSize="13sp"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:text="2 Negociações em andamento"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/label1"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintHorizontal_bias="0.0"/>-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginTop="10dp"
+            tools:text="2 Negociações em andamento"
+            app:layout_constraintTop_toBottomOf="@id/label1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"/>
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/label3"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:textSize="13sp"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:text="1 Negociação cancelada"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/label2"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintHorizontal_bias="0.0"/>-->
+        <TextView
+            android:id="@+id/label3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_marginTop="10dp"
+            tools:text="1 Negociação cancelada"
+            app:layout_constraintTop_toBottomOf="@id/label2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"/>
+        -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
