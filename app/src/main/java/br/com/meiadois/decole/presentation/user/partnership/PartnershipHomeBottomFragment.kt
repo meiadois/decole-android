@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -80,10 +79,9 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         viewModel.getPartnerships(companyId)
     }
 
-     fun showInviteToRegister(){
+    private fun showInviteToRegister(){
         fragment_bottom_root_layout.removeAllViews()
         layoutInflater.inflate(R.layout.fragment_partnership_no_account_bottom, fragment_bottom_root_layout)
-
     }
 
     private fun showGenericErrorMessage(){

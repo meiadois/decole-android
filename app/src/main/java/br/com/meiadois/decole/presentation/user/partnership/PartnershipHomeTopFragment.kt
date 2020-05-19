@@ -9,17 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Company
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_top.*
-import okhttp3.internal.Internal.instance
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
@@ -54,8 +50,6 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
                 if (ex.code == 404) showInviteToRegister()
             }catch (ex: Exception){
                 Log.i("Fragment_top_exception", ex.message!!)
-            }finally {
-                progress_bar_parent_layout?.visibility = View.INVISIBLE
             }
         }
     }
@@ -68,7 +62,7 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     }
 
     private fun showInviteToRegister(){
-        fragment_top_root_layout.removeAllViews()
+        fragment_top_root_layout?.removeAllViews()
         layoutInflater.inflate(R.layout.fragment_partnership_no_account_top, fragment_top_root_layout)
     }
 }

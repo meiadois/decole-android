@@ -103,7 +103,6 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun getCompany(partnerId: Int){
-        // TODO: add listeners to cell and email fields to call third party apps
         viewModel.companyLiveData.observe(this, Observer {
             it?.let {
                 popup_window_partner_name.text = it.name

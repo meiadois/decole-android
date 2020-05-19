@@ -9,6 +9,7 @@ import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
 import br.com.meiadois.decole.presentation.user.account.binding.UserAccountData
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.toCompanyAccountData
 import br.com.meiadois.decole.util.extension.toSegmentModelList
 import java.lang.Exception
@@ -22,38 +23,47 @@ class AccountViewModel(
     var segments: List<Segment>? = null
 
     init {
-        try{
-            getUserCompany()
-            getSegments()
-            getUser()
-        }catch (ex: Exception){
-            Log.i("AccountViewModel.init", ex.message!!)
-        }
+        getUserCompany()
+        getSegments()
+        getUser()
     }
 
     private fun getSegments() {
         Coroutines.main {
-            segments = segmentRepository.getAllSegments().toSegmentModelList()
+            try {
+                segments = segmentRepository.getAllSegments().toSegmentModelList()
+            } catch (ex: Exception) {
+                Log.i("AccountViewModel.init", ex.message!!)
+            }
         }
     }
 
-    private fun getUser(){
-        userRepository.getUser().observeForever{
-            userData = if (it != null) UserAccountData(it.name, it.email) else UserAccountData()
+    private fun getUser() {
+        try {
+            userRepository.getUser().observeForever { user ->
+                userData =
+                    if (user != null) UserAccountData(user.name, user.email) else UserAccountData()
+            }
+        } catch (ex: Exception) {
+            Log.i("AccountViewModel.init", ex.message!!)
         }
     }
 
-    private fun getUserCompany(){
+    private fun getUserCompany() {
         Coroutines.main {
-            companyData = userRepository.getUserCompany().toCompanyAccountData()
+            try {
+                companyData = userRepository.getUserCompany().toCompanyAccountData()
+            } catch (ex: Exception) {
+                Log.i("AccountViewModel.init", ex.message!!)
+            }
         }
     }
 
-    fun onSaveButtonClick(view: View){
+    fun onSaveButtonClick(view: View) {
 
     }
 
-    fun onSearchVisibilityChange(isChecked: Boolean){
+    fun onSearchVisibilityChange(isChecked: Boolean) {
         companyData?.visible = isChecked
     }
 }
