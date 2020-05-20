@@ -11,10 +11,8 @@ data class Company(
     val email: String,
     val description: String,
     val visible: Boolean,
-    val city: String,
-    val neighborhood: String,
-    val state: String,
-    val street: String,
+    val city: String?,
+    val neighborhood: String?,
     val segment: Segment?
 )
 

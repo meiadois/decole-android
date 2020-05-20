@@ -71,13 +71,13 @@ fun SegmentResponse.toSegmentModel() = Segment(this.name)
 
 fun CompanyResponse.toCompanyModel() :Company {
     return Company(
-        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, state, street, segment?.toSegmentModel()
+        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segment?.toSegmentModel()
     )
 }
 
 fun CompanyResponse.toCompanyAccountData(): CompanyAccountData {
     return CompanyAccountData(
-        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, state, street, segmentName = segment?.name
+        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segmentName = segment?.name
     )
 }
 

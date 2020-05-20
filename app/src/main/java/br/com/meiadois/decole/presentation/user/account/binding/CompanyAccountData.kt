@@ -11,10 +11,8 @@ data class CompanyAccountData(
     var email: String = "",
     var description: String = "",
     var visible: Boolean = false,
-    var city: String = "",
-    var neighborhood: String = "",
-    var state: String = "",
-    var street: String = "",
+    var city: String?,
+    var neighborhood: String?,
     var segmentId: Int = -1,
     var segmentName: String? = ""
 )

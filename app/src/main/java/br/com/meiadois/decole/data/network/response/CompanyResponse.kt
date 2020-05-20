@@ -26,13 +26,9 @@ data class CompanyResponse(
     @Json(name = "visible")
     val visible: Boolean,
     @Json(name = "city")
-    val city: String,
+    val city: String?,
     @Json(name = "neighborhood")
-    val neighborhood: String,
-    @Json(name = "state")
-    val state: String,
-    @Json(name = "street")
-    val street: String,
+    val neighborhood: String?,
     @Json(name = "segment")
     val segment: SegmentResponse?
 )
