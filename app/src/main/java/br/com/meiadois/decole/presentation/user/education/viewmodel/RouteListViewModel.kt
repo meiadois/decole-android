@@ -29,7 +29,7 @@ class RouteListViewModel(
         }
     }
 
-    fun onListRefresh() = Coroutines.io {
+    fun onListRefresh() = Coroutines.main {
         routeRepository.fetchRoutes()
     }
 }

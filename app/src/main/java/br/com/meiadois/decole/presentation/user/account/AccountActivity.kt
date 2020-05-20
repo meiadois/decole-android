@@ -40,11 +40,11 @@ class AccountActivity : AppCompatActivity(), KodeinAware {
 
         // veja esse aqui tb mandou https://material.io/develop/android/components/dialogs/
 
-        toolbar_back_button.setOnClickListener { finish() }
+        btn_back.setOnClickListener { finish() }
     }
 
     private fun showErrorMessageAndFinish(){
-        account_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message))
+        root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message))
         finish()
     }
 }

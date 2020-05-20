@@ -43,6 +43,7 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
 
     private fun init(){
         Coroutines.main {
+            toggleLoading(true)
             try{
                 val company : Company = viewModel.getUserCompany()
                 showUserCompany(company)
@@ -50,7 +51,17 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
                 if (ex.code == 404) showInviteToRegister()
             }catch (ex: Exception){
                 Log.i("Fragment_top_exception", ex.message!!)
+            }finally {
+                toggleLoading(false)
             }
+        }
+    }
+
+    private fun toggleLoading(loading: Boolean) {
+        if (loading){
+            top_progress_bar.visibility = View.VISIBLE
+        }else {
+            top_progress_bar.visibility = View.GONE
         }
     }
 

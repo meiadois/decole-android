@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context=".presentation.user.account.AccountActivity"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.user.account.AccountActivity">
+
     <data>
         <variable
             name="viewModel"
@@ -11,101 +10,106 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/colorPrimary"
-        android:id="@+id/account_root_layout"
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:background="@color/colorPrimary">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            app:layout_constraintBottom_toTopOf="@id/bottom_panel_guideline"
+            android:id="@+id/top_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@color/colorPrimaryDarker"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/panel_guideline_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_height="0dp"
-            android:layout_width="0dp">
+            app:layout_constraintVertical_bias=".0">
 
             <androidx.constraintlayout.widget.Guideline
-                app:layout_constraintGuide_percent="0.42"
                 android:id="@+id/image_guideline_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".30" />
 
             <ImageView
-                android:contentDescription="@string/back_arrow_content_description"
-                app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
-                app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
-                app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/toolbar_back_button"
-                android:src="@drawable/ic_mdi_back"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_height="0dp" />
-
-            <ImageView
-                app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
-                app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
-                app:layout_constraintStart_toStartOf="parent"
-                android:contentDescription="@string/app_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/ic_decole_verde"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
+                android:id="@+id/top_logo"
                 android:layout_width="100dp"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:src="@drawable/ic_decole_verde"
+                app:layout_constraintBottom_toTopOf="@+id/image_guideline_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_mdi_back"
+                app:layout_constraintBottom_toTopOf="@+id/image_guideline_bottom"
+                app:layout_constraintEnd_toStartOf="@+id/top_logo"
+                app:layout_constraintHorizontal_bias=".3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
 
             <androidx.constraintlayout.widget.Guideline
-                app:layout_constraintGuide_percent="0.89"
                 android:id="@+id/image_guideline_bottom"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:orientation="horizontal" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.85" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/bottom_panel_guideline"
+            android:id="@+id/panel_guideline_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.10" />
+            app:layout_constraintGuide_percent=".12" />
 
         <androidx.core.widget.NestedScrollView
-            app:layout_constraintTop_toBottomOf="@+id/bottom_panel_guideline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/account_scroolable_view"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_width="match_parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/panel_guideline_bottom">
 
             <LinearLayout
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <!-- User Section -->
                 <RelativeLayout
-                    android:background="@color/colorPrimaryDark"
                     android:id="@+id/account_me_hearder"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark">
+
                     <TextView
-                        android:text="@string/account_me_hearder_text"
-                        android:layout_alignParentStart="true"
-                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
                         android:paddingVertical="12dp"
                         android:paddingStart="36dp"
-                        android:textAllCaps="true"
                         android:paddingEnd="0dp"
-                        android:textStyle="bold"/>
+                        android:text="@string/account_me_hearder_text"
+                        android:textAllCaps="true"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
+
                 <LinearLayout
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
                     android:id="@+id/account_me_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical">
 
@@ -148,22 +152,25 @@
 
                 <!-- Company Section -->
                 <RelativeLayout
-                    android:background="@color/colorPrimaryDark"
                     android:id="@+id/account_company_hearder"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="36dp">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:background="@color/colorPrimaryDark">
+
                     <TextView
-                        android:text="@string/account_company_hearder_text"
-                        android:layout_alignParentStart="true"
-                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
                         android:paddingVertical="12dp"
                         android:paddingStart="36dp"
-                        android:textAllCaps="true"
                         android:paddingEnd="0dp"
-                        android:textStyle="bold"/>
+                        android:text="@string/account_company_hearder_text"
+                        android:textAllCaps="true"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
+
                 <LinearLayout
                     android:id="@+id/account_company_form"
                     android:layout_height="wrap_content"
@@ -173,29 +180,35 @@
                     android:paddingStart="48dp"
                     android:paddingEnd="48dp">
 
-                    <RelativeLayout
-                        app:layout_constraintTop_toBottomOf="@+id/account_company_hearder"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_height="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_marginVertical="4dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/account_company_hearder">
+
                         <TextView
-                            android:layout_alignParentStart="true"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:text="@string/be_shown_in_partner_research"
-                            android:textStyle="bold" />
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/widget_switch"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <Switch
-                            android:onCheckedChanged="@{(button, bool) -> viewModel.onSearchVisibilityChange(bool)}"
-                            android:checked="@{viewModel.companyData.visible}"
+                            android:id="@+id/widget_switch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="10dp" />
-                    </RelativeLayout>
+                            android:checked="@{viewModel.companyData.visible}"
+                            android:onCheckedChanged="@{(button, bool) -> viewModel.onSearchVisibilityChange(bool)}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -384,4 +397,5 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
