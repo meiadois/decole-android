@@ -1,83 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_bottom_root_layout"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/progress_bar_parent_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
         <ProgressBar
+            android:visibility="gone"
+            android:layout_gravity="center"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_centerInParent="true"
             android:layout_height="wrap_content"
             style="@style/circle_progress_bar"
             android:layout_width="wrap_content"
-            android:id="@+id/indeterminateBar"
+            android:id="@+id/progress_bar"
             tools:ignore="MissingConstraints"
             android:paddingTop="16dp" />
-    </RelativeLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/partnership_scroolable_view">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:descendantFocusability="beforeDescendants"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_height="match_parent"
+        <androidx.core.widget.NestedScrollView
+            android:visibility="visible"
             android:layout_width="match_parent"
-            android:focusableInTouchMode="true">
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/partnership_scroolable_view">
 
-            <Button
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:descendantFocusability="beforeDescendants"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="42dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="42dp"
-                android:text="@string/search"
-                android:id="@+id/btn_search"
-                style="@style/btn_primary"
-                android:focusable="true" />
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:focusableInTouchMode="true">
 
-            <ImageView
-                android:contentDescription="@string/ic_partner_divider_content_description"
-                app:layout_constraintTop_toBottomOf="@+id/btn_search"
-                app:layout_constraintStart_toStartOf="parent"
-                android:src="@drawable/ic_partner_divider"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingStart="16dp"
-                android:id="@+id/divider"
-                android:paddingEnd="16dp" />
+                <Button
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="42dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="42dp"
+                    android:text="@string/search"
+                    android:id="@+id/btn_search"
+                    style="@style/btn_primary"
+                    android:focusable="true" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/partner_recycler_view"
-                tools:listitem="@layout/card_partner"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingBottom="16dp"
-                android:paddingStart="16dp"
-                android:layout_width="0dp"
-                android:paddingEnd="16dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:contentDescription="@string/ic_partner_divider_content_description"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_search"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/ic_partner_divider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingStart="16dp"
+                    android:id="@+id/divider"
+                    android:paddingEnd="16dp" />
 
-    </androidx.core.widget.NestedScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    app:layout_constraintTop_toBottomOf="@+id/divider"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/partner_recycler_view"
+                    tools:listitem="@layout/card_partner"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="16dp"
+                    android:layout_width="0dp"
+                    android:paddingEnd="16dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/colorPrimaryDarker"
+        app:fabAlignmentMode="end"
+        app:fabCradleMargin="5dp"
+        app:fabCradleRoundedCornerRadius="20dp"
+        app:fabCradleVerticalOffset="10dp"
+        app:hideOnScroll="true"
+        app:menu="@menu/bottom_partnership_menu" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimaryDarker"
+        android:foregroundTint="@color/colorPrimaryDarker"
+        android:src="@drawable/ic_mdi_search"
+        android:tooltipText="@string/search_tooltip"
+        app:borderWidth="0dp"
+        app:layout_anchor="@id/bottom_bar"
+        app:maxImageSize="35dp"
+        app:tint="@android:color/white"
+        tools:targetApi="o" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

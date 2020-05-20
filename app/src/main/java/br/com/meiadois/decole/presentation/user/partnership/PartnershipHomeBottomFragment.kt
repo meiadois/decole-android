@@ -58,7 +58,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             }catch (ex: Exception){
                 showGenericErrorMessage()
             }finally {
-                progress_bar_parent_layout?.visibility = View.INVISIBLE
+                progress_bar?.visibility = View.INVISIBLE
             }
         }
     }
