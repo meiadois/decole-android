@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipSearchPartnerViewModel" />
+            type="br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,42 +72,31 @@
                 android:paddingBottom="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/content_middle_guideline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_end="6dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_bottom">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/constraint_dropdown"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/content_middle_guideline"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
                         android:id="@+id/text_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/constraint_dropdown"
                         app:layout_constraintVertical_bias=".36"
-                        tools:text="Primeiros passos no instagram" />
+                        android:text="Encontre outros empreendedores e negocie parcerias!" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:id="@+id/input_exposed_dropdown"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="@id/text_title"
-                        app:layout_constraintTop_toTopOf="@+id/text_title"
-                        android:hint="Todos os Segmentos">
+                        app:layout_constraintTop_toBottomOf="@+id/text_title">
 
                         <AutoCompleteTextView
                             android:id="@+id/filled_exposed_dropdown"
@@ -130,7 +119,7 @@
             app:layout_constraintTop_toBottomOf="@+id/top_container">
 
             <FrameLayout
-            android:id="@+id/container_company_root"
+            android:id="@+id/frame_company_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -149,6 +138,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linear_button_container"
+                android:paddingTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -160,6 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_md_close"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -176,7 +167,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_bias="0.7"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.data.repository.CompanyRepository
 
-class PartnershipSearchPartnerViewModelFactory(
-private val companyRepository: CompanyRepository
+class PartnershipCompanyProfileViewModelFactory(
+    private val companyRepository: CompanyRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

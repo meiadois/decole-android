@@ -24,6 +24,7 @@
         <activity android:name=".presentation.welcome.WelcomeSlideActivity" />
         <activity android:name=".presentation.welcome.WelcomeInfoActivity" />
         <activity android:name=".presentation.user.education.StartInteractiveModeActivity" />
+        <activity android:name=".presentation.user.partnership.PartnershipSearchActivity" />
         <activity android:name=".presentation.auth.RegisterActivity" />
         <activity android:name=".presentation.auth.LoginActivity">
             <intent-filter>

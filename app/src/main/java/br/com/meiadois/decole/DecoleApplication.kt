@@ -19,6 +19,7 @@ import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewMod
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipSearchViewModelFactory
 import br.com.meiadois.decole.service.LogOutService
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -55,5 +56,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { FinishedRouteViewModelFactory(instance(), instance()) }
         bind() from singleton { WelcomeSlideViewModelFactory(instance()) }
         bind() from singleton { WelcomeInfoViewModelFactory(instance()) }
+        bind() from singleton { PartnershipSearchViewModelFactory(instance(), instance()) }
     }
 }

@@ -2,6 +2,7 @@ package br.com.meiadois.decole.data.network.client
 
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
+import br.com.meiadois.decole.data.network.request.CompanyBySegmentRequest
 import br.com.meiadois.decole.data.network.request.LikeRequest
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.request.RegisterRequest
@@ -52,6 +53,10 @@ interface DecoleClient {
     @Headers("Content-Type: application/json")
     @GET("/companies")
     suspend fun getAllCompanies(): Response<List<CompanyResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("/companies/_/search")
+    suspend fun getCompanyBySegment(@Body request: CompanyBySegmentRequest): Response<List<CompanyResponse>>
 
     @Headers("Content-Type: application/json")
     @GET("companies/{id}")

@@ -74,6 +74,11 @@ fun CompanyResponse.toCompanyModel() :Company {
         id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segment?.toSegmentModel()
     )
 }
+fun List<CompanyResponse>.toCompanyModelList(): List<Company>{
+    return this.map{
+        it.toCompanyModel()
+    }
+}
 
 fun CompanyResponse.toCompanyAccountData(): CompanyAccountData {
     return CompanyAccountData(

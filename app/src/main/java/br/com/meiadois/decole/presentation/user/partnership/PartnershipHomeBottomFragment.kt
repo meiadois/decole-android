@@ -39,12 +39,17 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_partnership_home_bottom, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(PartnershipHomeBottomViewModel::class.java)
         init(view)
+        btn_search.setOnClickListener {
+            var intent = Intent(context, PartnershipSearchActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun init(view: View){

@@ -2,6 +2,7 @@ package br.com.meiadois.decole.data.repository
 
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
+import br.com.meiadois.decole.data.network.request.CompanyBySegmentRequest
 import br.com.meiadois.decole.data.network.request.LikeRequest
 import br.com.meiadois.decole.data.network.response.CompanyResponse
 import br.com.meiadois.decole.data.network.response.LikePutResponse
@@ -15,8 +16,14 @@ class CompanyRepository(
         }
     }
 
-    suspend fun getCompanies(): List<CompanyResponse>{
+    suspend fun getCompaniesBySegment(segmentId: Int): List<CompanyResponse>{
         return callClient {
+            client.getCompanyBySegment(CompanyBySegmentRequest(segmentId))
+        }
+    }
+
+    suspend fun getAllCompanies(): List<CompanyResponse>{
+        return callClient{
             client.getAllCompanies()
         }
     }

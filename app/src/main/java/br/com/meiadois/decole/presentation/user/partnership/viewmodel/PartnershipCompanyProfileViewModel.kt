@@ -9,13 +9,13 @@ import br.com.meiadois.decole.data.network.response.CompanyResponse
 import br.com.meiadois.decole.data.repository.CompanyRepository
 import br.com.meiadois.decole.util.Coroutines
 
-class PartnershipSearchPartnerViewModel(
-    private val companyRepository: CompanyRepository
+class PartnershipCompanyProfileViewModel(
+private val companyRepository: CompanyRepository
 ) : ViewModel() {
-
+    
     var name: String? = null
     var banner: String? = null
     var description: String? = null
     var segment: String? = null
-
+    var listSegment: List<Segment>? = null
 }

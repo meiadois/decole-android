@@ -24,7 +24,7 @@ import org.kodein.di.generic.instance
 class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
     override val kodein by kodein()
-    private val factory: LoginViewModelFactory by instance()
+    private val factory: LoginViewModelFactory by instance<LoginViewModelFactory>()
 
     private lateinit var loginViewModel: LoginViewModel
 
