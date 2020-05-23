@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.model.Like
-import br.com.meiadois.decole.data.network.request.UserMatchesFilter
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
