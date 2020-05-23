@@ -15,6 +15,12 @@ class CompanyRepository(
         }
     }
 
+    suspend fun getCompanies(): List<CompanyResponse>{
+        return callClient {
+            client.getAllCompanies()
+        }
+    }
+
     suspend fun undoPartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
         return callClient {
             client.undoPartnership(likeId, LikeRequest("deleted", senderId, recipientId))

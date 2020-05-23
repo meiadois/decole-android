@@ -20,7 +20,7 @@ import org.kodein.di.generic.instance
 class FinishedRouteActivity : AppCompatActivity(), KodeinAware, IMResultListener {
 
     override val kodein by kodein()
-    private val factory: FinishedRouteViewModelFactory by instance()
+    private val factory: FinishedRouteViewModelFactory by instance<FinishedRouteViewModelFactory>()
 
     private lateinit var mViewModel: FinishedRouteViewModel
 

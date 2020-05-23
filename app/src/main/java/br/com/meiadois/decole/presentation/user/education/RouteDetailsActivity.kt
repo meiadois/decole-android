@@ -29,8 +29,8 @@ import org.kodein.di.generic.instance
 
 class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
 
-    override val kodein by kodein()
-    private val factory: RouteDetailsViewModelFactory by instance()
+    override val kodein by kodein();
+    private val factory: RouteDetailsViewModelFactory by instance<RouteDetailsViewModelFactory>()
 
     private lateinit var mViewModel: RouteDetailsViewModel
 
