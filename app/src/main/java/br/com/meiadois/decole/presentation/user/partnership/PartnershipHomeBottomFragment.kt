@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.model.Like
+import br.com.meiadois.decole.data.network.request.UserMatchesFilter
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
@@ -44,6 +45,24 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(PartnershipHomeBottomViewModel::class.java)
+        bottom_bar.setOnMenuItemClickListener { menuItem ->
+            menuItem.isChecked = true
+            when(menuItem.itemId){
+                R.id.menu_connected -> {
+                    // todo obter e mostrar lista nova
+                    true
+                }
+                R.id.menu_waiting_response -> {
+                    // todo obter e mostrar lista nova
+                    true
+                }
+                R.id.menu_to_respond -> {
+                    // todo obter e mostrar lista nova
+                    true
+                }
+                else -> false
+            }
+        }
         init(view)
     }
 
@@ -67,13 +86,21 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         partnership_scroolable_view.visibility = View.VISIBLE
         viewModel.partnershipLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
-                with(partner_recycler_view) {
-                    layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
-                    setHasFixedSize(true)
-                    adapter = PartnerRecyclerAdapter(it, view.context){
-                        onPartnerItemClick(view.context, it)
+                if(it.isEmpty()){
+                    partner_recycler_view.visibility = View.GONE
+                    layout_empty.visibility = View.VISIBLE
+                }else{
+                    partner_recycler_view.visibility = View.VISIBLE
+                    layout_empty.visibility = View.GONE
+                    with(partner_recycler_view) {
+                        layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+                        setHasFixedSize(true)
+                        adapter = PartnerRecyclerAdapter(it, view.context){
+                            onPartnerItemClick(view.context, it)
+                        }
                     }
                 }
+
             }
         })
         viewModel.getPartnerships(companyId)

@@ -6,72 +6,81 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <ProgressBar
-            android:visibility="gone"
-            android:layout_gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_centerInParent="true"
-            android:layout_height="wrap_content"
-            style="@style/circle_progress_bar"
-            android:layout_width="wrap_content"
-            android:id="@+id/progress_bar"
-            tools:ignore="MissingConstraints"
-            android:paddingTop="16dp" />
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/circle_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:paddingTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
-        <androidx.core.widget.NestedScrollView
-            android:visibility="visible"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/partnership_scroolable_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/partnership_scroolable_view">
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:padding="16dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/partner_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/card_partner" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:descendantFocusability="beforeDescendants"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_height="match_parent"
+                android:id="@+id/layout_empty"
                 android:layout_width="match_parent"
-                android:focusableInTouchMode="true">
-
-                <Button
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginStart="42dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="42dp"
-                    android:text="@string/search"
-                    android:id="@+id/btn_search"
-                    style="@style/btn_primary"
-                    android:focusable="true" />
+                android:layout_height="match_parent"
+                android:paddingTop="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:contentDescription="@string/ic_partner_divider_content_description"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_search"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:src="@drawable/ic_partner_divider"
+                    android:id="@+id/image_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_undraw_empty"
+                    app:layout_constraintBottom_toTopOf="@+id/text_empty"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:paddingStart="16dp"
-                    android:id="@+id/divider"
-                    android:paddingEnd="16dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    app:layout_constraintTop_toBottomOf="@+id/divider"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:id="@+id/partner_recycler_view"
-                    tools:listitem="@layout/card_partner"
+                <TextView
+                    android:id="@+id/text_empty"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:paddingBottom="16dp"
-                    android:paddingStart="16dp"
-                    android:layout_width="0dp"
-                    android:paddingEnd="16dp" />
+                    android:layout_marginTop="10dp"
+                    android:textAlignment="center"
+                    android:text="@string/no_partner_found"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_empty" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
     <com.google.android.material.bottomappbar.BottomAppBar
