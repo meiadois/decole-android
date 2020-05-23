@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_connected"
+        android:icon="@drawable/ic_mdi_people"
+        android:title="@string/connected_tooltip"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_to_respond"
+        android:icon="@drawable/ic_mdi_move_to_inbox"
+        android:title="@string/to_respond_tooltip"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_waiting_response"
+        android:icon="@drawable/ic_mdi_grade"
+        android:title="@string/waiting_response_tooltip"
+        app:showAsAction="ifRoom" />
+
+</menu>
