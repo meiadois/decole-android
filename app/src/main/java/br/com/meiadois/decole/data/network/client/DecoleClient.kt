@@ -2,10 +2,7 @@ package br.com.meiadois.decole.data.network.client
 
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
-import br.com.meiadois.decole.data.network.request.LikeRequest
-import br.com.meiadois.decole.data.network.request.LoginRequest
-import br.com.meiadois.decole.data.network.request.RegisterRequest
-import br.com.meiadois.decole.data.network.request.UserUpdateRequest
+import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -52,39 +49,13 @@ interface DecoleClient {
     @GET("me/companies")
     suspend fun getUserCompany(): Response<CompanyResponse>
 
-    @Multipart
+    @Headers("Content-Type: application/json")
     @PUT("me/companies")
-    suspend fun updateUserCompany(
-        @Part("name") name: RequestBody,
-        @Part("cep") cep: RequestBody,
-        @Part("cnpj") cnpj: RequestBody,
-        @Part("description") description: RequestBody,
-        @Part("segmentId") segmentId: RequestBody,
-        @Part("cellphone") cellphone: RequestBody,
-        @Part("email") email: RequestBody,
-        @Part("visible") visible: RequestBody,
-        @Part("city") city: RequestBody,
-        @Part("neighborhood") neighborhood: RequestBody,
-        @Part thumbnail: MultipartBody.Part,
-        @Part banner: MultipartBody.Part
-    ): Response<CompanyResponse>
+    suspend fun updateUserCompany(@Body request: CompanyRequest): Response<CompanyResponse>
 
-    @Multipart
+    @Headers("Content-Type: application/json")
     @POST("me/companies")
-    suspend fun insertUserCompany(
-        @Part("name") name: RequestBody,
-        @Part("cep") cep: RequestBody,
-        @Part("cnpj") cnpj: RequestBody,
-        @Part("description") description: RequestBody,
-        @Part("segmentId") segmentId: RequestBody,
-        @Part("cellphone") cellphone: RequestBody,
-        @Part("email") email: RequestBody,
-        @Part("visible") visible: RequestBody,
-        @Part("city") city: RequestBody,
-        @Part("neighborhood") neighborhood: RequestBody,
-        @Part thumbnail: MultipartBody.Part,
-        @Part banner: MultipartBody.Part
-    ): Response<CompanyResponse>
+    suspend fun insertUserCompany(@Body request: CompanyRequest): Response<CompanyResponse>
 
     @Headers("Content-Type: application/json")
     @GET("companies/{id}")

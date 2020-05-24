@@ -137,34 +137,30 @@ class AccountViewModel(
                      */
                     val companyResponse: CompanyResponse =
                         if (isUpdating) userRepository.updateUserCompany(
-                            getRequestBody(companyData.value!!.name),
-                            getRequestBody(companyData.value!!.cep),
-                            getRequestBody(companyData.value!!.cnpj),
-                            getRequestBody(companyData.value!!.description),
-                            getRequestBody(companyData.value!!.segmentId),
-                            getRequestBody(companyData.value!!.cellphone),
-                            getRequestBody(companyData.value!!.email),
-                            getRequestBody(companyData.value!!.visible),
-                            getRequestBody(companyData.value!!.city),
-                            getRequestBody(companyData.value!!.neighborhood),
-                            getMultipartBodyPart(companyData.value!!.thumbnail, "thumbnail"),
-                            getMultipartBodyPart(companyData.value!!.banner, "banner")
+                            companyData.value!!.name,
+                            companyData.value!!.cep,
+                            companyData.value!!.cnpj,
+                            companyData.value!!.description,
+                            companyData.value!!.segmentId,
+                            companyData.value!!.cellphone,
+                            companyData.value!!.email,
+                            companyData.value!!.visible,
+                            companyData.value!!.city,
+                            companyData.value!!.neighborhood
                         ) else userRepository.insertUserCompany(
-                            getRequestBody(companyData.value!!.name),
-                            getRequestBody(companyData.value!!.cep),
-                            getRequestBody(companyData.value!!.cnpj),
-                            getRequestBody(companyData.value!!.description),
-                            getRequestBody(companyData.value!!.segmentId),
-                            getRequestBody(companyData.value!!.cellphone),
-                            getRequestBody(companyData.value!!.email),
-                            getRequestBody(companyData.value!!.visible),
-                            getRequestBody(companyData.value!!.city),
-                            getRequestBody(companyData.value!!.neighborhood),
-                            getMultipartBodyPart(companyData.value!!.thumbnail, "thumbnail"),
-                            getMultipartBodyPart(companyData.value!!.banner, "banner")
+                            companyData.value!!.name,
+                            companyData.value!!.cep,
+                            companyData.value!!.cnpj,
+                            companyData.value!!.description,
+                            companyData.value!!.segmentId,
+                            companyData.value!!.cellphone,
+                            companyData.value!!.email,
+                            companyData.value!!.visible,
+                            companyData.value!!.city,
+                            companyData.value!!.neighborhood
                         )
                 } catch (ex: Exception) {
-                    Log.i("AccountFormException", ex.message!!)
+                    Log.i("AccountFormException", "Deu errado" + ex.message!!)
                 }
             }
         }

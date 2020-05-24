@@ -4,6 +4,7 @@ import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
+import br.com.meiadois.decole.data.network.request.CompanyRequest
 import br.com.meiadois.decole.data.network.request.LoginRequest
 import br.com.meiadois.decole.data.network.request.RegisterRequest
 import br.com.meiadois.decole.data.network.request.UserUpdateRequest
@@ -45,65 +46,69 @@ class UserRepository(
     }
 
     suspend fun updateUserCompany(
-        name: RequestBody,
-        cep: RequestBody,
-        cnpj: RequestBody,
-        description: RequestBody,
-        segmentId: RequestBody,
-        cellphone: RequestBody,
-        email: RequestBody,
-        visible: RequestBody,
-        city: RequestBody,
-        neighborhood: RequestBody,
-        thumbnail: MultipartBody.Part,
-        banner: MultipartBody.Part
+        name: String,
+        cep: String,
+        cnpj: String,
+        description: String,
+        segmentId: Int,
+        cellphone: String,
+        email: String,
+        visible: Boolean,
+        city: String,
+        neighborhood: String,
+        thumbnail: String = "",
+        banner: String = ""
     ): CompanyResponse {
         return callClient {
             client.updateUserCompany(
-                name,
-                cep,
-                cnpj,
-                description,
-                segmentId,
-                cellphone,
-                email,
-                visible,
-                city,
-                neighborhood,
-                thumbnail,
-                banner
+                CompanyRequest(
+                    name,
+                    description,
+                    segmentId,
+                    cnpj,
+                    cellphone,
+                    email,
+                    cep,
+                    city,
+                    neighborhood,
+                    visible,
+                    thumbnail,
+                    banner
+                )
             )
         }
     }
 
     suspend fun insertUserCompany(
-        name: RequestBody,
-        cep: RequestBody,
-        cnpj: RequestBody,
-        description: RequestBody,
-        segmentId: RequestBody,
-        cellphone: RequestBody,
-        email: RequestBody,
-        visible: RequestBody,
-        city: RequestBody,
-        neighborhood: RequestBody,
-        thumbnail: MultipartBody.Part,
-        banner: MultipartBody.Part
+        name: String,
+        cep: String,
+        cnpj: String,
+        description: String,
+        segmentId: Int,
+        cellphone: String,
+        email: String,
+        visible: Boolean,
+        city: String,
+        neighborhood: String,
+        thumbnail: String = "",
+        banner: String = ""
     ): CompanyResponse {
         return callClient {
             client.insertUserCompany(
-                name,
-                cep,
-                cnpj,
-                description,
-                segmentId,
-                cellphone,
-                email,
-                visible,
-                city,
-                neighborhood,
-                thumbnail,
-                banner
+                CompanyRequest(
+                    name,
+                    description,
+                    segmentId,
+                    cnpj,
+                    cellphone,
+                    email,
+                    cep,
+                    city,
+                    neighborhood,
+                    visible,
+                    thumbnail,
+                    banner
+                )
             )
         }
     }
