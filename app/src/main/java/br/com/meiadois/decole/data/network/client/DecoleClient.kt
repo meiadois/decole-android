@@ -107,7 +107,7 @@ interface DecoleClient {
     suspend fun introduce(): Response<IntroduceResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("cep/{cep_number}")
+    @GET("ceps/{cep_number}")
     suspend fun getCep(@Path("cep_number") cep: String): Response<CepResponse>
 
     @Headers("Content-Type: application/json")

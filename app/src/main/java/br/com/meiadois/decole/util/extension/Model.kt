@@ -77,7 +77,7 @@ fun CompanyResponse.toCompanyModel() :Company {
 
 fun CompanyResponse.toCompanyAccountData(): CompanyAccountData {
     return CompanyAccountData(
-        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segmentName = segment?.name
+        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segment?.id ?: -1, segment?.name
     )
 }
 

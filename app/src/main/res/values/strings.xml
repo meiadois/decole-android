@@ -42,7 +42,7 @@
     <string name="ask_for_email">qual o seu e-mail?</string>
     <string name="ask_for_password">qual a sua senha?</string>
     <string name="have_no_account_question">Não possui conta?</string>
-    <string name="ask_for_register_email">digite seu melhor email</string>
+    <string name="ask_for_register_email">digite seu melhor e-mail</string>
     <string name="ask_for_nickname">seu nome (ex. Maria)</string>
     <string name="ask_for_new_password">sua senha</string>
     <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
@@ -93,6 +93,14 @@
     <string name="account_company_promotional_photo_hint">foto promocional</string>
     <string name="account_company_select_a_segment">Selecione um Segmento</string>
     <string name="account_select_a">Selecione a %1$s</string>
+
+    <!--Validations Messages-->
+    <string name="required_field_error_message">O campo %1$s é obrigatório.</string>
+    <string name="invalid_email_error_message">O e-mail não está em um formato válido.</string>
+    <string name="invalid_cep_error_message">O CEP não está em um formato válido.</string>
+    <string name="invalid_cnpj_error_message">O CNPJ não está em um formato válido.</string>
+    <string name="invalid_telephone_error_message">O telefone não está em um formato válido.</string>
+    <string name="max_text_length_error_message">O campo %1$s não pode ter mais de %2$d caracteres.</string>
 
     <!--Partnership-->
     <string name="partnership_no_account">Para habilitar esse ferramenta, você precisa ativar o descobrimento de parceiros na tela de configurações e ter seu perfil preenchido</string>

@@ -18,10 +18,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.data.model.Segment
 import br.com.meiadois.decole.databinding.ActivityAccountBinding
+import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModel
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
 import br.com.meiadois.decole.util.Mask
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_account.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -29,7 +32,7 @@ import org.kodein.di.generic.instance
 import java.io.File
 import java.lang.Exception
 
-class AccountActivity : AppCompatActivity(), KodeinAware {
+class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     override val kodein by kodein()
     private val factory: AccountViewModelFactory by instance<AccountViewModelFactory>()
     private lateinit var accountViewModel: AccountViewModel
@@ -41,6 +44,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         accountViewModel = ViewModelProvider(this, factory).get(AccountViewModel::class.java)
+        accountViewModel.accountListener = this
         val binding: ActivityAccountBinding = DataBindingUtil.setContentView(this, R.layout.activity_account)
         binding.apply {
             viewModel = accountViewModel
@@ -48,20 +52,46 @@ class AccountActivity : AppCompatActivity(), KodeinAware {
         }
         toolbar_back_button.setOnClickListener { finish() }
         setAdapterToSegmentDropdown()
+        setRemoveErrorListener()
         setImageInputs()
         setInputMasks()
 
         askPermissions()
-
-        /* TODO:
-            - implementar as validacoes dos campos
-                *obrigatorio e valido (para email, cnpj, cep, etc)
-            - verificar prblema no upload de foto e, quando resolver, limpar essa classe (mover
-                o que for de direito para a viewmodel)
-         */
     }
 
     // region Local Functions
+    private fun setRemoveErrorListener(){
+        input_company_name.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_name_input))
+        input_company_cep.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_cep_input))
+        input_company_cnpj.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_cnpj_input))
+        input_company_telephone.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_telephone_input))
+        input_company_mail.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_mail_input))
+        input_company_description.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_description_input))
+        input_company_city.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_city_input))
+        input_company_neighborhood.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_neighborhood_input))
+        filled_exposed_dropdown.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_segment_input))
+        input_me_name.addTextChangedListener(accountViewModel.onTextFieldChange(account_me_name_input))
+        input_me_mail.addTextChangedListener(accountViewModel.onTextFieldChange(account_me_mail_input))
+    }
+
+    override fun riseError(field: FieldsEnum, errorMessage: String) {
+        val textInputLayout: TextInputLayout? = when(field){
+            FieldsEnum.COMPANY_NAME -> account_company_name_input
+            FieldsEnum.COMPANY_CEP -> account_company_cep_input
+            FieldsEnum.COMPANY_CNPJ -> account_company_cnpj_input
+            FieldsEnum.COMPANY_CELLPHONE -> account_company_telephone_input
+            FieldsEnum.COMPANY_EMAIL -> account_company_mail_input
+            FieldsEnum.COMPANY_DESCRIPTION -> account_company_description_input
+            FieldsEnum.COMPANY_CITY -> account_company_city_input
+            FieldsEnum.COMPANY_NEIGHBORHOOD -> account_company_neighborhood_input
+            FieldsEnum.COMPANY_SEGMENT -> account_company_segment_input
+            FieldsEnum.USER_NAME -> account_me_name_input
+            FieldsEnum.USER_EMAIL -> account_me_mail_input
+            else -> null
+        }
+        textInputLayout?.error = errorMessage
+    }
+
     private fun setInputMasks(){
         input_company_telephone.addTextChangedListener(Mask.mask(Mask.TEL_MASK, input_company_telephone))
         input_company_cnpj.addTextChangedListener(Mask.mask(Mask.CNPJ_MASK, input_company_cnpj))
@@ -74,13 +104,26 @@ class AccountActivity : AppCompatActivity(), KodeinAware {
         accountViewModel.segments.observe(this, Observer { it ->
             it?.let {segments ->
                 filled_exposed_dropdown.setAdapter(
-                    ArrayAdapter<String>(
-                        this, R.layout.layout_exposed_dropdown_item, segments.map { it.name }.toTypedArray())
-                )
+                    ArrayAdapter(this, R.layout.layout_exposed_dropdown_item, segments.map { it.name }.toTypedArray()))
                 filled_exposed_dropdown.inputType = android.text.InputType.TYPE_NULL
-                filled_exposed_dropdown.setText(accountViewModel.companyData.value?.segmentName, false)
+                if (accountViewModel.companyData.value == null)
+                    accountViewModel.companyData.observe(this, Observer {
+                        updateSegmentDropdown(segments, accountViewModel.companyData.value?.segmentName ?: "")
+                    })
+                else
+                    updateSegmentDropdown(segments, accountViewModel.companyData.value?.segmentName ?: "")
+                filled_exposed_dropdown.setOnItemClickListener { _, _, position, _ ->
+                    accountViewModel.companyData.value?.segmentName = segments[position].name
+                    accountViewModel.companyData.value?.segmentId = segments[position].id ?: 0
+                }
             }
         })
+    }
+
+    private fun updateSegmentDropdown(segments: List<Segment>, segmentName: String){
+        val mSegment = segments.firstOrNull { it.name == segmentName }
+        filled_exposed_dropdown.setText(mSegment?.name, false)
+        accountViewModel.companyData.value?.segmentId = mSegment?.id ?: -1
     }
 
     private fun setImageInputs(){

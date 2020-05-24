@@ -1,10 +1,12 @@
 package br.com.meiadois.decole.presentation.user.account.viewmodel
 
-import android.service.autofill.UserData
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Segment
 import br.com.meiadois.decole.data.network.response.CepResponse
 import br.com.meiadois.decole.data.network.response.CompanyResponse
@@ -12,11 +14,15 @@ import br.com.meiadois.decole.data.network.response.UserUpdateResponse
 import br.com.meiadois.decole.data.repository.CepRepository
 import br.com.meiadois.decole.data.repository.SegmentRepository
 import br.com.meiadois.decole.data.repository.UserRepository
+import br.com.meiadois.decole.presentation.user.account.AccountListener
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
+import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
 import br.com.meiadois.decole.presentation.user.account.binding.UserAccountData
+import br.com.meiadois.decole.presentation.user.account.validation.*
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.extension.toCompanyAccountData
 import br.com.meiadois.decole.util.extension.toSegmentModelList
+import com.google.android.material.textfield.TextInputLayout
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -31,6 +37,7 @@ class AccountViewModel(
     var companyData: MutableLiveData<CompanyAccountData> = MutableLiveData<CompanyAccountData>()
     var userData: MutableLiveData<UserAccountData> = MutableLiveData<UserAccountData>()
     var segments: MutableLiveData<List<Segment>> = MutableLiveData<List<Segment>>()
+    var accountListener: AccountListener? = null
     private var isUpdating: Boolean = false
 
     // region initializer methods
@@ -76,8 +83,14 @@ class AccountViewModel(
     // endregion
 
     // region On events
+    fun onTextFieldChange(textInputLayout: TextInputLayout): TextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable) {}
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) { textInputLayout.error = null }
+    }
+
     fun onCepFieldChange(cep: String) {
-        if (cep.isNotBlank() && cep.length == 9) {
+        if (ValidCepRule(String()).validate(cep)) {
             Coroutines.main {
                 try {
                     val cepResponse: CepResponse = cepRepository.getCep(cep.replace("-", ""))
@@ -99,7 +112,7 @@ class AccountViewModel(
     }
 
     fun onSaveButtonClick(view: View) {
-        if (validateModels()) {
+        if (validateModels(view)) {
             Coroutines.main {
                 try {
                     val userResponse: UserUpdateResponse =
@@ -169,18 +182,112 @@ class AccountViewModel(
         )
     }
 
-    private fun getRequestBody(value: Any): RequestBody = RequestBody.create(MultipartBody.FORM, value.toString())
+    private fun getRequestBody(value: Any): RequestBody =
+        RequestBody.create(MultipartBody.FORM, value.toString())
     // endregion
 
     // region Validation
-    private fun validateModels(): Boolean = validateUserModel() && validateCompanyModel()
-
-    private fun validateUserModel(): Boolean {
-        return true
+    private fun validateModels(view: View): Boolean {
+        val isValid = validateUserModel(view)
+        return validateCompanyModel(view) and isValid
     }
 
-    private fun validateCompanyModel(): Boolean {
-        return true
+
+    private fun validateUserModel(view: View): Boolean {
+        val user: UserAccountData = userData.value!!
+
+        var isValid = StringValidator(user.name)
+            .addValidation(NotNullOrEmptyRule(
+                view.context.getString(
+                    R.string.required_field_error_message,
+                    view.context.getString(R.string.account_me_name_hint))))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.USER_NAME, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(user.email)
+            .addValidation(ValidEmailRule(view.context.getString(R.string.invalid_email_error_message)))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.USER_EMAIL, it.error) }
+            .validate()
+
+        return isValid
+    }
+
+    private fun validateCompanyModel(view: View): Boolean {
+        val company: CompanyAccountData = companyData.value!!
+
+        var isValid = StringValidator(company.name)
+            .addValidation(NotNullOrEmptyRule(
+                view.context.getString(
+                    R.string.required_field_error_message,
+                    view.context.getString(R.string.account_company_name_hint))))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_NAME, it.error) }
+            .validate()
+
+        isValid = isValid and IntegerValidator(company.segmentId)
+            .addValidation(MinRule(1,
+                view.context.getString(
+                    R.string.required_field_error_message,
+                    view.context.getString(R.string.account_company_segment_hint))))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_SEGMENT, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(company.description)
+            .addValidation(NotNullOrEmptyRule(
+                view.context.getString(
+                    R.string.required_field_error_message,
+                    view.context.getString(R.string.account_company_description_hint))))
+            .addValidation(MaxLengthRule(144,
+                view.context.getString(
+                    R.string.max_text_length_error_message,
+                    view.context.getString(R.string.account_company_description_hint), 144)))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_DESCRIPTION, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(company.cep)
+            .addValidation(ValidCepRule(view.context.getString(R.string.invalid_cep_error_message)))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_CEP, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(company.city)
+            .addValidation(NotNullOrEmptyRule(
+                view.context.getString(
+                    R.string.required_field_error_message,
+                    view.context.getString(R.string.account_company_city_hint))))
+            .addValidation(MaxLengthRule(28,
+                view.context.getString(
+                    R.string.max_text_length_error_message,
+                    view.context.getString(R.string.account_company_city_hint), 28)))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_CITY, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(company.neighborhood)
+            .addValidation(NotNullOrEmptyRule(
+                view.context.getString(
+                    R.string.required_field_error_message,
+                    view.context.getString(R.string.account_company_neighborhood_hint))))
+            .addValidation(MaxLengthRule(35,
+                view.context.getString(
+                    R.string.max_text_length_error_message,
+                    view.context.getString(R.string.account_company_neighborhood_hint), 35)))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_NEIGHBORHOOD, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(company.cnpj)
+            .addValidation(ValidCnpjRule(view.context.getString(R.string.invalid_cnpj_error_message)))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_CNPJ, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(company.cellphone)
+            .addValidation(ValidTelephoneRule(view.context.getString(R.string.invalid_telephone_error_message)))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_CELLPHONE, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(company.email)
+            .addValidation(ValidEmailRule(view.context.getString(R.string.invalid_email_error_message)))
+            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_EMAIL, it.error) }
+            .validate()
+
+        return isValid
     }
     // endregion
 }
