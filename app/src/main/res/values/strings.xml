@@ -6,6 +6,7 @@
     <string name="start">Começar</string>
     <string name="skip"><u>Pular</u></string>
     <string name="logout"><u>Sair</u></string>
+    <string name="ok">OK</string>
     <string name="default_font">sans-serif-light</string>
     <string name="search">Buscar</string>
     <string name="route_access_denied">Você não tem acesso a essa rota</string>
@@ -87,13 +88,14 @@
     <string name="save">Salvar</string>
     <string name="account_company_neighborhood_hint">bairro</string>
     <string name="account_company_city_hint">cidade</string>
-    <string name="account_company_thumbnail">logo da Empresa</string>
     <string name="account_company_banner">imagem promocional</string>
+    <string name="account_company_logo_hint">logo da empresa</string>
+    <string name="account_company_promotional_photo_hint">foto promocional</string>
+    <string name="account_company_select_a_segment">Selecione um Segmento</string>
+    <string name="account_select_a">Selecione a %1$s</string>
 
     <!--Partnership-->
     <string name="partnership_no_account">Para habilitar esse ferramenta, você precisa ativar o descobrimento de parceiros na tela de configurações e ter seu perfil preenchido</string>
     <string name="partner_incomplete_register">Você precisa definir como você aparece para os outros usuários</string>
-    <string name="account_company_logo_hint">logo da empresa</string>
-    <string name="account_company_promotional_photo_hint">foto promocional</string>
 
 </resources>

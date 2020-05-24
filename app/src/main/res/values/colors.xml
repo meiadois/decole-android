@@ -19,4 +19,5 @@
     <!-- popup colors -->
     <color name="popup_font_color">#ffffff</color>
     <color name="popup_background">#00000000</color>
+    <color name="text_filed_error_color">#FF8E85</color>
 </resources>

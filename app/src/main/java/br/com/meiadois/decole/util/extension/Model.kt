@@ -67,7 +67,7 @@ fun List<SegmentResponse>.toSegmentModelList(): List<Segment> {
     }
 }
 
-fun SegmentResponse.toSegmentModel() = Segment(this.name)
+fun SegmentResponse.toSegmentModel() = Segment(this.id, this.name)
 
 fun CompanyResponse.toCompanyModel() :Company {
     return Company(

@@ -116,14 +116,16 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         app:layout_constraintStart_toStartOf="parent"
                         android:hint="@string/account_me_name_hint"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
                         android:id="@+id/account_me_name_input"
-                        android:layout_marginVertical="4dp"
                         android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
+                        android:layout_marginEnd="48dp"
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_me_name"
                             android:layout_width="match_parent"
@@ -133,14 +135,16 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         app:layout_constraintStart_toStartOf="parent"
                         android:hint="@string/account_me_mail_hint"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
                         android:id="@+id/account_me_mail_input"
-                        android:layout_marginVertical="4dp"
                         android:layout_marginStart="48dp"
-                        android:layout_marginEnd="48dp">
+                        android:layout_marginEnd="48dp"
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_me_mail"
                             android:layout_width="match_parent"
@@ -182,10 +186,11 @@
                     <RelativeLayout
                         app:layout_constraintTop_toBottomOf="@+id/account_company_hearder"
                         app:layout_constraintStart_toStartOf="parent"
+                        android:labelFor="@+id/visible_switch_input"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginBottom="16dp"
                         android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:layout_marginVertical="4dp">
+                        android:layout_width="match_parent">
                         <TextView
                             android:layout_alignParentStart="true"
                             android:layout_width="match_parent"
@@ -193,25 +198,28 @@
                             android:text="@string/be_shown_in_partner_research"
                             android:textStyle="bold" />
 
+                        <!--suppress AndroidUnknownAttribute -->
                         <Switch
                             android:onCheckedChanged="@{(button, bool) -> viewModel.onSearchVisibilityChange(bool)}"
                             android:checked="@{viewModel.companyData.visible}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/visible_switch_input"
                             android:layout_alignParentEnd="true"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
                             android:paddingStart="0dp"
                             android:paddingEnd="10dp" />
                     </RelativeLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         android:hint="@string/account_company_name_hint"
                         app:layout_constraintStart_toStartOf="parent"
                         android:id="@+id/account_company_name_input"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
-
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_name"
                             android:layout_width="match_parent"
@@ -220,29 +228,35 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        app:layout_constraintTop_toBottomOf="@+id/textView"
                         android:hint="@string/account_company_segment_hint"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
                         android:id="@+id/account_company_segment_input"
+                        android:labelFor="@+id/filled_exposed_dropdown"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        style="@style/exposed_dropdown_menu"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        app:errorEnabled="true">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/input_company_segment"
+                        <AutoCompleteTextView
+                            style="@style/exposed_dropdown_text_view"
+                            android:id="@+id/filled_exposed_dropdown"
                             android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:enabled="false"/>
+                            android:layout_width="match_parent"/>
+
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:hint="@string/account_company_description_hint"
                         android:id="@+id/account_company_description_input"
                         app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_description"
                             android:layout_width="match_parent"
@@ -252,27 +266,32 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         android:hint="@string/account_company_cep_hint"
                         app:layout_constraintStart_toStartOf="parent"
                         android:id="@+id/account_company_cep_input"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_cep"
                             android:layout_width="match_parent"
+                            android:inputType="numberDecimal"
                             android:layout_height="wrap_content"
                             android:text="@={viewModel.companyData.cep}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:hint="@string/account_company_city_hint"
                         app:layout_constraintTop_toBottomOf="@+id/textView"
-                        android:id="@+id/account_company_city_input"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
+                        android:hint="@string/account_company_city_hint"
                         app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/account_company_city_input"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_city"
                             android:layout_width="match_parent"
@@ -282,12 +301,14 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:hint="@string/account_company_neighborhood_hint"
-                        app:layout_constraintTop_toBottomOf="@+id/textView"
                         android:id="@+id/account_company_neighborhood_input"
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_neighborhood"
                             android:layout_width="match_parent"
@@ -297,42 +318,50 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         android:hint="@string/account_company_cnpj_hint"
                         app:layout_constraintStart_toStartOf="parent"
                         android:id="@+id/account_company_cnpj_input"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_cnpj"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
                             android:text="@={viewModel.companyData.cnpj}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:hint="@string/account_company_telephone_hint"
                         app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         android:id="@+id/account_company_telephone_input"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_telephone"
                             android:layout_width="match_parent"
+                            android:inputType="numberDecimal"
                             android:layout_height="wrap_content"
                             android:text="@={viewModel.companyData.cellphone}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:hint="@string/account_company_mail_hint"
                         app:layout_constraintTop_toBottomOf="@+id/textView"
-                        android:id="@+id/account_company_mail_input"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
+                        android:hint="@string/account_company_mail_hint"
                         app:layout_constraintStart_toStartOf="parent"
+                        android:id="@+id/account_company_mail_input"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_company_mail"
                             android:layout_width="match_parent"
@@ -343,32 +372,38 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintTop_toBottomOf="@+id/textView"
-                        android:hint="@string/account_company_logo_hint"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         app:layout_constraintStart_toStartOf="parent"
+                        android:labelFor="@+id/input_company_logo"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
+                            android:hint="@string/account_company_logo_hint"
                             android:drawableEnd="@drawable/ic_image_white"
+                            android:id="@+id/input_company_logo"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:inputType="text"
-                            android:enabled="false" />
+                            android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:hint="@string/account_company_promotional_photo_hint"
                         app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:errorTextColor="@color/text_filed_error_color"
+                        app:errorIconTint="@color/text_filed_error_color"
                         app:layout_constraintStart_toStartOf="parent"
+                        android:labelFor="@+id/input_company_banner"
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout"
-                        android:layout_marginVertical="4dp">
+                        app:errorEnabled="true">
                         <com.google.android.material.textfield.TextInputEditText
+                            android:hint="@string/account_company_promotional_photo_hint"
                             android:drawableEnd="@drawable/ic_image_white"
+                            android:id="@+id/input_company_banner"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:inputType="text"
-                            android:enabled="false" />
+                            android:inputType="none"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
