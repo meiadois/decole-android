@@ -4,10 +4,7 @@ import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
-import br.com.meiadois.decole.data.network.request.CompanyRequest
-import br.com.meiadois.decole.data.network.request.LoginRequest
-import br.com.meiadois.decole.data.network.request.RegisterRequest
-import br.com.meiadois.decole.data.network.request.UserUpdateRequest
+import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -26,6 +23,24 @@ class UserRepository(
     suspend fun register(username: String, email: String, password: String): RegisterResponse {
         return callClient {
             client.register(RegisterRequest(username, email, password))
+        }
+    }
+
+    suspend fun sendPwResetEmail(email: String): PwResetEmailResponse {
+        return callClient {
+            client.sendPwResetEmail(PwResetEmailRequest(email))
+        }
+    }
+
+    suspend fun validatePwResetToken(code: String): ValidatePwResetCodeResponse {
+        return callClient {
+            client.validatePwResetToken(ValidatePwResetCodeRequest(code))
+        }
+    }
+
+    suspend fun resetPassword(code: String, password: String): Unit {
+        return callClient {
+            client.resetPassword(ResetPasswordRequest(code, password))
         }
     }
 

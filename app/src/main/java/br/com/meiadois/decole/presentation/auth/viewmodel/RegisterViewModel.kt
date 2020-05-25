@@ -39,7 +39,7 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
         Coroutines.main {
 
             try {
-                val res = userRepository.register(name, email, password)
+                val res = userRepository.register(name, email.trim(), password.trim())
                 res.user?.let {
                     userRepository.saveUser(it.parseToUserEntity())
                     authListener?.onSuccess(it.parseToUserEntity(), res.message)

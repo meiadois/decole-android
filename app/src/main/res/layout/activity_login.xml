@@ -131,16 +131,35 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/layout_password_input" />
 
-                <Button
-                    android:id="@+id/btn_register"
-                    style="@style/btn_text_secondary"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="48dp"
                     android:layout_marginEnd="48dp"
-                    android:onClick="@{viewModel::onRegisterButtonClick}"
-                    android:text="@string/have_no_account_question"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_password_input" />
+                    app:layout_constraintTop_toBottomOf="@+id/layout_password_input">
+
+                    <Button
+                        android:id="@+id/btn_register"
+                        style="@style/btn_text_secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{viewModel::onRegisterButtonClick}"
+                        android:text="@string/have_no_account_question" />
+
+                    <Button
+                        android:id="@+id/btn_recovery"
+                        style="@style/btn_text_secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{viewModel::onRecoveryButtonClick}"
+                        android:text="@string/forgot_password_question" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

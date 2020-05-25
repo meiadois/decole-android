@@ -97,6 +97,18 @@ interface DecoleClient {
     @PUT("me")
     suspend fun updateUser(@Body request: UserUpdateRequest): Response<UserUpdateResponse>
 
+    @Headers("Content-Type: application/json")
+    @POST("generate_reset_password")
+    suspend fun sendPwResetEmail(@Body request: PwResetEmailRequest): Response<PwResetEmailResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("verify_token")
+    suspend fun validatePwResetToken(@Body request: ValidatePwResetCodeRequest): Response<ValidatePwResetCodeResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("forgot_password")
+    suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<Unit>
+
     companion object {
         operator fun invoke(
             interceptor: NetworkConnectionInterceptor,
