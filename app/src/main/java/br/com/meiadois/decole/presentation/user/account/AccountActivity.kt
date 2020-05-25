@@ -26,6 +26,7 @@ import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewMod
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.Mask
+import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_account.*
 import org.kodein.di.KodeinAware
@@ -60,8 +61,6 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         /*
             TODO:
                 limpar os metodos de pick de imagem
-                adicionar retorno positivo ou negativo do request
-                adicionar o botao de logout
          */
         askPermissions()
     }
@@ -94,7 +93,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         input_me_mail.addTextChangedListener(accountViewModel.onTextFieldChange(account_me_mail_input))
     }
 
-    override fun riseError(field: FieldsEnum, errorMessage: String) {
+    override fun riseValidationError(field: FieldsEnum, errorMessage: String) {
         val textInputLayout: TextInputLayout? = when(field){
             FieldsEnum.COMPANY_NAME -> account_company_name_input
             FieldsEnum.COMPANY_CEP -> account_company_cep_input
@@ -110,6 +109,14 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             else -> null
         }
         textInputLayout?.error = errorMessage
+    }
+
+    override fun onActionError(errorMessage: String?) {
+        account_root_layout.shortSnackbar(errorMessage ?: getString(R.string.error_when_executing_the_action))
+    }
+
+    override fun onActionSuccess() {
+        account_root_layout.shortSnackbar(getString(R.string.success_when_executing_the_action))
     }
 
     private fun setInputMasks(){

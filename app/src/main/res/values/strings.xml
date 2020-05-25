@@ -94,6 +94,8 @@
     <string name="account_company_select_a_segment">Selecione um Segmento</string>
     <string name="account_select_a">Selecione a %1$s</string>
     <string name="logout_content_description">Sair</string>
+    <string name="success_when_executing_the_action">Ação realizada com sucesso.</string>
+    <string name="error_when_executing_the_action">Falha ao executar ação.</string>
 
     <!--Validations Messages-->
     <string name="required_field_error_message">O campo %1$s é obrigatório.</string>

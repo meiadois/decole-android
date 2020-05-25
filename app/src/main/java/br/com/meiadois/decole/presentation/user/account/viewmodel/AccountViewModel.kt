@@ -21,6 +21,7 @@ import br.com.meiadois.decole.presentation.user.account.binding.UserAccountData
 import br.com.meiadois.decole.presentation.user.account.validation.*
 import br.com.meiadois.decole.service.LogOutService
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.toCompanyAccountData
 import br.com.meiadois.decole.util.extension.toSegmentModelList
 import com.google.android.material.textfield.TextInputLayout
@@ -162,8 +163,14 @@ class AccountViewModel(
                             companyData.value!!.city,
                             companyData.value!!.neighborhood
                         )
+                    isUpdating = true
+                    accountListener?.onActionSuccess()
+                } catch (ex: ClientException) {
+                    accountListener?.onActionError(Regex(" \\[(.*?)\\]").replace(ex.message!!, ""))
+                    Log.i("AccountFormException", ex.message!!)
                 } catch (ex: Exception) {
-                    Log.i("AccountFormException", "Deu errado" + ex.message!!)
+                    accountListener?.onActionError(null)
+                    Log.i("AccountFormException", ex.message!!)
                 }
             }
         }
@@ -200,12 +207,12 @@ class AccountViewModel(
                 view.context.getString(
                     R.string.required_field_error_message,
                     view.context.getString(R.string.account_me_name_hint))))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.USER_NAME, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_NAME, it.error) }
             .validate()
 
         isValid = isValid and StringValidator(user.email)
             .addValidation(ValidEmailRule(view.context.getString(R.string.invalid_email_error_message)))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.USER_EMAIL, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_EMAIL, it.error) }
             .validate()
 
         return isValid
@@ -219,7 +226,7 @@ class AccountViewModel(
                 view.context.getString(
                     R.string.required_field_error_message,
                     view.context.getString(R.string.account_company_name_hint))))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_NAME, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_NAME, it.error) }
             .validate()
 
         isValid = isValid and IntegerValidator(company.segmentId)
@@ -227,7 +234,7 @@ class AccountViewModel(
                 view.context.getString(
                     R.string.required_field_error_message,
                     view.context.getString(R.string.account_company_segment_hint))))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_SEGMENT, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_SEGMENT, it.error) }
             .validate()
 
         isValid = isValid and StringValidator(company.description)
@@ -239,12 +246,12 @@ class AccountViewModel(
                 view.context.getString(
                     R.string.max_text_length_error_message,
                     view.context.getString(R.string.account_company_description_hint), 144)))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_DESCRIPTION, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_DESCRIPTION, it.error) }
             .validate()
 
         isValid = isValid and StringValidator(company.cep)
             .addValidation(ValidCepRule(view.context.getString(R.string.invalid_cep_error_message)))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_CEP, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_CEP, it.error) }
             .validate()
 
         isValid = isValid and StringValidator(company.city)
@@ -256,7 +263,7 @@ class AccountViewModel(
                 view.context.getString(
                     R.string.max_text_length_error_message,
                     view.context.getString(R.string.account_company_city_hint), 28)))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_CITY, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_CITY, it.error) }
             .validate()
 
         isValid = isValid and StringValidator(company.neighborhood)
@@ -268,22 +275,22 @@ class AccountViewModel(
                 view.context.getString(
                     R.string.max_text_length_error_message,
                     view.context.getString(R.string.account_company_neighborhood_hint), 35)))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_NEIGHBORHOOD, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_NEIGHBORHOOD, it.error) }
             .validate()
 
         isValid = isValid and StringValidator(company.cnpj)
             .addValidation(ValidCnpjRule(view.context.getString(R.string.invalid_cnpj_error_message)))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_CNPJ, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_CNPJ, it.error) }
             .validate()
 
         isValid = isValid and StringValidator(company.cellphone)
             .addValidation(ValidTelephoneRule(view.context.getString(R.string.invalid_telephone_error_message)))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_CELLPHONE, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_CELLPHONE, it.error) }
             .validate()
 
         isValid = isValid and StringValidator(company.email)
             .addValidation(ValidEmailRule(view.context.getString(R.string.invalid_email_error_message)))
-            .addErrorCallback { accountListener?.riseError(FieldsEnum.COMPANY_EMAIL, it.error) }
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_EMAIL, it.error) }
             .validate()
 
         return isValid
