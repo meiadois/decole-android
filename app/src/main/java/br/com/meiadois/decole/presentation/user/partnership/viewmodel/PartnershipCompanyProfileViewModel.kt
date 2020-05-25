@@ -35,25 +35,31 @@ private val segmentRepository: SegmentRepository
     init{
         getSegments()
         getAllCompanies()
-//
     }
 
     fun getUpdateCompany(){
-        state+=1
-        company.postValue(companies.value?.get(state))
+        try {
+            if (state < companies.value!!.count()-1)
+                state += 1
+            else
+                state = 0
+            company.postValue(companies.value?.get(state))
+        }catch(ex: Exception){
+            Log.i("getUpdateCompany.ex", ex.message!!)
+        }
     }
 
     private fun getSegments() {
         Coroutines.main {
             try {
-                segments.value = segmentRepository.getAllSegments().toSegmentModelList()
+                segments.value = segmentRepository.getAllSegmentsHasCompanies().toSegmentModelList()
             } catch (ex: Exception) {
                 Log.i("getSegments.ex", ex.message!!)
             }
         }
     }
 
-    fun getCompanyBySegment(segmentId: Int) {
+    fun getCompaniesBySegment(segmentId: Int) {
         Coroutines.main {
             try {
                 companies.value = companyRepository.getCompaniesBySegment(segmentId).toCompanySearchModelList()
@@ -66,7 +72,7 @@ private val segmentRepository: SegmentRepository
     fun getAllCompanies(){
         Coroutines.main {
             try{
-                companies.value = companyRepository.getAllCompanies().toCompanyModelList()
+                companies.value = companyRepository.getAllCompanies().toCompanySearchModelList()
                 company.value = companies.value?.get(0)
             }catch (ex: Exception){
                 Log.i("getAllCompanies.ex", ex.message!!)
@@ -75,12 +81,11 @@ private val segmentRepository: SegmentRepository
     }
 
     fun sendLike( senderId: Int, recipientId: Int ){
-        var a = 1
         Coroutines.main{
             try{
                 companyRepository.sendLikes(senderId, recipientId)
             }catch(ex: Exception){
-                Log.i("sendLikesInterno.ex", ex.message!!)
+                Log.i("sendLike.ex", ex.message!!)
             }
 
         }

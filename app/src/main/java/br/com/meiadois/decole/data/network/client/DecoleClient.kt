@@ -58,13 +58,21 @@ interface DecoleClient {
     suspend fun insertUserCompany(@Body request: CompanyRequest): Response<CompanyResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("companies")
-    suspend fun getAllCompanies(): Response<List<CompanyResponse>>
+    @GET("me/companies/_/search")
+    suspend fun getAllCompanies(): Response<List<CompanySearchResponse>>
 
     @Headers("Content-Type: application/json")
-    @GET("companies/_/search")
-    suspend fun getCompanyBySegment(@Query("segment_id") segmentId: Int): Response<List<CompanySearchResponse>>
+    @GET("me/companies/_/search")
+    suspend fun getCompaniesBySegment(@Query("segment_id") segmentId: Int): Response<List<CompanySearchResponse>>
+    /*
+        @Headers("Content-Type: application/json")
+        @GET("companies/_/search")
+        suspend fun getAllCompanies(): Response<List<CompanySearchResponse>>
 
+        @Headers("Content-Type: application/json")
+        @GET("companies/_/search")
+        suspend fun getCompanyBySegment(@Query("segment_id") segmentId: Int, @Query("company_id")companyId: Int): Response<List<CompanySearchResponse>>
+    */
     @Headers("Content-Type: application/json")
     @GET("companies/{id}")
     suspend fun getCompanyById(@Path("id") companyId: Int): Response<CompanyResponse>
@@ -80,6 +88,10 @@ interface DecoleClient {
     @Headers("Content-Type: application/json")
     @GET("segments")
     suspend fun getAllSegments(): Response<List<SegmentResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("segments/_/has-companies")
+    suspend fun getAllSegmentsHasCompanies(): Response<List<SegmentResponse>>
 
     @Headers("Content-Type: application/json")
     @PUT("likes/{id}")

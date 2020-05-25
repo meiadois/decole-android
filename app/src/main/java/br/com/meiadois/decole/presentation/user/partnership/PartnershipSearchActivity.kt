@@ -12,6 +12,8 @@ import br.com.meiadois.decole.R
 import br.com.meiadois.decole.databinding.ActivitySearchPartnerBinding
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModelFactory
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_search_partner.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -38,6 +40,10 @@ class PartnershipSearchActivity: AppCompatActivity(), KodeinAware {
         setAdapterToSegmentDropdown()
         setContentCardCompanyView()
 
+        btn_back.setOnClickListener{
+            finish()
+        }
+
         btn_md_checked.setOnClickListener{
             val companyId = intent.getIntExtra("company_id", 0)
             try {
@@ -47,6 +53,7 @@ class PartnershipSearchActivity: AppCompatActivity(), KodeinAware {
             }
             mViewModel.getUpdateCompany()
         }
+
         btn_md_close.setOnClickListener{
             mViewModel.getUpdateCompany()
         }
@@ -64,14 +71,18 @@ class PartnershipSearchActivity: AppCompatActivity(), KodeinAware {
                 filled_exposed_dropdown.inputType = InputType.TYPE_NULL
                 filled_exposed_dropdown.setText("Todos os Segmentos", false)
                 filled_exposed_dropdown.setOnItemClickListener { parent, view, position, id ->
-                    val segment = segments.firstOrNull(){
+                    val segment = segments.firstOrNull{
                         it.name == segmentsString[position]
                     }
                     if(segment == null){
-                        mViewModel.getAllCompanies()
+                        try{
+                            mViewModel.getAllCompanies()
+                        }catch(ex: Exception){
+                            Log.i("getAllComp.ex", ex.message!!)
+                        }
                     }else{
                         try{
-                            mViewModel.getCompanyBySegment(segment.id!!)
+                            mViewModel.getCompaniesBySegment(segment.id!!)
                         }catch(ex: Exception){
                             Log.i("getCompBySeg.ex",ex.message!!)
                         }
@@ -90,7 +101,8 @@ class PartnershipSearchActivity: AppCompatActivity(), KodeinAware {
             it?.let{
                 text_profile_name.text = it.name
                 text_profile_description.text = it.description
-                //text_profile_segment.text = it.segment.id
+                text_profile_segment.text = it.segment?.name
+                Glide.with(cardview_company_profile).load(it.banner).into(image_profile_banner)
             }
         })
     }

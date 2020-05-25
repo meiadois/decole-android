@@ -18,11 +18,11 @@ class CompanyRepository(
 
     suspend fun getCompaniesBySegment(segmentId: Int): List<CompanySearchResponse>{
         return callClient {
-            client.getCompanyBySegment(segmentId)
+            client.getCompaniesBySegment(segmentId)
         }
     }
 
-    suspend fun getAllCompanies(): List<CompanyResponse>{
+    suspend fun getAllCompanies(): List<CompanySearchResponse>{
         return callClient{
             client.getAllCompanies()
         }
