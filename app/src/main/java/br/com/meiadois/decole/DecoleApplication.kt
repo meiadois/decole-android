@@ -49,7 +49,7 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { StartInteractiveModeViewModelFactory(instance()) }
         bind() from singleton { PartnershipHomeBottomViewModelFactory(instance()) }
         bind() from singleton { PartnershipPopUpViewModelFactory(instance()) }
-        bind() from singleton { AccountViewModelFactory(instance(), instance(), instance()) }
+        bind() from singleton { AccountViewModelFactory(instance(), instance(), instance(), instance()) }
         bind() from singleton { PartnershipHomeTopViewModelFactory(instance()) }
         bind() from singleton { FinishedRouteViewModelFactory(instance(), instance()) }
         bind() from singleton { WelcomeSlideViewModelFactory(instance()) }

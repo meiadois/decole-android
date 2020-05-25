@@ -20,9 +20,11 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Segment
 import br.com.meiadois.decole.databinding.ActivityAccountBinding
+import br.com.meiadois.decole.presentation.auth.LoginActivity
 import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModel
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
+import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.Mask
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_account.*
@@ -30,7 +32,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 import java.io.File
-import java.lang.Exception
 
 class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     override val kodein by kodein()
@@ -50,8 +51,8 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             viewModel = accountViewModel
             lifecycleOwner = this@AccountActivity
         }
-        toolbar_back_button.setOnClickListener { finish() }
         setAdapterToSegmentDropdown()
+        setToolBarButtonsListeners()
         setRemoveErrorListener()
         setImageInputs()
         setInputMasks()
@@ -66,6 +67,19 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     }
 
     // region Local Functions
+    private fun setToolBarButtonsListeners(){
+        toolbar_back_button.setOnClickListener { finish() }
+        toolbar_exit_button.setOnClickListener {
+            Coroutines.main {
+                accountViewModel.onLogOutButtonClick()
+                Intent(this, LoginActivity::class.java).also {
+                    it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(it)
+                }
+            }
+        }
+    }
+
     private fun setRemoveErrorListener(){
         input_company_name.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_name_input))
         input_company_cep.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_cep_input))

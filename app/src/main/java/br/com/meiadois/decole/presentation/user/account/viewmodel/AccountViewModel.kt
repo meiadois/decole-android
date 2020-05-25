@@ -19,6 +19,7 @@ import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountDa
 import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
 import br.com.meiadois.decole.presentation.user.account.binding.UserAccountData
 import br.com.meiadois.decole.presentation.user.account.validation.*
+import br.com.meiadois.decole.service.LogOutService
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.extension.toCompanyAccountData
 import br.com.meiadois.decole.util.extension.toSegmentModelList
@@ -28,11 +29,11 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
-
 class AccountViewModel(
     private val segmentRepository: SegmentRepository,
     private val userRepository: UserRepository,
-    private val cepRepository: CepRepository
+    private val cepRepository: CepRepository,
+    private val logOutService: LogOutService
 ) : ViewModel() {
     var companyData: MutableLiveData<CompanyAccountData> = MutableLiveData<CompanyAccountData>()
     var userData: MutableLiveData<UserAccountData> = MutableLiveData<UserAccountData>()
@@ -110,6 +111,8 @@ class AccountViewModel(
             }
         }
     }
+
+    suspend fun onLogOutButtonClick() = logOutService.perform().join()
 
     fun onSaveButtonClick(view: View) {
         if (validateModels(view)) {
