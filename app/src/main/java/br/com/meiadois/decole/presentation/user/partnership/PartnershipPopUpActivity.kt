@@ -57,7 +57,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun setOpenMailAppListener() {
-        mail_contact_layout.setOnClickListener{
+        popup_window_mail.setOnClickListener{
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(popup_window_mail.text.toString()))
@@ -66,7 +66,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun setOpenDialAppListener() {
-        wpp_contact_layout.setOnClickListener{
+        popup_window_phone.setOnClickListener{
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:" + popup_window_phone.text.toString())
             startActivity(intent)
@@ -118,14 +118,14 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
 
     private fun showGoneElements(){
         popup_window_button_undo_partnership.visibility = View.VISIBLE
-        mail_contact_icon.visibility = View.VISIBLE
-        wpp_contact_icon.visibility = View.VISIBLE
+        popup_window_mail.visibility = View.VISIBLE
+        popup_window_phone.visibility = View.VISIBLE
     }
 
     private fun setBackgroundStartFadeAnimation(){
         val alphaColor = ColorUtils.setAlphaComponent(getColor(R.color.popup_background), ALPHA_VALUE)
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), Color.TRANSPARENT, alphaColor)
-        colorAnimation.duration = 500
+        colorAnimation.duration = TRANSITION_DURATION
         colorAnimation.addUpdateListener { animator ->
             popup_window_background.setBackgroundColor(animator.animatedValue as Int)
         }
@@ -134,7 +134,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
 
     private fun setStartFadeAnimation(){
         popup_window_view_with_border.alpha = 0f
-        popup_window_view_with_border.animate().alpha(1f).setDuration(500).setInterpolator(
+        popup_window_view_with_border.animate().alpha(1f).setDuration(TRANSITION_DURATION).setInterpolator(
             DecelerateInterpolator()
         ).start()
     }
@@ -142,11 +142,11 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     override fun onBackPressed() {
         val alphaColor = ColorUtils.setAlphaComponent(getColor(R.color.popup_background), ALPHA_VALUE)
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), alphaColor, Color.TRANSPARENT)
-        colorAnimation.duration = 500
+        colorAnimation.duration = TRANSITION_DURATION
         colorAnimation.addUpdateListener { animator ->
             popup_window_background.setBackgroundColor(animator.animatedValue as Int)
         }
-        popup_window_view_with_border.animate().alpha(0f).setDuration(500).setInterpolator(
+        popup_window_view_with_border.animate().alpha(0f).setDuration(TRANSITION_DURATION).setInterpolator(
             DecelerateInterpolator()
         ).start()
         colorAnimation.addListener(object : AnimatorListenerAdapter() {
@@ -164,6 +164,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         private const val EXTRA_PARTNER_ID = "PARTNER_ID"
         private const val EXTRA_LIKE_ID = "LIKE_ID"
         private const val ALPHA_VALUE = 100
+        private const val TRANSITION_DURATION = 100L
 
         fun getStartIntent(context: Context, likeId: Int, partnerId: Int, userCompanyId: Int, userIsSender: Boolean) : Intent {
             return Intent(context, PartnershipPopUpActivity::class.java).apply {

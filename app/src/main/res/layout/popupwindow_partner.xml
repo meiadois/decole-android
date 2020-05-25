@@ -1,218 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    tools:context=".presentation.user.partnership.PartnershipPopUpActivity"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTint="@color/popup_background"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/popup_background"
     android:id="@+id/popup_window_background"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:background="@color/popup_background"
+    android:backgroundTint="@color/popup_background"
+    tools:context=".presentation.user.partnership.PartnershipPopUpActivity">
 
     <androidx.cardview.widget.CardView
-        app:cardBackgroundColor="@color/colorPrimaryDark"
         android:id="@+id/popup_window_view_with_border"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginHorizontal="48dp"
-        app:cardPreventCornerOverlap="false"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginHorizontal="48dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
         app:cardCornerRadius="3dp"
+        app:cardElevation="0dp"
         app:cardMaxElevation="0dp"
-        app:cardElevation="0dp">
+        app:cardPreventCornerOverlap="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
-            app:cardBackgroundColor="@color/colorPrimaryDark"
-            android:layout_centerInParent="true"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/popup_window_view"
-            app:cardPreventCornerOverlap="false"
-            android:layout_margin="16dp"
-            app:cardMaxElevation="0dp"
-            app:cardCornerRadius="3dp"
-            app:cardElevation="0dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="24dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/popup_window_background_container"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+            <LinearLayout
+                android:id="@+id/popup_window_header_layout"
                 android:layout_width="match_parent"
-                android:minHeight="170dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:id="@+id/popup_window_header_layout"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                <ImageView
+                    android:id="@+id/popup_window_close_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:contentDescription="@string/popup_window_button_close"
-                        android:id="@+id/popup_window_close_button"
-                        android:src="@drawable/ic_close_white"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="end"
-                        android:padding="8dp"/>
-
-                    <TextView
-                        android:id="@+id/popup_window_partner_name"
-                        android:textColor="@color/popup_font_color"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:layout_marginBottom="8dp"
-                        android:textAlignment="center"
-                        tools:text="NOME DO PERCEIRO"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/popup_window_partner_segment"
-                        android:textColor="@color/popup_font_color"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:layout_marginBottom="8dp"
-                        tools:text="SEGMENTO DO PERCEIRO"
-                        android:textAlignment="center"
-                        android:gravity="center"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/popup_window_button_close"
+                    android:src="@drawable/ic_close_white" />
 
                 <TextView
-                    app:layout_constraintBottom_toTopOf="@+id/popup_window_contact_layout"
-                    app:layout_constraintTop_toBottomOf="@+id/popup_window_header_layout"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:id="@+id/popup_window_partner_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
                     android:textColor="@color/popup_font_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="NOME DO PARCEIRO" />
+
+                <TextView
+                    android:id="@+id/popup_window_partner_segment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/popup_font_color"
+                    android:textSize="13sp"
+                    tools:text="SEGMENTO DO PARCEIRO" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/popup_window_contact_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/popup_window_footer_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/popup_window_header_layout">
+
+                <TextView
                     android:id="@+id/popup_window_description"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
-                    android:layout_width="match_parent"
-                    tools:text="DESCRIÇÃO DO PARCEIRO"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="0dp"
-                    android:textSize="16sp" />
+                    android:textColor="@color/popup_font_color"
+                    android:textSize="16sp"
+                    tools:text="DESCRIÇÃO DO PARCEIRO" />
 
-                <LinearLayout
-                    app:layout_constraintBottom_toTopOf="@+id/popup_window_footer_layout"
-                    app:layout_constraintTop_toBottomOf="@+id/popup_window_description"
-                    android:id="@+id/popup_window_contact_layout"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                <TextView
+                    android:id="@+id/popup_window_phone"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:paddingStart="32dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="0dp">
-                    <LinearLayout
-                        android:id="@+id/wpp_contact_layout"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        tools:ignore="UseCompoundDrawables"
-                        android:orientation="horizontal">
+                    android:drawableStart="@drawable/ic_whatsapp_white"
+                    android:drawablePadding="10dp"
+                    android:visibility="invisible"
+                    tools:text="(71) 00000-0000" />
 
-                        <ImageView
-                            android:visibility="invisible"
-                            android:id="@+id/wpp_contact_icon"
-                            android:layout_width="20dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:contentDescription="@string/ic_whatsapp_content_description"
-                            android:src="@drawable/ic_whatsapp_white" />
-                        <TextView
-                            android:id="@+id/popup_window_phone"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            tools:text="(71) 00000-0000"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="0dp"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/mail_contact_layout"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        tools:ignore="UseCompoundDrawables"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
-                        <ImageView
-                            android:visibility="invisible"
-                            android:id="@+id/mail_contact_icon"
-                            android:contentDescription="@string/ic_mail_content_description"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_mail_white"
-                            android:layout_height="22dp"
-                            android:layout_width="22dp"/>
-                        <TextView
-                            android:id="@+id/popup_window_mail"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            tools:text="contato@empresa.com"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="0dp"/>
-                    </LinearLayout>
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/popup_window_mail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_mail_white"
+                    android:drawablePadding="10dp"
+                    android:visibility="invisible"
+                    tools:text="contato@empresa.com" />
 
-                <LinearLayout
-                    app:layout_constraintTop_toBottomOf="@+id/popup_window_contact_layout"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:id="@+id/popup_window_footer_layout"
-                    app:layout_constraintEnd_toEndOf="parent"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/popup_window_footer_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/popup_window_contact_layout">
+
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="20dp">
-                    <ImageView
-                        android:visibility="gone"
-                        android:src="@drawable/ic_partner_divider"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"/>
-                    <LinearLayout
-                        android:id="@+id/popup_window_button_layout"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal">
-                        <Button
-                            android:id="@+id/popup_window_button_undo_partnership"
-                            android:text="@string/undo_partnership"
-                            android:layout_marginHorizontal="8dp"
-                            android:visibility="invisible"
-                            style="@style/btn_primary"
-                            android:layout_weight="1"
-                            android:textSize="12sp"/>
-                        <Button
-                            android:visibility="gone"
-                            android:layout_marginHorizontal="8dp"
-                            android:text="@string/confirm"
-                            style="@style/btn_primary"
-                            android:layout_weight="1"
-                            android:textSize="12sp"/>
-                        <Button
-                            android:visibility="gone"
-                            android:layout_marginHorizontal="8dp"
-                            android:text="@string/cancel"
-                            style="@style/btn_secondary"
-                            android:layout_weight="1"
-                            android:textSize="12sp" />
-                    </LinearLayout>
+                    android:src="@drawable/ic_partnership_info_action_divider"
+                    android:visibility="gone" />
 
+                <LinearLayout
+                    android:id="@+id/popup_window_button_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/popup_window_button_undo_partnership"
+                        style="@style/btn_primary"
+                        android:layout_weight="1"
+                        android:text="@string/undo_partnership"
+                        android:textSize="12sp"
+                        android:visibility="invisible" />
+
+                    <Button
+                        style="@style/btn_primary"
+                        android:layout_weight="1"
+                        android:text="@string/confirm"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <Button
+                        style="@style/btn_secondary"
+                        android:layout_weight="1"
+                        android:text="@string/cancel"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
                 </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
