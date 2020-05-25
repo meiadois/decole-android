@@ -38,6 +38,11 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(PartnershipHomeTopViewModel::class.java)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         init()
     }
 
@@ -66,14 +71,15 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     }
 
     private fun showUserCompany(company: Company){
-        container_company_layout.visibility = View.VISIBLE
+        container_company_layout_no_account.visibility = View.INVISIBLE
+        container_company_layout_account.visibility = View.VISIBLE
         text_partner_name.text = company.name
         text_partner_segment.text = company.segment?.name
-        Glide.with(container_company_layout).load(company.thumbnail).apply(RequestOptions.circleCropTransform()).into(image_partner)
+        Glide.with(container_company_layout_account).load(company.thumbnail).apply(RequestOptions.circleCropTransform()).into(image_partner)
     }
 
     private fun showInviteToRegister(){
-        fragment_top_root_layout?.removeAllViews()
-        layoutInflater.inflate(R.layout.fragment_partnership_no_account_top, fragment_top_root_layout)
+        container_company_layout_account.visibility = View.INVISIBLE
+        container_company_layout_no_account.visibility = View.VISIBLE
     }
 }
