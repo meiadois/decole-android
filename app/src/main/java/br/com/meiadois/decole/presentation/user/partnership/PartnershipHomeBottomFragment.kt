@@ -39,7 +39,6 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_partnership_home_bottom, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +62,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 else -> false
             }
         }
-        init(view)
+        setProgressBarVisibility(true)
+        setContentVisibility(CONTENT_NONE)
         btn_search.setOnClickListener {
             Intent(view.context, PartnershipSearchActivity::class.java).also {
                 it.putExtra("company_id", viewModel.company.id)
@@ -72,55 +72,60 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         }
     }
 
-    private fun init(view: View){
+    override fun onResume() {
+        super.onResume()
+        init(this.requireContext())
+    }
+
+    private fun init(context: Context){
         Coroutines.main {
             try{
                 val company : Company = viewModel.getUserCompany()
-                showPartnershipList(view, company.id)
+                showPartnershipList(context, company.id)
             }catch (ex: ClientException){
-                if (ex.code == 404) showInviteToRegister()
+                if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
                 else showGenericErrorMessage()
             }catch (ex: Exception){
                 showGenericErrorMessage()
             }finally {
-                progress_bar?.visibility = View.INVISIBLE
+                setProgressBarVisibility(false)
             }
         }
     }
 
-    private fun showPartnershipList(view: View, companyId: Int){
-        partnership_scroolable_view.visibility = View.VISIBLE
+    private fun setProgressBarVisibility(visible: Boolean){
+        progress_bar.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun setContentVisibility(contentMode: Int){
+        partner_recycler_view.visibility = if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.INVISIBLE
+        layout_empty.visibility = if (contentMode == CONTENT_NO_PARTNERS_FOUND) View.VISIBLE else View.INVISIBLE
+        fragment_container_noAccount.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun showPartnershipList(context: Context, companyId: Int){
         viewModel.partnershipLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
-                if(it.isEmpty()){
-                    partner_recycler_view.visibility = View.GONE
-                    layout_empty.visibility = View.VISIBLE
-                }else{
-                    partner_recycler_view.visibility = View.VISIBLE
-                    layout_empty.visibility = View.GONE
+                if(it.isNotEmpty()){
+                    setContentVisibility(CONTENT_LIST_PARTNERS)
                     with(partner_recycler_view) {
-                        layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+                        layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                         setHasFixedSize(true)
-                        adapter = PartnerRecyclerAdapter(it, view.context){
-                            onPartnerItemClick(view.context, it)
+                        adapter = PartnerRecyclerAdapter(it, context){
+                            onPartnerItemClick(context, it)
                         }
                     }
-                }
-
+                }else
+                    setContentVisibility(CONTENT_NO_PARTNERS_FOUND)
             }
         })
         viewModel.getPartnerships(companyId)
     }
 
-    private fun showInviteToRegister(){
-        fragment_bottom_root_layout.removeAllViews()
-        layoutInflater.inflate(R.layout.fragment_partnership_no_account_bottom, fragment_bottom_root_layout)
-    }
-
     private fun showGenericErrorMessage(){
-        fragment_bottom_root_layout?.longSnackbar(getString(R.string.getting_data_failed_error_message)){ snackbar ->
+        fragment_bottom_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message)){ snackbar ->
             snackbar.setAction(getString(R.string.reload)) {
-                init(it)
+                init(it.context)
                 snackbar.dismiss()
             }
         }
@@ -183,5 +188,10 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         private const val UNDO_PARTNERSHIP_REQUEST_CODE = 11352
         const val UNDO_PARTNERSHIP_DELETED_RESULT_CODE = 11353
         const val UNDO_PARTNERSHIP_DELETED_TAG = "DELETED_LIKE_ID"
+
+        const val CONTENT_NONE = 0
+        const val CONTENT_NO_ACCOUNT = 1
+        const val CONTENT_LIST_PARTNERS = 2
+        const val CONTENT_NO_PARTNERS_FOUND = 3
     }
 }

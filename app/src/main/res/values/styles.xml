@@ -86,7 +86,7 @@
     <style name="circle_progress_bar" parent="@style/Widget.AppCompat.ProgressBar">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:indeterminateTint">@color/colorPrimary</item>
+        <item name="android:indeterminateTint">@color/colorAccent</item>
     </style>
 
     <style name="slide_activity_animation" parent="@android:style/Animation.Activity">
