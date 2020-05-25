@@ -6,11 +6,12 @@
     <data>
 
         <variable
-            name="companyProfile"
+            name="viewModel"
             type="br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_company_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/colorTextIcons"
@@ -44,30 +45,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Nome da Empresa"
                     android:textColor="@color/colorPrimaryText"
                     android:textStyle="bold"
-                    tools:text="Nome da empresa"/>
-<!--                    android:text="@{companyProfile.name}"/>-->
+                    tools:text="Nome da empresa"
+                    android:text="@{viewModel.name}"/>
 
                 <TextView
                     android:id="@+id/text_profile_segment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Segmento da empresa"
                     android:textColor="@color/colorSecondaryText"
-                    tools:text="Segmento da empresa"/>
-<!--                    android:text="@{companyProfile.segment}"/>-->
+                    tools:text="Segmento da empresa"
+                    android:text="@{viewModel.segment}"/>
 
                 <TextView
                     android:id="@+id/text_profile_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lobortis eu sapien sed ornare. Maecenas dolor massa, congue et aliquet in, ultr."
                     android:textColor="@color/colorPrimaryText"
-                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lobortis eu sapien sed ornare. Maecenas dolor massa, congue et aliquet in, ultr."/>
-<!--                    android:text="@{companyProfile.description}"/>-->
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lobortis eu sapien sed ornare. Maecenas dolor massa, congue et aliquet in, ultr."
+                    android:text="@{viewModel.description}"/>
 
             </LinearLayout>
         </LinearLayout>

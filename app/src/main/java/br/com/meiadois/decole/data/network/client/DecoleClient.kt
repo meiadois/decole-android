@@ -2,10 +2,7 @@ package br.com.meiadois.decole.data.network.client
 
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
-import br.com.meiadois.decole.data.network.request.CompanyBySegmentRequest
-import br.com.meiadois.decole.data.network.request.LikeRequest
-import br.com.meiadois.decole.data.network.request.LoginRequest
-import br.com.meiadois.decole.data.network.request.RegisterRequest
+import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -51,16 +48,20 @@ interface DecoleClient {
     suspend fun getUserCompany(): Response<CompanyResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("/companies")
+    @GET("companies")
     suspend fun getAllCompanies(): Response<List<CompanyResponse>>
 
     @Headers("Content-Type: application/json")
-    @GET("/companies/_/search")
-    suspend fun getCompanyBySegment(@Body request: CompanyBySegmentRequest): Response<List<CompanyResponse>>
+    @GET("companies/_/search")
+    suspend fun getCompanyBySegment(@Query("segment_id") segmentId: Int): Response<List<CompanySearchResponse>>
 
     @Headers("Content-Type: application/json")
     @GET("companies/{id}")
     suspend fun getCompanyById(@Path("id") companyId: Int): Response<CompanyResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("likes")
+    suspend fun sendLike(@Body request: LikeSenderRequest): Response<LikePutResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/likes")

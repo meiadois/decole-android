@@ -14,12 +14,9 @@ import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.Fini
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteListViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.StartInteractiveModeViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.*
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeInfoViewModelFactory
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewModelFactory
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModelFactory
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipSearchViewModelFactory
 import br.com.meiadois.decole.service.LogOutService
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -56,6 +53,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { FinishedRouteViewModelFactory(instance(), instance()) }
         bind() from singleton { WelcomeSlideViewModelFactory(instance()) }
         bind() from singleton { WelcomeInfoViewModelFactory(instance()) }
-        bind() from singleton { PartnershipSearchViewModelFactory(instance(), instance()) }
+        bind() from singleton { PartnershipCompanyProfileViewModelFactory(instance(), instance())}
     }
 }

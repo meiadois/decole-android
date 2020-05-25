@@ -47,8 +47,10 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         viewModel = ViewModelProvider(this, factory).get(PartnershipHomeBottomViewModel::class.java)
         init(view)
         btn_search.setOnClickListener {
-            var intent = Intent(context, PartnershipSearchActivity::class.java)
-            startActivity(intent)
+            Intent(view.context, PartnershipSearchActivity::class.java).also {
+                it.putExtra("company_id", viewModel.company.id)
+                view.context.startActivity(it)
+            }
         }
     }
 
@@ -90,7 +92,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
 
     private fun showGenericErrorMessage(){
-        fragment_bottom_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message)){ snackbar ->
+        fragment_bottom_root_layout?.longSnackbar(getString(R.string.getting_data_failed_error_message)){ snackbar ->
             snackbar.setAction(getString(R.string.reload)) {
                 init(it)
                 snackbar.dismiss()

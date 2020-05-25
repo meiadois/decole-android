@@ -59,9 +59,9 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
 
     private fun toggleLoading(loading: Boolean) {
         if (loading){
-            top_progress_bar.visibility = View.VISIBLE
+            top_progress_bar?.visibility = View.VISIBLE
         }else {
-            top_progress_bar.visibility = View.GONE
+            top_progress_bar?.visibility = View.GONE
         }
     }
 

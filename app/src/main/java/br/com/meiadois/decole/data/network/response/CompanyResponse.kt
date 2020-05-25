@@ -32,3 +32,23 @@ data class CompanyResponse(
     @Json(name = "segment")
     val segment: SegmentResponse?
 )
+
+@JsonClass(generateAdapter = true)
+data class CompanySearchResponse(
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "banner")
+    val banner: String,
+    @Json(name = "cnpj")
+    val cnpj: String,
+    @Json(name = "cellphone")
+    val cellphone: String,
+    @Json(name = "email")
+    val email: String,
+    @Json(name = "description")
+    val description: String,
+    @Json(name = "segment")
+    val segment: SegmentResponse?
+)

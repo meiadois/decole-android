@@ -6,4 +6,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class CompanyBySegmentRequest(
     @field:Json(name = "segment_id") val segmentId: Int
+
 )
