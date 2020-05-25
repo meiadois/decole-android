@@ -10,6 +10,9 @@
     <color name="colorPrimaryDarker">#34494F</color>
     <color name="colorAccent">#4ADFD1</color>
 
+    <!-- override colors -->
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#fff</color>
+
     <color name="transparent">#00000000</color>
     <!-- card colors -->
     <color name="card_background">#ffffff</color>
@@ -19,4 +22,5 @@
     <!-- popup colors -->
     <color name="popup_font_color">#ffffff</color>
     <color name="popup_background">#00000000</color>
+    <color name="text_filed_error_color">#FF8E85</color>
 </resources>

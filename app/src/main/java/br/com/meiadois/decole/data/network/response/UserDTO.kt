@@ -14,3 +14,11 @@ data class UserDTO(
     @Json(name = "introduced")
     val introduced: Boolean
 )
+
+@JsonClass(generateAdapter = true)
+data class UserUpdateResponse(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "email")
+    val email: String
+)

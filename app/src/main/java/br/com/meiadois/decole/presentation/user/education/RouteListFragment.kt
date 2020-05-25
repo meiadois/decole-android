@@ -26,7 +26,7 @@ import org.kodein.di.generic.instance
 class RouteListFragment : Fragment(), KodeinAware {
 
     override val kodein by kodein()
-    private val factoryFragment: RouteListViewModelFactory by instance()
+    private val factoryFragment: RouteListViewModelFactory by instance<RouteListViewModelFactory>()
 
     private lateinit var mFragmentViewModel: RouteListViewModel
 

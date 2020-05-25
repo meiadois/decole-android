@@ -12,6 +12,7 @@ class PartnershipHomeBottomViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
     val partnershipLiveData : MutableLiveData<List<Like>> = MutableLiveData()
+    var company: Company = Company()
 
     fun getPartnerships(companyId: Int){
         Coroutines.main {
@@ -23,5 +24,10 @@ class PartnershipHomeBottomViewModel(
         partnershipLiveData.value = partnershipLiveData.value?.filter { like -> like.id != likeId }
     }
 
-    suspend fun getUserCompany() : Company = userRepository.getUserCompany().toCompanyModel()
+    suspend fun getUserCompany() : Company {
+        company = userRepository.getUserCompany().toCompanyModel()
+        return company
+    }
+
+
 }

@@ -95,4 +95,15 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
+
+    <style name="exposed_dropdown_menu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="errorTextColor">@color/text_filed_error_color</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="android:textColorHint">@color/colorDivider</item>
+        <item name="hintTextColor">@color/colorPrimaryLight</item>
+    </style>
+
+    <style name="exposed_dropdown_text_view">
+        <item name="boxStrokeWidth">0dp</item>
+    </style>
 </resources>

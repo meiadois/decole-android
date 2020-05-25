@@ -14,11 +14,9 @@ import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.Fini
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteListViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.StartInteractiveModeViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.*
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeInfoViewModelFactory
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewModelFactory
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModelFactory
 import br.com.meiadois.decole.service.LogOutService
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -41,6 +39,7 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { RouteRepository(instance(), instance(), instance()) }
         bind() from singleton { LessonRepository(instance(), instance(), instance()) }
         bind() from singleton { CompanyRepository(instance()) }
+        bind() from singleton { CepRepository(instance()) }
         bind() from singleton { SegmentRepository(instance()) }
         bind() from singleton { StepRepository(instance()) }
         bind() from singleton { LoginViewModelFactory(instance()) }
@@ -50,10 +49,11 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { StartInteractiveModeViewModelFactory(instance()) }
         bind() from singleton { PartnershipHomeBottomViewModelFactory(instance()) }
         bind() from singleton { PartnershipPopUpViewModelFactory(instance()) }
-        bind() from singleton { AccountViewModelFactory(instance(), instance()) }
+        bind() from singleton { AccountViewModelFactory(instance(), instance(), instance()) }
         bind() from singleton { PartnershipHomeTopViewModelFactory(instance()) }
         bind() from singleton { FinishedRouteViewModelFactory(instance(), instance()) }
         bind() from singleton { WelcomeSlideViewModelFactory(instance()) }
         bind() from singleton { WelcomeInfoViewModelFactory(instance()) }
+        bind() from singleton { PartnershipCompanyProfileViewModelFactory(instance(), instance())}
     }
 }

@@ -2,11 +2,11 @@ package br.com.meiadois.decole.data.network.client
 
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
-import br.com.meiadois.decole.data.network.request.LikeRequest
-import br.com.meiadois.decole.data.network.request.LoginRequest
-import br.com.meiadois.decole.data.network.request.RegisterRequest
+import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -50,8 +50,28 @@ interface DecoleClient {
     suspend fun getUserCompany(): Response<CompanyResponse>
 
     @Headers("Content-Type: application/json")
+    @PUT("me/companies")
+    suspend fun updateUserCompany(@Body request: CompanyRequest): Response<CompanyResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("me/companies")
+    suspend fun insertUserCompany(@Body request: CompanyRequest): Response<CompanyResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("companies")
+    suspend fun getAllCompanies(): Response<List<CompanyResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("companies/_/search")
+    suspend fun getCompanyBySegment(@Query("segment_id") segmentId: Int): Response<List<CompanySearchResponse>>
+
+    @Headers("Content-Type: application/json")
     @GET("companies/{id}")
     suspend fun getCompanyById(@Path("id") companyId: Int): Response<CompanyResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("likes")
+    suspend fun sendLike(@Body request: LikeSenderRequest): Response<LikePutResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/likes")
@@ -68,6 +88,14 @@ interface DecoleClient {
     @Headers("Content-Type: application/json")
     @POST("me/introduce")
     suspend fun introduce(): Response<IntroduceResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("ceps/{cep_number}")
+    suspend fun getCep(@Path("cep_number") cep: String): Response<CepResponse>
+
+    @Headers("Content-Type: application/json")
+    @PUT("me")
+    suspend fun updateUser(@Body request: UserUpdateRequest): Response<UserUpdateResponse>
 
     companion object {
         operator fun invoke(

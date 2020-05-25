@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".DecoleApplication"
@@ -24,6 +26,7 @@
         <activity android:name=".presentation.welcome.WelcomeSlideActivity" />
         <activity android:name=".presentation.welcome.WelcomeInfoActivity" />
         <activity android:name=".presentation.user.education.StartInteractiveModeActivity" />
+        <activity android:name=".presentation.user.partnership.PartnershipSearchActivity" />
         <activity android:name=".presentation.auth.RegisterActivity" />
         <activity android:name=".presentation.auth.LoginActivity">
             <intent-filter>

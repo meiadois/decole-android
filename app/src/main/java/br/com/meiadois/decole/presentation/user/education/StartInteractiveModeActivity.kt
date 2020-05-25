@@ -29,7 +29,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
     private val drawOverAppPermissionCode = 2084
 
     override val kodein by kodein()
-    private val factory: StartInteractiveModeViewModelFactory by instance()
+    private val factory: StartInteractiveModeViewModelFactory by instance<StartInteractiveModeViewModelFactory>()
 
     private lateinit var mViewModel: StartInteractiveModeViewModel
 

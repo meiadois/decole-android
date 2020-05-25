@@ -9,3 +9,9 @@ data class LikeRequest(
     @field:Json(name = "sender_id") val senderId: Int,
     @field:Json(name = "recipient_id") val recipientId: Int
 )
+
+@JsonClass(generateAdapter = true)
+data class LikeSenderRequest(
+    @field:Json(name = "sender_id") val senderId: Int,
+    @field:Json(name = "recipient_id") val recipientId: Int
+)

@@ -39,6 +39,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_partnership_home_bottom, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,6 +64,12 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             }
         }
         init(view)
+        btn_search.setOnClickListener {
+            Intent(view.context, PartnershipSearchActivity::class.java).also {
+                it.putExtra("company_id", viewModel.company.id)
+                view.context.startActivity(it)
+            }
+        }
     }
 
     private fun init(view: View){
@@ -111,7 +118,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
 
     private fun showGenericErrorMessage(){
-        fragment_bottom_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message)){ snackbar ->
+        fragment_bottom_root_layout?.longSnackbar(getString(R.string.getting_data_failed_error_message)){ snackbar ->
             snackbar.setAction(getString(R.string.reload)) {
                 init(it)
                 snackbar.dismiss()
