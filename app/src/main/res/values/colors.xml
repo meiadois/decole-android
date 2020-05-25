@@ -10,6 +10,9 @@
     <color name="colorPrimaryDarker">#34494F</color>
     <color name="colorAccent">#4ADFD1</color>
 
+    <!-- override colors -->
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#fff</color>
+
     <color name="transparent">#00000000</color>
     <!-- card colors -->
     <color name="card_background">#ffffff</color>

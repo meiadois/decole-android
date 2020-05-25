@@ -56,6 +56,12 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         setImageInputs()
         setInputMasks()
 
+        /*
+            TODO:
+                limpar os metodos de pick de imagem
+                adicionar retorno positivo ou negativo do request
+                adicionar o botao de logout
+         */
         askPermissions()
     }
 
