@@ -105,7 +105,7 @@
 
 
     <!--Partnership-->
-    <string name="partnership_no_account">Para habilitar esse ferramenta, você precisa ativar o descobrimento de parceiros na tela de configurações e ter seu perfil preenchido</string>
+    <string name="partnership_no_account">Para habilitar essa ferramenta, você precisa ativar o descobrimento de parceiros na tela de configurações e ter seu perfil preenchido</string>
     <string name="partner_incomplete_register">Você precisa definir como você aparece para os outros usuários</string>
     <string name="waiting_response_tooltip">Empresas que me interessam</string>
     <string name="to_respond_tooltip">Empresas interessadas</string>
