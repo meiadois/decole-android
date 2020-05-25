@@ -8,8 +8,8 @@
 
     <ProgressBar
         android:id="@+id/top_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:indeterminateTint="@color/colorPrimary"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,15 +21,14 @@
         android:id="@+id/container_company_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="invisible"
         tools:ignore="RtlSymmetry">
 
         <ImageView
             android:id="@+id/image_partner"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_marginStart="50dp"
             android:src="@drawable/ic_circle_logo"
             app:layout_constraintEnd_toStartOf="@+id/text_partner_segment"
@@ -44,7 +43,7 @@
             android:layout_marginEnd="32dp"
             tools:text="NOME DA EMPRESA"
             android:textColor="@color/colorTextIcons"
-            android:textSize="15sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_partner"
             app:layout_constraintTop_toTopOf="parent" />
@@ -58,46 +57,10 @@
             android:layout_marginEnd="32dp"
             tools:text="SEGMENTO DA EMPRESA"
             android:textColor="@color/colorDivider"
-            android:textSize="12sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_partner"
             app:layout_constraintTop_toBottomOf="@+id/text_partner_name" />
-        <!--
-        <TextView
-            android:id="@+id/text_partners"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            tools:text="1 Parceria firmada"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_partner_segment" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:layout_marginTop="10dp"
-            tools:text="2 Negociações em andamento"
-            app:layout_constraintTop_toBottomOf="@id/label1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"/>
-
-        <TextView
-            android:id="@+id/label3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:layout_marginTop="10dp"
-            tools:text="1 Negociação cancelada"
-            app:layout_constraintTop_toBottomOf="@id/label2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"/>
-        -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

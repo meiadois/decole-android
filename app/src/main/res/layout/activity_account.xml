@@ -17,7 +17,7 @@
         android:layout_width="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            app:layout_constraintBottom_toTopOf="@id/bottom_panel_guideline"
+            app:layout_constraintBottom_toTopOf="@id/bottom_header_guideline"
             android:background="@color/colorPrimaryDarker"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -69,14 +69,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/bottom_panel_guideline"
+            android:id="@+id/bottom_header_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.12" />
+            app:layout_constraintGuide_percent="0.09" />
 
         <androidx.core.widget.NestedScrollView
-            app:layout_constraintTop_toBottomOf="@+id/bottom_panel_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/bottom_header_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/account_scroolable_view"
