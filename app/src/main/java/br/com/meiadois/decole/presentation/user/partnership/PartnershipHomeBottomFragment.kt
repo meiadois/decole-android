@@ -94,13 +94,15 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
 
     private fun setProgressBarVisibility(visible: Boolean){
-        progress_bar.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+        progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun setContentVisibility(contentMode: Int){
-        partner_recycler_view.visibility = if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.INVISIBLE
-        layout_empty.visibility = if (contentMode == CONTENT_NO_PARTNERS_FOUND) View.VISIBLE else View.INVISIBLE
-        fragment_container_noAccount.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.INVISIBLE
+        partner_recycler_view.visibility = if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.GONE
+        layout_empty.visibility = if (contentMode == CONTENT_NO_PARTNERS_FOUND) View.VISIBLE else View.GONE
+        fragment_container_noAccount.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
+        btn_search.visibility = if (contentMode == CONTENT_LIST_PARTNERS or CONTENT_NO_PARTNERS_FOUND) View.VISIBLE else View.GONE
+        bottom_bar.visibility = btn_search.visibility
     }
 
     private fun showPartnershipList(context: Context, companyId: Int){
