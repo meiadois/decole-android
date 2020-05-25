@@ -39,6 +39,7 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { RouteRepository(instance(), instance(), instance()) }
         bind() from singleton { LessonRepository(instance(), instance(), instance()) }
         bind() from singleton { CompanyRepository(instance()) }
+        bind() from singleton { CepRepository(instance()) }
         bind() from singleton { SegmentRepository(instance()) }
         bind() from singleton { StepRepository(instance()) }
         bind() from singleton { LoginViewModelFactory(instance()) }
@@ -48,7 +49,7 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { StartInteractiveModeViewModelFactory(instance()) }
         bind() from singleton { PartnershipHomeBottomViewModelFactory(instance()) }
         bind() from singleton { PartnershipPopUpViewModelFactory(instance()) }
-        bind() from singleton { AccountViewModelFactory(instance(), instance()) }
+        bind() from singleton { AccountViewModelFactory(instance(), instance(), instance()) }
         bind() from singleton { PartnershipHomeTopViewModelFactory(instance()) }
         bind() from singleton { FinishedRouteViewModelFactory(instance(), instance()) }
         bind() from singleton { WelcomeSlideViewModelFactory(instance()) }
