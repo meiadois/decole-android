@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.presentation.auth.AuthListener
 import br.com.meiadois.decole.presentation.auth.RegisterActivity
+import br.com.meiadois.decole.presentation.pwrecovery.PwRecoveryHomeActivity
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
@@ -35,7 +36,7 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
         Coroutines.main {
 
             try {
-                val res = userRepository.login(email, password)
+                val res = userRepository.login(email.trim(), password.trim())
 
                 res.user?.let {
                     userRepository.saveUser(it.parseToUserEntity())
@@ -56,6 +57,12 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     fun onRegisterButtonClick(view: View) {
         Intent(view.context, RegisterActivity::class.java).also {
+            view.context.startActivity(it)
+        }
+    }
+
+    fun onRecoveryButtonClick(view: View) {
+        Intent(view.context, PwRecoveryHomeActivity::class.java).also {
             view.context.startActivity(it)
         }
     }

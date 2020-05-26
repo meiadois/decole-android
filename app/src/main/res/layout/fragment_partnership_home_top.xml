@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_top_root_layout"
@@ -8,14 +7,14 @@
     android:layout_height="match_parent">
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/top_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:indeterminateTint="@color/colorPrimary"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Account Layout -->
@@ -28,8 +27,8 @@
 
         <ImageView
             android:id="@+id/image_partner"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_marginStart="50dp"
             android:src="@drawable/ic_circle_logo"
             app:layout_constraintEnd_toStartOf="@+id/text_partner_segment"
@@ -39,27 +38,27 @@
 
         <TextView
             android:id="@+id/text_partner_name"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="32dp"
             tools:text="NOME DA EMPRESA"
-            android:layout_width="0dp"
-            android:textSize="15sp"
             android:textColor="@color/colorTextIcons"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_partner"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_partner_segment"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="32dp"
             tools:text="SEGMENTO DA EMPRESA"
-            android:layout_width="0dp"
-            android:textSize="12sp"
             android:textColor="@color/colorDivider"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_partner"
             app:layout_constraintTop_toBottomOf="@+id/text_partner_name" />

@@ -8,20 +8,21 @@
     tools:context=".presentation.user.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_header_guideline"
         android:background="@color/colorPrimaryDarker"
-        app:layout_constraintBottom_toTopOf="@id/bottom_panel_guideline"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias=".0"
+        android:layout_height="0dp"
+        android:layout_width="0dp">
 
         <androidx.constraintlayout.widget.Guideline
+            app:layout_constraintGuide_percent="0.30"
             android:id="@+id/image_guideline_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.12" />
+            android:orientation="horizontal" />
 
         <ImageView
             android:layout_width="100dp"
@@ -45,20 +46,39 @@
             app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
 
         <androidx.constraintlayout.widget.Guideline
+            app:layout_constraintGuide_percent="0.85"
             android:id="@+id/image_guideline_bottom"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.25" />
+            android:layout_width="wrap_content"
+            android:orientation="horizontal" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_header_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.09" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/bottom_header_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorPrimaryDarker"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <FrameLayout
             android:id="@+id/top_container"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias=".0"
             app:layout_constraintBottom_toTopOf="@+id/tab_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_guideline_bottom" />
+            tools:layout_height="100dp"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -73,13 +93,81 @@
             app:tabTextColor="@color/colorPrimaryLight" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintVertical_bias=".0"-->
+<!--        android:background="@color/colorPrimaryDarker"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/bottom_panel_guideline"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottom_panel_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35" />
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/image_guideline_top"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintGuide_percent="0.12" />-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_marginStart="32dp"-->
+<!--            android:layout_marginEnd="32dp"-->
+<!--            android:src="@drawable/ic_decole_verde"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:id="@+id/account_configuration_button"-->
+<!--            android:layout_marginEnd="50dp"-->
+<!--            android:src="@drawable/ic_mdi_settings"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />-->
+
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/image_guideline_bottom"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintGuide_percent="0.25" />-->
+
+<!--        <FrameLayout-->
+<!--            android:id="@+id/top_container"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintVertical_bias=".0"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/tab_layout"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/image_guideline_bottom" />-->
+
+<!--        <com.google.android.material.tabs.TabLayout-->
+<!--            android:id="@+id/tab_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/transparent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:tabIndicatorColor="@color/colorPrimary"-->
+<!--            app:tabSelectedTextColor="@color/colorPrimary"-->
+<!--            app:tabTextColor="@color/colorPrimaryLight" />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <androidx.constraintlayout.widget.Guideline-->
+<!--        android:id="@+id/bottom_panel_guideline"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintGuide_percent="0.35" />-->
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/bottom_view_pager"
@@ -88,6 +176,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottom_panel_guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/panel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

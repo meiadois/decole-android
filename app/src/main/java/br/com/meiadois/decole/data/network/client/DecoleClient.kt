@@ -4,9 +4,7 @@ import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
 import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -105,6 +103,18 @@ interface DecoleClient {
     @PUT("me/change_password")
     // TODO: check if route and request and response types match with required
     suspend fun changeUserPassword(@Body request: UserChangePasswordRequest): Response<UserUpdateResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("generate_reset_password")
+    suspend fun sendPwResetEmail(@Body request: PwResetEmailRequest): Response<PwResetEmailResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("verify_token")
+    suspend fun validatePwResetToken(@Body request: ValidatePwResetCodeRequest): Response<ValidatePwResetCodeResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("forgot_password")
+    suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<Unit>
 
     companion object {
         operator fun invoke(

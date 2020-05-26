@@ -24,6 +24,24 @@ class UserRepository(
         }
     }
 
+    suspend fun sendPwResetEmail(email: String): PwResetEmailResponse {
+        return callClient {
+            client.sendPwResetEmail(PwResetEmailRequest(email))
+        }
+    }
+
+    suspend fun validatePwResetToken(code: String): ValidatePwResetCodeResponse {
+        return callClient {
+            client.validatePwResetToken(ValidatePwResetCodeRequest(code))
+        }
+    }
+
+    suspend fun resetPassword(code: String, password: String): Unit {
+        return callClient {
+            client.resetPassword(ResetPasswordRequest(code, password))
+        }
+    }
+
     suspend fun introduce(): IntroduceResponse {
         db.getUserDao().updateIntroducedStatus(
             db.getUserDao().findJWT()!!,
