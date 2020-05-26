@@ -10,6 +10,7 @@ fun View.longSnackbar(message: String) {
         }
     }.show()
 }
+
 fun View.shortSnackbar(message: String) {
     Snackbar.make(this, message, Snackbar.LENGTH_SHORT).also { snackbar ->
         snackbar.setAction("Ok") {
@@ -20,4 +21,8 @@ fun View.shortSnackbar(message: String) {
 
 fun View.longSnackbar(message: String, block: (Snackbar) -> Unit) {
     Snackbar.make(this, message, Snackbar.LENGTH_LONG).also(block).show()
+}
+
+fun View.shortSnackbar(message: String, block: (Snackbar) -> Unit) {
+    Snackbar.make(this, message, Snackbar.LENGTH_SHORT).also(block).show()
 }

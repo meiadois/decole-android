@@ -96,6 +96,13 @@
     <string name="logout_content_description">Sair</string>
     <string name="success_when_executing_the_action">Ação realizada com sucesso.</string>
     <string name="error_when_executing_the_action">Falha ao executar ação.</string>
+    <string name="label_change_password"><u>Alterar minha senha</u></string>
+
+    <!--Change Password-->
+    <string name="changePassword_me_subtitle_text">Alterando senha</string>
+    <string name="changePassword_currentPass_hint">senha atual</string>
+    <string name="changePassword_newPass_hint">nova senha</string>
+    <string name="changePassword_confirmNewPass_hint">confirme a nova senha</string>
 
     <!--Validations Messages-->
     <string name="required_field_error_message">O campo %1$s é obrigatório.</string>
@@ -104,6 +111,8 @@
     <string name="invalid_cnpj_error_message">O CNPJ não está em um formato válido.</string>
     <string name="invalid_telephone_error_message">O telefone não está em um formato válido.</string>
     <string name="max_text_length_error_message">O campo %1$s não pode ter mais de %2$d caracteres.</string>
+    <string name="min_text_length_error_message">O campo %1$s não pode ter menos de %2$d caracteres.</string>
+    <string name="fields_are_not_equals_error_message">Os campos %1$s e %2$s não são iguais.</string>
 
 
     <!--Partnership-->

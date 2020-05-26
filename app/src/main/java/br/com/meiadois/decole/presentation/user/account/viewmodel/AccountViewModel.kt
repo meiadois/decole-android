@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Segment
 import br.com.meiadois.decole.data.network.response.CepResponse
-import br.com.meiadois.decole.data.network.response.CompanyResponse
-import br.com.meiadois.decole.data.network.response.UserUpdateResponse
 import br.com.meiadois.decole.data.repository.CepRepository
 import br.com.meiadois.decole.data.repository.SegmentRepository
 import br.com.meiadois.decole.data.repository.UserRepository
@@ -25,10 +23,6 @@ import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.toCompanyAccountData
 import br.com.meiadois.decole.util.extension.toSegmentModelList
 import com.google.android.material.textfield.TextInputLayout
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.File
 
 class AccountViewModel(
     private val segmentRepository: SegmentRepository,
@@ -96,8 +90,8 @@ class AccountViewModel(
             Coroutines.main {
                 try {
                     val cepResponse: CepResponse = cepRepository.getCep(cep.replace("-", ""))
-                    companyData.value?.neighborhood = cepResponse.neighborhood
-                    companyData.value?.city = cepResponse.city
+                    companyData.value?.setNeighborhoodAndNotify(cepResponse.neighborhood)
+                    companyData.value?.setCityAndNotify(cepResponse.city)
                 } catch (ex: Exception) {
                     Log.i("CepException", ex.message!!)
                 }
@@ -116,80 +110,67 @@ class AccountViewModel(
     suspend fun onLogOutButtonClick() = logOutService.perform().join()
 
     fun onSaveButtonClick(view: View) {
+        trimProperties()
         if (validateModels(view)) {
             Coroutines.main {
+                accountListener?.onActionStarted()
                 try {
-                    val userResponse: UserUpdateResponse =
-                        userRepository.updateUser(userData.value!!.name, userData.value!!.email)
+                    userRepository.updateUser(userData.value!!.name, userData.value!!.email)
 
-                    /*
-                        Etapa para inserir ou editar a empresa do usuário.
-                        O getRequestBody vai montar um objeto do tipo RequestBody
-                        O getMultipartBody_Part vai montar um objeto do tipo MultipartBody.Part com a imagem
-
-                        link com um converter para user tipo primitivos junto com arquivo
-                        [https://stackoverflow.com/a/47627526/10457149]
-
-                        link que guilherme mandou para upload de aquivos
-                        [https://www.journaldev.com/23709/android-image-uploading-with-retrofit-and-node-js]
-
-                        um outro link também com upload de arquivos
-                        [https://futurestud.io/tutorials/retrofit-2-how-to-upload-files-to-server]
-
-                        outro link de upload aí
-                        [https://stackoverflow.com/questions/34562950/post-multipart-form-data-using-retrofit-2-0-including-image]
-                     */
-                    val companyResponse: CompanyResponse =
-                        if (isUpdating) userRepository.updateUserCompany(
-                            companyData.value!!.name,
-                            companyData.value!!.cep,
-                            companyData.value!!.cnpj,
-                            companyData.value!!.description,
-                            companyData.value!!.segmentId,
-                            companyData.value!!.cellphone,
-                            companyData.value!!.email,
-                            companyData.value!!.visible,
-                            companyData.value!!.city,
-                            companyData.value!!.neighborhood
-                        ) else userRepository.insertUserCompany(
-                            companyData.value!!.name,
-                            companyData.value!!.cep,
-                            companyData.value!!.cnpj,
-                            companyData.value!!.description,
-                            companyData.value!!.segmentId,
-                            companyData.value!!.cellphone,
-                            companyData.value!!.email,
-                            companyData.value!!.visible,
-                            companyData.value!!.city,
-                            companyData.value!!.neighborhood
-                        )
+                    if (isUpdating) userRepository.updateUserCompany(
+                        companyData.value!!.name,
+                        companyData.value!!.cep,
+                        companyData.value!!.cnpj,
+                        companyData.value!!.description,
+                        companyData.value!!.segmentId,
+                        companyData.value!!.cellphone,
+                        companyData.value!!.email,
+                        companyData.value!!.visible,
+                        companyData.value!!.city,
+                        companyData.value!!.neighborhood
+                    ) else userRepository.insertUserCompany(
+                        companyData.value!!.name,
+                        companyData.value!!.cep,
+                        companyData.value!!.cnpj,
+                        companyData.value!!.description,
+                        companyData.value!!.segmentId,
+                        companyData.value!!.cellphone,
+                        companyData.value!!.email,
+                        companyData.value!!.visible,
+                        companyData.value!!.city,
+                        companyData.value!!.neighborhood
+                    )
                     isUpdating = true
                     accountListener?.onActionSuccess()
                 } catch (ex: ClientException) {
-                    accountListener?.onActionError(Regex(" \\[(.*?)\\]").replace(ex.message!!, ""))
-                    Log.i("AccountFormException", ex.message!!)
+                    accountListener?.onActionError(
+                        if (ex.code == 400)
+                            Regex(" \\[(.*?)\\]").replace(ex.message!!, "")
+                        else
+                            null
+                    )
+                    Log.i("AccountFormEx.Cli", ex.message!!)
                 } catch (ex: Exception) {
                     accountListener?.onActionError(null)
-                    Log.i("AccountFormException", ex.message!!)
+                    Log.i("AccountFormEx.Ex", ex.message!!)
                 }
             }
         }
     }
 
-    private fun getMultipartBodyPart(imagePath: String, parameterName: String): MultipartBody.Part {
-        val file = File(imagePath)
-        return MultipartBody.Part.createFormData(
-            parameterName,
-            file.name,
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                file
-            )
-        )
+    private fun trimProperties(){
+        if (userData.value != null){
+            userData.value!!.name = userData.value!!.name.trim()
+            userData.value!!.email = userData.value!!.email.trim()
+        }
+        if (companyData.value != null){
+            companyData.value!!.name = companyData.value!!.name.trim()
+            companyData.value!!.city = companyData.value!!.city.trim()
+            companyData.value!!.email = companyData.value!!.email.trim()
+            companyData.value!!.description = companyData.value!!.description.trim()
+            companyData.value!!.neighborhood = companyData.value!!.neighborhood.trim()
+        }
     }
-
-    private fun getRequestBody(value: Any): RequestBody =
-        RequestBody.create(MultipartBody.FORM, value.toString())
     // endregion
 
     // region Validation
@@ -197,7 +178,6 @@ class AccountViewModel(
         val isValid = validateUserModel(view)
         return validateCompanyModel(view) and isValid
     }
-
 
     private fun validateUserModel(view: View): Boolean {
         val user: UserAccountData = userData.value!!

@@ -10,6 +10,7 @@ import br.com.meiadois.decole.data.repository.*
 import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFactory
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
+import br.com.meiadois.decole.presentation.user.account.viewmodel.ChangePasswordViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.FinishedRouteViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteListViewModelFactory
@@ -55,5 +56,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { WelcomeSlideViewModelFactory(instance()) }
         bind() from singleton { WelcomeInfoViewModelFactory(instance()) }
         bind() from singleton { PartnershipCompanyProfileViewModelFactory(instance(), instance())}
+        bind() from singleton { ChangePasswordViewModelFactory(instance())}
     }
 }

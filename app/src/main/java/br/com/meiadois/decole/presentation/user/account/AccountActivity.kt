@@ -1,17 +1,8 @@
 package br.com.meiadois.decole.presentation. user.account
 
-import android.Manifest.permission.*
-import android.app.Activity
-import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.database.Cursor
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
-import android.provider.MediaStore
-import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -27,21 +18,18 @@ import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewMod
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.Mask
 import br.com.meiadois.decole.util.extension.shortSnackbar
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_account.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
-import java.io.File
 
 class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     override val kodein by kodein()
     private val factory: AccountViewModelFactory by instance<AccountViewModelFactory>()
     private lateinit var accountViewModel: AccountViewModel
-
-    private var permissionsToRequest: ArrayList<String> = ArrayList()
-    private val permissionsRejected: ArrayList<String> = ArrayList()
-    private val permissions: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -53,20 +41,13 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             lifecycleOwner = this@AccountActivity
         }
         setAdapterToSegmentDropdown()
-        setToolBarButtonsListeners()
         setRemoveErrorListener()
-        setImageInputs()
+        setClickListeners()
         setInputMasks()
-
-        /*
-            TODO:
-                limpar os metodos de pick de imagem
-         */
-        askPermissions()
     }
 
     // region Local Functions
-    private fun setToolBarButtonsListeners(){
+    private fun setClickListeners(){
         toolbar_back_button.setOnClickListener { finish() }
         toolbar_exit_button.setOnClickListener {
             Coroutines.main {
@@ -76,6 +57,9 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
                     startActivity(it)
                 }
             }
+        }
+        go_to_change_password.setOnClickListener {
+            Intent(this, ChangePasswordActivity::class.java).also { startActivity(it) }
         }
     }
 
@@ -112,11 +96,28 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     }
 
     override fun onActionError(errorMessage: String?) {
+        setButtonSaveVisibility(true)
         account_root_layout.shortSnackbar(errorMessage ?: getString(R.string.error_when_executing_the_action))
     }
 
     override fun onActionSuccess() {
-        account_root_layout.shortSnackbar(getString(R.string.success_when_executing_the_action))
+        setButtonSaveVisibility(true)
+        account_root_layout.shortSnackbar(getString(R.string.success_when_executing_the_action)){
+            it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    finish()
+                }
+            })
+        }
+    }
+
+    override fun onActionStarted() {
+        setButtonSaveVisibility(false)
+    }
+
+    private fun setButtonSaveVisibility(visible: Boolean){
+        btn_save.visibility = if (visible) View.VISIBLE else View.GONE
+        progress_bar.visibility = if (visible) View.GONE else View.VISIBLE
     }
 
     private fun setInputMasks(){
@@ -152,133 +153,5 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         filled_exposed_dropdown.setText(mSegment?.name, false)
         accountViewModel.companyData.value?.segmentId = mSegment?.id ?: -1
     }
-
-    private fun setImageInputs(){
-        input_company_logo.inputType = android.text.InputType.TYPE_NULL
-        input_company_logo.setOnClickListener {
-            startActivityForResult(
-                getPickImageChooserIntent(
-                    getString(R.string.account_select_a, getString(R.string.account_company_logo_hint))
-                ),
-                IMAGE_LOGO_RESULT)
-        }
-
-        input_company_banner.inputType = android.text.InputType.TYPE_NULL
-        input_company_banner.setOnClickListener {
-            startActivityForResult(
-                getPickImageChooserIntent(
-                    getString(R.string.account_select_a, getString(R.string.account_company_promotional_photo_hint))
-                ),
-                IMAGE_BANNER_RESULT)
-        }
-    }
     // endregion
-
-    // region Permissions
-    private fun askPermissions() {
-        permissions.add(CAMERA)
-        permissions.add(WRITE_EXTERNAL_STORAGE)
-        permissions.add(READ_EXTERNAL_STORAGE)
-        permissionsToRequest = findUnAskedPermissions(permissions)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            if (permissionsToRequest.count() > 0)
-                requestPermissions(
-                    permissionsToRequest.toArray( arrayOfNulls<String>(permissionsToRequest.count())),
-                    ALL_PERMISSIONS_RESULT
-                )
-    }
-
-    private fun findUnAskedPermissions(wanted: ArrayList<String>): ArrayList<String> {
-        val result = ArrayList<String>()
-        for (perm in wanted)
-            if (!hasPermission(perm))
-                result.add(perm)
-        return result
-    }
-
-    private fun hasPermission(permission: String): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            return checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
-        return true
-    }
-    // endregion
-
-    // region Image picking
-    private fun getPickImageChooserIntent(intentTile: String): Intent? {
-        val outputFileUri: Uri? = getCaptureImageOutputUri()
-        val allIntents: MutableList<Intent> = ArrayList()
-        val captureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val listCam = packageManager.queryIntentActivities(captureIntent, 0)
-        for (res in listCam) {
-            val intent = Intent(captureIntent)
-            intent.component = ComponentName(res.activityInfo.packageName, res.activityInfo.name)
-            intent.setPackage(res.activityInfo.packageName)
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
-            allIntents.add(intent)
-        }
-        val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
-        galleryIntent.type = "image/*"
-        val listGallery = packageManager.queryIntentActivities(galleryIntent, 0)
-        for (res in listGallery) {
-            val intent = Intent(galleryIntent)
-            intent.component = ComponentName(res.activityInfo.packageName, res.activityInfo.name)
-            intent.setPackage(res.activityInfo.packageName)
-            allIntents.add(intent)
-        }
-        var mainIntent = allIntents[allIntents.size - 1]
-        for (intent in allIntents) {
-            if (intent.component?.className.toString() == "com.android.documentsui.DocumentsActivity") {
-                mainIntent = intent
-                break
-            }
-        }
-        allIntents.remove(mainIntent)
-        val chooserIntent = Intent.createChooser(mainIntent, intentTile)
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toTypedArray<Parcelable>())
-        return chooserIntent
-    }
-
-    private fun getCaptureImageOutputUri(): Uri? {
-        var outputFileUri: Uri? = null
-        val getImage: File? = getExternalFilesDir("")
-        if (getImage != null)
-            outputFileUri = Uri.fromFile(File(getImage.path, "profile.png"))
-        return outputFileUri
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        try {
-            if (resultCode == Activity.RESULT_OK) {
-                if (requestCode == IMAGE_LOGO_RESULT)
-                    accountViewModel.companyData.value!!.thumbnail = getImageFromFilePath(data) ?: ""
-                else if (requestCode == IMAGE_BANNER_RESULT)
-                    accountViewModel.companyData.value!!.banner = getImageFromFilePath(data) ?: ""
-            }
-        }catch (ex: Exception){
-            Log.i("imageEx, ", ex.message!!)
-        }
-    }
-
-    private fun getImageFromFilePath(data: Intent?): String? {
-        val isCamera = data == null || data.data == null
-        return if (isCamera) getCaptureImageOutputUri()!!.path else data!!.data?.let { getPathFromURI(it)}
-    }
-
-    private fun getPathFromURI(contentUri: Uri): String? {
-        val cursor: Cursor? = contentResolver.query(
-            contentUri, arrayOf(MediaStore.Audio.Media.DATA), null, null, null)
-        val columnIndex: Int = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA) ?: 0
-        cursor?.moveToFirst()
-        val path = cursor?.getString(columnIndex)
-        cursor?.close()
-        return path
-    }
-    // endregion
-
-    companion object{
-        private const val ALL_PERMISSIONS_RESULT = 107
-        private const val IMAGE_BANNER_RESULT = 201
-        private const val IMAGE_LOGO_RESULT = 200
-    }
 }

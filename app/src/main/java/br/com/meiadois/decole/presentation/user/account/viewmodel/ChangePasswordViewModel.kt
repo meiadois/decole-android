@@ -1,0 +1,131 @@
+package br.com.meiadois.decole.presentation.user.account.viewmodel
+
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.View
+import androidx.lifecycle.ViewModel
+import br.com.meiadois.decole.R
+import br.com.meiadois.decole.data.repository.UserRepository
+import br.com.meiadois.decole.presentation.user.account.AccountListener
+import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
+import br.com.meiadois.decole.presentation.user.account.validation.*
+import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
+import com.google.android.material.textfield.TextInputLayout
+import java.lang.Exception
+
+class ChangePasswordViewModel(private val userRepository: UserRepository) : ViewModel() {
+    var currentPassword: String? = String()
+    var newPassword: String? = String()
+    var confirmPassword: String? = String()
+
+    var accountListener: AccountListener? = null
+
+    // region onEvent listaners
+    fun onTextFieldChange(textInputLayout: TextInputLayout): TextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable) {}
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) { textInputLayout.error = null }
+    }
+
+    fun onSaveButtonClick(view: View){
+        if (validateModel(view)){
+            Coroutines.main {
+                try{
+                    accountListener?.onActionStarted()
+                    userRepository.changeUserPassword(currentPassword!!, newPassword!!)
+                    accountListener?.onActionSuccess()
+                } catch (ex: ClientException) {
+                    accountListener?.onActionError(null)
+                    Log.i("ChangePassword.Cii", ex.message!!)
+                } catch (ex: Exception){
+                    accountListener?.onActionError(null)
+                    Log.i("ChangePassword.Ex", ex.message!!)
+                }
+            }
+        }
+    }
+    // endregion
+
+    // region validations
+    private fun validateModel(view: View): Boolean{
+        val minPasswordLength = 6
+        val maxPasswordLength = 6
+        var isValid = StringValidator(currentPassword)
+            .addValidation(
+                NotNullOrEmptyRule(
+                view.context.getString(
+                    R.string.required_field_error_message,
+                    view.context.getString(R.string.changePassword_currentPass_hint)))
+            )
+            .addValidation(
+                MinLengthRule(minPasswordLength,
+                    view.context.getString(
+                        R.string.min_text_length_error_message,
+                        view.context.getString(R.string.changePassword_currentPass_hint), 6))
+            )
+            .addValidation(
+                MaxLengthRule(maxPasswordLength,
+                    view.context.getString(
+                        R.string.max_text_length_error_message,
+                        view.context.getString(R.string.changePassword_currentPass_hint), 128))
+            )
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_CURRENTPASSWORD, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(newPassword)
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.changePassword_newPass_hint)))
+            )
+            .addValidation(
+                MinLengthRule(minPasswordLength,
+                    view.context.getString(
+                        R.string.min_text_length_error_message,
+                        view.context.getString(R.string.changePassword_newPass_hint), 6))
+            )
+            .addValidation(
+                MaxLengthRule(maxPasswordLength,
+                    view.context.getString(
+                        R.string.max_text_length_error_message,
+                        view.context.getString(R.string.changePassword_newPass_hint), 128))
+            )
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_NEWPASSWORD, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(confirmPassword)
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint)))
+            )
+            .addValidation(
+                MinLengthRule(minPasswordLength,
+                    view.context.getString(
+                        R.string.min_text_length_error_message,
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint), 6))
+            )
+            .addValidation(
+                MaxLengthRule(maxPasswordLength,
+                    view.context.getString(
+                        R.string.max_text_length_error_message,
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint), 128))
+            )
+            .addValidation(
+                EqualsTo(newPassword,
+                    view.context.getString(
+                        R.string.fields_are_not_equals_error_message,
+                        view.context.getString(R.string.changePassword_newPass_hint),
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint)))
+            )
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_CONFIRMPASSWORD, it.error) }
+            .validate()
+
+        return isValid
+    }
+    // endregion
+}

@@ -38,9 +38,9 @@ abstract class Validator<T>(private val value: T){
     }
 }
 
-class StringValidator(private val value: String?): Validator<String?>(value)
+class StringValidator(value: String?): Validator<String?>(value)
 
-class IntegerValidator(private val value: Int?): Validator<Int?>(value)
+class IntegerValidator(value: Int?): Validator<Int?>(value)
 // endregion
 
 
@@ -74,6 +74,10 @@ class ExactLengthRule(private val length: Int, override val errorMessage: String
 
 class IsDigitsOnlyRule(override val errorMessage: String): BaseRule<String?>{
     override fun validate(value: String?): Boolean = value != null && TextUtils.isDigitsOnly(value)
+}
+
+class EqualsTo(private val argument: String?, override val errorMessage: String): BaseRule<String?>{
+    override fun validate(value: String?): Boolean = value == argument
 }
 
 class ValidEmailRule(override val errorMessage: String): BaseRule<String?>{

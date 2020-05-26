@@ -16,34 +16,23 @@ class CompanyAccountData() : BaseObservable() {
     var description: String = ""
     var visible: Boolean = false
     var segmentId: Int = -1
-
-    @Bindable
     var segmentName: String? = ""
-        set(value) {
-            if (field != value) {
-                field = value
-                notifyPropertyChanged(BR.segmentName)
-            }
-        }
 
     @Bindable
     var city: String = ""
-        set(value) {
-            if (field != value) {
-                field = value
-                notifyPropertyChanged(BR.city)
-            }
-        }
+
+    fun setCityAndNotify(value: String){
+        city = value
+        notifyPropertyChanged(BR.city)
+    }
 
     @Bindable
     var neighborhood: String = ""
-        set(value) {
-            if (field != value) {
-                field = value
-                notifyPropertyChanged(BR.neighborhood)
-            }
-        }
 
+    fun setNeighborhoodAndNotify(value: String){
+        neighborhood = value
+        notifyPropertyChanged(BR.neighborhood)
+    }
 
     constructor(
         id: Int = -1,

@@ -4,13 +4,8 @@ import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
-import br.com.meiadois.decole.data.network.request.CompanyRequest
-import br.com.meiadois.decole.data.network.request.LoginRequest
-import br.com.meiadois.decole.data.network.request.RegisterRequest
-import br.com.meiadois.decole.data.network.request.UserUpdateRequest
+import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 class UserRepository(
     private val client: DecoleClient,
@@ -122,6 +117,12 @@ class UserRepository(
     suspend fun updateUser(name: String, email: String): UserUpdateResponse {
         return callClient {
             client.updateUser(UserUpdateRequest(name, email))
+        }
+    }
+
+    suspend fun changeUserPassword(currentPassword: String, newPassword: String): UserUpdateResponse {
+        return callClient {
+            client.changeUserPassword(UserChangePasswordRequest(currentPassword, newPassword))
         }
     }
 

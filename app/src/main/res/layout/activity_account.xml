@@ -136,8 +136,8 @@
                         style="@style/normal_input_single_layout_with_error"
                         android:id="@+id/account_me_name_input">
                         <com.google.android.material.textfield.TextInputEditText
+                            android:inputType="textCapWords|textNoSuggestions"
                             android:singleLine="true"
-                            android:inputType="textCapWords"
                             android:id="@+id/input_me_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -152,13 +152,21 @@
                         style="@style/normal_input_single_layout_with_error"
                         android:id="@+id/account_me_mail_input">
                         <com.google.android.material.textfield.TextInputEditText
+                            android:inputType="textEmailAddress|textNoSuggestions"
                             android:singleLine="true"
                             android:id="@+id/input_me_mail"
                             android:layout_width="match_parent"
-                            android:inputType="textEmailAddress"
                             android:layout_height="wrap_content"
                             android:text="@={viewModel.userData.email}" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:text="@string/label_change_password"
+                        android:id="@+id/go_to_change_password"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:textSize="16sp" />
                 </LinearLayout>
                 <!-- User Section -->
 
@@ -225,8 +233,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout_with_error">
                         <com.google.android.material.textfield.TextInputEditText
+                            android:inputType="textCapWords|textNoSuggestions"
                             android:singleLine="true"
-                            android:inputType="textCapWords"
                             android:id="@+id/input_company_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -294,8 +302,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout_with_error">
                         <com.google.android.material.textfield.TextInputEditText
+                            android:inputType="textCapWords|textNoSuggestions"
                             android:singleLine="true"
-                            android:inputType="textCapWords"
                             android:id="@+id/input_company_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -310,9 +318,9 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout_with_error">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:singleLine="true"
-                            android:inputType="textCapSentences"
+                            android:inputType="textCapSentences|textNoSuggestions"
                             android:id="@+id/input_company_neighborhood"
+                            android:singleLine="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@={viewModel.companyData.neighborhood}" />
@@ -358,10 +366,10 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         style="@style/normal_input_single_layout_with_error">
                         <com.google.android.material.textfield.TextInputEditText
+                            android:inputType="textEmailAddress|textNoSuggestions"
                             android:singleLine="true"
                             android:id="@+id/input_company_mail"
                             android:layout_width="match_parent"
-                            android:inputType="textEmailAddress"
                             android:layout_height="wrap_content"
                             android:text="@={viewModel.companyData.email}" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -414,6 +422,14 @@
                     style="@style/btn_primary"
                     android:text="@string/save"
                     android:id="@+id/btn_save"/>
+
+                <ProgressBar
+                    style="@style/circle_progress_bar"
+                    android:layout_marginBottom="36dp"
+                    android:layout_marginTop="36dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/progress_bar"
+                    android:visibility="gone"/>
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

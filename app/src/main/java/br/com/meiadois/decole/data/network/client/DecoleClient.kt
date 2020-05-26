@@ -97,6 +97,11 @@ interface DecoleClient {
     @PUT("me")
     suspend fun updateUser(@Body request: UserUpdateRequest): Response<UserUpdateResponse>
 
+    @Headers("Content-Type: application/json")
+    @PUT("me/change_password")
+    // TODO: check if route and request and response types match with required
+    suspend fun changeUserPassword(@Body request: UserChangePasswordRequest): Response<UserUpdateResponse>
+
     companion object {
         operator fun invoke(
             interceptor: NetworkConnectionInterceptor,
