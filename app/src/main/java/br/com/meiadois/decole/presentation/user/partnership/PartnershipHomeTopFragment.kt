@@ -64,7 +64,7 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     }
 
     private fun setProgressBarVisibility(visible: Boolean){
-        top_progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
+        top_progress_bar?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun setContentVisibility(contentMode: Int){
