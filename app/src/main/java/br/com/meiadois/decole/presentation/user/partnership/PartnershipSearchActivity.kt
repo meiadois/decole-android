@@ -63,7 +63,7 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
             if(mViewModel.companies.value!!.count() <= mViewModel.state){
                 mViewModel.getUpdateCompany()
             }else{
-                layout_bottom_search.longSnackbar("Você chegou ao fim da lista, quem sabe mais tarde apareçam novas empresas.")
+                layout_bottom_search.longSnackbar("Você chegou ao fim da lista, mais tarde teremos novas empresas.")
             }
 
         }
