@@ -12,4 +12,9 @@ class SegmentRepository(
             client.getAllSegments()
         }
     }
+    suspend fun getAllSegmentsHasCompanies(): List<SegmentResponse>{
+        return callClient {
+            client.getAllSegmentsHasCompanies()
+        }
+    }
 }

@@ -66,7 +66,6 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         setContentVisibility(CONTENT_NONE)
         btn_search.setOnClickListener {
             Intent(view.context, PartnershipSearchActivity::class.java).also {
-                it.putExtra("company_id", viewModel.company.id)
                 view.context.startActivity(it)
             }
         }
