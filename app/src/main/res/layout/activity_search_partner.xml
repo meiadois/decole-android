@@ -114,6 +114,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_bottom_search"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="32dp"
@@ -188,8 +189,41 @@
                                 />
 
                         </LinearLayout>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_company_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardBackgroundColor="@color/colorTextIcons"
+                    app:cardCornerRadius="15dp">
+
+                    <LinearLayout
+                        android:id="@+id/layout_list_error"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/image_banner_error"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_undraw_winners"/>
+                        <TextView
+                            android:id="@+id/text_error_list"
+                            android:padding="50dp"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/colorSecondaryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="Não há mais companhias aqui, tente mais tarde"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
             </FrameLayout>
 
             <androidx.constraintlayout.widget.Guideline

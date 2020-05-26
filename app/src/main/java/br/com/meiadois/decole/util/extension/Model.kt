@@ -74,20 +74,19 @@ fun CompanyResponse.toCompanyModel() :Company {
         id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segment?.toSegmentModel()
     )
 }
+
 fun CompanySearchResponse.toCompanySearchModel() :Company {
     return Company(
         id, name, "", "", banner, cnpj, cellphone, email, description, false, "", "", segment?.toSegmentModel()
     )
 }
-fun List<CompanyResponse>.toCompanyModelList(): List<Company>{
-    return this.map{
-        it.toCompanyModel()
-    }
-}
+
 fun List<CompanySearchResponse>.toCompanySearchModelList(): List<Company>{
-    return this.map{
-        it.toCompanySearchModel()
-    }
+    if(this.isNotEmpty())
+        return this.map{
+            it.toCompanySearchModel()
+        }
+    return listOf()
 }
 
 fun CompanyResponse.toCompanyAccountData(): CompanyAccountData {

@@ -1,17 +1,13 @@
 package br.com.meiadois.decole.presentation.user.partnership.viewmodel
 
-import android.media.Image
 import android.util.Log
-import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.model.Segment
-import br.com.meiadois.decole.data.network.response.CompanyResponse
 import br.com.meiadois.decole.data.repository.CompanyRepository
 import br.com.meiadois.decole.data.repository.SegmentRepository
 import br.com.meiadois.decole.util.Coroutines
-import br.com.meiadois.decole.util.extension.toCompanyModelList
 import br.com.meiadois.decole.util.extension.toCompanySearchModelList
 import br.com.meiadois.decole.util.extension.toSegmentModelList
 
@@ -73,11 +69,16 @@ private val segmentRepository: SegmentRepository
         Coroutines.main {
             try{
                 companies.value = companyRepository.getAllCompanies().toCompanySearchModelList()
-                company.value = companies.value?.get(0)
+                if(companies.value!!.isNotEmpty())
+                    company.value = companies.value?.get(0)
             }catch (ex: Exception){
                 Log.i("getAllCompanies.ex", ex.message!!)
             }
         }
+    }
+
+    fun removeCompany(companyId: Int){
+        companies.value = companies.value?.filter { company -> company.id != companyId }
     }
 
     fun sendLike( senderId: Int, recipientId: Int ){

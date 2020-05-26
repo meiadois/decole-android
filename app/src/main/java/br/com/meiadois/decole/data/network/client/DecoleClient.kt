@@ -80,7 +80,7 @@ interface DecoleClient {
     suspend fun getAllSegments(): Response<List<SegmentResponse>>
 
     @Headers("Content-Type: application/json")
-    @GET("segments/_/has-companies")
+    @GET("me/segments/_/has-companies")
     suspend fun getAllSegmentsHasCompanies(): Response<List<SegmentResponse>>
 
     @Headers("Content-Type: application/json")
