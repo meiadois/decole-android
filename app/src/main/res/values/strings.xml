@@ -123,5 +123,6 @@
     <string name="connected_tooltip">Empresas conectadas</string>
     <string name="search_tooltip">Buscar</string>
     <string name="no_partner_found">Não encontramos nenhum parceiro :(</string>
+    <string name="Incomplete_registration_title">Cadastro incompleto</string>
 
 </resources>
