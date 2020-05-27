@@ -1,16 +1,27 @@
 package br.com.meiadois.decole.data.repository
 
+import androidx.lifecycle.MutableLiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.User
+import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
+import br.com.meiadois.decole.util.Coroutines
 
 class UserRepository(
     private val client: DecoleClient,
     private val db: AppDatabase
 ) : RequestHandler() {
+
+    /*private val companyuser = MutableLiveData<Company>()
+
+    init {
+        companyuser.observeForever {
+            saveCompany(it)
+        }
+    }*/
 
     suspend fun login(email: String, password: String): LoginResponse {
         return callClient {
@@ -53,13 +64,40 @@ class UserRepository(
     }
 
     suspend fun getUserCompany(): CompanyResponse {
+
+        /*var is = db.getCompanyDao().getUserCompanyLocal(user)
         if(db.getCompanyDao().getUserCompanyLocal().){
 
-        }
+        }*/
         return callClient {
             client.getUserCompany()
         }
     }
+   /* suspend fun getUserCompany2(userid: Int): CompanyResponse {
+
+        var com = db.getCompanyDao().getUserCompanyLocal(userid)
+        if(com== null){
+
+        }
+
+        return callClient {
+            client.getUserCompany()
+        }
+    }*/
+    /*
+    suspend fun fetchCompany() {
+        val res = callClient { client.getUserCompany() }
+        //companyuser.postValue(res.)
+    }
+        // muda para company entity
+    // metodo para salvar no banco a company
+    /*private fun saveCompany(company:Company) {
+        Coroutines.io {
+            db.getCompanyDao().upsert(company);
+        }
+    }*/*/
+
+
 
     suspend fun updateUserCompany(
         name: String,
