@@ -53,6 +53,9 @@ class UserRepository(
     }
 
     suspend fun getUserCompany(): CompanyResponse {
+        if(db.getCompanyDao().getUserCompanyLocal().){
+
+        }
         return callClient {
             client.getUserCompany()
         }

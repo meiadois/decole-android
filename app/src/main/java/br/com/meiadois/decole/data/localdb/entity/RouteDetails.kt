@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.data.model
+package br.com.meiadois.decole.data.localdb.entity
 
 import androidx.room.Embedded
 import androidx.room.Relation

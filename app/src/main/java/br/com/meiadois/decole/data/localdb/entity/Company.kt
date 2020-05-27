@@ -7,6 +7,7 @@ import br.com.meiadois.decole.data.model.Segment
 @Entity
 data class Company(
     @PrimaryKey(autoGenerate = false) val id: Int,
+    val userId: Int,
     val name: String,
     val cep: String,
     val thumbnail: String,
@@ -18,5 +19,5 @@ data class Company(
     val visible: Boolean,
     val city: String?,
     val neighborhood: String?,
-    val segment: Segment?
+    val segmentId: Int
 )

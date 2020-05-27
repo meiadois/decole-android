@@ -16,4 +16,5 @@ class PartnershipHomeTopViewModel (
         suspend fun getUserCompany(): Company {
             return userRepository.getUserCompany().toCompanyModel()
         }
+
 }

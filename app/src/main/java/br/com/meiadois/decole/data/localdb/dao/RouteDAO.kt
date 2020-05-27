@@ -3,7 +3,7 @@ package br.com.meiadois.decole.data.localdb.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import br.com.meiadois.decole.data.localdb.entity.Route
-import br.com.meiadois.decole.data.model.RouteDetails
+import br.com.meiadois.decole.data.localdb.entity.RouteDetails
 
 @Dao
 interface RouteDAO {
