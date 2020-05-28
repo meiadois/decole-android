@@ -37,12 +37,12 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { AppDatabase(instance()) }
         bind() from singleton { PreferenceProvider(instance()) }
         bind() from singleton { LogOutService(instance(), instance()) }
-        bind() from singleton { UserRepository(instance(), instance()) }
+        bind() from singleton { UserRepository(instance(), instance(), instance()) }
         bind() from singleton { RouteRepository(instance(), instance(), instance()) }
         bind() from singleton { LessonRepository(instance(), instance(), instance()) }
         bind() from singleton { CompanyRepository(instance()) }
         bind() from singleton { CepRepository(instance()) }
-        bind() from singleton { SegmentRepository(instance()) }
+        bind() from singleton { SegmentRepository(instance(), instance()) }
         bind() from singleton { StepRepository(instance()) }
         bind() from singleton { LoginViewModelFactory(instance()) }
         bind() from singleton { RegisterViewModelFactory(instance()) }
