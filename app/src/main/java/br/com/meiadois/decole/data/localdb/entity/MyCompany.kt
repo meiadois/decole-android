@@ -5,9 +5,8 @@ import androidx.room.PrimaryKey
 import br.com.meiadois.decole.data.model.Segment
 
 @Entity
-data class Company(
+data class MyCompany(
     @PrimaryKey(autoGenerate = false) val id: Int,
-    val userId: Int,
     val name: String,
     val cep: String,
     val thumbnail: String,

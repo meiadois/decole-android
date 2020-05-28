@@ -69,6 +69,15 @@ fun List<SegmentResponse>.toSegmentModelList(): List<Segment> {
 
 fun SegmentResponse.toSegmentModel() = Segment(this.id, this.name)
 
+
+fun List<SegmentResponse>.toSegmentModelListDb(): List<br.com.meiadois.decole.data.localdb.entity.Segment> {
+    return this.map {
+        it.toSegmentModelDb()
+    }
+}
+
+fun SegmentResponse.toSegmentModelDb() = br.com.meiadois.decole.data.localdb.entity.Segment(this.id!!, this.name)
+
 fun CompanyResponse.toCompanyModel() :Company {
     return Company(
         id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segment?.toSegmentModel()

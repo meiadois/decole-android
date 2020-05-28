@@ -8,7 +8,7 @@ import br.com.meiadois.decole.data.localdb.dao.*
 import br.com.meiadois.decole.data.localdb.entity.*
 
 @Database(
-    entities = [User::class, Route::class, Lesson::class, Company::class,Segment::class],
+    entities = [User::class, Route::class, Lesson::class, MyCompany::class,Segment::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {

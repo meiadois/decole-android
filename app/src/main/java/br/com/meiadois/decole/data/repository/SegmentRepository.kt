@@ -8,18 +8,20 @@ import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.network.response.SegmentResponse
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.extension.toSegmentModelList
+import br.com.meiadois.decole.util.extension.toSegmentModelListDb
 
 class SegmentRepository(
-    private val client: DecoleClient
-   // private val db: AppDatabase
+    private val client: DecoleClient,
+    private val db: AppDatabase
 ) : RequestHandler() {
-   /* private val segment = MutableLiveData<Segment>()
+    private val segment = MutableLiveData<List<Segment>>()
 
     init {
         segment.observeForever {
             saveSegment(it)
         }
-    }*/
+    }
 
 
     suspend fun getAllSegments(): List<SegmentResponse> {
@@ -34,15 +36,15 @@ class SegmentRepository(
     }
 
 
-    /*suspend fun fetchSegment() {
+    suspend fun fetchSegment() {
         val res = callClient { client.getAllSegments() }
-        //segment.postValue(res.toSegmentModelList())
+        segment.postValue(res.toSegmentModelListDb())
     }
 
     private fun saveSegment(segment:List<Segment>) {
-        /
+
         Coroutines.io {
             db.getSegmentDao().upsert(segment);
         }
-    }*/
+    }
 }

@@ -8,5 +8,5 @@ data class UserCompany (
     @Relation(
         parentColumn = "id",
         entityColumn = "userId"
-    ) val company: Company
+    ) val myCompany: MyCompany
 )

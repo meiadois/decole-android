@@ -2,6 +2,7 @@ package br.com.meiadois.decole.data.repository
 
 import androidx.lifecycle.MutableLiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
+import br.com.meiadois.decole.data.localdb.entity.MyCompany
 import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.network.RequestHandler
@@ -9,19 +10,21 @@ import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.extension.toCompanyModel
+
 
 class UserRepository(
     private val client: DecoleClient,
     private val db: AppDatabase
 ) : RequestHandler() {
 
-    /*private val companyuser = MutableLiveData<Company>()
+    private val companyuser = MutableLiveData<Company>()
 
     init {
         companyuser.observeForever {
             saveCompany(it)
         }
-    }*/
+    }
 
     suspend fun login(email: String, password: String): LoginResponse {
         return callClient {
@@ -73,29 +76,27 @@ class UserRepository(
             client.getUserCompany()
         }
     }
-   /* suspend fun getUserCompany2(userid: Int): CompanyResponse {
+//    suspend fun getUserCompany2(): CompanyResponse {
+//
+//
+//
+//        return callClient {
+//            client.getUserCompany()
+//        }
+//    }
 
-        var com = db.getCompanyDao().getUserCompanyLocal(userid)
-        if(com== null){
-
-        }
-
-        return callClient {
-            client.getUserCompany()
-        }
-    }*/
-    /*
     suspend fun fetchCompany() {
         val res = callClient { client.getUserCompany() }
-        //companyuser.postValue(res.)
+        companyuser.postValue(res.toCompanyModel())
     }
         // muda para company entity
     // metodo para salvar no banco a company
-    /*private fun saveCompany(company:Company) {
+    private fun saveCompany(company:Company) {
+            val comp :MyCompany = MyCompany(company.id,company.name,company.cep,company.thumbnail,company.banner,company.cnpj,company.cellphone,company.email,company.description,company.visible,company.city,company.neighborhood,company.segment!!.id!!);
         Coroutines.io {
-            db.getCompanyDao().upsert(company);
+            db.getCompanyDao().upsert(comp);
         }
-    }*/*/
+    }
 
 
 
@@ -113,6 +114,7 @@ class UserRepository(
         thumbnail: String = "",
         banner: String = ""
     ): CompanyResponse {
+        fetchCompany()
         return callClient {
             client.updateUserCompany(
                 CompanyRequest(
