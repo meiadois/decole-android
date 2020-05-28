@@ -73,7 +73,15 @@ interface DecoleClient {
 
     @Headers("Content-Type: application/json")
     @GET("me/likes")
-    suspend fun listUserMatches(@Query("status") status :String = "accepted"): Response<List<LikeResponse>>
+    suspend fun getUserMatches(@Query("status") status :String = "accepted"): Response<List<LikeResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("me/likes/sent")
+    suspend fun getUserSentLikes(@Query("status") status :String = "pending"): Response<List<LikeSentResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("me/likes/received")
+    suspend fun getUserReceivedLikes(@Query("status") status :String = "pending"): Response<List<LikeReceivedResponse>>
 
     @Headers("Content-Type: application/json")
     @GET("segments")

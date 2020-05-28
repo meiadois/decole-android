@@ -126,9 +126,21 @@ class UserRepository(
         }
     }
 
-    suspend fun listUserMatches(): List<LikeResponse> {
+    suspend fun getUserMatches(): List<LikeResponse> {
         return callClient {
-            client.listUserMatches()
+            client.getUserMatches()
+        }
+    }
+
+    suspend fun getUserSentLikes(): List<LikeSentResponse> {
+        return callClient {
+            client.getUserSentLikes()
+        }
+    }
+
+    suspend fun getUserReceivedLikes(): List<LikeReceivedResponse> {
+        return callClient {
+            client.getUserReceivedLikes()
         }
     }
 

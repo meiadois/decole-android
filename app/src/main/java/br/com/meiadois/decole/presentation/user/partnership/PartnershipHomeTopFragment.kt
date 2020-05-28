@@ -79,8 +79,8 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     }
 
     companion object{
-        const val CONTENT_NONE = 0
-        const val CONTENT_NO_ACCOUNT = 1
-        const val CONTENT_WITH_ACCOUNT = 2
+        private const val CONTENT_NONE = 0
+        private const val CONTENT_NO_ACCOUNT = 1
+        private const val CONTENT_WITH_ACCOUNT = 2
     }
 }

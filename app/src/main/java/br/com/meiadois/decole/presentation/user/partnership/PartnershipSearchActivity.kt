@@ -50,7 +50,7 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
             finish()
         }
         btn_md_checked.setOnClickListener {
-            val companyId = intent.getIntExtra("company_id", 0)
+            val companyId = intent.getIntExtra(PARTNERSHIP_SEARCH_COMPANY_ID, 0)
             try {
                 mViewModel.sendLike(companyId, mViewModel.company.value!!.id)
                 mViewModel.removeCompany(mViewModel.company.value!!.id)
@@ -131,5 +131,9 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
                 Glide.with(cardview_company_profile).load(it.banner).into(image_profile_banner)
             }
         })
+    }
+
+    companion object{
+        const val PARTNERSHIP_SEARCH_COMPANY_ID = "company_id"
     }
 }
