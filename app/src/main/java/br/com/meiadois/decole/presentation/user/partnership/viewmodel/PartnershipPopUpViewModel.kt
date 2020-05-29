@@ -3,7 +3,6 @@ package br.com.meiadois.decole.presentation.user.partnership.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.data.network.response.CompanyResponse
-import br.com.meiadois.decole.data.network.response.SegmentResponse
 import br.com.meiadois.decole.data.repository.CompanyRepository
 import br.com.meiadois.decole.util.Coroutines
 
@@ -18,5 +17,7 @@ class PartnershipPopUpViewModel(
         }
     }
 
-    suspend fun undoPartnership(likeId: Int, senderId: Int, recipientId: Int) = companyRepository.undoPartnership(likeId, senderId, recipientId)
+    suspend fun deletePartnership(likeId: Int, senderId: Int, recipientId: Int) = companyRepository.deletePartnership(likeId, senderId, recipientId)
+    suspend fun confirmPartnership(likeId: Int, senderId: Int, recipientId: Int) = companyRepository.confirmPartnership(likeId, senderId, recipientId)
+    suspend fun cancelPartnership(likeId: Int, senderId: Int, recipientId: Int) = companyRepository.cancelPartnership(likeId, senderId, recipientId)
 }

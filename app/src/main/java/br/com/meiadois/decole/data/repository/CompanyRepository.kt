@@ -2,7 +2,6 @@ package br.com.meiadois.decole.data.repository
 
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
-import br.com.meiadois.decole.data.network.request.CompanyBySegmentRequest
 import br.com.meiadois.decole.data.network.request.LikeRequest
 import br.com.meiadois.decole.data.network.request.LikeSenderRequest
 import br.com.meiadois.decole.data.network.response.*
@@ -28,9 +27,21 @@ class CompanyRepository(
         }
     }
 
-    suspend fun undoPartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
+    suspend fun deletePartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
         return callClient {
-            client.undoPartnership(likeId, LikeRequest("deleted", senderId, recipientId))
+            client.updateLike(likeId, LikeRequest("deleted", senderId, recipientId))
+        }
+    }
+
+    suspend fun confirmPartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
+        return callClient {
+            client.updateLike(likeId, LikeRequest("accepted", senderId, recipientId))
+        }
+    }
+
+    suspend fun cancelPartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
+        return callClient {
+            client.updateLike(likeId, LikeRequest("denied", senderId, recipientId))
         }
     }
 

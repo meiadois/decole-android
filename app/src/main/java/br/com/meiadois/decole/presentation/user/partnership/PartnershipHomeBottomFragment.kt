@@ -199,7 +199,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     private fun onPartnerItemClick(context: Context, like: Like) {
         val intent: Intent = PartnershipPopUpActivity.getStartIntent(
-            context, like.id, like.partnerCompany.id, like.userCompany.id, like.isSender
+            context, like.id, like.partnerCompany.id, like.userCompany.id, like.isSender, currentMenuItemActive
         )
         startActivityForResult(intent, UNDO_PARTNERSHIP_REQUEST_CODE)
     }
@@ -266,8 +266,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         private const val CONTENT_LIST_PARTNERS = 2
         private const val CONTENT_NO_PARTNERS_FOUND = 3
 
-        private const val ICON_SENT_ID = R.id.menu_waiting_response
-        private const val ICON_RECEIVED_ID = R.id.menu_to_respond
-        private const val ICON_MATCH_ID = R.id.menu_connected
+        const val ICON_SENT_ID = R.id.menu_waiting_response
+        const val ICON_RECEIVED_ID = R.id.menu_to_respond
+        const val ICON_MATCH_ID = R.id.menu_connected
     }
 }

@@ -84,16 +84,16 @@ interface DecoleClient {
     suspend fun getUserReceivedLikes(@Query("status") status :String = "pending"): Response<List<LikeReceivedResponse>>
 
     @Headers("Content-Type: application/json")
+    @PUT("likes/{id}")
+    suspend fun updateLike(@Path("id") likeId: Int, @Body request: LikeRequest): Response<LikePutResponse>
+
+    @Headers("Content-Type: application/json")
     @GET("segments")
     suspend fun getAllSegments(): Response<List<SegmentResponse>>
 
     @Headers("Content-Type: application/json")
     @GET("me/segments/_/has-companies")
     suspend fun getAllSegmentsHasCompanies(): Response<List<SegmentResponse>>
-
-    @Headers("Content-Type: application/json")
-    @PUT("likes/{id}")
-    suspend fun undoPartnership(@Path("id") likeId: Int, @Body request: LikeRequest): Response<LikePutResponse>
 
     @Headers("Content-Type: application/json")
     @POST("me/introduce")
