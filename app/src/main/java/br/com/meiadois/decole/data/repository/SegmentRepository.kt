@@ -21,6 +21,10 @@ class SegmentRepository(
         segment.observeForever {
             saveSegment(it)
         }
+        Coroutines.io{
+            fetchSegment()
+        }
+
     }
 
 
@@ -42,7 +46,6 @@ class SegmentRepository(
     }
 
     private fun saveSegment(segment:List<Segment>) {
-
         Coroutines.io {
             db.getSegmentDao().upsert(segment);
         }

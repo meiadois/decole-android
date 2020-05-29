@@ -20,13 +20,14 @@ class UserRepository(
     private val segmentRepository: SegmentRepository
 ) : RequestHandler() {
 
-    private val companyuser = MutableLiveData<Company>()
-
-    init {
-        companyuser.observeForever {
-            saveCompany(it)
-        }
-    }
+//
+//    private val companyuser = MutableLiveData<Company>()
+//
+//    init {
+//        companyuser.observeForever {
+//            saveCompany(it)
+//        }
+//    }
 
     suspend fun login(email: String, password: String): LoginResponse {
         return callClient {
@@ -74,34 +75,6 @@ class UserRepository(
             client.getUserCompany()
         }
     }
-    suspend fun getUserCompanyDB(): Company {
-        val companyDb = db.getCompanyDao().getUserCompanyLocal()
-        var segmentDb: Segment = db.getSegmentDao().getSegmentLocal(companyDb.segmentId)
-        var segment: br.com.meiadois.decole.data.model.Segment
-//        if(segmentDb == null){
-//            segment = br.com.meiadois.decole.data.model.Segment(segmentDb.id, segmentDb.name)
-//        }else{
-            //segmentRepository.fetchSegment()
-            segment = br.com.meiadois.decole.data.model.Segment(segmentDb.id, segmentDb.name)
-
-        val company: Company = Company(companyDb.id,companyDb.name,companyDb.cep,companyDb.thumbnail,companyDb.banner,companyDb.cnpj,companyDb.cellphone,companyDb.email,companyDb.description,companyDb.visible,companyDb.city,companyDb.neighborhood,segment);
-        return company
-    }
-
-    suspend fun fetchCompany() {
-        val res = callClient { client.getUserCompany() }
-        companyuser.postValue(res.toCompanyModel())
-    }
-        // muda para company entity
-        // metodo para salvar no banco a company
-    private fun saveCompany(company:Company) {
-            val comp :MyCompany = MyCompany(company.id,company.name,company.cep,company.thumbnail,company.banner,company.cnpj,company.cellphone,company.email,company.description,company.visible,company.city,company.neighborhood,company.segment!!.id!!);
-        Coroutines.io {
-            db.getCompanyDao().upsert(comp);
-        }
-    }
-
-
 
     suspend fun updateUserCompany(
         name: String,
@@ -117,7 +90,6 @@ class UserRepository(
         thumbnail: String = "",
         banner: String = ""
     ): CompanyResponse {
-        fetchCompany()
         return callClient {
             client.updateUserCompany(
                 CompanyRequest(

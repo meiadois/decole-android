@@ -4,21 +4,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.DecoleApplication
 import br.com.meiadois.decole.data.model.Company
+import br.com.meiadois.decole.data.repository.CompanyRepository
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.extension.toCompanyModel
 import br.com.meiadois.decole.util.extension.toMatchItemList
 
 class PartnershipHomeTopViewModel (
-    private val userRepository: UserRepository
+    private val companyRepository: CompanyRepository
     ) : ViewModel() {
         private val companyLiveData : MutableLiveData<Company> = MutableLiveData()
 
         suspend fun getUserCompany(): Company {
-            userRepository.fetchCompany()
-            return userRepository.getUserCompanyDB()
+            companyRepository.fetchCompany()
+            return companyRepository.getUserCompanyDB()
         }
-
-
 
 }
