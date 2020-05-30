@@ -7,7 +7,6 @@ import br.com.meiadois.decole.data.localdb.entity.Segment
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
-import br.com.meiadois.decole.data.network.request.CompanyBySegmentRequest
 import br.com.meiadois.decole.data.network.request.LikeRequest
 import br.com.meiadois.decole.data.network.request.LikeSenderRequest
 import br.com.meiadois.decole.data.network.response.*
@@ -45,9 +44,21 @@ class CompanyRepository(
         }
     }
 
-    suspend fun undoPartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
+    suspend fun deletePartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
         return callClient {
-            client.undoPartnership(likeId, LikeRequest("deleted", senderId, recipientId))
+            client.updateLike(likeId, LikeRequest("deleted", senderId, recipientId))
+        }
+    }
+
+    suspend fun confirmPartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
+        return callClient {
+            client.updateLike(likeId, LikeRequest("accepted", senderId, recipientId))
+        }
+    }
+
+    suspend fun cancelPartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
+        return callClient {
+            client.updateLike(likeId, LikeRequest("denied", senderId, recipientId))
         }
     }
 
@@ -72,8 +83,8 @@ class CompanyRepository(
 
     suspend fun getUserCompanyDB(): Company {
         val companyDb = db.getCompanyDao().getUserCompanyLocal()
-        var segmentDb: Segment = db.getSegmentDao().getSegmentLocal(companyDb.segmentId)
-        var segment: br.com.meiadois.decole.data.model.Segment
+        val segmentDb: Segment = db.getSegmentDao().getSegmentLocal(companyDb.segmentId)
+        val segment: br.com.meiadois.decole.data.model.Segment
 //        if(segmentDb == null){
 //            segment = br.com.meiadois.decole.data.model.Segment(segmentDb.id, segmentDb.name)
 //        }else{

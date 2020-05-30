@@ -16,18 +16,8 @@ import br.com.meiadois.decole.util.extension.toCompanyModel
 
 class UserRepository(
     private val client: DecoleClient,
-    private val db: AppDatabase,
-    private val segmentRepository: SegmentRepository
+    private val db: AppDatabase
 ) : RequestHandler() {
-
-//
-//    private val companyuser = MutableLiveData<Company>()
-//
-//    init {
-//        companyuser.observeForever {
-//            saveCompany(it)
-//        }
-//    }
 
     suspend fun login(email: String, password: String): LoginResponse {
         return callClient {
@@ -144,9 +134,21 @@ class UserRepository(
         }
     }
 
-    suspend fun listUserMatches(): List<LikeResponse> {
+    suspend fun getUserMatches(): List<LikeResponse> {
         return callClient {
-            client.listUserMatches()
+            client.getUserMatches()
+        }
+    }
+
+    suspend fun getUserSentLikes(): List<LikeSentResponse> {
+        return callClient {
+            client.getUserSentLikes()
+        }
+    }
+
+    suspend fun getUserReceivedLikes(): List<LikeReceivedResponse> {
+        return callClient {
+            client.getUserReceivedLikes()
         }
     }
 

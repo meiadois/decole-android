@@ -20,6 +20,30 @@ data class LikeResponse(
 )
 
 @JsonClass(generateAdapter = true)
+data class LikeSentResponse(
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "status")
+    val status: String,
+    @Json(name = "recipient_id")
+    val recipient_id: Int?,
+    @Json(name = "recipient_company")
+    val recipient_company: CompanyResponse
+)
+
+@JsonClass(generateAdapter = true)
+data class LikeReceivedResponse(
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "status")
+    val status: String,
+    @Json(name = "sender_id")
+    val sender_id: Int?,
+    @Json(name = "sender_company")
+    val sender_company: CompanyResponse
+)
+
+@JsonClass(generateAdapter = true)
 data class LikePutResponse(
     @Json(name = "id")
     val id: Int,

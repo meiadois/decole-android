@@ -89,28 +89,36 @@
                     android:id="@+id/popup_window_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
+                    android:layout_marginVertical="12dp"
                     android:textColor="@color/popup_font_color"
                     android:textSize="16sp"
                     tools:text="DESCRIÇÃO DO PARCEIRO" />
 
-                <TextView
-                    android:id="@+id/popup_window_phone"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_whatsapp_white"
-                    android:drawablePadding="10dp"
-                    android:visibility="invisible"
-                    tools:text="(71) 00000-0000" />
+                    android:layout_marginVertical="4dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:drawableStart="@drawable/ic_whatsapp_white"
+                        android:layout_marginVertical="4dp"
+                        android:id="@+id/popup_window_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        android:drawablePadding="10dp"
+                        tools:text="(71) 00000-0000" />
 
-                <TextView
-                    android:id="@+id/popup_window_mail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_mail_white"
-                    android:drawablePadding="10dp"
-                    android:visibility="invisible"
-                    tools:text="contato@empresa.com" />
+                    <TextView
+                        android:drawableStart="@drawable/ic_mail_white"
+                        android:layout_marginVertical="4dp"
+                        android:id="@+id/popup_window_mail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        android:drawablePadding="10dp"
+                        tools:text="contato@empresa.com" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -126,44 +134,79 @@
                 app:layout_constraintTop_toBottomOf="@+id/popup_window_contact_layout">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_partnership_info_action_divider"
-                    android:visibility="gone" />
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    tools:ignore="ContentDescription" />
 
+                <!-- Match Buttons -->
                 <LinearLayout
-                    android:id="@+id/popup_window_button_layout"
+                    android:visibility="gone"
+                    android:id="@+id/popup_window_match_button_layout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <Button
+                        android:text="@string/undo_partnership"
+                        android:id="@+id/match_button"
+                        android:layout_marginEnd="8dp"
+                        style="@style/btn_primary"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:layout_width="0dp" />
+                </LinearLayout>
+
+                <!-- Received Likes Buttons -->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/popup_window_received_button_layout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/received_button_primary"
+                        android:text="@string/confirm"
+                        android:layout_marginEnd="8dp"
+                        style="@style/btn_primary"
+                        android:layout_weight="1"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/received_button_secondary"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/cancel"
+                        style="@style/btn_secondary"
+                        android:layout_weight="1"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Sent Likes Buttons -->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/popup_window_sent_button_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/popup_window_button_undo_partnership"
-                        style="@style/btn_primary"
-                        android:layout_weight="1"
-                        android:text="@string/undo_partnership"
-                        android:textSize="12sp"
-                        android:visibility="invisible" />
-
-                    <Button
-                        style="@style/btn_primary"
-                        android:layout_weight="1"
-                        android:text="@string/confirm"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
-
-                    <Button
-                        style="@style/btn_secondary"
-                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:id="@+id/sent_button"
                         android:text="@string/cancel"
+                        style="@style/btn_primary"
+                        android:layout_weight="1"
                         android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:layout_width="0dp" />
                 </LinearLayout>
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

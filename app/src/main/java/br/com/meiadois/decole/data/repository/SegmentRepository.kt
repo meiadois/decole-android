@@ -17,15 +17,14 @@ class SegmentRepository(
 ) : RequestHandler() {
     private val segment = MutableLiveData<List<Segment>>()
 
-    init {
-        segment.observeForever {
-            saveSegment(it)
-        }
-        Coroutines.io{
-            fetchSegment()
-        }
-
-    }
+//    init {
+//        segment.observeForever {
+//            saveSegment(it)
+//        }
+//        Coroutines.io{
+//            fetchSegment()
+//        }
+//    }
 
 
     suspend fun getAllSegments(): List<SegmentResponse> {

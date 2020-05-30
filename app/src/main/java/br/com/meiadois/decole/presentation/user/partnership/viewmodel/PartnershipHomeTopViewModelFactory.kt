@@ -6,11 +6,12 @@ import br.com.meiadois.decole.data.repository.CompanyRepository
 import br.com.meiadois.decole.data.repository.UserRepository
 
 class PartnershipHomeTopViewModelFactory (
-    private val companyRepository: CompanyRepository
+    private val companyRepository: CompanyRepository,
+    private val userRepository: UserRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return PartnershipHomeTopViewModel(companyRepository) as T
+        return PartnershipHomeTopViewModel(userRepository) as T
     }
 }

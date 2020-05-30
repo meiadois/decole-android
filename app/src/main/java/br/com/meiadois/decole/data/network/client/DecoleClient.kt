@@ -73,7 +73,19 @@ interface DecoleClient {
 
     @Headers("Content-Type: application/json")
     @GET("me/likes")
-    suspend fun listUserMatches(@Query("status") status :String = "accepted"): Response<List<LikeResponse>>
+    suspend fun getUserMatches(@Query("status") status :String = "accepted"): Response<List<LikeResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("me/likes/sent")
+    suspend fun getUserSentLikes(@Query("status") status :String = "pending"): Response<List<LikeSentResponse>>
+
+    @Headers("Content-Type: application/json")
+    @GET("me/likes/received")
+    suspend fun getUserReceivedLikes(@Query("status") status :String = "pending"): Response<List<LikeReceivedResponse>>
+
+    @Headers("Content-Type: application/json")
+    @PUT("likes/{id}")
+    suspend fun updateLike(@Path("id") likeId: Int, @Body request: LikeRequest): Response<LikePutResponse>
 
     @Headers("Content-Type: application/json")
     @GET("segments")
@@ -82,10 +94,6 @@ interface DecoleClient {
     @Headers("Content-Type: application/json")
     @GET("me/segments/_/has-companies")
     suspend fun getAllSegmentsHasCompanies(): Response<List<SegmentResponse>>
-
-    @Headers("Content-Type: application/json")
-    @PUT("likes/{id}")
-    suspend fun undoPartnership(@Path("id") likeId: Int, @Body request: LikeRequest): Response<LikePutResponse>
 
     @Headers("Content-Type: application/json")
     @POST("me/introduce")

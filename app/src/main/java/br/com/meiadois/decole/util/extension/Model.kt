@@ -104,7 +104,7 @@ fun CompanyResponse.toCompanyAccountData(): CompanyAccountData {
     )
 }
 
-fun List<LikeResponse>.toMatchItemList(userCompanyId: Int): List<Like> {
+fun List<LikeResponse>.toLikeModelList(userCompanyId: Int): List<Like> {
     return this.map {
         val userCompany: CompanyResponse
         val partnerCompany: CompanyResponse
