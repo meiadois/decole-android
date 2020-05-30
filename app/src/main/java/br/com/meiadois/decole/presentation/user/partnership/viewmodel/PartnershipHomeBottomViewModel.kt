@@ -56,11 +56,11 @@ class PartnershipHomeBottomViewModel(
     }
 
     fun removeSentLike(likeId: Int){
-        sentLikesList.value = matchesList.value?.filter { like -> like.id != likeId }
+        sentLikesList.value = sentLikesList.value?.filter { like -> like.id != likeId }
     }
 
     fun removeReceivedLike(likeId: Int){
-        receivedLikesList.value = matchesList.value?.filter { like -> like.id != likeId }
+        receivedLikesList.value = receivedLikesList.value?.filter { like -> like.id != likeId }
     }
 
     suspend fun getUserCompany() : Company {

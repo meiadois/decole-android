@@ -199,17 +199,31 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     private fun onPartnerItemClick(context: Context, like: Like) {
         val intent: Intent = PartnershipPopUpActivity.getStartIntent(
-            context, like.id, like.partnerCompany.id, like.userCompany.id, like.isSender, currentMenuItemActive
-        )
-        startActivityForResult(intent, UNDO_PARTNERSHIP_REQUEST_CODE)
+            context, like.id, like.partnerCompany.id, like.userCompany.id, like.isSender, currentMenuItemActive)
+        startActivityForResult(intent, PARTNERSHIP_POPUP_ACTIONS_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            UNDO_PARTNERSHIP_REQUEST_CODE -> when (resultCode) {
+            PARTNERSHIP_POPUP_ACTIONS_REQUEST_CODE -> when (resultCode) {
                 UNDO_PARTNERSHIP_DELETED_RESULT_CODE -> {
                     data?.let {
                         viewModel.removeMatch(it.getIntExtra(UNDO_PARTNERSHIP_DELETED_TAG, 0))
+                    }
+                }
+                PARTNERSHIP_CANCELED_RESULT_CODE -> {
+                    data?.let {
+                        viewModel.removeSentLike(it.getIntExtra(PARTNERSHIP_CANCELED_TAG, 0))
+                    }
+                }
+                PARTNERSHIP_DENIED_RESULT_CODE -> {
+                    data?.let {
+                        viewModel.removeReceivedLike(it.getIntExtra(PARTNERSHIP_DENIED_TAG, 0))
+                    }
+                }
+                PARTNERSHIP_ACCEPTED_RESULT_CODE -> {
+                    data?.let {
+                        viewModel.removeReceivedLike(it.getIntExtra(PARTNERSHIP_ACCEPTED_TAG, 0))
                     }
                 }
             }
@@ -257,9 +271,19 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
 
     companion object {
-        private const val UNDO_PARTNERSHIP_REQUEST_CODE = 11352
+        private const val PARTNERSHIP_POPUP_ACTIONS_REQUEST_CODE = 11352
+
         const val UNDO_PARTNERSHIP_DELETED_RESULT_CODE = 11353
         const val UNDO_PARTNERSHIP_DELETED_TAG = "DELETED_LIKE_ID"
+
+        const val PARTNERSHIP_ACCEPTED_RESULT_CODE = 11354
+        const val PARTNERSHIP_ACCEPTED_TAG = "ACCEPTED_LIKE_ID"
+
+        const val PARTNERSHIP_DENIED_RESULT_CODE = 11355
+        const val PARTNERSHIP_DENIED_TAG = "DENIED_LIKE_ID"
+
+        const val PARTNERSHIP_CANCELED_RESULT_CODE = 11356
+        const val PARTNERSHIP_CANCELED_TAG = "CANCELED_LIKE_ID"
 
         private const val CONTENT_NONE = 0
         private const val CONTENT_NO_ACCOUNT = 1

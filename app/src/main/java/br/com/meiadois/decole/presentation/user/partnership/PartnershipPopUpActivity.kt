@@ -140,7 +140,12 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
                         if (isUserSender) userCompanyId else partnerId,
                         if (isUserSender) partnerId else userCompanyId
                     )
-                    showSuccessMessage(likeId, getString(R.string.undo_partnership_success_message))
+                    showSuccessMessage(
+                        likeId,
+                        getString(R.string.undo_partnership_success_message),
+                        PartnershipHomeBottomFragment.UNDO_PARTNERSHIP_DELETED_TAG,
+                        PartnershipHomeBottomFragment.UNDO_PARTNERSHIP_DELETED_RESULT_CODE
+                    )
                 } catch (ex: Exception) {
                     popup_window_background.longSnackbar(getString(R.string.undo_partnership_error_message))
                 }
@@ -157,7 +162,12 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
                         if (isUserSender) userCompanyId else partnerId,
                         if (isUserSender) partnerId else userCompanyId
                     )
-                    showSuccessMessage(likeId, getString(R.string.confirm_partnership_success_message))
+                    showSuccessMessage(
+                        likeId,
+                        getString(R.string.confirm_partnership_success_message),
+                        PartnershipHomeBottomFragment.PARTNERSHIP_ACCEPTED_TAG,
+                        PartnershipHomeBottomFragment.PARTNERSHIP_ACCEPTED_RESULT_CODE
+                    )
                 } catch (ex: Exception) {
                     popup_window_background.longSnackbar(getString(R.string.confirm_partnership_error_message))
                 }
@@ -171,7 +181,12 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
                         if (isUserSender) userCompanyId else partnerId,
                         if (isUserSender) partnerId else userCompanyId
                     )
-                    showSuccessMessage(likeId, getString(R.string.cancel_partnership_success_message))
+                    showSuccessMessage(
+                        likeId,
+                        getString(R.string.cancel_partnership_success_message),
+                        PartnershipHomeBottomFragment.PARTNERSHIP_DENIED_TAG,
+                        PartnershipHomeBottomFragment.PARTNERSHIP_DENIED_RESULT_CODE
+                    )
                 } catch (ex: Exception) {
                     popup_window_background.longSnackbar(getString(R.string.cancel_partnership_error_message))
                 }
@@ -188,7 +203,12 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
                         if (isUserSender) userCompanyId else partnerId,
                         if (isUserSender) partnerId else userCompanyId
                     )
-                    showSuccessMessage(likeId, getString(R.string.cancel_like_success_message))
+                    showSuccessMessage(
+                        likeId,
+                        getString(R.string.cancel_like_success_message),
+                        PartnershipHomeBottomFragment.PARTNERSHIP_CANCELED_TAG,
+                        PartnershipHomeBottomFragment.PARTNERSHIP_CANCELED_RESULT_CODE
+                    )
                 } catch (ex: Exception) {
                     popup_window_background.longSnackbar(getString(R.string.cancel_like_error_message))
                 }
@@ -196,14 +216,13 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun showSuccessMessage(likeId: Int, message: String) {
+    private fun showSuccessMessage(likeId: Int, message: String, resultTag: String, resultCode: Int) {
         popup_window_background.longSnackbar(message) {
             it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     val nIntent = Intent()
-                    // TODO: rever essa passagem de result devolta pra home, e lá decidir de qual lista remover o item
-                    nIntent.putExtra(PartnershipHomeBottomFragment.UNDO_PARTNERSHIP_DELETED_TAG, likeId)
-                    setResult(PartnershipHomeBottomFragment.UNDO_PARTNERSHIP_DELETED_RESULT_CODE, nIntent)
+                    nIntent.putExtra(resultTag, likeId)
+                    setResult(resultCode, nIntent)
                     onBackPressed()
                 }
             })
