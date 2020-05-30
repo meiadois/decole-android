@@ -136,7 +136,7 @@ interface DecoleClient {
 
             return Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl("https://decoleapi.herokuapp.com/v1/")
+                .baseUrl("https://api.decole.app/v1/")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(DecoleClient::class.java)
