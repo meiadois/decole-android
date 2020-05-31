@@ -125,11 +125,18 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         partner_recycler_view.visibility =
             if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.GONE
         layout_empty.visibility =
-            if (contentMode == CONTENT_NO_PARTNERS_FOUND) View.VISIBLE else View.GONE
+            if (contentMode == CONTENT_NO_REGISTERS_FOUND){
+                text_empty.text = when(currentMenuItemActive){
+                    ICON_MATCH_ID -> getString(R.string.no_match_found)
+                    ICON_RECEIVED_ID -> getString(R.string.no_received_likes_found)
+                    else -> getString(R.string.no_sent_likes_found)
+                }
+                View.VISIBLE
+            } else View.GONE
         fragment_container_noAccount.visibility =
             if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
         btn_search.visibility =
-            if (contentMode in setOf(CONTENT_LIST_PARTNERS, CONTENT_NO_PARTNERS_FOUND)) View.VISIBLE else View.GONE
+            if (contentMode in setOf(CONTENT_LIST_PARTNERS, CONTENT_NO_REGISTERS_FOUND)) View.VISIBLE else View.GONE
         bottom_bar.visibility = btn_search.visibility
     }
 
@@ -174,7 +181,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 }
             }
         } else
-            setContentVisibility(CONTENT_NO_PARTNERS_FOUND)
+            setContentVisibility(CONTENT_NO_REGISTERS_FOUND)
     }
 
     private fun setDataSetObservers() {
@@ -295,7 +302,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         private const val CONTENT_NONE = 0
         private const val CONTENT_NO_ACCOUNT = 1
         private const val CONTENT_LIST_PARTNERS = 2
-        private const val CONTENT_NO_PARTNERS_FOUND = 3
+        private const val CONTENT_NO_REGISTERS_FOUND = 3
 
         const val ICON_SENT_ID = R.id.menu_waiting_response
         const val ICON_RECEIVED_ID = R.id.menu_to_respond

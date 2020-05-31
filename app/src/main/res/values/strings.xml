@@ -130,7 +130,9 @@
     <string name="to_respond_tooltip">Empresas interessadas</string>
     <string name="connected_tooltip">Empresas conectadas</string>
     <string name="search_tooltip">Buscar</string>
-    <string name="no_partner_found">Não encontramos nenhum parceiro :(</string>
+    <string name="no_match_found">Nenhuma parceria firmada até o momento.</string>
+    <string name="no_received_likes_found">Você ainda não recebeu likes.</string>
+    <string name="no_sent_likes_found">Nenhum like enviado. Clique no botão de busca e procure por uma empresa parceira.</string>
     <string name="Incomplete_registration_title">Cadastro incompleto</string>
 
     <!-- Password recovery -->
