@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
+import br.com.meiadois.decole.data.localdb.entity.MyCompany
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
@@ -50,13 +52,16 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     private fun init(){
         Coroutines.main {
             try{
-                val company : Company = viewModel.getUserCompany()
-                setContentVisibility(CONTENT_WITH_ACCOUNT)
-                showUserCompany(company)
+                val company = viewModel.getUserCompany().observe(
+                    this,Observer{
+                        setContentVisibility(CONTENT_WITH_ACCOUNT)
+                        showUserCompany(it)
+                    }
+                )
             }catch (ex: ClientException){
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
             }catch (ex: Exception){
-                Log.i("Fragment_top_exception", ex.message!!)
+                Log.i("Fragment_top_exception", ex.message?:"")
             }finally {
                 setProgressBarVisibility(false)
             }
@@ -72,9 +77,9 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
         container_company_layout_no_account.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
     }
 
-    private fun showUserCompany(company: Company){
+    private fun showUserCompany(company: MyCompany){
         text_partner_name.text = company.name
-        text_partner_segment.text = company.segment?.name
+        text_partner_segment.text = company.segment
         Glide.with(container_company_layout_account).load(company.thumbnail).apply(RequestOptions.circleCropTransform()).into(image_partner)
     }
 

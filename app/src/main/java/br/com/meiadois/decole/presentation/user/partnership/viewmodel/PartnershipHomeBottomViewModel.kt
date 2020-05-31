@@ -3,13 +3,15 @@ package br.com.meiadois.decole.presentation.user.partnership.viewmodel
 import androidx.lifecycle.*
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.model.Like
+import br.com.meiadois.decole.data.repository.CompanyRepository
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.extension.toCompanyModel
 import br.com.meiadois.decole.util.extension.toLikeModelList
 
 class PartnershipHomeBottomViewModel(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val companyRespository: CompanyRepository
 ) : ViewModel() {
     val matchesList : MutableLiveData<List<Like>> = MutableLiveData()
     val sentLikesList : MutableLiveData<List<Like>> = MutableLiveData()
@@ -65,7 +67,7 @@ class PartnershipHomeBottomViewModel(
 
     suspend fun getUserCompany() : Company {
         if (company == null)
-            company = userRepository.getUserCompany().toCompanyModel()
+            company = companyRespository.getUserCompany().toCompanyModel()
         return company!!
     }
 }

@@ -9,9 +9,7 @@ import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Segment
 import br.com.meiadois.decole.data.network.response.CepResponse
-import br.com.meiadois.decole.data.repository.CepRepository
-import br.com.meiadois.decole.data.repository.SegmentRepository
-import br.com.meiadois.decole.data.repository.UserRepository
+import br.com.meiadois.decole.data.repository.*
 import br.com.meiadois.decole.presentation.user.account.AccountListener
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
 import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
@@ -26,6 +24,7 @@ import com.google.android.material.textfield.TextInputLayout
 
 class AccountViewModel(
     private val segmentRepository: SegmentRepository,
+    private val companyRepository: CompanyRepository,
     private val userRepository: UserRepository,
     private val cepRepository: CepRepository,
     private val logOutService: LogOutService
@@ -68,7 +67,7 @@ class AccountViewModel(
     private fun getUserCompany() {
         Coroutines.main {
             try {
-                companyData.value = userRepository.getUserCompany().toCompanyAccountData()
+                companyData.value = companyRepository.getUserCompany().toCompanyAccountData()
                 isUpdating = true
             } catch (ex: Exception) {
                 companyData.value = CompanyAccountData()
@@ -117,7 +116,7 @@ class AccountViewModel(
                 try {
                     userRepository.updateUser(userData.value!!.name, userData.value!!.email)
 
-                    if (isUpdating) userRepository.updateUserCompany(
+                    if (isUpdating) companyRepository.updateUserCompany(
                         companyData.value!!.name,
                         companyData.value!!.cep,
                         companyData.value!!.cnpj,
@@ -128,7 +127,7 @@ class AccountViewModel(
                         companyData.value!!.visible,
                         companyData.value!!.city,
                         companyData.value!!.neighborhood
-                    ) else userRepository.insertUserCompany(
+                    ) else companyRepository.insertUserCompany(
                         companyData.value!!.name,
                         companyData.value!!.cep,
                         companyData.value!!.cnpj,
