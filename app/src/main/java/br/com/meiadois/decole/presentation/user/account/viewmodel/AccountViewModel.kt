@@ -70,7 +70,7 @@ class AccountViewModel(
                 companyData.value = companyRepository.getUserCompany().toCompanyAccountData()
                 isUpdating = true
             } catch (ex: Exception) {
-                companyData.value = CompanyAccountData()
+                companyData.value = CompanyAccountData(email = userData.value!!.email)
                 Log.i("AccountViewModel.init", ex.message!!)
             }
         }
