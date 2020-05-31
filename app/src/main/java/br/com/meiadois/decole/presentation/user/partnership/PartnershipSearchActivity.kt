@@ -19,6 +19,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.init
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_search_partner.*
+import kotlinx.android.synthetic.main.activity_search_partner.progress_bar
+import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -42,9 +44,11 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
             viewModel = mViewModel
         }
 
+        setLoadingView()
+        setProgressVisibility(true)
         setAdapterToSegmentDropdown()
-        setContentCardCompanyView()
         setCompaniesAdapter()
+        setContentCardCompanyView()
 
         btn_back.setOnClickListener {
             finish()
@@ -107,21 +111,30 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun setCompaniesAdapter() {
+        progress_bar.visibility
+
         mViewModel.companies.observe(this, Observer {
             if (mViewModel.companies.value!!.isNotEmpty()) {
                 mViewModel.company.value = mViewModel.companies.value?.get(0)
                 btn_md_checked.visibility = View.VISIBLE
                 btn_md_close.visibility = View.VISIBLE
                 cardview_company_profile.visibility = View.VISIBLE
-                cardview_company_error.visibility = View.GONE
-
+                fragment_container_noCompanies.visibility = View.GONE
             } else {
                 btn_md_checked.visibility = View.GONE
                 btn_md_close.visibility = View.GONE
                 cardview_company_profile.visibility = View.GONE
-                cardview_company_error.visibility = View.VISIBLE
+                fragment_container_noCompanies.visibility = View.VISIBLE
             }
+            setProgressVisibility(false)
         })
+    }
+
+    private fun setLoadingView(){
+        btn_md_checked.visibility = View.GONE
+        btn_md_close.visibility = View.GONE
+        cardview_company_profile.visibility = View.GONE
+        fragment_container_noCompanies.visibility = View.GONE
     }
 
     private fun setContentCardCompanyView() {
@@ -133,6 +146,10 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
                 Glide.with(cardview_company_profile).load(it.banner).into(image_profile_banner)
             }
         })
+    }
+
+    private fun setProgressVisibility(visible: Boolean) {
+        progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     companion object {

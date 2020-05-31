@@ -1,5 +1,6 @@
 package br.com.meiadois.decole.data.repository
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
@@ -7,21 +8,28 @@ import br.com.meiadois.decole.data.localdb.entity.Segment
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
+import br.com.meiadois.decole.data.network.request.CompanyRequest
 import br.com.meiadois.decole.data.network.request.LikeRequest
 import br.com.meiadois.decole.data.network.request.LikeSenderRequest
 import br.com.meiadois.decole.data.network.response.*
+import br.com.meiadois.decole.data.preferences.PreferenceProvider
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.extension.isFetchNeeded
 import br.com.meiadois.decole.util.extension.toCompanyModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.util.*
+import java.util.prefs.Preferences
 
 class CompanyRepository(
     private val client: DecoleClient,
     private val db: AppDatabase,
-    private val segmentRepository: SegmentRepository
+    private val prefs: PreferenceProvider
 ) : RequestHandler() {
-    private val companyuser = MutableLiveData<Company>()
+    private val companyUser = MutableLiveData<Company>()
 
     init {
-        companyuser.observeForever{
+        companyUser.observeForever{
             saveCompany(it)
         }
     }
@@ -42,6 +50,84 @@ class CompanyRepository(
         return callClient{
             client.getAllCompanies()
         }
+    }
+
+    suspend fun getUserCompany(): CompanyResponse {
+        return callClient {
+            client.getUserCompany()
+        }
+    }
+
+    suspend fun updateUserCompany(
+        name: String,
+        cep: String,
+        cnpj: String,
+        description: String,
+        segmentId: Int,
+        cellphone: String,
+        email: String,
+        visible: Boolean,
+        city: String,
+        neighborhood: String,
+        thumbnail: String = "",
+        banner: String = ""
+    ): CompanyResponse {
+        val res = callClient {
+            client.updateUserCompany(
+                CompanyRequest(
+                    name,
+                    description,
+                    segmentId,
+                    cnpj,
+                    cellphone,
+                    email,
+                    cep,
+                    city,
+                    neighborhood,
+                    visible,
+                    thumbnail,
+                    banner
+                )
+            )
+        }
+        fetchCompany()
+        return res
+    }
+
+    suspend fun insertUserCompany(
+        name: String,
+        cep: String,
+        cnpj: String,
+        description: String,
+        segmentId: Int,
+        cellphone: String,
+        email: String,
+        visible: Boolean,
+        city: String,
+        neighborhood: String,
+        thumbnail: String = "",
+        banner: String = ""
+    ): CompanyResponse {
+        val res = callClient {
+            client.insertUserCompany(
+                CompanyRequest(
+                    name,
+                    description,
+                    segmentId,
+                    cnpj,
+                    cellphone,
+                    email,
+                    cep,
+                    city,
+                    neighborhood,
+                    visible,
+                    thumbnail,
+                    banner
+                )
+            )
+        }
+        fetchCompany()
+        return res
     }
 
     suspend fun deletePartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
@@ -73,30 +159,30 @@ class CompanyRepository(
     }
 
     suspend fun fetchCompany() {
-        val res = callClient { client.getUserCompany() }
-        companyuser.postValue(res.toCompanyModel())
+        val res = callClient {
+            client.getUserCompany()
+        }
+        companyUser.postValue(res.toCompanyModel())
     }
-    // muda para company entity
-    // metodo para salvar no banco a company
+
     private fun saveCompany(company:Company) {
-        val comp : MyCompany = MyCompany(company.id,company.name,company.cep,company.thumbnail,company.banner,company.cnpj,company.cellphone,company.email,company.description,company.visible,company.city,company.neighborhood,2);
+        prefs.saveLastCompanyFetch(System.currentTimeMillis())
+        val comp = MyCompany(company.id,company.name,company.thumbnail,company.segment!!.name);
         Coroutines.io {
             db.getCompanyDao().upsert(comp);
         }
     }
 
-    suspend fun getUserCompanyDB(): Company {
-        val companyDb = db.getCompanyDao().getUserCompanyLocal()
-        val segmentDb: Segment = db.getSegmentDao().getSegmentLocal(companyDb.segmentId)
-        val segment: br.com.meiadois.decole.data.model.Segment
-//        if(segmentDb == null){
-//            segment = br.com.meiadois.decole.data.model.Segment(segmentDb.id, segmentDb.name)
-//        }else{
-        //segmentRepository.fetchSegment()
-        segment = br.com.meiadois.decole.data.model.Segment(segmentDb.id, segmentDb.name)
-
-        val company: Company = Company(companyDb.id,companyDb.name,companyDb.cep,companyDb.thumbnail,companyDb.banner,companyDb.cnpj,companyDb.cellphone,companyDb.email,companyDb.description,companyDb.visible,companyDb.city,companyDb.neighborhood,segment);
-        return company
+    suspend fun getMyCompany(): LiveData<MyCompany> {
+        return withContext(Dispatchers.IO) {
+            val lastFetch = prefs.getLastCompanyFetch()
+            if (lastFetch == 0L || Date(lastFetch).isFetchNeeded()) {
+                fetchCompany()
+            }
+            var a = db.getCompanyDao().getUserCompanyLocal()
+            var b = 2
+            MutableLiveData(db.getCompanyDao().getUserCompanyLocal())
+        }
     }
 
 }
