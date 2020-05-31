@@ -48,6 +48,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         val isUserSender: Boolean = bundle?.getBoolean(EXTRA_IS_USER_SENDER, false) ?: false
 
         viewModel = ViewModelProvider(this, factory).get(PartnershipPopUpViewModel::class.java)
+        setContentVisibility(CONTENT_LOADING)
 
         getCompany(partnerId){
             setContextButtons(likeId, partnerId, userCompanyId, isUserSender, contentMode)
@@ -70,8 +71,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
                 popup_window_phone.text = it.cellphone
                 popup_window_mail.text = it.email
 
-                popup_window_partnership_actions_divider.visibility = View.VISIBLE
-                popup_window_contact_layout.visibility = View.VISIBLE
+                setContentVisibility(CONTENT_LOADED)
                 callback.invoke()
             }
         })
@@ -116,6 +116,13 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     // endregion
 
     // region Content Management
+    private fun setContentVisibility(contentMode: Int){
+        progress_bar.visibility = if (contentMode == CONTENT_LOADING) View.VISIBLE else View.GONE
+        popup_window_view.visibility = if (contentMode == CONTENT_LOADING) View.INVISIBLE else View.VISIBLE
+        popup_window_partnership_actions_divider.visibility = popup_window_view.visibility
+        popup_window_contact_layout.visibility = popup_window_view.visibility
+    }
+
     private fun setContextButtons(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender: Boolean, contentMode: Int){
         when(contentMode){
             ICON_MATCH_ID -> {
@@ -257,6 +264,9 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         private const val EXTRA_LIKE_ID = "LIKE_ID"
         private const val ALPHA_VALUE = 100
         private const val TRANSITION_DURATION = 100L
+
+        private const val CONTENT_LOADING = 1
+        private const val CONTENT_LOADED = 2
 
         fun getStartIntent(context: Context, likeId: Int, partnerId: Int, userCompanyId: Int, userIsSender: Boolean, contentMode: Int): Intent {
             return Intent(context, PartnershipPopUpActivity::class.java).apply {

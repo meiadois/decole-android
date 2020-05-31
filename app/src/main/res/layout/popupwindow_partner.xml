@@ -26,6 +26,16 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/circle_progress_bar"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/popup_window_view"
             android:layout_width="match_parent"
