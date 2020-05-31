@@ -19,6 +19,8 @@ class PartnershipPopUpViewModel(
 
     suspend fun deletePartnership(likeId: Int, senderId: Int, recipientId: Int) = companyRepository.deletePartnership(likeId, senderId, recipientId)
 
+    suspend fun deleteLike(likeId: Int) = companyRepository.deleteLike(likeId)
+
     suspend fun confirmPartnership(likeId: Int, senderId: Int, recipientId: Int) = companyRepository.confirmPartnership(likeId, senderId, recipientId)
 
     suspend fun cancelPartnership(likeId: Int, senderId: Int, recipientId: Int) = companyRepository.cancelPartnership(likeId, senderId, recipientId)

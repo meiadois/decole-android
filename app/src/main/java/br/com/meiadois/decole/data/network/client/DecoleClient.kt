@@ -88,6 +88,10 @@ interface DecoleClient {
     suspend fun updateLike(@Path("id") likeId: Int, @Body request: LikeRequest): Response<LikePutResponse>
 
     @Headers("Content-Type: application/json")
+    @DELETE("likes/{id}")
+    suspend fun deleteLike(@Path("id") likeId: Int): Response<Void>
+
+    @Headers("Content-Type: application/json")
     @GET("segments")
     suspend fun getAllSegments(): Response<List<SegmentResponse>>
 

@@ -45,6 +45,10 @@ class CompanyRepository(
         }
     }
 
+    suspend fun deleteLike(likeId: Int) {
+        client.deleteLike(likeId)
+    }
+
     suspend fun sendLikes(senderId: Int, recipientId: Int): LikePutResponse{
         return callClient {
             client.sendLike(LikeSenderRequest(senderId, recipientId))

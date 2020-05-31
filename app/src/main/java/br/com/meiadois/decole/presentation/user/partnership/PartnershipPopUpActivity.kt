@@ -126,7 +126,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
             }
             ICON_SENT_ID -> {
                 popup_window_sent_button_layout.visibility = View.VISIBLE
-                setSentButtonListener(likeId, partnerId, userCompanyId, isUserSender)
+                setSentButtonListener(likeId)
             }
         }
     }
@@ -194,15 +194,11 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun setSentButtonListener(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender: Boolean){
+    private fun setSentButtonListener(likeId: Int){
         sent_button.setOnClickListener {
             Coroutines.main {
                 try {
-                    viewModel.deletePartnership(
-                        likeId,
-                        if (isUserSender) userCompanyId else partnerId,
-                        if (isUserSender) partnerId else userCompanyId
-                    )
+                    viewModel.deleteLike(likeId)
                     showSuccessMessage(
                         likeId,
                         getString(R.string.cancel_like_success_message),
