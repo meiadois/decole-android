@@ -39,6 +39,10 @@
     <string name="partnership_slide_label">E ainda podemos aproximar você de outros micro empreendedores, para te ajudar a firmar parcerias!</string>
     <string name="drag_more_options_slide">Arraste para o lado para mais informações!</string>
 
+    <!-- Empty list of companies to match -->
+    <string name="list_error_title">Oops :x</string>
+    <string name="text_error_title">Acabaram as empresas disponíveis, tente outro segmento ou volte mais tarde.</string>
+
     <!-- Login/Registration -->
     <string name="ask_for_email">qual o seu e-mail?</string>
     <string name="ask_for_password">qual a sua senha?</string>

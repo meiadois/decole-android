@@ -121,6 +121,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/top_container">
 
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/circle_progress_bar"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:paddingTop="16dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
             <FrameLayout
             android:id="@+id/frame_company_container"
             android:layout_width="match_parent"
@@ -131,6 +144,7 @@
             app:layout_constraintBottom_toTopOf="@id/linear_button_container">
 
                 <androidx.cardview.widget.CardView
+                    android:visibility="gone"
                     android:id="@+id/cardview_company_profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -192,37 +206,56 @@
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview_company_error"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardBackgroundColor="@color/colorTextIcons"
-                    app:cardCornerRadius="15dp">
 
-                    <LinearLayout
-                        android:id="@+id/layout_list_error"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/fragment_container_noCompanies"
+                    android:visibility="visible"
+                    android:padding="32dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/image_empty_list"
+                        android:layout_width="304dp"
+                        android:layout_height="163dp"
+                        android:src="@drawable/ic_empty_companies"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/text_empty_list"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:id="@+id/image_banner_error"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/ic_undraw_winners"/>
-                        <TextView
-                            android:id="@+id/text_error_list"
-                            android:padding="50dp"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/colorSecondaryText"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="Não há mais companhias aqui, tente mais tarde"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/list_error_title"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/image_empty_list" />
+
+
+                    <TextView
+                        android:id="@+id/text_no_account_found"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/text_error_title"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_empty_list" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </FrameLayout>
 
