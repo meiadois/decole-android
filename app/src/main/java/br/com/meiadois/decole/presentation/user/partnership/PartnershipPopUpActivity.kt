@@ -266,4 +266,5 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
             }
         }
     }
+    // TODO: Alterar icones
 }
