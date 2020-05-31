@@ -1,4 +1,4 @@
-<resources>
+    <resources>
 
     <!-- Common -->
     <string name="app_name">Decole</string>
@@ -59,6 +59,7 @@
 
     <!-- Partnership Home BottomFragment -->
     <string name="getting_data_failed_error_message">Falha ao obter dados.</string>
+    <string name="register_business">Cadastrar Negócio</string>
     <string name="reload">Recarregar</string>
     <string name="ic_partner_divider_content_description">título da seção de listagem de parceiros</string>
 

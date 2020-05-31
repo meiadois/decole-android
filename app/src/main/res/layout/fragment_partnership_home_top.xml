@@ -69,7 +69,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_company_layout_no_account"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:visibility="gone">
 
         <LinearLayout
             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +80,6 @@
             android:layout_width="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:visibility="gone"
             android:orientation="vertical">
 
             <TextView

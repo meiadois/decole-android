@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Like
+import br.com.meiadois.decole.presentation.user.account.AccountActivity
 import br.com.meiadois.decole.presentation.user.partnership.PartnershipSearchActivity.Companion.PARTNERSHIP_SEARCH_COMPANY_ID
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
@@ -67,6 +68,12 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         btn_search.setOnClickListener {
             Intent(view.context, PartnershipSearchActivity::class.java).also {
                 it.putExtra(PARTNERSHIP_SEARCH_COMPANY_ID, viewModel.company!!.id)
+                view.context.startActivity(it)
+            }
+        }
+
+        btn_register_business.setOnClickListener {
+            Intent(view.context, AccountActivity::class.java).also {
                 view.context.startActivity(it)
             }
         }
