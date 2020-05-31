@@ -85,7 +85,7 @@
     <string name="account_me_name_hint">meu nome</string>
     <string name="account_me_mail_hint">meu e-mail</string>
     <string name="account_company_hearder_text">Minha Empresa</string>
-    <string name="be_shown_in_partner_research">Aparecer na busca de parceiros</string>
+    <string name="be_shown_in_partner_research">Visível para parceria</string>
     <string name="account_company_name_hint">nome da empresa</string>
     <string name="account_company_segment_hint">segmento da empresa</string>
     <string name="account_company_description_hint">breve descrição da empresa</string>
