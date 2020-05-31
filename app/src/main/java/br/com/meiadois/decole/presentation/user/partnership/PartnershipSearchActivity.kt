@@ -60,12 +60,14 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
             mViewModel.getUpdateCompany()
         }
         btn_md_close.setOnClickListener {
-            if(mViewModel.companies.value!!.count() <= mViewModel.state){
+            if (mViewModel.companies.value!!.count() <= mViewModel.state) {
                 mViewModel.getUpdateCompany()
-            }else{
-                layout_bottom_search.longSnackbar("Você chegou ao fim da lista, mais tarde teremos novas empresas.")
+            }else if(mViewModel.companies.value!!.count() == 1){
+                layout_bottom_search.longSnackbar("Infelizmente só temos uma companhia disponível nesse segmento")
             }
-
+            else {
+                layout_bottom_search.longSnackbar("Você chegou ao fim da lista.Retornaremos para o início")
+            }
         }
     }
 
@@ -133,7 +135,7 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
         })
     }
 
-    companion object{
+    companion object {
         const val PARTNERSHIP_SEARCH_COMPANY_ID = "company_id"
     }
 }
