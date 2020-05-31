@@ -76,7 +76,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/popup_window_contact_layout"
+                android:id="@+id/popup_window_content_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -95,6 +95,8 @@
                     tools:text="DESCRIÇÃO DO PARCEIRO" />
 
                 <LinearLayout
+                    android:id="@+id/popup_window_contact_layout"
+                    android:visibility="invisible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="4dp"
@@ -105,7 +107,6 @@
                         android:id="@+id/popup_window_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="invisible"
                         android:drawablePadding="10dp"
                         tools:text="(71) 00000-0000" />
 
@@ -115,7 +116,6 @@
                         android:id="@+id/popup_window_mail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="invisible"
                         android:drawablePadding="10dp"
                         tools:text="contato@empresa.com" />
                 </LinearLayout>
@@ -131,13 +131,15 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/popup_window_contact_layout">
+                app:layout_constraintTop_toBottomOf="@+id/popup_window_content_layout">
 
                 <ImageView
                     android:src="@drawable/ic_partnership_info_action_divider"
+                    android:id="@+id/popup_window_partnership_actions_divider"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    android:visibility="invisible" />
 
                 <!-- Match Buttons -->
                 <LinearLayout

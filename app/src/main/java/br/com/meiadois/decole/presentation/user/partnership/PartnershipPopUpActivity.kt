@@ -49,18 +49,19 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
 
         viewModel = ViewModelProvider(this, factory).get(PartnershipPopUpViewModel::class.java)
 
-        getCompany(partnerId)
+        getCompany(partnerId){
+            setContextButtons(likeId, partnerId, userCompanyId, isUserSender, contentMode)
+        }
 
         popup_window_close_button.setOnClickListener { onBackPressed() }
         setBackgroundStartFadeAnimation()
         setStartFadeAnimation()
 
-        setContextButtons(likeId, partnerId, userCompanyId, isUserSender, contentMode)
         setOpenDialAppListener()
         setOpenMailAppListener()
     }
 
-    private fun getCompany(partnerId: Int) {
+    private fun getCompany(partnerId: Int, callback: () -> Unit) {
         viewModel.companyLiveData.observe(this, Observer {
             it?.let {
                 popup_window_partner_name.text = it.name
@@ -69,8 +70,9 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
                 popup_window_phone.text = it.cellphone
                 popup_window_mail.text = it.email
 
-                popup_window_phone.visibility = View.VISIBLE
-                popup_window_mail.visibility = View.VISIBLE
+                popup_window_partnership_actions_divider.visibility = View.VISIBLE
+                popup_window_contact_layout.visibility = View.VISIBLE
+                callback.invoke()
             }
         })
         viewModel.getCompanyById(partnerId)
@@ -224,7 +226,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
             })
         }
     }
-    // region
+    // endregion
 
     // region PopUp Animation
     private fun setBackgroundStartFadeAnimation() {
@@ -266,5 +268,4 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
             }
         }
     }
-    // TODO: Alterar icones
 }
