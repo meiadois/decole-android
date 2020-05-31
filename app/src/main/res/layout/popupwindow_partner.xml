@@ -152,10 +152,13 @@
 
                     <Button
                         android:text="@string/undo_partnership"
+                        android:layout_height="wrap_content"
                         android:id="@+id/match_button"
                         android:layout_marginEnd="8dp"
                         style="@style/btn_primary"
                         android:layout_weight="1"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
                         android:textSize="12sp"
                         android:layout_width="0dp" />
                 </LinearLayout>
@@ -171,17 +174,23 @@
 
                     <Button
                         android:id="@+id/received_button_primary"
+                        android:layout_height="wrap_content"
                         android:text="@string/confirm"
                         android:layout_marginEnd="8dp"
                         style="@style/btn_primary"
                         android:layout_weight="1"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
                         android:textSize="12sp" />
 
                     <Button
                         android:id="@+id/received_button_secondary"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="@string/cancel"
+                        android:text="@string/refuse"
                         style="@style/btn_secondary"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
                         android:layout_weight="1"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -196,9 +205,12 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:layout_height="wrap_content"
+                        android:text="@string/remove_like"
                         android:layout_marginEnd="8dp"
                         android:id="@+id/sent_button"
-                        android:text="@string/cancel"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
                         style="@style/btn_primary"
                         android:layout_weight="1"
                         android:textSize="12sp"

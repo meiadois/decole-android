@@ -73,15 +73,16 @@
     <string name="ic_mail_content_description">Mail icon</string>
     <string name="undo_partnership">Desfazer Parceria</string>
     <string name="confirm">Aceitar</string>
-    <string name="cancel">Recusar</string>
+    <string name="refuse">Recusar</string>
+    <string name="remove_like">Remover Like</string>
     <string name="undo_partnership_error_message">Falha ao desfazer parceria.</string>
     <string name="undo_partnership_success_message">A parceria foi desfeita.</string>
     <string name="confirm_partnership_success_message">A parceria foi aceita com sucesso.</string>
     <string name="confirm_partnership_error_message">Falha ao aceitar parceria.</string>
     <string name="cancel_partnership_success_message">A parceria foi recusada com sucesso.</string>
     <string name="cancel_partnership_error_message">Falha ao recusar parceria.</string>
-    <string name="cancel_like_success_message">Like cancelado com sucesso.</string>
-    <string name="cancel_like_error_message">Falha ao cancelar like.</string>
+    <string name="cancel_like_success_message">Like removido com sucesso.</string>
+    <string name="cancel_like_error_message">Falha ao remover like.</string>
 
     <!-- Account -->
     <string name="back_arrow_content_description">Voltar</string>

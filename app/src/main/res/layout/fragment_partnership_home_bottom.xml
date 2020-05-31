@@ -136,8 +136,11 @@
                     android:text="@string/register_business"
                     android:id="@+id/btn_register_business"
                     android:layout_marginHorizontal="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="36dp"
                     android:layout_marginTop="36dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
                     style="@style/btn_primary"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
