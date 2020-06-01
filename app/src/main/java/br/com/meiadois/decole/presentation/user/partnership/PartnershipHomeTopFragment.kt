@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
-import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
@@ -52,10 +51,12 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     private fun init(){
         Coroutines.main {
             try{
-                val company = viewModel.getUserCompany().observe(
+                viewModel.getUserCompany().observe(
                     this,Observer{
-                        setContentVisibility(CONTENT_WITH_ACCOUNT)
-                        showUserCompany(it)
+                        it?.let {
+                            setContentVisibility(CONTENT_WITH_ACCOUNT)
+                            showUserCompany(it)
+                        }
                     }
                 )
             }catch (ex: ClientException){

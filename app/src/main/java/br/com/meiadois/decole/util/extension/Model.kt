@@ -1,6 +1,7 @@
 package br.com.meiadois.decole.util.extension
 
 import br.com.meiadois.decole.data.localdb.entity.Lesson
+import br.com.meiadois.decole.data.localdb.entity.MyCompany
 import br.com.meiadois.decole.data.localdb.entity.Route
 import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.model.Step
@@ -82,6 +83,10 @@ fun CompanyResponse.toCompanyModel() :Company {
     return Company(
         id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segment?.toSegmentModel()
     )
+}
+
+fun CompanyResponse.toMyCompany(): MyCompany{
+    return MyCompany(id, name, thumbnail, segment?.name ?: "")
 }
 
 fun CompanySearchResponse.toCompanySearchModel() :Company {

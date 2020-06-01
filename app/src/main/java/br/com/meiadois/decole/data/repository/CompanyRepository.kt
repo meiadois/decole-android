@@ -16,6 +16,7 @@ import br.com.meiadois.decole.data.preferences.PreferenceProvider
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.extension.isFetchNeeded
 import br.com.meiadois.decole.util.extension.toCompanyModel
+import br.com.meiadois.decole.util.extension.toMyCompany
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -176,11 +177,12 @@ class CompanyRepository(
         }
     }
 
-    private suspend fun fetchCompany() {
+    private suspend fun fetchCompany(): CompanyResponse {
         val res = callClient {
             client.getUserCompany()
         }
         companyUser.postValue(res.toCompanyModel())
+        return res
     }
 
     private fun saveCompany(company:Company) {
@@ -194,9 +196,8 @@ class CompanyRepository(
     suspend fun getMyCompany(): LiveData<MyCompany> {
         return withContext(Dispatchers.IO) {
             val lastFetch = prefs.getLastCompanyFetch()
-            if (lastFetch == 0L || Date(lastFetch).isFetchNeeded()) {
-                fetchCompany()
-            }
+            if (lastFetch == 0L || Date(lastFetch).isFetchNeeded())
+                return@withContext MutableLiveData(fetchCompany().toMyCompany())
             MutableLiveData(db.getCompanyDao().getUserCompanyLocal())
         }
     }
