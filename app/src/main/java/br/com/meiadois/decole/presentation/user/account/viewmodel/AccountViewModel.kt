@@ -14,6 +14,7 @@ import br.com.meiadois.decole.presentation.user.account.AccountListener
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
 import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
 import br.com.meiadois.decole.presentation.user.account.binding.UserAccountData
+import br.com.meiadois.decole.presentation.user.account.binding.UserSocialNetworksData
 import br.com.meiadois.decole.presentation.user.account.validation.*
 import br.com.meiadois.decole.service.LogOutService
 import br.com.meiadois.decole.util.Coroutines
@@ -31,12 +32,18 @@ class AccountViewModel(
 ) : ViewModel() {
     var companyData: MutableLiveData<CompanyAccountData> = MutableLiveData<CompanyAccountData>()
     var userData: MutableLiveData<UserAccountData> = MutableLiveData<UserAccountData>()
+    var userNetworksData: MutableLiveData<UserSocialNetworksData> = MutableLiveData<UserSocialNetworksData>()
+
     var segments: MutableLiveData<List<Segment>> = MutableLiveData<List<Segment>>()
+
     var accountListener: AccountListener? = null
-    private var isUpdating: Boolean = false
+    private var isUpdatingCompany: Boolean = false
+    private var isUpdatingInstagram: Boolean = false
+    private var isUpdatingFacebook: Boolean = false
 
     // region initializer methods
     init {
+        getUserSocialNetworks()
         getUserCompany()
         getSegments()
         getUser()
@@ -47,7 +54,7 @@ class AccountViewModel(
             try {
                 segments.value = segmentRepository.getAllSegments().toSegmentModelList()
             } catch (ex: Exception) {
-                Log.i("AccountViewModel.init", ex.message!!)
+                Log.i("AccountViewModel.init", ex.message ?: "no error message")
             }
         }
     }
@@ -60,7 +67,7 @@ class AccountViewModel(
             }
         } catch (ex: Exception) {
             userData.value = UserAccountData()
-            Log.i("AccountViewModel.init", ex.message!!)
+            Log.i("AccountViewModel.init", ex.message ?: "no error message")
         }
     }
 
@@ -68,10 +75,32 @@ class AccountViewModel(
         Coroutines.main {
             try {
                 companyData.value = companyRepository.getUserCompany().toCompanyAccountData()
-                isUpdating = true
+                isUpdatingCompany = true
             } catch (ex: Exception) {
                 companyData.value = CompanyAccountData(email = userData.value!!.email)
-                Log.i("AccountViewModel.init", ex.message!!)
+                Log.i("AccountViewModel.init", ex.message ?: "no error message")
+            }
+        }
+    }
+
+    private fun getUserSocialNetworks() {
+        Coroutines.main {
+            try {
+                val userSocialNetworksData = UserSocialNetworksData()
+                userRepository.getUserAccounts().map {
+                    if (it.channel!!.name == INSTAGRAM_CHANNEL){
+                        userSocialNetworksData.instagram = it.username
+                        isUpdatingInstagram = true
+                    }
+                    if (it.channel.name == FACEBOOK_CHANNEL){
+                        userSocialNetworksData.facebook = it.username
+                        isUpdatingFacebook = true
+                    }
+                }
+                userNetworksData.value = userSocialNetworksData
+            } catch (ex: Exception) {
+                userNetworksData.value = UserSocialNetworksData()
+                Log.i("AccountViewModel.init", ex.message ?: "no error message")
             }
         }
     }
@@ -92,7 +121,7 @@ class AccountViewModel(
                     companyData.value?.setNeighborhoodAndNotify(cepResponse.neighborhood)
                     companyData.value?.setCityAndNotify(cepResponse.city)
                 } catch (ex: Exception) {
-                    Log.i("CepException", ex.message!!)
+                    Log.i("CepException", ex.message ?: "no error message")
                 }
             }
         }
@@ -116,7 +145,7 @@ class AccountViewModel(
                 try {
                     userRepository.updateUser(userData.value!!.name, userData.value!!.email)
 
-                    if (isUpdating) companyRepository.updateUserCompany(
+                    if (isUpdatingCompany) companyRepository.updateUserCompany(
                         companyData.value!!.name,
                         companyData.value!!.cep,
                         companyData.value!!.cnpj,
@@ -139,7 +168,24 @@ class AccountViewModel(
                         companyData.value!!.city,
                         companyData.value!!.neighborhood
                     )
-                    isUpdating = true
+                    isUpdatingCompany = true
+
+                    if (isUpdatingInstagram) {
+                        if (userNetworksData.value!!.instagram.isEmpty())
+                            userRepository.deleteUserAccount(INSTAGRAM_CHANNEL)
+                        else
+                            userRepository.updateUserAccount(INSTAGRAM_CHANNEL, userNetworksData.value!!.instagram)
+                    } else if (userNetworksData.value!!.instagram.isNotEmpty())
+                        userRepository.insertUserAccount(INSTAGRAM_CHANNEL, userNetworksData.value!!.instagram)
+
+                    if (isUpdatingFacebook) {
+                        if (userNetworksData.value!!.facebook.isEmpty())
+                            userRepository.deleteUserAccount(FACEBOOK_CHANNEL)
+                        else
+                            userRepository.updateUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)
+                    } else if (userNetworksData.value!!.facebook.isNotEmpty())
+                        userRepository.insertUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)
+
                     accountListener?.onActionSuccess()
                 } catch (ex: ClientException) {
                     accountListener?.onActionError(
@@ -148,10 +194,10 @@ class AccountViewModel(
                         else
                             null
                     )
-                    Log.i("AccountFormEx.Cli", ex.message!!)
+                    Log.i("AccountFormEx.Cli", ex.message ?: "no error message")
                 } catch (ex: Exception) {
                     accountListener?.onActionError(null)
-                    Log.i("AccountFormEx.Ex", ex.message!!)
+                    Log.i("AccountFormEx.Ex", ex.message ?: "no error message")
                 }
             }
         }
@@ -169,13 +215,18 @@ class AccountViewModel(
             companyData.value!!.description = companyData.value!!.description.trim()
             companyData.value!!.neighborhood = companyData.value!!.neighborhood.trim()
         }
+        if (userNetworksData.value != null){
+            userNetworksData.value!!.instagram = userNetworksData.value!!.instagram.trim()
+            userNetworksData.value!!.facebook = userNetworksData.value!!.facebook.trim()
+        }
     }
     // endregion
 
     // region Validation
     private fun validateModels(view: View): Boolean {
-        val isValid = validateUserModel(view)
-        return validateCompanyModel(view) and isValid
+        var isValid = validateUserModel(view)
+        isValid = validateCompanyModel(view) and isValid
+        return validateUserSocialNetworks(view) and isValid
     }
 
     private fun validateUserModel(view: View): Boolean {
@@ -274,5 +325,32 @@ class AccountViewModel(
 
         return isValid
     }
+
+    private fun validateUserSocialNetworks(view: View): Boolean {
+        val socialNetworks: UserSocialNetworksData = userNetworksData.value!!
+
+        var isValid = StringValidator(socialNetworks.instagram)
+            .addValidation(MaxLengthRule(30,
+                view.context.getString(
+                    R.string.max_text_length_error_message,
+                    view.context.getString(R.string.socialNetwork_instagram_hint), 30)))
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_INSTAGRAM, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(socialNetworks.facebook)
+            .addValidation(MaxLengthRule(50,
+                view.context.getString(
+                    R.string.max_text_length_error_message,
+                    view.context.getString(R.string.socialNetwork_facebook_hint), 50)))
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_FACEBOOK, it.error) }
+            .validate()
+
+        return isValid
+    }
     // endregion
+
+    companion object{
+        private const val INSTAGRAM_CHANNEL = "Instagram"
+        private const val FACEBOOK_CHANNEL = "Facebook"
+    }
 }

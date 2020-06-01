@@ -1,4 +1,4 @@
-    <resources>
+<resources>
 
     <!-- Common -->
     <string name="app_name">Decole</string>
@@ -28,7 +28,6 @@
     <string name="finished_route_praise">
         <b>Parabéns!</b> Você concluiu esta lição. Que tal continuar avançando?
     </string>
-
 
     <!-- Welcome Slide Activity -->
     <string name="welcome_slide_title">Podemos te ajudar de várias formas!</string>
@@ -110,6 +109,9 @@
     <string name="success_when_executing_the_action">Ação realizada com sucesso.</string>
     <string name="error_when_executing_the_action">Falha ao executar ação.</string>
     <string name="label_change_password"><u>Alterar minha senha</u></string>
+    <string name="socialNetwork_instagram_hint">meu instagram</string>
+    <string name="socialNetwork_facebook_hint">meu facebook</string>
+    <string name="socialNetwork_hearder_text">Minhas redes sociais</string>
 
     <!--Change Password-->
     <string name="changePassword_me_subtitle_text">Alterando senha</string>
@@ -126,7 +128,6 @@
     <string name="max_text_length_error_message">O campo %1$s não pode ter mais de %2$d caracteres.</string>
     <string name="min_text_length_error_message">O campo %1$s não pode ter menos de %2$d caracteres.</string>
     <string name="fields_are_not_equals_error_message">Os campos %1$s e %2$s não são iguais.</string>
-
 
     <!--Partnership-->
     <string name="partnership_no_account">Para habilitar essa ferramenta, você precisa ativar o descobrimento de parceiros na tela de configurações e ter seu perfil preenchido</string>

@@ -75,6 +75,8 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         filled_exposed_dropdown.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_segment_input))
         input_me_name.addTextChangedListener(accountViewModel.onTextFieldChange(account_me_name_input))
         input_me_mail.addTextChangedListener(accountViewModel.onTextFieldChange(account_me_mail_input))
+        input_socialNetwork_instagram.addTextChangedListener(accountViewModel.onTextFieldChange(socialNetwork_instagram_input))
+        input_socialNetwork_facebook.addTextChangedListener(accountViewModel.onTextFieldChange(socialNetwork_facebook_input))
     }
 
     override fun riseValidationError(field: FieldsEnum, errorMessage: String) {
@@ -90,6 +92,8 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             FieldsEnum.COMPANY_SEGMENT -> account_company_segment_input
             FieldsEnum.USER_NAME -> account_me_name_input
             FieldsEnum.USER_EMAIL -> account_me_mail_input
+            FieldsEnum.USER_FACEBOOK -> socialNetwork_facebook_input
+            FieldsEnum.USER_INSTAGRAM -> socialNetwork_instagram_input
             else -> null
         }
         textInputLayout?.error = errorMessage

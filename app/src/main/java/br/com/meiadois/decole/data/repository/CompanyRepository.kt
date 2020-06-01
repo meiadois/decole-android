@@ -158,7 +158,25 @@ class CompanyRepository(
         }
     }
 
-    suspend fun fetchCompany() {
+    suspend fun getUserMatches(): List<LikeResponse> {
+        return callClient {
+            client.getUserMatches()
+        }
+    }
+
+    suspend fun getUserSentLikes(): List<LikeSentResponse> {
+        return callClient {
+            client.getUserSentLikes()
+        }
+    }
+
+    suspend fun getUserReceivedLikes(): List<LikeReceivedResponse> {
+        return callClient {
+            client.getUserReceivedLikes()
+        }
+    }
+
+    private suspend fun fetchCompany() {
         val res = callClient {
             client.getUserCompany()
         }
@@ -167,9 +185,9 @@ class CompanyRepository(
 
     private fun saveCompany(company:Company) {
         prefs.saveLastCompanyFetch(System.currentTimeMillis())
-        val comp = MyCompany(company.id,company.name,company.thumbnail,company.segment!!.name);
+        val comp = MyCompany(company.id,company.name,company.thumbnail,company.segment!!.name)
         Coroutines.io {
-            db.getCompanyDao().upsert(comp);
+            db.getCompanyDao().upsert(comp)
         }
     }
 
@@ -179,8 +197,6 @@ class CompanyRepository(
             if (lastFetch == 0L || Date(lastFetch).isFetchNeeded()) {
                 fetchCompany()
             }
-            var a = db.getCompanyDao().getUserCompanyLocal()
-            var b = 2
             MutableLiveData(db.getCompanyDao().getUserCompanyLocal())
         }
     }

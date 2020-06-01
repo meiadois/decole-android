@@ -412,6 +412,68 @@
                 </LinearLayout>
                 <!-- Company Section -->
 
+                <!-- SocialNetwork Section -->
+                <RelativeLayout
+                    android:background="@color/colorPrimaryDark"
+                    android:id="@+id/socialNetwork_hearder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp">
+                    <TextView
+                        android:text="@string/socialNetwork_hearder_text"
+                        android:layout_alignParentStart="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:paddingStart="36dp"
+                        android:textAllCaps="true"
+                        android:textSize="14sp"
+                        android:paddingEnd="0dp"
+                        android:textStyle="bold"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/socialNetwork_form"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:paddingStart="48dp"
+                    android:paddingEnd="48dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:hint="@string/socialNetwork_instagram_hint"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout_with_error"
+                        android:id="@+id/socialNetwork_instagram_input">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:inputType="textCapWords|textNoSuggestions"
+                            android:id="@+id/input_socialNetwork_instagram"
+                            android:singleLine="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.userNetworksData.instagram}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
+                        android:hint="@string/socialNetwork_facebook_hint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/normal_input_single_layout_with_error"
+                        android:id="@+id/socialNetwork_facebook_input">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:inputType="textEmailAddress|textNoSuggestions"
+                            android:id="@+id/input_socialNetwork_facebook"
+                            android:singleLine="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.userNetworksData.facebook}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!-- SocialNetwork Section -->
+
                 <Button
                     app:layout_constraintTop_toBottomOf="@+id/account_company_form"
                     android:onClick="@{viewModel::onSaveButtonClick}"

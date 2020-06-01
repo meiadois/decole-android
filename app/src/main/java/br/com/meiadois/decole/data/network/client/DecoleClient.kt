@@ -128,6 +128,22 @@ interface DecoleClient {
     @POST("forgot_password")
     suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<Unit>
 
+    @Headers("Content-Type: application/json")
+    @GET("me/accounts")
+    suspend fun getUserAccounts(): Response<List<AccountResponse>>
+
+    @Headers("Content-Type: application/json")
+    @POST("me/accounts")
+    suspend fun insertUserAccount(@Body request: AccountRequest): Response<AccountResponse>
+
+    @Headers("Content-Type: application/json")
+    @PUT("me/accounts/{channel_name}")
+    suspend fun updateUserAccount(@Path("channel_name") channelName: String, @Body request: AccountRequest): Response<AccountResponse>
+
+    @Headers("Content-Type: application/json")
+    @DELETE("me/accounts/{channel_name}")
+    suspend fun deleteUserAccount(@Path("channel_name") channelName: String): Response<Void>
+
     companion object {
         operator fun invoke(
             interceptor: NetworkConnectionInterceptor,

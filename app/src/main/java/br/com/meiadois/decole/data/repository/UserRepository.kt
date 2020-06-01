@@ -59,24 +59,6 @@ class UserRepository(
         }
     }
 
-    suspend fun getUserMatches(): List<LikeResponse> {
-        return callClient {
-            client.getUserMatches()
-        }
-    }
-
-    suspend fun getUserSentLikes(): List<LikeSentResponse> {
-        return callClient {
-            client.getUserSentLikes()
-        }
-    }
-
-    suspend fun getUserReceivedLikes(): List<LikeReceivedResponse> {
-        return callClient {
-            client.getUserReceivedLikes()
-        }
-    }
-
     suspend fun updateUser(name: String, email: String): UserUpdateResponse {
         return callClient {
             client.updateUser(UserUpdateRequest(name, email))
@@ -87,6 +69,28 @@ class UserRepository(
         return callClient {
             client.changeUserPassword(UserChangePasswordRequest(currentPassword, newPassword))
         }
+    }
+
+    suspend fun getUserAccounts(): List<AccountResponse> {
+        return callClient {
+            client.getUserAccounts()
+        }
+    }
+
+    suspend fun insertUserAccount(channelName: String, userName: String): AccountResponse {
+        return callClient {
+            client.insertUserAccount(AccountRequest(userName, channelName))
+        }
+    }
+
+    suspend fun updateUserAccount(channelName: String, userName: String): AccountResponse {
+        return callClient {
+            client.updateUserAccount(channelName, AccountRequest(userName))
+        }
+    }
+
+    suspend fun deleteUserAccount(channelName: String) {
+        client.deleteUserAccount(channelName)
     }
 
     suspend fun saveUser(user: User) = db.getUserDao().upsert(user)

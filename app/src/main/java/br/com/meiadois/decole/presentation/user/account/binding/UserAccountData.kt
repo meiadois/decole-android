@@ -4,3 +4,8 @@ data class UserAccountData(
     var name: String = "",
     var email: String = ""
 )
+
+data class UserSocialNetworksData(
+    var instagram: String = "",
+    var facebook: String = ""
+)

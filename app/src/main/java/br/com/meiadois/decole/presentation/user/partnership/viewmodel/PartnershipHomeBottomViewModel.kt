@@ -4,14 +4,12 @@ import androidx.lifecycle.*
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.data.repository.CompanyRepository
-import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.extension.toCompanyModel
 import br.com.meiadois.decole.util.extension.toLikeModelList
 
 class PartnershipHomeBottomViewModel(
-    private val userRepository: UserRepository,
-    private val companyRespository: CompanyRepository
+    private val companyRepository: CompanyRepository
 ) : ViewModel() {
     val matchesList : MutableLiveData<List<Like>> = MutableLiveData()
     val sentLikesList : MutableLiveData<List<Like>> = MutableLiveData()
@@ -21,13 +19,13 @@ class PartnershipHomeBottomViewModel(
 
     fun getUserMatches(companyId: Int){
         Coroutines.main {
-            matchesList.value = userRepository.getUserMatches().toLikeModelList(companyId)
+            matchesList.value = companyRepository.getUserMatches().toLikeModelList(companyId)
         }
     }
 
     fun getSentLikes(companyId: Int){
         Coroutines.main {
-            sentLikesList.value = userRepository.getUserSentLikes().map {
+            sentLikesList.value = companyRepository.getUserSentLikes().map {
                 Like(
                     it.id,
                     it.status,
@@ -41,7 +39,7 @@ class PartnershipHomeBottomViewModel(
 
     fun getReceivedLikes(companyId: Int){
         Coroutines.main {
-            receivedLikesList.value = userRepository.getUserReceivedLikes().map {
+            receivedLikesList.value = companyRepository.getUserReceivedLikes().map {
                 Like(
                     it.id,
                     it.status,
@@ -67,7 +65,7 @@ class PartnershipHomeBottomViewModel(
 
     suspend fun getUserCompany() : Company {
         if (company == null)
-            company = companyRespository.getUserCompany().toCompanyModel()
+            company = companyRepository.getUserCompany().toCompanyModel()
         return company!!
     }
 }
