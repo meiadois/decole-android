@@ -15,9 +15,12 @@ import br.com.meiadois.decole.databinding.ActivitySearchPartnerBinding
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModelFactory
 import br.com.meiadois.decole.util.extension.longSnackbar
+import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.init
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_search_partner.*
 import kotlinx.android.synthetic.main.activity_search_partner.progress_bar
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
@@ -45,7 +48,6 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
         }
 
         setLoadingView()
-        setProgressVisibility(true)
         setAdapterToSegmentDropdown()
         setCompaniesAdapter()
         setContentCardCompanyView()
@@ -64,16 +66,23 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
             mViewModel.getUpdateCompany()
         }
         btn_md_close.setOnClickListener {
-            var a = mViewModel.companies.value!!.count()
-            var b =mViewModel.state
             if(mViewModel.companies.value!!.count()-1 > mViewModel.state) {
                 mViewModel.getUpdateCompany()
             }else if(mViewModel.companies.value!!.count() == 1){
                 layout_bottom_search.longSnackbar("Infelizmente só essa companhia está disponível nesse segmento")
             }
             else if(mViewModel.companies.value!!.count()-1 == mViewModel.state) {
-                layout_bottom_search.longSnackbar("Você chegou ao fim da lista.Retornaremos para o início")
-                mViewModel.getUpdateCompany()
+                btn_md_close.visibility = View.INVISIBLE
+                btn_md_checked.visibility = View.INVISIBLE
+                layout_bottom_search.shortSnackbar("Você chegou ao fim da lista.Retornamos para o início"){
+                    it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                            mViewModel.getUpdateCompany()
+                            btn_md_close.visibility = View.VISIBLE
+                            btn_md_checked.visibility = View.VISIBLE
+                        }
+                    })
+                }
             }
         }
     }
@@ -115,7 +124,6 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
 
     private fun setCompaniesAdapter() {
         progress_bar.visibility
-
         mViewModel.companies.observe(this, Observer {
             if (mViewModel.companies.value!!.isNotEmpty()) {
                 mViewModel.company.value = mViewModel.companies.value?.get(0)
@@ -138,6 +146,7 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
         btn_md_close.visibility = View.GONE
         cardview_company_profile.visibility = View.GONE
         fragment_container_noCompanies.visibility = View.GONE
+        setProgressVisibility(true)
     }
 
     private fun setContentCardCompanyView() {
