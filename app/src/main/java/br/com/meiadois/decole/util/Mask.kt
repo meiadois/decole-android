@@ -10,12 +10,18 @@ class Mask {
         const val TEL_MASK = "(##) #####-####"
         const val CPF_MASK = "###.###.###-##"
         const val CEP_MASK = "#####-###"
+        private var countryCode = ""
+
+        fun getTelMaskWithCountryCode(code: String): String{
+            countryCode = "+$code"
+            return  "$countryCode $TEL_MASK"
+        }
 
         private fun replaceChars(cpfFull: String): String {
             return cpfFull.replace(".", "").replace("-", "")
                 .replace("(", "").replace(")", "")
                 .replace("/", "").replace(" ", "")
-                .replace("*", "")
+                .replace("*", "").replace(countryCode, "")
         }
 
         fun mask(mask: String, textInput: EditText, textChanged: (() -> Unit)? = null): TextWatcher {

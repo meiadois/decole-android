@@ -125,7 +125,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     }
 
     private fun setInputMasks(){
-        input_company_telephone.addTextChangedListener(Mask.mask(Mask.TEL_MASK, input_company_telephone))
+        input_company_telephone.addTextChangedListener(Mask.mask(Mask.getTelMaskWithCountryCode("55"), input_company_telephone))
         input_company_cnpj.addTextChangedListener(Mask.mask(Mask.CNPJ_MASK, input_company_cnpj))
         input_company_cep.addTextChangedListener(Mask.mask(Mask.CEP_MASK, input_company_cep) {
             accountViewModel.onCepFieldChange(input_company_cep.text.toString())

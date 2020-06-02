@@ -142,8 +142,13 @@ class ValidTelephoneRule(override val errorMessage: String): BaseRule<String?>{
     override fun validate(value: String?): Boolean{
         var tel = value?.trim()
         if (!NotNullOrEmptyRule(String()).validate(tel)) return false
-        tel = tel!!.replace("(", "").replace(")", "").replace(" ", "").replace("-", "")
-        return BetweenLengthRule(10, 11, String()).validate(tel) && IsDigitsOnlyRule(String()).validate(tel)
+        tel = tel!!
+            .replace("(", "")
+            .replace(")", "")
+            .replace(" ", "")
+            .replace("-", "")
+            .replace("+", "")
+        return BetweenLengthRule(12, 13, String()).validate(tel) && IsDigitsOnlyRule(String()).validate(tel)
     }
 }
 
