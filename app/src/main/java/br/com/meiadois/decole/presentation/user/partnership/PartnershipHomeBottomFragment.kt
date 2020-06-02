@@ -223,25 +223,33 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 UNDO_PARTNERSHIP_DELETED_RESULT_CODE -> {
                     data?.let {
                         viewModel.removeMatch(it.getIntExtra(UNDO_PARTNERSHIP_DELETED_TAG, 0))
+                        showBottomAppBar()
                     }
                 }
                 PARTNERSHIP_CANCELED_RESULT_CODE -> {
                     data?.let {
                         viewModel.removeSentLike(it.getIntExtra(PARTNERSHIP_CANCELED_TAG, 0))
+                        showBottomAppBar()
                     }
                 }
                 PARTNERSHIP_DENIED_RESULT_CODE -> {
                     data?.let {
                         viewModel.removeReceivedLike(it.getIntExtra(PARTNERSHIP_DENIED_TAG, 0))
+                        showBottomAppBar()
                     }
                 }
                 PARTNERSHIP_ACCEPTED_RESULT_CODE -> {
                     data?.let {
                         viewModel.removeReceivedLike(it.getIntExtra(PARTNERSHIP_ACCEPTED_TAG, 0))
+                        showBottomAppBar()
                     }
                 }
             }
         }
+    }
+
+    private fun showBottomAppBar(){
+        bottom_bar.behavior.slideUp(bottom_bar)
     }
 
     class PartnerRecyclerAdapter(
