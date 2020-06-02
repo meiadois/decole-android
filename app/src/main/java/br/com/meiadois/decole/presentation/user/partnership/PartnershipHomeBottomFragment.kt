@@ -83,17 +83,33 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         currentMenuItemActive = itemId
         ICON_MATCH_ID.let {
             bottom_bar.menu.findItem(it)
-                .setIcon(if (itemId == it) R.drawable.ic_mdi_people_green else R.drawable.ic_mdi_people_white)
+                .setIcon(if (itemId == it) R.drawable.ic_mdi_connected_companies_selected else R.drawable.ic_mdi_connected_companies)
         }
         ICON_RECEIVED_ID.let {
             bottom_bar.menu.findItem(it)
-                .setIcon(if (itemId == it) R.drawable.ic_mdi_move_to_inbox_green else R.drawable.ic_mdi_move_to_inbox_white)
+                .setIcon(if (itemId == it) R.drawable.ic_mdi_likes_recived_selected else R.drawable.ic_mdi_likes_recived)
         }
         ICON_SENT_ID.let {
             bottom_bar.menu.findItem(it)
-                .setIcon(if (itemId == it) R.drawable.ic_mdi_grade_green else R.drawable.ic_mdi_grade_white)
+                .setIcon(if (itemId == it) R.drawable.ic_mdi_likes_sent_selected else R.drawable.ic_mdi_likes_sent)
         }
     }
+
+//    private fun setActiveMenuItem(itemId: Int){
+//        currentMenuItemActive = itemId
+//        ICON_MATCH_ID.let {
+//            bottom_bar.menu.findItem(it)
+//                .setIcon(if (itemId == it) R.drawable.ic_mdi_people_green else R.drawable.ic_mdi_people_white)
+//        }
+//        ICON_RECEIVED_ID.let {
+//            bottom_bar.menu.findItem(it)
+//                .setIcon(if (itemId == it) R.drawable.ic_mdi_move_to_inbox_green else R.drawable.ic_mdi_move_to_inbox_white)
+//        }
+//        ICON_SENT_ID.let {
+//            bottom_bar.menu.findItem(it)
+//                .setIcon(if (itemId == it) R.drawable.ic_mdi_grade_green else R.drawable.ic_mdi_grade_white)
+//        }
+//    }
 
     override fun onResume() {
         super.onResume()

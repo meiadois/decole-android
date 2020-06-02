@@ -64,13 +64,16 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
             mViewModel.getUpdateCompany()
         }
         btn_md_close.setOnClickListener {
-            if (mViewModel.companies.value!!.count() <= mViewModel.state) {
+            var a = mViewModel.companies.value!!.count()
+            var b =mViewModel.state
+            if(mViewModel.companies.value!!.count()-1 > mViewModel.state) {
                 mViewModel.getUpdateCompany()
             }else if(mViewModel.companies.value!!.count() == 1){
-                layout_bottom_search.longSnackbar("Infelizmente só temos uma companhia disponível nesse segmento")
+                layout_bottom_search.longSnackbar("Infelizmente só essa companhia está disponível nesse segmento")
             }
-            else {
+            else if(mViewModel.companies.value!!.count()-1 == mViewModel.state) {
                 layout_bottom_search.longSnackbar("Você chegou ao fim da lista.Retornaremos para o início")
+                mViewModel.getUpdateCompany()
             }
         }
     }
