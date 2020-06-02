@@ -6,6 +6,7 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -58,7 +59,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         setBackgroundStartFadeAnimation()
         setStartFadeAnimation()
 
-        setOpenDialAppListener()
+        setOpenDialAppOrWhatsAppListener()
         setOpenMailAppListener()
     }
 
@@ -88,11 +89,25 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun setOpenDialAppListener() {
+    private fun setOpenDialAppOrWhatsAppListener() {
         popup_window_phone.setOnClickListener {
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:" + popup_window_phone.text.toString())
+            val number: String = popup_window_phone.text.toString()
+            val intent: Intent
+            if (!isWhatsappInstalled()){
+                intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse("tel:$number")
+            }else
+                intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=$number"))
             startActivity(intent)
+        }
+    }
+
+    private fun isWhatsappInstalled(): Boolean {
+        return try {
+            packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
     }
 
