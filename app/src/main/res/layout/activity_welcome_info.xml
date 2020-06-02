@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -44,13 +44,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_dot_ativo" />
+                android:src="@drawable/ic_dot_ativo"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_dot_nao_visto" />
+                android:src="@drawable/ic_dot_nao_visto"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.Guideline
@@ -74,7 +76,8 @@
             app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
+            app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
+            tools:ignore="ContentDescription" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/image_guideline_bottom"
@@ -129,34 +132,22 @@
                     app:layout_constraintTop_toBottomOf="@+id/text_info">
 
                     <Button
-                        android:id="@+id/btn_logout"
                         style="@style/btn_text_secondary"
+                        android:id="@+id/btn_logout"
                         android:layout_height="35dp"
-                        android:text="@string/logout"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/layout_password_input" />
+                        android:text="@string/logout" />
 
                     <Button
                         android:id="@+id/btn_next"
-                        style="@style/btn_primary" />
-
+                        style="@style/btn_primary"
+                        android:layout_marginTop="24dp" />
 
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--        <TextView-->
-            <!--            android:id="@+id/text_name"-->
-            <!--            style="@style/white_text_display"-->
-            <!--            android:layout_marginStart="72dp"-->
-            <!--            android:layout_marginEnd="72dp"-->
-            <!--            android:text="Olá ${NOME}!"-->
-            <!--            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--            app:layout_constraintStart_toStartOf="parent"-->
-            <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
