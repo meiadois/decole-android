@@ -7,6 +7,8 @@ import androidx.preference.PreferenceManager
 private const val KEY_ROUTE_LAST_FETCH = "ROUTE_LAST_FETCH"
 private const val KEY_LESSON_LAST_FETCH = "LESSON_LAST_FETCH"
 private const val KEY_COMPANY_LAST_FETCH = "COMPANY_LAST_FETCH"
+private const val KEY_SEGMENT_LAST_FETCH = "SEGMENT_LAST_FETCH"
+
 private const val LESSON_DIVIDER = ": "
 
 class PreferenceProvider(
@@ -57,6 +59,13 @@ class PreferenceProvider(
             .apply()
 
     fun getLastCompanyFetch(): Long = preference.getLong(KEY_COMPANY_LAST_FETCH, 0L)
+
+    fun saveLastSegmentFetch(fetchedAt: Long) =
+        preference.edit()
+            .putLong(KEY_SEGMENT_LAST_FETCH, fetchedAt)
+            .apply()
+
+    fun getLastSegmentFetch(): Long = preference.getLong(KEY_SEGMENT_LAST_FETCH, 0L)
 
     fun clear() = preference.edit().clear().apply()
 }
