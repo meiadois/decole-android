@@ -188,6 +188,7 @@ class CompanyRepository(
     private fun saveCompany(company:Company) {
         prefs.saveLastCompanyFetch(System.currentTimeMillis())
 
+       // val comp = MyCompany(company.id,company.name,company.thumbnail,company.cep,company.banner,company.cnpj,company.cellphone,company.email,company.description,company.visible,company.city,company.neighborhood,company.segment.id)
         val comp = MyCompany(company.id,company.name,company.thumbnail,company.segment!!.name)
         Coroutines.io {
             db.getCompanyDao().upsert(comp)

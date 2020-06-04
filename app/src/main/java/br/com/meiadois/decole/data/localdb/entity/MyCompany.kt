@@ -10,4 +10,14 @@ data class MyCompany(
     val name: String,
     val thumbnail: String,
     val segment: String
+    /*val cep: String,
+    val banner: String,
+    val cnpj: String,
+    val  cellphone: String,
+    val email: String,
+    val description: String,
+    val  visible: Boolean,
+    val city: String?,
+    val neighborhood: String?,
+    val segmentid: Int*/
 )

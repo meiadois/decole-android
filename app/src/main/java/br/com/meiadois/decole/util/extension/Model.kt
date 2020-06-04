@@ -88,6 +88,9 @@ fun CompanyResponse.toCompanyModel() :Company {
 fun CompanyResponse.toMyCompany(): MyCompany{
     return MyCompany(id, name, thumbnail, segment?.name ?: "")
 }
+/*fun CompanyResponse.toMyCompany(): MyCompany{
+    return MyCompany(id,name,thumbnail,cep,banner,cnpj,cellphone,email,description,visible,city,neighborhood,segment.id)
+}*/
 
 fun CompanySearchResponse.toCompanySearchModel() :Company {
     return Company(
