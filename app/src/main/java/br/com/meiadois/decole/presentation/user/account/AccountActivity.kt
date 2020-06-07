@@ -1,7 +1,14 @@
-package br.com.meiadois.decole.presentation. user.account
+package br.com.meiadois.decole.presentation.user.account
 
+import android.Manifest.permission.*
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +25,7 @@ import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewMod
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.Mask
 import br.com.meiadois.decole.util.extension.shortSnackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -31,11 +39,12 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     private val factory: AccountViewModelFactory by instance<AccountViewModelFactory>()
     private lateinit var accountViewModel: AccountViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         accountViewModel = ViewModelProvider(this, factory).get(AccountViewModel::class.java)
         accountViewModel.accountListener = this
-        val binding: ActivityAccountBinding = DataBindingUtil.setContentView(this, R.layout.activity_account)
+        val binding: ActivityAccountBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_account)
         binding.apply {
             viewModel = accountViewModel
             lifecycleOwner = this@AccountActivity
@@ -43,11 +52,106 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         setAdapterToSegmentDropdown()
         setRemoveErrorListener()
         setClickListeners()
+        setImageInputs()
         setInputMasks()
+
     }
 
+    // region Permissions
+    private fun initPickingFromGallery(resultCode: Int) {
+        if (!hasPermission(WRITE_EXTERNAL_STORAGE)) {
+            if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE))
+                showRequestPermissionRationale(resultCode)
+            requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), READ_WRITE_PERMISSIONS_RESULT)
+        } else
+            pickImageFromGallery(resultCode)
+    }
+
+    private fun showRequestPermissionRationale(resultCode: Int){
+        val title = "Deseja selecionar uma imagem?"
+        val message = "Permita-nos acessar arquivos do dispositivo. Isso significa que, quando " +
+                "for selecionar uma imagem para a sua empresa, poderemos abrir a galeria para você."
+        MaterialAlertDialogBuilder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Aceito") { _, _ ->
+                initPickingFromGallery(resultCode)
+            }
+            .setNegativeButton("Discordo") { _, _ -> }
+            .show()
+    }
+
+    private fun hasPermission(permission: String): Boolean =
+        checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+    // endregion
+
+    // region Image Picking
+    private fun pickImageFromGallery(resultCode: Int) {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, resultCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        try {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    when (requestCode) {
+                        IMAGE_BANNER_RESULT -> {
+                            accountViewModel.companyData.value!!.banner.path =
+                                getImageFromFilePath(data) ?: String()
+                            if (accountViewModel.companyData.value!!.banner.path.isNotEmpty())
+                                accountViewModel.companyData.value!!.banner.type =
+                                    contentResolver.getType(data!!.data!!) ?: "image/*"
+                        }
+                        IMAGE_LOGO_RESULT -> {
+                            accountViewModel.companyData.value!!.thumbnail.path =
+                                getImageFromFilePath(data) ?: String()
+                            if (accountViewModel.companyData.value!!.thumbnail.path.isNotEmpty())
+                                accountViewModel.companyData.value!!.thumbnail.type =
+                                    contentResolver.getType(data!!.data!!) ?: "image/*"
+                        }
+                        else -> {
+                        }
+                    }
+                }
+                else -> {
+                }
+            }
+        } catch (ex: Exception) {
+            Log.i("ImagePickEx", ex.message ?: "No message")
+        }
+    }
+
+    private fun getImageFromFilePath(data: Intent?): String? =
+        if (data != null && data.data != null) getPathFromURI(data.data!!) else String()
+
+    private fun getPathFromURI(contentUri: Uri): String? {
+        val cursor = contentResolver.query(
+            contentUri, arrayOf(MediaStore.Audio.Media.DATA), null, null, null
+        )
+        val columnIndex: Int = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA) ?: 0
+        cursor?.moveToFirst()
+        val path = cursor?.getString(columnIndex)
+        cursor?.close()
+        return path
+    }
+    // endregion
+
     // region Local Functions
-    private fun setClickListeners(){
+    private fun setImageInputs() {
+        input_company_logo.inputType = android.text.InputType.TYPE_NULL
+        input_company_logo.setOnClickListener {
+            initPickingFromGallery(IMAGE_LOGO_RESULT)
+        }
+        input_company_banner.inputType = android.text.InputType.TYPE_NULL
+        input_company_banner.setOnClickListener {
+            initPickingFromGallery(IMAGE_BANNER_RESULT)
+        }
+    }
+
+    private fun setClickListeners() {
         toolbar_back_button.setOnClickListener { finish() }
         toolbar_exit_button.setOnClickListener {
             Coroutines.main {
@@ -63,24 +167,76 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         }
     }
 
-    private fun setRemoveErrorListener(){
-        input_company_name.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_name_input))
-        input_company_cep.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_cep_input))
-        input_company_cnpj.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_cnpj_input))
-        input_company_telephone.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_telephone_input))
-        input_company_mail.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_mail_input))
-        input_company_description.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_description_input))
-        input_company_city.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_city_input))
-        input_company_neighborhood.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_neighborhood_input))
-        filled_exposed_dropdown.addTextChangedListener(accountViewModel.onTextFieldChange(account_company_segment_input))
-        input_me_name.addTextChangedListener(accountViewModel.onTextFieldChange(account_me_name_input))
-        input_me_mail.addTextChangedListener(accountViewModel.onTextFieldChange(account_me_mail_input))
-        input_socialNetwork_instagram.addTextChangedListener(accountViewModel.onTextFieldChange(socialNetwork_instagram_input))
-        input_socialNetwork_facebook.addTextChangedListener(accountViewModel.onTextFieldChange(socialNetwork_facebook_input))
+    private fun setRemoveErrorListener() {
+        input_company_name.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_name_input
+            )
+        )
+        input_company_cep.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_cep_input
+            )
+        )
+        input_company_cnpj.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_cnpj_input
+            )
+        )
+        input_company_telephone.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_telephone_input
+            )
+        )
+        input_company_mail.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_mail_input
+            )
+        )
+        input_company_description.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_description_input
+            )
+        )
+        input_company_city.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_city_input
+            )
+        )
+        input_company_neighborhood.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_neighborhood_input
+            )
+        )
+        filled_exposed_dropdown.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_segment_input
+            )
+        )
+        input_me_name.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_me_name_input
+            )
+        )
+        input_me_mail.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_me_mail_input
+            )
+        )
+        input_socialNetwork_instagram.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                socialNetwork_instagram_input
+            )
+        )
+        input_socialNetwork_facebook.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                socialNetwork_facebook_input
+            )
+        )
     }
 
     override fun riseValidationError(field: FieldsEnum, errorMessage: String) {
-        val textInputLayout: TextInputLayout? = when(field){
+        val textInputLayout: TextInputLayout? = when (field) {
             FieldsEnum.COMPANY_NAME -> account_company_name_input
             FieldsEnum.COMPANY_CEP -> account_company_cep_input
             FieldsEnum.COMPANY_CNPJ -> account_company_cnpj_input
@@ -101,12 +257,14 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
 
     override fun onActionError(errorMessage: String?) {
         setButtonSaveVisibility(true)
-        account_root_layout.shortSnackbar(errorMessage ?: getString(R.string.error_when_executing_the_action))
+        account_root_layout.shortSnackbar(
+            errorMessage ?: getString(R.string.error_when_executing_the_action)
+        )
     }
 
     override fun onActionSuccess() {
         setButtonSaveVisibility(true)
-        account_root_layout.shortSnackbar(getString(R.string.success_when_executing_the_action)){
+        account_root_layout.shortSnackbar(getString(R.string.success_when_executing_the_action)) {
             it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     finish()
@@ -119,31 +277,47 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         setButtonSaveVisibility(false)
     }
 
-    private fun setButtonSaveVisibility(visible: Boolean){
+    private fun setButtonSaveVisibility(visible: Boolean) {
         btn_save.visibility = if (visible) View.VISIBLE else View.GONE
         progress_bar.visibility = if (visible) View.GONE else View.VISIBLE
     }
 
-    private fun setInputMasks(){
-        input_company_telephone.addTextChangedListener(Mask.mask(Mask.getTelMaskWithCountryCode("55"), input_company_telephone))
+    private fun setInputMasks() {
+        input_company_telephone.addTextChangedListener(
+            Mask.mask(
+                Mask.getTelMaskWithCountryCode("55"),
+                input_company_telephone
+            )
+        )
         input_company_cnpj.addTextChangedListener(Mask.mask(Mask.CNPJ_MASK, input_company_cnpj))
         input_company_cep.addTextChangedListener(Mask.mask(Mask.CEP_MASK, input_company_cep) {
             accountViewModel.onCepFieldChange(input_company_cep.text.toString())
         })
     }
 
-    private fun setAdapterToSegmentDropdown(){
+    private fun setAdapterToSegmentDropdown() {
         accountViewModel.segments.observe(this, Observer { it ->
-            it?.let {segments ->
+            it?.let { segments ->
                 filled_exposed_dropdown.setAdapter(
-                    ArrayAdapter(this, R.layout.layout_exposed_dropdown_item, segments.map { it.name }.toTypedArray()))
+                    ArrayAdapter(
+                        this,
+                        R.layout.layout_exposed_dropdown_item,
+                        segments.map { it.name }.toTypedArray()
+                    )
+                )
                 filled_exposed_dropdown.inputType = android.text.InputType.TYPE_NULL
                 if (accountViewModel.companyData.value == null)
                     accountViewModel.companyData.observe(this, Observer {
-                        updateSegmentDropdown(segments, accountViewModel.companyData.value?.segmentName ?: "")
+                        updateSegmentDropdown(
+                            segments,
+                            accountViewModel.companyData.value?.segmentName ?: ""
+                        )
                     })
                 else
-                    updateSegmentDropdown(segments, accountViewModel.companyData.value?.segmentName ?: "")
+                    updateSegmentDropdown(
+                        segments,
+                        accountViewModel.companyData.value?.segmentName ?: ""
+                    )
                 filled_exposed_dropdown.setOnItemClickListener { _, _, position, _ ->
                     accountViewModel.companyData.value?.segmentName = segments[position].name
                     accountViewModel.companyData.value?.segmentId = segments[position].id ?: 0
@@ -152,10 +326,16 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         })
     }
 
-    private fun updateSegmentDropdown(segments: List<Segment>, segmentName: String){
+    private fun updateSegmentDropdown(segments: List<Segment>, segmentName: String) {
         val mSegment = segments.firstOrNull { it.name == segmentName }
         filled_exposed_dropdown.setText(mSegment?.name, false)
         accountViewModel.companyData.value?.segmentId = mSegment?.id ?: -1
     }
     // endregion
+
+    companion object {
+        private const val READ_WRITE_PERMISSIONS_RESULT = 107
+        private const val IMAGE_BANNER_RESULT = 201
+        private const val IMAGE_LOGO_RESULT = 200
+    }
 }

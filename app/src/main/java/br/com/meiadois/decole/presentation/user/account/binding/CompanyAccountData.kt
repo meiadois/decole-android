@@ -8,8 +8,8 @@ class CompanyAccountData() : BaseObservable() {
     var id: Int = -1
     var name: String = ""
     var cep: String = ""
-    var thumbnail: String = ""
-    var banner: String = ""
+    var thumbnail: ImageData = ImageData()
+    var banner: ImageData = ImageData()
     var cnpj: String = ""
     var cellphone: String = ""
     var email: String = ""
@@ -38,8 +38,8 @@ class CompanyAccountData() : BaseObservable() {
         id: Int = -1,
         name: String = "",
         cep: String = "",
-        thumbnail: String = "",
-        banner: String = "",
+        thumbnail: ImageData = ImageData(),
+        banner: ImageData = ImageData(),
         cnpj: String = "",
         cellphone: String = "",
         email: String = "",
@@ -66,3 +66,8 @@ class CompanyAccountData() : BaseObservable() {
         this.segmentName = segmentName
     }
 }
+
+data class ImageData(
+    var path: String = "",
+    var type: String = ""
+)

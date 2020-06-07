@@ -10,6 +10,7 @@ import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.data.model.Segment
 import br.com.meiadois.decole.data.network.response.*
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
+import br.com.meiadois.decole.presentation.user.account.binding.ImageData
 import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
 import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 
@@ -105,7 +106,7 @@ fun List<CompanySearchResponse>.toCompanySearchModelList(): List<Company>{
 
 fun CompanyResponse.toCompanyAccountData(): CompanyAccountData {
     return CompanyAccountData(
-        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segment?.id ?: -1, segment?.name
+        id, name, cep, ImageData(path = thumbnail), ImageData(path = banner), cnpj, cellphone, email, description, visible, city, neighborhood, segment?.id ?: -1, segment?.name
     )
 }
 

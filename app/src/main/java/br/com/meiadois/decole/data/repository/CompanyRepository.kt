@@ -19,6 +19,8 @@ import br.com.meiadois.decole.util.extension.toCompanyModel
 import br.com.meiadois.decole.util.extension.toMyCompany
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.util.*
 import java.util.prefs.Preferences
 
@@ -60,42 +62,48 @@ class CompanyRepository(
     }
 
     suspend fun updateUserCompany(
-        name: String,
-        cep: String,
-        cnpj: String,
-        description: String,
-        segmentId: Int,
-        cellphone: String,
-        email: String,
-        visible: Boolean,
-        city: String,
-        neighborhood: String,
-        thumbnail: String = "",
-        banner: String = ""
+        name: RequestBody,
+        cep: RequestBody,
+        cnpj: RequestBody,
+        description: RequestBody,
+        segmentId: RequestBody,
+        cellphone: RequestBody,
+        email: RequestBody,
+        visible: RequestBody,
+        city: RequestBody,
+        neighborhood: RequestBody,
+        thumbnail: MultipartBody.Part,
+        banner: MultipartBody.Part
     ): CompanyResponse {
-        val res = callClient {
+        return callClient {
             client.updateUserCompany(
-                CompanyRequest(
-                    name,
-                    description,
-                    segmentId,
-                    cnpj,
-                    cellphone,
-                    email,
-                    cep,
-                    city,
-                    neighborhood,
-                    visible,
-                    thumbnail,
-                    banner
-                )
+                name,
+                cep,
+                cnpj,
+                description,
+                segmentId,
+                cellphone,
+                email,
+                visible,
+                city,
+                neighborhood,
+                thumbnail,
+                banner
             )
         }
-        fetchCompany()
-        return res
     }
 
     suspend fun insertUserCompany(
+        /*name: RequestBody,
+        cep: RequestBody,
+        cnpj: RequestBody,
+        description: RequestBody,
+        segmentId: RequestBody,
+        cellphone: RequestBody,
+        email: RequestBody,
+        visible: RequestBody,
+        city: RequestBody,
+        neighborhood: RequestBody,*/
         name: String,
         cep: String,
         cnpj: String,
@@ -106,29 +114,27 @@ class CompanyRepository(
         visible: Boolean,
         city: String,
         neighborhood: String,
-        thumbnail: String = "",
-        banner: String = ""
+        thumbnail: RequestBody,
+        banner: RequestBody
+        /*thumbnail: MultipartBody.Part,
+        banner: MultipartBody.Part*/
     ): CompanyResponse {
-        val res = callClient {
+        return callClient {
             client.insertUserCompany(
-                CompanyRequest(
-                    name,
-                    description,
-                    segmentId,
-                    cnpj,
-                    cellphone,
-                    email,
-                    cep,
-                    city,
-                    neighborhood,
-                    visible,
-                    thumbnail,
-                    banner
-                )
+                name,
+                cep,
+                cnpj,
+                description,
+                segmentId,
+                cellphone,
+                email,
+                visible,
+                city,
+                neighborhood,
+                thumbnail,
+                banner
             )
         }
-        fetchCompany()
-        return res
     }
 
     suspend fun deletePartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {

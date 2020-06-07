@@ -22,6 +22,10 @@ import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.toCompanyAccountData
 import br.com.meiadois.decole.util.extension.toSegmentModelList
 import com.google.android.material.textfield.TextInputLayout
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 class AccountViewModel(
     private val segmentRepository: SegmentRepository,
@@ -143,20 +147,39 @@ class AccountViewModel(
             Coroutines.main {
                 accountListener?.onActionStarted()
                 try {
-                    userRepository.updateUser(userData.value!!.name, userData.value!!.email)
+                    Log.i("ImageData.thumb", "\npath: ${companyData.value!!.thumbnail.path}\ntype: ${companyData.value!!.thumbnail.type}")
+                    Log.i("ImageData.banner", "\npath: ${companyData.value!!.banner.path}\ntype: ${companyData.value!!.banner.type}")
 
                     if (isUpdatingCompany) companyRepository.updateUserCompany(
-                        companyData.value!!.name,
-                        companyData.value!!.cep,
-                        companyData.value!!.cnpj,
-                        companyData.value!!.description,
-                        companyData.value!!.segmentId,
-                        companyData.value!!.cellphone,
-                        companyData.value!!.email,
-                        companyData.value!!.visible,
-                        companyData.value!!.city,
-                        companyData.value!!.neighborhood
+                        getRequestBody(companyData.value!!.name),
+                        getRequestBody(companyData.value!!.cep),
+                        getRequestBody(companyData.value!!.cnpj),
+                        getRequestBody(companyData.value!!.description),
+                        getRequestBody(companyData.value!!.segmentId),
+                        getRequestBody(companyData.value!!.cellphone),
+                        getRequestBody(companyData.value!!.email),
+                        getRequestBody(companyData.value!!.visible),
+                        getRequestBody(companyData.value!!.city),
+                        getRequestBody(companyData.value!!.neighborhood),
+                        getMultipartBodyPart(
+                            companyData.value!!.thumbnail.path,
+                            companyData.value!!.thumbnail.type,
+                            "thumbnail"),
+                        getMultipartBodyPart(
+                            companyData.value!!.banner.path,
+                            companyData.value!!.banner.type,
+                            "banner")
                     ) else companyRepository.insertUserCompany(
+                        /*getRequestBody(companyData.value!!.name),
+                        getRequestBody(companyData.value!!.cep),
+                        getRequestBody(companyData.value!!.cnpj),
+                        getRequestBody(companyData.value!!.description),
+                        getRequestBody(companyData.value!!.segmentId),
+                        getRequestBody(companyData.value!!.cellphone),
+                        getRequestBody(companyData.value!!.email),
+                        getRequestBody(companyData.value!!.visible),
+                        getRequestBody(companyData.value!!.city),
+                        getRequestBody(companyData.value!!.neighborhood),*/
                         companyData.value!!.name,
                         companyData.value!!.cep,
                         companyData.value!!.cnpj,
@@ -166,9 +189,27 @@ class AccountViewModel(
                         companyData.value!!.email,
                         companyData.value!!.visible,
                         companyData.value!!.city,
-                        companyData.value!!.neighborhood
+                        companyData.value!!.neighborhood,
+                        RequestBody.create(
+                            MediaType.parse(companyData.value!!.thumbnail.type),
+                            File(companyData.value!!.thumbnail.path)
+                        ),
+                        RequestBody.create(
+                            MediaType.parse(companyData.value!!.banner.type),
+                            File(companyData.value!!.banner.path)
+                        )
+                        /*getMultipartBodyPart(
+                            companyData.value!!.thumbnail.path,
+                            companyData.value!!.thumbnail.type,
+                            "thumbnail"),
+                        getMultipartBodyPart(
+                            companyData.value!!.banner.path,
+                            companyData.value!!.banner.type,
+                            "banner")*/
                     )
-                    isUpdatingCompany = true
+
+                    /* TODO: discomment this when finish the create/edit of company
+                    userRepository.updateUser(userData.value!!.name, userData.value!!.email)
 
                     if (isUpdatingInstagram) {
                         if (userNetworksData.value!!.instagram.isEmpty())
@@ -184,7 +225,7 @@ class AccountViewModel(
                         else
                             userRepository.updateUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)
                     } else if (userNetworksData.value!!.facebook.isNotEmpty())
-                        userRepository.insertUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)
+                        userRepository.insertUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)*/
 
                     accountListener?.onActionSuccess()
                 } catch (ex: ClientException) {
@@ -194,10 +235,10 @@ class AccountViewModel(
                         else
                             null
                     )
-                    Log.i("AccountFormEx.Cli", ex.message ?: "no error message")
+                    Log.i("AccountFormEx.Cli", "\nstatus code: ${ex.code}\nmessage: ${ex.message ?: "no error message"}\ncause: ${ex.cause?.toString() ?: "no cause"}")
                 } catch (ex: Exception) {
                     accountListener?.onActionError(null)
-                    Log.i("AccountFormEx.Ex", ex.message ?: "no error message")
+                    Log.i("AccountFormEx.Ex", "\nmessage: ${ex.message ?: "no error message"}\ncause: ${ex.cause?.toString() ?: "no cause"}")
                 }
             }
         }
@@ -220,6 +261,20 @@ class AccountViewModel(
             userNetworksData.value!!.facebook = userNetworksData.value!!.facebook.trim()
         }
     }
+
+    private fun getMultipartBodyPart(imagePath: String, imageType: String, parameterName: String): MultipartBody.Part {
+        val file = File(imagePath)
+        return MultipartBody.Part.createFormData(
+            parameterName,
+            file.name,
+            RequestBody.create(
+                MediaType.parse(imageType),
+                file
+            )
+        )
+    }
+
+    private fun getRequestBody(value: Any): RequestBody = RequestBody.create(MultipartBody.FORM, value.toString())
     // endregion
 
     // region Validation
@@ -322,6 +377,8 @@ class AccountViewModel(
             .addValidation(ValidEmailRule(view.context.getString(R.string.invalid_email_error_message)))
             .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_EMAIL, it.error) }
             .validate()
+
+        // TODO: validate images field
 
         return isValid
     }
