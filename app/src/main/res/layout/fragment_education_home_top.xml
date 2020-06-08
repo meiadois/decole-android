@@ -5,73 +5,107 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/textView2"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:gravity="center"-->
-    <!--        android:text="education_top_pager" />-->
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="140dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="52dp"
-        app:cardBackgroundColor="@color/card_background"
 
-        app:cardCornerRadius="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.127">
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:layout_margin="4dp"
-                    android:id="@+id/barChartView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="grafico de barra"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-
-                </com.github.mikephil.charting.charts.BarChart>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
-        android:layout_width="140dp"
-        android:layout_height="120dp"
-
-        app:cardBackgroundColor="@color/card_background"
-
-        app:cardCornerRadius="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.393"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.127">
-        <com.github.mikephil.charting.charts.PieChart
-            android:layout_margin="4dp"
-            android:id="@+id/pieChartView"
+        >
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="grafico de barra"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal"
+            android:padding="10dp"
+            >
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="140dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="8dp"
+                app:cardBackgroundColor="@color/card_background"
+
+                app:cardCornerRadius="5dp">
+
+                                <com.github.mikephil.charting.charts.BarChart
+                                    android:layout_margin="4dp"
+                                    android:id="@+id/barChartView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:contentDescription="grafico de barra"
+                                    >
 
 
-        </com.github.mikephil.charting.charts.PieChart>
+                                </com.github.mikephil.charting.charts.BarChart>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="140dp"
+                android:layout_height="120dp"
+                app:cardBackgroundColor="@color/card_background"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:cardCornerRadius="5dp"
+                >
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:layout_margin="4dp"
+                            android:id="@+id/pieChartView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="grafico de barra"
+                            >
 
 
-    </androidx.cardview.widget.CardView>
+                        </com.github.mikephil.charting.charts.PieChart>
+
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView3"
+                android:layout_width="140dp"
+                android:layout_height="120dp"
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="5dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    >
+
+
+                    <TextView
+
+                        android:id="@+id/publicar"
+                        android:layout_width="118dp"
+                        android:layout_height="53dp"
+                        android:text=""
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="40dp"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/route_title"
+                        android:layout_width="118dp"
+                        android:layout_height="wrap_content"
+                        android:text="Média de Post na semana"
+                        android:textColor="@color/colorPrimaryDarker"
+                        android:textSize="15dp"
+                        android:layout_marginBottom="5sp"
+                        android:textAlignment="center"/>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

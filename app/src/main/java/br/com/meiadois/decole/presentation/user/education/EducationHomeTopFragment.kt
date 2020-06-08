@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.presentation.user.education.viewmodel.EducationHomeTopViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.EducationHomeTopViewModelFactory
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.synthetic.main.fragment_education_home_top.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -43,11 +40,15 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
         setBarChart(50,40)
         setPieChart(400,50)
+        publicar.text="80.6";
 
 
     }
-
+        private fun test(){
+            publicar.text="80.6";
+        }
     private  fun setBarChart(seguidores:Int,seguindos:Int){
+
         var axValue =0;
         if(seguidores>=seguindos){
             axValue=seguidores+10
@@ -72,8 +73,8 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
         var legenedEntries = arrayListOf<LegendEntry>()
 
-        legenedEntries.add(LegendEntry("Seguidores", Legend.LegendForm.SQUARE, 8f, 8f, null, Color.GREEN))
-        legenedEntries.add(LegendEntry("Seguindo", Legend.LegendForm.SQUARE, 8f, 8f, null,Color.YELLOW))
+        legenedEntries.add(LegendEntry("Seguidores", Legend.LegendForm.SQUARE, 8f, 8f, null,ContextCompat.getColor(requireContext(),R.color.colorPrimary)))
+        legenedEntries.add(LegendEntry("Seguindo", Legend.LegendForm.SQUARE, 8f, 8f, null,ContextCompat.getColor(requireContext(),R.color.colorPrimaryDarker)))
 
         legend.setCustom(legenedEntries)
         //legend.setYOffset(4f)
@@ -81,20 +82,21 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         legend.setYEntrySpace(0f)
         legend.setTextSize(9f)
 
+        barDataSetbarra1.color=ContextCompat.getColor(requireContext(),R.color.colorPrimary)
 
-        barDataSetbarra1.color=Color.GREEN
         barDataSetbarra1.valueTextColor=Color.BLACK
         barDataSetbarra1.valueTextSize=10f
-       /* barDataSetbarra1.setDrawIcons(false)
+        /*barDataSetbarra1.setDrawIcons(false)
         barDataSetbarra1.setDrawValues(false)*/
 
 
 
-        barDataSetbarra2.color= Color.YELLOW
+        barDataSetbarra2.color=ContextCompat.getColor(requireContext(),R.color.colorPrimaryDarker)
         barDataSetbarra2.valueTextColor=Color.BLACK
         barDataSetbarra2.valueTextSize=10f
 
         barChartView.data = BarData(barDataSetbarra1,barDataSetbarra2)
+
         barChartView.setFitBars(true)
         /*val description2 =
             Description()
@@ -106,6 +108,7 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         barChartView.description.textSize=10f*/
 
         barChartView.animateY(1000)
+        //barChartView.xAxis.setGranularity(0f)
         barChartView.axisLeft.isEnabled=false
         barChartView.axisRight.isEnabled=false
         barChartView.xAxis.isEnabled=false
@@ -138,18 +141,17 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
 
     }
-
+            // grafico pizza
     private fun setPieChart(postCom:Int,postSem:Int){
 
         val visitors :ArrayList<PieEntry> = ArrayList();
-        val visitors2 :ArrayList<PieEntry> = ArrayList();
         visitors.add(PieEntry(postCom.toFloat(),""))
         visitors.add(PieEntry(postSem.toFloat(),""))
 
 
         val cor :ArrayList<Int> = ArrayList();
-        cor.add(Color.GREEN)
-        cor.add(Color.YELLOW)
+        cor.add(ContextCompat.getColor(requireContext(),R.color.colorPrimary))
+        cor.add(ContextCompat.getColor(requireContext(),R.color.colorPrimaryDarker))
 
 
         val barPie= PieDataSet(visitors,"")
@@ -158,14 +160,6 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         barPie.valueTextSize=10f
         barPie.isDrawIconsEnabled
         barPie.setDrawIcons(false)
-        //barPie.setDrawValues(false)
-
-
-
-
-        /*val barPie2= PieDataSet(visitors2,"")
-        barPie2.color=Color.BLUE
-        barPie2.valueTextColor=Color.BLACK*/
         var legend = pieChartView.legend
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM)
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT)
@@ -174,24 +168,25 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
         var legenedEntries = arrayListOf<LegendEntry>()
 
-        legenedEntries.add(LegendEntry("Com #", Legend.LegendForm.SQUARE, 10f, 8f, null, Color.GREEN))
-        legenedEntries.add(LegendEntry("Sem #", Legend.LegendForm.SQUARE, 10f, 8f, null, Color.YELLOW))
+        legenedEntries.add(LegendEntry("Com #", Legend.LegendForm.SQUARE, 10f, 8f, null,ContextCompat.getColor(requireContext(),R.color.colorPrimary)))
+        legenedEntries.add(LegendEntry("Sem #", Legend.LegendForm.SQUARE, 10f, 8f, null,ContextCompat.getColor(requireContext(),R.color.colorPrimaryDarker)))
 
         legend.setCustom(legenedEntries)
-        /*legend.setYOffset(5f)
-        legend.setXOffset(1f)
-        legend.setYEntrySpace(10f)*/
         legend.setTextSize(10f)
+                //legenda
+        legend.setYOffset(4f)
+        legend.setXOffset(5f)
+
 
         pieChartView.data = PieData(barPie)
-        //pieChartView.data = PieData(barPie2)
+
        // pieChartView.description.isEnabled=false
-        pieChartView.description.text="Publicações"
+        pieChartView.description.text="Post"
         pieChartView.description.textSize=10f
-        //pieChartView.description.
+        pieChartView.description.xOffset=30f
+        //pieChartView.description.yOffset=5f
 
 
-        //pieChartView.centerText="hasterg"
         pieChartView.animate()
 
 
