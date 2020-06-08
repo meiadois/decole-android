@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
-import br.com.meiadois.decole.data.localdb.entity.Segment
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
-import br.com.meiadois.decole.data.network.request.CompanyRequest
 import br.com.meiadois.decole.data.network.request.LikeRequest
 import br.com.meiadois.decole.data.network.request.LikeSenderRequest
 import br.com.meiadois.decole.data.network.response.*
@@ -19,10 +17,8 @@ import br.com.meiadois.decole.util.extension.toCompanyModel
 import br.com.meiadois.decole.util.extension.toMyCompany
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.util.*
-import java.util.prefs.Preferences
 
 class CompanyRepository(
     private val client: DecoleClient,
@@ -62,18 +58,18 @@ class CompanyRepository(
     }
 
     suspend fun updateUserCompany(
-        name: RequestBody,
-        cep: RequestBody,
-        cnpj: RequestBody,
-        description: RequestBody,
-        segmentId: RequestBody,
-        cellphone: RequestBody,
-        email: RequestBody,
-        visible: RequestBody,
-        city: RequestBody,
-        neighborhood: RequestBody,
-        thumbnail: MultipartBody.Part,
-        banner: MultipartBody.Part
+        name: String,
+        cep: String,
+        cnpj: String,
+        description: String,
+        segmentId: Int,
+        cellphone: String,
+        email: String,
+        visible: Boolean,
+        city: String,
+        neighborhood: String,
+        thumbnail: RequestBody,
+        banner: RequestBody
     ): CompanyResponse {
         return callClient {
             client.updateUserCompany(
@@ -94,16 +90,6 @@ class CompanyRepository(
     }
 
     suspend fun insertUserCompany(
-        /*name: RequestBody,
-        cep: RequestBody,
-        cnpj: RequestBody,
-        description: RequestBody,
-        segmentId: RequestBody,
-        cellphone: RequestBody,
-        email: RequestBody,
-        visible: RequestBody,
-        city: RequestBody,
-        neighborhood: RequestBody,*/
         name: String,
         cep: String,
         cnpj: String,
@@ -116,8 +102,6 @@ class CompanyRepository(
         neighborhood: String,
         thumbnail: RequestBody,
         banner: RequestBody
-        /*thumbnail: MultipartBody.Part,
-        banner: MultipartBody.Part*/
     ): CompanyResponse {
         return callClient {
             client.insertUserCompany(

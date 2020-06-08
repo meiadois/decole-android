@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -39,6 +38,8 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     private val factory: AccountViewModelFactory by instance<AccountViewModelFactory>()
     private lateinit var accountViewModel: AccountViewModel
 
+    private var resultForAfterPermissionsGranted: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         accountViewModel = ViewModelProvider(this, factory).get(AccountViewModel::class.java)
@@ -54,41 +55,47 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         setClickListeners()
         setImageInputs()
         setInputMasks()
-
     }
 
     // region Permissions
-    private fun initPickingFromGallery(resultCode: Int) {
-        if (!hasPermission(WRITE_EXTERNAL_STORAGE)) {
-            if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE))
+    private fun initPickingFromGallery(resultCode: Int, showDialog: Boolean = true) {
+        if (checkSelfPermission(WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (showDialog && shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE))
                 showRequestPermissionRationale(resultCode)
-            requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), READ_WRITE_PERMISSIONS_RESULT)
+            else
+                requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), READ_WRITE_PERMISSIONS_RESULT)
+            resultForAfterPermissionsGranted = resultCode
         } else
             pickImageFromGallery(resultCode)
     }
 
     private fun showRequestPermissionRationale(resultCode: Int){
-        val title = "Deseja selecionar uma imagem?"
-        val message = "Permita-nos acessar arquivos do dispositivo. Isso significa que, quando " +
-                "for selecionar uma imagem para a sua empresa, poderemos abrir a galeria para você."
         MaterialAlertDialogBuilder(this)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("Aceito") { _, _ ->
-                initPickingFromGallery(resultCode)
+            .setTitle(getString(R.string.permission_rationale_title))
+            .setMessage(getString(R.string.permission_rationale_message))
+            .setNeutralButton(getString(R.string.ok)) { _, _ ->
+                initPickingFromGallery(resultCode, false)
             }
-            .setNegativeButton("Discordo") { _, _ -> }
             .show()
     }
 
-    private fun hasPermission(permission: String): Boolean =
-        checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            READ_WRITE_PERMISSIONS_RESULT -> {
+                if ((grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }))
+                    if (resultForAfterPermissionsGranted != -1)
+                        pickImageFromGallery(resultForAfterPermissionsGranted)
+            }
+            else -> {
+            }
+        }
+    }
     // endregion
 
     // region Image Picking
     private fun pickImageFromGallery(resultCode: Int) {
         val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
+        intent.type = DEFAULT_IMAGE_TYPE
         startActivityForResult(intent, resultCode)
     }
 
@@ -101,16 +108,28 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
                         IMAGE_BANNER_RESULT -> {
                             accountViewModel.companyData.value!!.banner.path =
                                 getImageFromFilePath(data) ?: String()
-                            if (accountViewModel.companyData.value!!.banner.path.isNotEmpty())
+                            if (accountViewModel.companyData.value!!.banner.path.isNotEmpty()) {
                                 accountViewModel.companyData.value!!.banner.type =
-                                    contentResolver.getType(data!!.data!!) ?: "image/*"
+                                    contentResolver.getType(data!!.data!!) ?: DEFAULT_IMAGE_TYPE
+                                Log.i("ImgPath.Banner", accountViewModel.companyData.value!!.banner.path)
+                                input_company_banner.setText(
+                                    Regex("[^/]*$")
+                                        .find(accountViewModel.companyData.value!!.banner.path)?.value.toString()
+                                )
+                            }
                         }
                         IMAGE_LOGO_RESULT -> {
                             accountViewModel.companyData.value!!.thumbnail.path =
                                 getImageFromFilePath(data) ?: String()
-                            if (accountViewModel.companyData.value!!.thumbnail.path.isNotEmpty())
+                            if (accountViewModel.companyData.value!!.thumbnail.path.isNotEmpty()) {
                                 accountViewModel.companyData.value!!.thumbnail.type =
-                                    contentResolver.getType(data!!.data!!) ?: "image/*"
+                                    contentResolver.getType(data!!.data!!) ?: DEFAULT_IMAGE_TYPE
+                                Log.i("ImgPath.Logo", accountViewModel.companyData.value!!.thumbnail.path)
+                                input_company_logo.setText(
+                                    Regex("[^/]*$")
+                                        .find(accountViewModel.companyData.value!!.thumbnail.path)?.value.toString()
+                                )
+                            }
                         }
                         else -> {
                         }
@@ -141,12 +160,12 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
 
     // region Local Functions
     private fun setImageInputs() {
-        input_company_logo.inputType = android.text.InputType.TYPE_NULL
-        input_company_logo.setOnClickListener {
+        thumbnail_fake_input.bringToFront()
+        thumbnail_fake_input.setOnClickListener {
             initPickingFromGallery(IMAGE_LOGO_RESULT)
         }
-        input_company_banner.inputType = android.text.InputType.TYPE_NULL
-        input_company_banner.setOnClickListener {
+        banner_fake_input.bringToFront()
+        banner_fake_input.setOnClickListener {
             initPickingFromGallery(IMAGE_BANNER_RESULT)
         }
     }
@@ -233,6 +252,16 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
                 socialNetwork_facebook_input
             )
         )
+        input_company_logo.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_logo_input
+            )
+        )
+        input_company_banner.addTextChangedListener(
+            accountViewModel.onTextFieldChange(
+                account_company_banner_input
+            )
+        )
     }
 
     override fun riseValidationError(field: FieldsEnum, errorMessage: String) {
@@ -246,6 +275,8 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             FieldsEnum.COMPANY_CITY -> account_company_city_input
             FieldsEnum.COMPANY_NEIGHBORHOOD -> account_company_neighborhood_input
             FieldsEnum.COMPANY_SEGMENT -> account_company_segment_input
+            FieldsEnum.COMPANY_THUMBNAIL -> account_company_logo_input
+            FieldsEnum.COMPANY_BANNER -> account_company_banner_input
             FieldsEnum.USER_NAME -> account_me_name_input
             FieldsEnum.USER_EMAIL -> account_me_mail_input
             FieldsEnum.USER_FACEBOOK -> socialNetwork_facebook_input
@@ -337,5 +368,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         private const val READ_WRITE_PERMISSIONS_RESULT = 107
         private const val IMAGE_BANNER_RESULT = 201
         private const val IMAGE_LOGO_RESULT = 200
+
+        private const val DEFAULT_IMAGE_TYPE = "image/*"
     }
 }

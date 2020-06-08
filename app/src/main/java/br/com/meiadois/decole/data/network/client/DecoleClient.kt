@@ -4,7 +4,6 @@ import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
 import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -53,33 +52,6 @@ interface DecoleClient {
     @Multipart
     @PUT("me/companies")
     suspend fun updateUserCompany(
-        @Part("name") name: RequestBody,
-        @Part("cep") cep: RequestBody,
-        @Part("cnpj") cnpj: RequestBody,
-        @Part("description") description: RequestBody,
-        @Part("segmentId") segmentId: RequestBody,
-        @Part("cellphone") cellphone: RequestBody,
-        @Part("email") email: RequestBody,
-        @Part("visible") visible: RequestBody,
-        @Part("city") city: RequestBody,
-        @Part("neighborhood") neighborhood: RequestBody,
-        @Part thumbnail: MultipartBody.Part,
-        @Part banner: MultipartBody.Part
-    ): Response<CompanyResponse>
-
-    @Multipart
-    @POST("me/companies")
-    suspend fun insertUserCompany(
-        /*@Part("name") name: RequestBody,
-        @Part("cep") cep: RequestBody,
-        @Part("cnpj") cnpj: RequestBody,
-        @Part("description") description: RequestBody,
-        @Part("segmentId") segmentId: RequestBody,
-        @Part("cellphone") cellphone: RequestBody,
-        @Part("email") email: RequestBody,
-        @Part("visible") visible: RequestBody,
-        @Part("city") city: RequestBody,
-        @Part("neighborhood") neighborhood: RequestBody,*/
         @Part("name") name: String,
         @Part("cep") cep: String,
         @Part("cnpj") cnpj: String,
@@ -90,10 +62,25 @@ interface DecoleClient {
         @Part("visible") visible: Boolean,
         @Part("city") city: String,
         @Part("neighborhood") neighborhood: String,
-        @Part("thumbnail\"; fileName=\"11354_132t.jpeg\"") thumbnail: RequestBody,
-        @Part("banner\"; fileName=\"11354_132b.jpeg\"") banner: RequestBody
-        /*@Part thumbnail: MultipartBody.Part,
-        @Part banner: MultipartBody.Part*/
+        @Part("thumbnail\"; filename=\"11354_132t.jpg\"") thumbnail: RequestBody,
+        @Part("banner\"; filename=\"11354_132b.jpg\"") banner: RequestBody
+    ): Response<CompanyResponse>
+
+    @Multipart
+    @POST("me/companies")
+    suspend fun insertUserCompany(
+        @Part("name") name: String,
+        @Part("cep") cep: String,
+        @Part("cnpj") cnpj: String,
+        @Part("description") description: String,
+        @Part("segmentId") segmentId: Int,
+        @Part("cellphone") cellphone: String,
+        @Part("email") email: String,
+        @Part("visible") visible: Boolean,
+        @Part("city") city: String,
+        @Part("neighborhood") neighborhood: String,
+        @Part("thumbnail\"; filename=\"11354_132t.jpg\"") thumbnail: RequestBody,
+        @Part("banner\"; filename=\"11354_132b.jpg\"") banner: RequestBody
     ): Response<CompanyResponse>
 
     @Headers("Content-Type: application/json")
@@ -198,7 +185,7 @@ interface DecoleClient {
             return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl("https://api.decole.app/v1/")
-                .addConverterFactory(ScalarsConverterFactory.create()) // TODO: make sure it really makes a difference
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(DecoleClient::class.java)
