@@ -23,6 +23,7 @@ import br.com.meiadois.decole.util.extension.toCompanyAccountData
 import br.com.meiadois.decole.util.extension.toSegmentModelList
 import com.google.android.material.textfield.TextInputLayout
 import okhttp3.MediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
@@ -146,13 +147,11 @@ class AccountViewModel(
             Coroutines.main {
                 accountListener?.onActionStarted()
                 try {
-                    Log.i("ImageData.thumb", "" +
-                            "\npath: ${companyData.value!!.thumbnail.path}" +
-                            "\ntype: ${companyData.value!!.thumbnail.type}")
-                    Log.i("ImageData.banner", "" +
-                            "\npath: ${companyData.value!!.banner.path}" +
-                            "\ntype: ${companyData.value!!.banner.type}")
-
+                    /*
+                        TODO: check if in edit mode you will need to send the same image that
+                          already is in server or if you can send another value to indicate
+                           that the API can keep the same old images
+                    */
                     if (isUpdatingCompany) companyRepository.updateUserCompany(
                         companyData.value!!.name,
                         companyData.value!!.cep,
@@ -164,14 +163,14 @@ class AccountViewModel(
                         companyData.value!!.visible,
                         companyData.value!!.city,
                         companyData.value!!.neighborhood,
-                        RequestBody.create(
-                            MediaType.parse(companyData.value!!.thumbnail.type),
-                            File(companyData.value!!.thumbnail.path)
-                        ),
-                        RequestBody.create(
-                            MediaType.parse(companyData.value!!.banner.type),
-                            File(companyData.value!!.banner.path)
-                        )
+                        getMultipartBodyPart(
+                            companyData.value!!.thumbnail.path,
+                            companyData.value!!.thumbnail.type,
+                            "thumbnail"),
+                        getMultipartBodyPart(
+                            companyData.value!!.banner.path,
+                            companyData.value!!.banner.type,
+                            "banner")
                     ) else companyRepository.insertUserCompany(
                         companyData.value!!.name,
                         companyData.value!!.cep,
@@ -183,14 +182,14 @@ class AccountViewModel(
                         companyData.value!!.visible,
                         companyData.value!!.city,
                         companyData.value!!.neighborhood,
-                        RequestBody.create(
-                            MediaType.parse(companyData.value!!.thumbnail.type),
-                            File(companyData.value!!.thumbnail.path)
-                        ),
-                        RequestBody.create(
-                            MediaType.parse(companyData.value!!.banner.type),
-                            File(companyData.value!!.banner.path)
-                        )
+                        getMultipartBodyPart(
+                            companyData.value!!.thumbnail.path,
+                            companyData.value!!.thumbnail.type,
+                            "thumbnail"),
+                        getMultipartBodyPart(
+                            companyData.value!!.banner.path,
+                            companyData.value!!.banner.type,
+                            "banner")
                     )
 
                     /* TODO: discomment this when finish the create/edit of company
@@ -232,6 +231,18 @@ class AccountViewModel(
                 }
             }
         }
+    }
+
+    private fun getMultipartBodyPart(imagePath: String, imageType: String, parameterName: String): MultipartBody.Part {
+        val file = File(imagePath)
+        return MultipartBody.Part.createFormData(
+            parameterName,
+            file.name,
+            RequestBody.create(
+                MediaType.parse(imageType),
+                file
+            )
+        )
     }
 
     private fun trimProperties(){

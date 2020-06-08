@@ -4,8 +4,8 @@ import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
 import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -56,14 +56,14 @@ interface DecoleClient {
         @Part("cep") cep: String,
         @Part("cnpj") cnpj: String,
         @Part("description") description: String,
-        @Part("segmentId") segmentId: Int,
+        @Part("segment_id") segmentId: Int,
         @Part("cellphone") cellphone: String,
         @Part("email") email: String,
         @Part("visible") visible: Boolean,
         @Part("city") city: String,
         @Part("neighborhood") neighborhood: String,
-        @Part("thumbnail\"; filename=\"11354_132t.jpg\"") thumbnail: RequestBody,
-        @Part("banner\"; filename=\"11354_132b.jpg\"") banner: RequestBody
+        @Part thumbnail: MultipartBody.Part,
+        @Part banner: MultipartBody.Part
     ): Response<CompanyResponse>
 
     @Multipart
@@ -73,14 +73,14 @@ interface DecoleClient {
         @Part("cep") cep: String,
         @Part("cnpj") cnpj: String,
         @Part("description") description: String,
-        @Part("segmentId") segmentId: Int,
+        @Part("segment_id") segmentId: Int,
         @Part("cellphone") cellphone: String,
         @Part("email") email: String,
         @Part("visible") visible: Boolean,
         @Part("city") city: String,
         @Part("neighborhood") neighborhood: String,
-        @Part("thumbnail\"; filename=\"11354_132t.jpg\"") thumbnail: RequestBody,
-        @Part("banner\"; filename=\"11354_132b.jpg\"") banner: RequestBody
+        @Part thumbnail: MultipartBody.Part,
+        @Part banner: MultipartBody.Part
     ): Response<CompanyResponse>
 
     @Headers("Content-Type: application/json")

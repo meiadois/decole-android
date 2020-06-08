@@ -17,7 +17,7 @@ import br.com.meiadois.decole.util.extension.toCompanyModel
 import br.com.meiadois.decole.util.extension.toMyCompany
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.RequestBody
+import okhttp3.MultipartBody
 import java.util.*
 
 class CompanyRepository(
@@ -68,8 +68,8 @@ class CompanyRepository(
         visible: Boolean,
         city: String,
         neighborhood: String,
-        thumbnail: RequestBody,
-        banner: RequestBody
+        thumbnail: MultipartBody.Part,
+        banner: MultipartBody.Part
     ): CompanyResponse {
         return callClient {
             client.updateUserCompany(
@@ -100,8 +100,8 @@ class CompanyRepository(
         visible: Boolean,
         city: String,
         neighborhood: String,
-        thumbnail: RequestBody,
-        banner: RequestBody
+        thumbnail: MultipartBody.Part,
+        banner: MultipartBody.Part
     ): CompanyResponse {
         return callClient {
             client.insertUserCompany(
