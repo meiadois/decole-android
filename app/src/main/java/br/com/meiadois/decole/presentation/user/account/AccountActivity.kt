@@ -111,11 +111,10 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
                             if (accountViewModel.companyData.value!!.banner.path.isNotEmpty()) {
                                 accountViewModel.companyData.value!!.banner.type =
                                     contentResolver.getType(data!!.data!!) ?: DEFAULT_IMAGE_TYPE
-                                Log.i("ImgPath.Banner", accountViewModel.companyData.value!!.banner.path)
-                                input_company_banner.setText(
-                                    Regex("[^/]*$")
-                                        .find(accountViewModel.companyData.value!!.banner.path)?.value.toString()
-                                )
+                                accountViewModel.companyData.value!!.banner.name =
+                                    accountViewModel.getFileName(
+                                        accountViewModel.companyData.value!!.banner.path
+                                    )
                             }
                         }
                         IMAGE_LOGO_RESULT -> {
@@ -124,11 +123,10 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
                             if (accountViewModel.companyData.value!!.thumbnail.path.isNotEmpty()) {
                                 accountViewModel.companyData.value!!.thumbnail.type =
                                     contentResolver.getType(data!!.data!!) ?: DEFAULT_IMAGE_TYPE
-                                Log.i("ImgPath.Logo", accountViewModel.companyData.value!!.thumbnail.path)
-                                input_company_logo.setText(
-                                    Regex("[^/]*$")
-                                        .find(accountViewModel.companyData.value!!.thumbnail.path)?.value.toString()
-                                )
+                                accountViewModel.companyData.value!!.thumbnail.name =
+                                    accountViewModel.getFileName(
+                                        accountViewModel.companyData.value!!.thumbnail.path
+                                    )
                             }
                         }
                         else -> {

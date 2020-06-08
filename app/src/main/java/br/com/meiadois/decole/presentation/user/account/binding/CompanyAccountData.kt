@@ -67,7 +67,25 @@ class CompanyAccountData() : BaseObservable() {
     }
 }
 
-data class ImageData(
-    var path: String = "",
+class ImageData() : BaseObservable() {
+    var path: String = ""
     var type: String = ""
-)
+
+    @Bindable
+    var name: String = ""
+    set(value) {
+        if (field != value)
+            field = value
+        notifyPropertyChanged(BR.name)
+    }
+
+    constructor(
+        path: String = "",
+        type: String = "",
+        name: String = ""
+    ) : this() {
+        this.path = path
+        this.type = type
+        this.name = name
+    }
+}

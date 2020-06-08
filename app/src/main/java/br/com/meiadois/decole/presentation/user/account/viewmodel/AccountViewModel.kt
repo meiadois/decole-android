@@ -79,6 +79,8 @@ class AccountViewModel(
         Coroutines.main {
             try {
                 companyData.value = companyRepository.getUserCompany().toCompanyAccountData()
+                companyData.value!!.thumbnail.name = getFileName(companyData.value!!.thumbnail.path)
+                companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
                 isUpdatingCompany = true
             } catch (ex: Exception) {
                 companyData.value = CompanyAccountData(email = userData.value!!.email)
@@ -407,8 +409,13 @@ class AccountViewModel(
     }
     // endregion
 
+    fun getFileName(filePath: String): String = Regex(FILE_NAME_IN_DIRECTORY_REGEX_PATTERN)
+        .find(filePath)?.value.toString()
+
     companion object{
         private const val INSTAGRAM_CHANNEL = "Instagram"
         private const val FACEBOOK_CHANNEL = "Facebook"
+
+        private const val FILE_NAME_IN_DIRECTORY_REGEX_PATTERN = "[^/]*$"
     }
 }
