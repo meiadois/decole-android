@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.presentation.user.education.viewmodel.EducationHomeTopViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.EducationHomeTopViewModelFactory
+import br.com.meiadois.decole.util.Coroutines
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.data.*
@@ -36,8 +37,10 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(EducationHomeTopViewModel::class.java)
+//        Coroutines.main{
+//            setBarChart(viewModel.getUsermetrics().followers.value, viewModel.getUsermetrics().following.value)
+//        }
 
-        setBarChart(50, 40)
         setPieChart(200, 50)
         setAvarageChart(80.6f)
 
@@ -47,9 +50,9 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         text_metrics_avarage.text = avarage.toString()
     }
 
-    private fun setBarChart(followers: Int, following: Int) {
+    private fun setBarChart(followers: Float, following: Float) {
 
-        var axValue = 0
+        var axValue = 0f
         if (followers >= following) {
             axValue = followers + 10
         } else {

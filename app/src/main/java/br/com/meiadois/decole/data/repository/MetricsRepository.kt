@@ -10,7 +10,7 @@ class MetricsRepository(
     private val client: DecoleClient
 ) : RequestHandler() {
 
-    suspend fun getUserMetricas(): MetricsResponse {
+    suspend fun getUserMetricas(): AnalyticsResponse {
         return callClient {
             client.getUserMetrics()
         }
