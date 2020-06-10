@@ -2,16 +2,19 @@ package br.com.meiadois.decole.presentation.user.education
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.presentation.user.education.viewmodel.EducationHomeTopViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.EducationHomeTopViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.data.*
@@ -37,13 +40,13 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(EducationHomeTopViewModel::class.java)
-//        Coroutines.main{
-//            setBarChart(viewModel.getUsermetrics().followers.value, viewModel.getUsermetrics().following.value)
-//        }
 
-        setPieChart(200, 50)
-        setAvarageChart(80.6f)
+        setProgressBarVisibility(true)
+        setMetricsData()
 
+//        setBarChart(50f,40f)
+//        setPieChart(200, 50)
+//        setAvarageChart(80.6f)
     }
 
     private fun setAvarageChart(avarage: Float) {
@@ -132,7 +135,6 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         barChartView.setDoubleTapToZoomEnabled(false)
     }
 
-    //sector chart
     private fun setPieChart(with: Int, without: Int) {
 
         val visitors: ArrayList<PieEntry> = ArrayList();
@@ -192,5 +194,34 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
 //      pieChartView.animate()
         pieChartView.setRotationEnabled(false)
+    }
+
+    private fun setMetricsData() {
+        Coroutines.main {
+            try {
+                val metric = viewModel.getUsermetrics()
+                setBarChart(
+                    metric.followers.value,
+                    metric.following.value
+                )
+                setPieChart(
+                    metric.posts_with_hashtags.value.toInt(),
+                    metric.publications.value.toInt() - metric.posts_with_hashtags.value.toInt()
+                )
+                setAvarageChart(
+                    metric.mean_of_comments.value
+                // segment_id must be string, visible must be string
+                )
+            }catch (ex: Exception){
+                Log.i("Fragment_top_exception", ex.message?:"")
+                layout_education_top.shortSnackbar("Cadastre um instagram para podermos analisar.")
+            }finally{
+                setProgressBarVisibility(false)
+            }
+        }
+    }
+
+    private fun setProgressBarVisibility(visible: Boolean) {
+        progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
     }
 }
