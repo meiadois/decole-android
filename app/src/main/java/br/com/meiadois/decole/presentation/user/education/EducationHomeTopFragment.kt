@@ -33,88 +33,93 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         return inflater.inflate(R.layout.fragment_education_home_top, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(EducationHomeTopViewModel::class.java)
 
-        setBarChart(50,40)
-        setPieChart(400,50)
-        publicar.text="80.6";
-
+        setBarChart(50, 40)
+        setPieChart(200, 50)
+        setAvarageChart(80.6f)
 
     }
-        private fun test(){
-            publicar.text="80.6";
+
+    private fun setAvarageChart(avarage: Float) {
+        text_metrics_avarage.text = avarage.toString()
+    }
+
+    private fun setBarChart(followers: Int, following: Int) {
+
+        var axValue = 0
+        if (followers >= following) {
+            axValue = followers + 10
+        } else {
+            axValue = following + 10
         }
-    private  fun setBarChart(seguidores:Int,seguindos:Int){
-
-        var axValue =0;
-        if(seguidores>=seguindos){
-            axValue=seguidores+10
-        }else{
-            axValue=seguindos+10
-        }
-        val barra1 :ArrayList<BarEntry> = ArrayList();
-        barra1.add(BarEntry(0f,seguidores.toFloat()))
-        val barra2 :ArrayList<BarEntry> = ArrayList();
-        barra2.add(BarEntry(2f,seguindos.toFloat()))
+        val first_bar: ArrayList<BarEntry> = ArrayList();
+        first_bar.add(BarEntry(0f, followers.toFloat()))
+        val second_bar: ArrayList<BarEntry> = ArrayList();
+        second_bar.add(BarEntry(2f, following.toFloat()))
 
 
-        val barDataSetbarra1 = BarDataSet(barra1,"")
-        val barDataSetbarra2 = BarDataSet(barra2,"")
+        val dataSetFirstBar = BarDataSet(first_bar, "")
+        val dataSetSecondBar = BarDataSet(second_bar, "")
 
         // set bar label
-        var legend = barChartView.legend
+        val legend = barChartView.legend
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM)
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT)
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL)
         legend.setDrawInside(false)
 
-        var legenedEntries = arrayListOf<LegendEntry>()
+        val footerEntries = arrayListOf<LegendEntry>()
 
-        legenedEntries.add(LegendEntry("Seguidores", Legend.LegendForm.SQUARE, 8f, 8f, null,ContextCompat.getColor(requireContext(),R.color.colorPrimary)))
-        legenedEntries.add(LegendEntry("Seguindo", Legend.LegendForm.SQUARE, 8f, 8f, null,ContextCompat.getColor(requireContext(),R.color.colorPrimaryDarker)))
+        footerEntries.add(
+            LegendEntry(
+                "Seguidores",
+                Legend.LegendForm.SQUARE,
+                8f,
+                8f,
+                null,
+                ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+            )
+        )
+        footerEntries.add(
+            LegendEntry(
+                "Seguindo",
+                Legend.LegendForm.SQUARE,
+                8f,
+                8f,
+                null,
+                ContextCompat.getColor(requireContext(), R.color.colorPrimaryDarker)
+            )
+        )
 
-        legend.setCustom(legenedEntries)
-        //legend.setYOffset(4f)
+        legend.setCustom(footerEntries)
         legend.setXOffset(-2f)
         legend.setYEntrySpace(0f)
         legend.setTextSize(9f)
 
-        barDataSetbarra1.color=ContextCompat.getColor(requireContext(),R.color.colorPrimary)
+        dataSetFirstBar.color = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
 
-        barDataSetbarra1.valueTextColor=Color.BLACK
-        barDataSetbarra1.valueTextSize=10f
-        /*barDataSetbarra1.setDrawIcons(false)
-        barDataSetbarra1.setDrawValues(false)*/
+        dataSetFirstBar.valueTextColor = Color.BLACK
+        dataSetFirstBar.valueTextSize = 10f
 
+        dataSetSecondBar.color =
+            ContextCompat.getColor(requireContext(), R.color.colorPrimaryDarker)
+        dataSetSecondBar.valueTextColor = Color.BLACK
+        dataSetSecondBar.valueTextSize = 10f
 
-
-        barDataSetbarra2.color=ContextCompat.getColor(requireContext(),R.color.colorPrimaryDarker)
-        barDataSetbarra2.valueTextColor=Color.BLACK
-        barDataSetbarra2.valueTextSize=10f
-
-        barChartView.data = BarData(barDataSetbarra1,barDataSetbarra2)
-
+        barChartView.data = BarData(dataSetFirstBar, dataSetSecondBar)
         barChartView.setFitBars(true)
-        /*val description2 =
-            Description()
-        description2.text = ""
-        //barChartView.setDescription(description2)*/
-
         barChartView.getDescription().setEnabled(false);
-        /*barChartView.description.text="seguidoresxSeguidos"
-        barChartView.description.textSize=10f*/
 
         barChartView.animateY(1000)
-        //barChartView.xAxis.setGranularity(0f)
-        barChartView.axisLeft.isEnabled=false
-        barChartView.axisRight.isEnabled=false
-        barChartView.xAxis.isEnabled=false
-        barChartView.axisLeft.labelCount=5
-        barChartView.axisLeft.axisMaximum=axValue.toFloat()
-        barChartView.axisLeft.axisMinimum=0f
+        barChartView.axisLeft.isEnabled = false
+        barChartView.axisRight.isEnabled = false
+        barChartView.xAxis.isEnabled = false
+        barChartView.axisLeft.labelCount = 5
+        barChartView.axisLeft.axisMaximum = axValue.toFloat()
+        barChartView.axisLeft.axisMinimum = 0f
         barChartView.xAxis.setGranularity(1f)
         barChartView.xAxis.setGranularityEnabled(true)
         barChartView.xAxis.setCenterAxisLabels(true)
@@ -122,74 +127,67 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         barChartView.xAxis.textSize = 9f
 
         barChartView.setDoubleTapToZoomEnabled(false)
-
-        //barChartView.xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
-//        var xAxisValues = ArrayList<String>()
-//        xAxisValues.add("Seguidores")
-//        xAxisValues.add("Segundo")
-//        barChartView.xAxis.setValueFormatter(IndexAxisValueFormatter(xAxisValues))
-
-//        barChartView.xAxis.setLabelCount(12)
-//        barChartView.xAxis.mAxisMaximum = 12f
-//        barChartView.xAxis.setCenterAxisLabels(true)
-//        barChartView.xAxis.setAvoidFirstLastClipping(true)
-//        barChartView.xAxis.spaceMin = 4f
-//        barChartView.xAxis.spaceMax = 4f
-
-
-
-
-
     }
-            // grafico pizza
-    private fun setPieChart(postCom:Int,postSem:Int){
 
-        val visitors :ArrayList<PieEntry> = ArrayList();
-        visitors.add(PieEntry(postCom.toFloat(),""))
-        visitors.add(PieEntry(postSem.toFloat(),""))
+    //sector chart
+    private fun setPieChart(with: Int, without: Int) {
 
+        val visitors: ArrayList<PieEntry> = ArrayList();
+        visitors.add(PieEntry(with.toFloat(), ""))
+        visitors.add(PieEntry(without.toFloat(), ""))
 
-        val cor :ArrayList<Int> = ArrayList();
-        cor.add(ContextCompat.getColor(requireContext(),R.color.colorPrimary))
-        cor.add(ContextCompat.getColor(requireContext(),R.color.colorPrimaryDarker))
+        val colors: ArrayList<Int> = ArrayList();
+        colors.add(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        colors.add(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDarker))
 
-
-        val barPie= PieDataSet(visitors,"")
-        barPie.colors=cor
-        barPie.valueTextColor=Color.BLACK
-        barPie.valueTextSize=10f
+        val barPie = PieDataSet(visitors, "")
+        barPie.colors = colors
+        barPie.valueTextColor = Color.WHITE
+        barPie.valueTextSize = 10f
         barPie.isDrawIconsEnabled
         barPie.setDrawIcons(false)
-        var legend = pieChartView.legend
+
+        val legend = pieChartView.legend
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM)
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT)
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL)
         legend.setDrawInside(false)
 
-        var legenedEntries = arrayListOf<LegendEntry>()
+        val footerEntries = arrayListOf<LegendEntry>()
 
-        legenedEntries.add(LegendEntry("Com #", Legend.LegendForm.SQUARE, 10f, 8f, null,ContextCompat.getColor(requireContext(),R.color.colorPrimary)))
-        legenedEntries.add(LegendEntry("Sem #", Legend.LegendForm.SQUARE, 10f, 8f, null,ContextCompat.getColor(requireContext(),R.color.colorPrimaryDarker)))
+        footerEntries.add(
+            LegendEntry(
+                "Com #",
+                Legend.LegendForm.SQUARE,
+                10f,
+                8f,
+                null,
+                ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+            )
+        )
+        footerEntries.add(
+            LegendEntry(
+                "Sem #",
+                Legend.LegendForm.SQUARE,
+                10f,
+                8f,
+                null,
+                ContextCompat.getColor(requireContext(), R.color.colorPrimaryDarker)
+            )
+        )
 
-        legend.setCustom(legenedEntries)
+        legend.setCustom(footerEntries)
+        legend.textColor = Color.BLACK
         legend.setTextSize(10f)
-                //legenda
         legend.setYOffset(4f)
         legend.setXOffset(5f)
 
-
         pieChartView.data = PieData(barPie)
+        pieChartView.description.text = "Post"
+        pieChartView.description.textSize = 10f
+        pieChartView.description.xOffset = 30f
 
-       // pieChartView.description.isEnabled=false
-        pieChartView.description.text="Post"
-        pieChartView.description.textSize=10f
-        pieChartView.description.xOffset=30f
-        //pieChartView.description.yOffset=5f
-
-
-        pieChartView.animate()
-
-
-
+//      pieChartView.animate()
+        pieChartView.setRotationEnabled(false)
     }
 }

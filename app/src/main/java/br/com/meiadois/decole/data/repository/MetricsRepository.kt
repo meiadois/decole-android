@@ -1,3 +1,4 @@
+package br.com.meiadois.decole.data.repository
 
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
@@ -14,7 +15,5 @@ class MetricsRepository(
             client.getUserMetrics()
         }
     }
-
-
 
 }

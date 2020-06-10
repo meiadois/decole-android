@@ -39,6 +39,8 @@ android {
 
 }
 
+apply plugin: 'com.google.gms.google-services'
+
 ext {
     retrofitVersion = "2.6.0"
     kotlinxCoroutines = "1.3.0"
@@ -70,7 +72,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxCoroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutines"
 
-    // ViewModel and LiveData
+    //ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     //Android Room
@@ -87,7 +89,7 @@ dependencies {
     implementation "com.xwray:groupie-kotlin-android-extensions:$groupieVersion"
     implementation "com.xwray:groupie-databinding:$groupieVersion"
 
-    // Glide image loader
+    //Glide image loader
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt('com.github.bumptech.glide:compiler:4.11.0')
 
@@ -97,6 +99,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // graph charts MPAndroidChart
+    //Graph charts MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-core:17.0.0'
+    //implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    // add SDKs for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
 }

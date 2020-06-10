@@ -1,6 +1,6 @@
 package br.com.meiadois.decole.presentation.user.education.viewmodel
 
-import MetricsRepository
+import br.com.meiadois.decole.data.repository.MetricsRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.data.model.Metrics
@@ -11,7 +11,6 @@ class EducationHomeTopViewModel(
 
 ) : ViewModel() {
 
-    suspend fun getUsermetrics():Metrics = metricasRepository.getUserMetricas().toMetrics()
-
+    //suspend fun getUsermetrics():Metrics = metricasRepository.getUserMetricas().toMetrics()
 
 }

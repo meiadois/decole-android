@@ -1,8 +1,8 @@
 package br.com.meiadois.decole.presentation.user.education.viewmodel.factory
 
-import MetricsRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import br.com.meiadois.decole.data.repository.MetricsRepository
 import br.com.meiadois.decole.presentation.user.education.viewmodel.EducationHomeTopViewModel
 
 class EducationHomeTopViewModelFactory(

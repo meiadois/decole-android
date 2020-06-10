@@ -81,7 +81,7 @@
 
                     <TextView
 
-                        android:id="@+id/publicar"
+                        android:id="@+id/text_metrics_avarage"
                         android:layout_width="118dp"
                         android:layout_height="53dp"
                         android:text=""
