@@ -133,6 +133,10 @@ interface DecoleClient {
     suspend fun getUserAccounts(): Response<List<AccountResponse>>
 
     @Headers("Content-Type: application/json")
+    @GET("me/metricas")
+    suspend fun getUserMetrics(): Response<MetricsResponse>
+
+    @Headers("Content-Type: application/json")
     @POST("me/accounts")
     suspend fun insertUserAccount(@Body request: AccountRequest): Response<AccountResponse>
 

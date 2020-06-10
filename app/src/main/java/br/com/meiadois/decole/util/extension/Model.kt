@@ -4,10 +4,7 @@ import br.com.meiadois.decole.data.localdb.entity.Lesson
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
 import br.com.meiadois.decole.data.localdb.entity.Route
 import br.com.meiadois.decole.data.localdb.entity.User
-import br.com.meiadois.decole.data.model.Step
-import br.com.meiadois.decole.data.model.Company
-import br.com.meiadois.decole.data.model.Like
-import br.com.meiadois.decole.data.model.Segment
+import br.com.meiadois.decole.data.model.*
 import br.com.meiadois.decole.data.network.response.*
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
 import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
@@ -95,6 +92,20 @@ fun CompanyResponse.toMyCompany(): MyCompany{
 fun CompanySearchResponse.toCompanySearchModel() :Company {
     return Company(
         id, name, "", "", banner, cnpj, cellphone, email, description, false, "", "", segment?.toSegmentModel()
+    )
+}
+/* val mean_of_hashtags: Float,
+    val mean_of_mentions: Float,
+    val mean_of_comments: Float,
+    val mean_of_likes: Float,
+    val posts_with_hashtags: Int,
+    val followers_per_following: Float,
+    val followers: Int,
+    val following: Int,
+    val publications: Int*/
+fun MetricsResponse.toMetrics() :Metrics {
+    return Metrics(
+        mean_of_hashtags,mean_of_mentions, mean_of_comments,mean_of_likes,posts_with_hashtags,followers_per_following,followers,following,publications
     )
 }
 

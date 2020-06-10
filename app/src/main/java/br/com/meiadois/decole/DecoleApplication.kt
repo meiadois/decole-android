@@ -41,6 +41,7 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { CepRepository(instance()) }
         bind() from singleton { SegmentRepository(instance(), instance(),instance()) }
         bind() from singleton { StepRepository(instance()) }
+        bind() from singleton { MetricasRepository(instance()) }
         bind() from singleton { LoginViewModelFactory(instance()) }
         bind() from singleton { RegisterViewModelFactory(instance()) }
         bind() from singleton { RouteListViewModelFactory(instance(), instance()) }
