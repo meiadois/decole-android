@@ -4,10 +4,7 @@ import br.com.meiadois.decole.data.localdb.entity.Lesson
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
 import br.com.meiadois.decole.data.localdb.entity.Route
 import br.com.meiadois.decole.data.localdb.entity.User
-import br.com.meiadois.decole.data.model.Step
-import br.com.meiadois.decole.data.model.Company
-import br.com.meiadois.decole.data.model.Like
-import br.com.meiadois.decole.data.model.Segment
+import br.com.meiadois.decole.data.model.*
 import br.com.meiadois.decole.data.network.response.*
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
 import br.com.meiadois.decole.presentation.user.account.binding.ImageData
@@ -71,6 +68,7 @@ fun List<SegmentResponse>.toSegmentModelList(): List<Segment> {
 
 fun SegmentResponse.toSegmentModel() = Segment(this.id, this.name)
 
+fun MetricsResponse.toMetricModel() = Metrics( this.sucess, this.error_message, this.value)
 
 fun List<SegmentResponse>.toSegmentModelListDb(): List<br.com.meiadois.decole.data.localdb.entity.Segment> {
     return this.map {
@@ -80,28 +78,63 @@ fun List<SegmentResponse>.toSegmentModelListDb(): List<br.com.meiadois.decole.da
 
 fun SegmentResponse.toSegmentModelDb() = br.com.meiadois.decole.data.localdb.entity.Segment(this.id!!, this.name)
 
-fun CompanyResponse.toCompanyModel() :Company {
+fun CompanyResponse.toCompanyModel(): Company {
     return Company(
-        id, name, cep, thumbnail, banner, cnpj, cellphone, email, description, visible, city, neighborhood, segment?.toSegmentModel()
+        id,
+        name,
+        cep,
+        thumbnail,
+        banner,
+        cnpj,
+        cellphone,
+        email,
+        description,
+        visible,
+        city,
+        neighborhood,
+        segment?.toSegmentModel()
     )
 }
 
-fun CompanyResponse.toMyCompany(): MyCompany{
+fun CompanyResponse.toMyCompany(): MyCompany {
     return MyCompany(id, name, thumbnail, segment?.name ?: "")
 }
-/*fun CompanyResponse.toMyCompany(): MyCompany{
-    return MyCompany(id,name,thumbnail,cep,banner,cnpj,cellphone,email,description,visible,city,neighborhood,segment.id)
-}*/
 
-fun CompanySearchResponse.toCompanySearchModel() :Company {
+fun CompanySearchResponse.toCompanySearchModel(): Company {
     return Company(
-        id, name, "", "", banner, cnpj, cellphone, email, description, false, "", "", segment?.toSegmentModel()
+        id,
+        name,
+        "",
+        "",
+        banner,
+        cnpj,
+        cellphone,
+        email,
+        description,
+        false,
+        "",
+        "",
+        segment?.toSegmentModel()
     )
 }
 
-fun List<CompanySearchResponse>.toCompanySearchModelList(): List<Company>{
-    if(this.isNotEmpty())
-        return this.map{
+fun AnalyticsResponse.toAnalytics(): Analytics {
+    return Analytics(
+        mean_of_hashtags.toMetricModel(),
+        mean_of_mentions.toMetricModel(),
+        mean_of_comments.toMetricModel(),
+        mean_of_likes.toMetricModel(),
+        posts_with_hashtags.toMetricModel(),
+        followers_per_following.toMetricModel(),
+        followers.toMetricModel(),
+        following.toMetricModel(),
+        publications.toMetricModel()
+    )
+}
+
+fun List<CompanySearchResponse>.toCompanySearchModelList(): List<Company> {
+    if (this.isNotEmpty())
+        return this.map {
             it.toCompanySearchModel()
         }
     return listOf()
@@ -119,11 +152,11 @@ fun List<LikeResponse>.toLikeModelList(userCompanyId: Int): List<Like> {
         val partnerCompany: CompanyResponse
         val isSender: Boolean
 
-        if (it.sender_company.id == userCompanyId){
+        if (it.sender_company.id == userCompanyId) {
             partnerCompany = it.recipient_company
             userCompany = it.sender_company
             isSender = true
-        }else{
+        } else {
             partnerCompany = it.sender_company
             userCompany = it.recipient_company
             isSender = false

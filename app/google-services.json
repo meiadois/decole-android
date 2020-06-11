@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "943759973339",
+    "firebase_url": "https://decoleapp-f4e9a.firebaseio.com",
+    "project_id": "decoleapp-f4e9a",
+    "storage_bucket": "decoleapp-f4e9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943759973339:android:9bce3c2b7687aeda2ae5fe",
+        "android_client_info": {
+          "package_name": "br.com.meiadois.decole"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943759973339-bmuit5c6jgf02qs44gns3dodv1mb6521.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.meiadois.decole",
+            "certificate_hash": "ac982d34a2011247ef24f87716763eed3755531f"
+          }
+        },
+        {
+          "client_id": "943759973339-qiaidlanbhn40993r1lhfhtgrtmfhbno.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_cJTQxQugMEnqbDH1w8UfPpprj14NsQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943759973339-qiaidlanbhn40993r1lhfhtgrtmfhbno.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

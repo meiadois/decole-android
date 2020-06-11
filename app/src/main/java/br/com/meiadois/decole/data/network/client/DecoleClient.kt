@@ -161,6 +161,10 @@ interface DecoleClient {
     suspend fun getUserAccounts(): Response<List<AccountResponse>>
 
     @Headers("Content-Type: application/json")
+    @GET("me/metrics/Instagram")
+    suspend fun getUserMetrics(): Response<AnalyticsResponse>
+
+    @Headers("Content-Type: application/json")
     @POST("me/accounts")
     suspend fun insertUserAccount(@Body request: AccountRequest): Response<AccountResponse>
 

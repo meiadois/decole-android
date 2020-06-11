@@ -31,6 +31,7 @@ data class CompanyResponse(
     val neighborhood: String,
     @Json(name = "segment")
     val segment: SegmentResponse?
+
 )
 
 @JsonClass(generateAdapter = true)
