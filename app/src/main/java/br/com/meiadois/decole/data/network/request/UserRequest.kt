@@ -11,6 +11,6 @@ data class UserUpdateRequest(
 
 @JsonClass(generateAdapter = true)
 data class UserChangePasswordRequest(
-    @field:Json(name = "current_password") val currentPassword: String,
-    @field:Json(name = "new_password") val newPassword: String
+    @field:Json(name = "old_password") val currentPassword: String,
+    @field:Json(name = "password") val newPassword: String
 )

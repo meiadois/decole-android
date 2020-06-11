@@ -43,7 +43,7 @@ class UserRepository(
         }
     }
 
-    suspend fun resetPassword(code: String, password: String): Unit {
+    suspend fun resetPassword(code: String, password: String) {
         return callClient {
             client.resetPassword(ResetPasswordRequest(code, password))
         }
@@ -65,8 +65,8 @@ class UserRepository(
         }
     }
 
-    suspend fun changeUserPassword(currentPassword: String, newPassword: String): UserUpdateResponse {
-        return callClient {
+    suspend fun changeUserPassword(currentPassword: String, newPassword: String) {
+        callClient {
             client.changeUserPassword(UserChangePasswordRequest(currentPassword, newPassword))
         }
     }

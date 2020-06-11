@@ -22,7 +22,7 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
 
     var accountListener: AccountListener? = null
 
-    // region onEvent listaners
+    // region onEvent listeners
     fun onTextFieldChange(textInputLayout: TextInputLayout): TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable) {}
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -37,11 +37,14 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
                     userRepository.changeUserPassword(currentPassword!!, newPassword!!)
                     accountListener?.onActionSuccess()
                 } catch (ex: ClientException) {
-                    accountListener?.onActionError(null)
-                    Log.i("ChangePassword.Cii", ex.message!!)
+                    accountListener?.onActionError(if (ex.code == 404) ex.message else null)
+                    Log.i("ChangePassword.Cli", "\nmessage: ${ex.message ?: "no message"}" +
+                            "\ncode: ${ex.code}" +
+                            "\ncause: ${ex.cause ?: "no cause"}")
                 } catch (ex: Exception){
                     accountListener?.onActionError(null)
-                    Log.i("ChangePassword.Ex", ex.message!!)
+                    Log.i("ChangePassword.Ex", "\nmessage: ${ex.message ?: "no message"}" +
+                            "\nmessage: ${ex.cause ?: "no cause"}")
                 }
             }
         }
@@ -51,7 +54,7 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
     // region validations
     private fun validateModel(view: View): Boolean{
         val minPasswordLength = 6
-        val maxPasswordLength = 6
+        val maxPasswordLength = 128
         var isValid = StringValidator(currentPassword)
             .addValidation(
                 NotNullOrEmptyRule(
@@ -63,13 +66,13 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
                 MinLengthRule(minPasswordLength,
                     view.context.getString(
                         R.string.min_text_length_error_message,
-                        view.context.getString(R.string.changePassword_currentPass_hint), 6))
+                        view.context.getString(R.string.changePassword_currentPass_hint), minPasswordLength))
             )
             .addValidation(
                 MaxLengthRule(maxPasswordLength,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.changePassword_currentPass_hint), 128))
+                        view.context.getString(R.string.changePassword_currentPass_hint), maxPasswordLength))
             )
             .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_CURRENTPASSWORD, it.error) }
             .validate()
@@ -85,13 +88,13 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
                 MinLengthRule(minPasswordLength,
                     view.context.getString(
                         R.string.min_text_length_error_message,
-                        view.context.getString(R.string.changePassword_newPass_hint), 6))
+                        view.context.getString(R.string.changePassword_newPass_hint), minPasswordLength))
             )
             .addValidation(
                 MaxLengthRule(maxPasswordLength,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.changePassword_newPass_hint), 128))
+                        view.context.getString(R.string.changePassword_newPass_hint), maxPasswordLength))
             )
             .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_NEWPASSWORD, it.error) }
             .validate()
@@ -107,13 +110,13 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
                 MinLengthRule(minPasswordLength,
                     view.context.getString(
                         R.string.min_text_length_error_message,
-                        view.context.getString(R.string.changePassword_confirmNewPass_hint), 6))
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint), minPasswordLength))
             )
             .addValidation(
                 MaxLengthRule(maxPasswordLength,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.changePassword_confirmNewPass_hint), 128))
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint), maxPasswordLength))
             )
             .addValidation(
                 EqualsTo(newPassword,
