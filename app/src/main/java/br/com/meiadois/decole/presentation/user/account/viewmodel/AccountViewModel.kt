@@ -149,11 +149,6 @@ class AccountViewModel(
             Coroutines.main {
                 accountListener?.onActionStarted()
                 try {
-                    /*
-                        TODO: check if in edit mode you will need to send the same image that
-                          already is in server or if you can send another value to indicate
-                           that the API can keep the same old images
-                    */
                     if (isUpdatingCompany) companyRepository.updateUserCompany(
                         companyData.value!!.name,
                         companyData.value!!.cep,
@@ -165,14 +160,18 @@ class AccountViewModel(
                         companyData.value!!.visible,
                         companyData.value!!.city,
                         companyData.value!!.neighborhood,
-                        getMultipartBodyPart(
-                            companyData.value!!.thumbnail.path,
-                            companyData.value!!.thumbnail.type,
-                            "thumbnail"),
-                        getMultipartBodyPart(
-                            companyData.value!!.banner.path,
-                            companyData.value!!.banner.type,
-                            "banner")
+                        if (companyData.value!!.thumbnail.updated)
+                            getMultipartBodyPart(
+                                companyData.value!!.thumbnail.path,
+                                companyData.value!!.thumbnail.type,
+                                "thumbnail")
+                        else null,
+                        if (companyData.value!!.banner.updated)
+                            getMultipartBodyPart(
+                                companyData.value!!.banner.path,
+                                companyData.value!!.banner.type,
+                                "banner")
+                        else null
                     ) else companyRepository.insertUserCompany(
                         companyData.value!!.name,
                         companyData.value!!.cep,
@@ -194,7 +193,6 @@ class AccountViewModel(
                             "banner")
                     )
 
-                    /* TODO: discomment this when finish the create/edit of company
                     userRepository.updateUser(userData.value!!.name, userData.value!!.email)
 
                     if (isUpdatingInstagram) {
@@ -211,7 +209,7 @@ class AccountViewModel(
                         else
                             userRepository.updateUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)
                     } else if (userNetworksData.value!!.facebook.isNotEmpty())
-                        userRepository.insertUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)*/
+                        userRepository.insertUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)
 
                     accountListener?.onActionSuccess()
                 } catch (ex: ClientException) {

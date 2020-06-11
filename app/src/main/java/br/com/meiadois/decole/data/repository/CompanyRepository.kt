@@ -68,8 +68,8 @@ class CompanyRepository(
         visible: Boolean,
         city: String,
         neighborhood: String,
-        thumbnail: MultipartBody.Part,
-        banner: MultipartBody.Part
+        thumbnail: MultipartBody.Part?,
+        banner: MultipartBody.Part?
     ): CompanyResponse {
         return callClient {
             client.updateUserCompany(

@@ -70,6 +70,7 @@ class CompanyAccountData() : BaseObservable() {
 class ImageData() : BaseObservable() {
     var path: String = ""
     var type: String = ""
+    var updated: Boolean = false
 
     @Bindable
     var name: String = ""
@@ -82,10 +83,12 @@ class ImageData() : BaseObservable() {
     constructor(
         path: String = "",
         type: String = "",
-        name: String = ""
+        name: String = "",
+        updated: Boolean = false
     ) : this() {
         this.path = path
         this.type = type
         this.name = name
+        this.updated = updated
     }
 }

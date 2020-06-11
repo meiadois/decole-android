@@ -115,6 +115,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
                                     accountViewModel.getFileName(
                                         accountViewModel.companyData.value!!.banner.path
                                     )
+                                accountViewModel.companyData.value!!.banner.updated = true
                             }
                         }
                         IMAGE_LOGO_RESULT -> {
@@ -127,6 +128,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
                                     accountViewModel.getFileName(
                                         accountViewModel.companyData.value!!.thumbnail.path
                                     )
+                                accountViewModel.companyData.value!!.thumbnail.updated = true
                             }
                         }
                         else -> {

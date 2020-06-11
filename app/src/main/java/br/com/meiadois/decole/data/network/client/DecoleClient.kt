@@ -62,8 +62,8 @@ interface DecoleClient {
         @Part("visible") visible: Boolean,
         @Part("city") city: String,
         @Part("neighborhood") neighborhood: String,
-        @Part thumbnail: MultipartBody.Part,
-        @Part banner: MultipartBody.Part
+        @Part thumbnail: MultipartBody.Part?,
+        @Part banner: MultipartBody.Part?
     ): Response<CompanyResponse>
 
     @Multipart
