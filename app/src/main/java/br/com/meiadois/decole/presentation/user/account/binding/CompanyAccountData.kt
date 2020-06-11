@@ -8,8 +8,8 @@ class CompanyAccountData() : BaseObservable() {
     var id: Int = -1
     var name: String = ""
     var cep: String = ""
-    var thumbnail: String = ""
-    var banner: String = ""
+    var thumbnail: ImageData = ImageData()
+    var banner: ImageData = ImageData()
     var cnpj: String = ""
     var cellphone: String = ""
     var email: String = ""
@@ -38,8 +38,8 @@ class CompanyAccountData() : BaseObservable() {
         id: Int = -1,
         name: String = "",
         cep: String = "",
-        thumbnail: String = "",
-        banner: String = "",
+        thumbnail: ImageData = ImageData(),
+        banner: ImageData = ImageData(),
         cnpj: String = "",
         cellphone: String = "",
         email: String = "",
@@ -64,5 +64,31 @@ class CompanyAccountData() : BaseObservable() {
         this.neighborhood = neighborhood
         this.segmentId = segmentId
         this.segmentName = segmentName
+    }
+}
+
+class ImageData() : BaseObservable() {
+    var path: String = ""
+    var type: String = ""
+    var updated: Boolean = false
+
+    @Bindable
+    var name: String = ""
+    set(value) {
+        if (field != value)
+            field = value
+        notifyPropertyChanged(BR.name)
+    }
+
+    constructor(
+        path: String = "",
+        type: String = "",
+        name: String = "",
+        updated: Boolean = false
+    ) : this() {
+        this.path = path
+        this.type = type
+        this.name = name
+        this.updated = updated
     }
 }

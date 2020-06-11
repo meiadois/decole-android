@@ -22,6 +22,10 @@ import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.toCompanyAccountData
 import br.com.meiadois.decole.util.extension.toSegmentModelList
 import com.google.android.material.textfield.TextInputLayout
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 class AccountViewModel(
     private val segmentRepository: SegmentRepository,
@@ -75,6 +79,8 @@ class AccountViewModel(
         Coroutines.main {
             try {
                 companyData.value = companyRepository.getUserCompany().toCompanyAccountData()
+                companyData.value!!.thumbnail.name = getFileName(companyData.value!!.thumbnail.path)
+                companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
                 isUpdatingCompany = true
             } catch (ex: Exception) {
                 companyData.value = CompanyAccountData(email = userData.value!!.email)
@@ -143,8 +149,6 @@ class AccountViewModel(
             Coroutines.main {
                 accountListener?.onActionStarted()
                 try {
-                    userRepository.updateUser(userData.value!!.name, userData.value!!.email)
-
                     if (isUpdatingCompany) companyRepository.updateUserCompany(
                         companyData.value!!.name,
                         companyData.value!!.cep,
@@ -155,7 +159,19 @@ class AccountViewModel(
                         companyData.value!!.email,
                         companyData.value!!.visible,
                         companyData.value!!.city,
-                        companyData.value!!.neighborhood
+                        companyData.value!!.neighborhood,
+                        if (companyData.value!!.thumbnail.updated)
+                            getMultipartBodyPart(
+                                companyData.value!!.thumbnail.path,
+                                companyData.value!!.thumbnail.type,
+                                "thumbnail")
+                        else null,
+                        if (companyData.value!!.banner.updated)
+                            getMultipartBodyPart(
+                                companyData.value!!.banner.path,
+                                companyData.value!!.banner.type,
+                                "banner")
+                        else null
                     ) else companyRepository.insertUserCompany(
                         companyData.value!!.name,
                         companyData.value!!.cep,
@@ -166,9 +182,18 @@ class AccountViewModel(
                         companyData.value!!.email,
                         companyData.value!!.visible,
                         companyData.value!!.city,
-                        companyData.value!!.neighborhood
+                        companyData.value!!.neighborhood,
+                        getMultipartBodyPart(
+                            companyData.value!!.thumbnail.path,
+                            companyData.value!!.thumbnail.type,
+                            "thumbnail"),
+                        getMultipartBodyPart(
+                            companyData.value!!.banner.path,
+                            companyData.value!!.banner.type,
+                            "banner")
                     )
-                    isUpdatingCompany = true
+
+                    userRepository.updateUser(userData.value!!.name, userData.value!!.email)
 
                     if (isUpdatingInstagram) {
                         if (userNetworksData.value!!.instagram.isEmpty())
@@ -194,13 +219,30 @@ class AccountViewModel(
                         else
                             null
                     )
-                    Log.i("AccountFormEx.Cli", ex.message ?: "no error message")
+                    Log.i("AccountFormEx.Cli", "" +
+                            "\nstatus code: ${ex.code}" +
+                            "\nmessage: ${ex.message ?: "no error message"}" +
+                            "\ncause: ${ex.cause?.toString() ?: "no cause"}")
                 } catch (ex: Exception) {
                     accountListener?.onActionError(null)
-                    Log.i("AccountFormEx.Ex", ex.message ?: "no error message")
+                    Log.i("AccountFormEx.Ex", "" +
+                            "\nmessage: ${ex.message ?: "no error message"}" +
+                            "\ncause: ${ex.cause?.toString() ?: "no cause"}")
                 }
             }
         }
+    }
+
+    private fun getMultipartBodyPart(imagePath: String, imageType: String, parameterName: String): MultipartBody.Part {
+        val file = File(imagePath)
+        return MultipartBody.Part.createFormData(
+            parameterName,
+            file.name,
+            RequestBody.create(
+                MediaType.parse(imageType),
+                file
+            )
+        )
     }
 
     private fun trimProperties(){
@@ -323,6 +365,22 @@ class AccountViewModel(
             .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_EMAIL, it.error) }
             .validate()
 
+        isValid = isValid and StringValidator(company.thumbnail.path)
+            .addValidation(NotNullOrEmptyRule(
+                view.context.getString(
+                    R.string.required_field_error_message,
+                    view.context.getString(R.string.account_company_logo_hint))))
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_THUMBNAIL, it.error) }
+            .validate()
+
+        isValid = isValid and StringValidator(company.banner.path)
+            .addValidation(NotNullOrEmptyRule(
+                view.context.getString(
+                    R.string.required_field_error_message,
+                    view.context.getString(R.string.account_company_banner))))
+            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_BANNER, it.error) }
+            .validate()
+
         return isValid
     }
 
@@ -349,8 +407,13 @@ class AccountViewModel(
     }
     // endregion
 
+    fun getFileName(filePath: String): String = Regex(FILE_NAME_IN_DIRECTORY_REGEX_PATTERN)
+        .find(filePath)?.value.toString()
+
     companion object{
         private const val INSTAGRAM_CHANNEL = "Instagram"
         private const val FACEBOOK_CHANNEL = "Facebook"
+
+        private const val FILE_NAME_IN_DIRECTORY_REGEX_PATTERN = "[^/]*$"
     }
 }

@@ -4,10 +4,12 @@ import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
 import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.*
 
 interface DecoleClient {
@@ -47,13 +49,39 @@ interface DecoleClient {
     @GET("me/companies")
     suspend fun getUserCompany(): Response<CompanyResponse>
 
-    @Headers("Content-Type: application/json")
+    @Multipart
     @PUT("me/companies")
-    suspend fun updateUserCompany(@Body request: CompanyRequest): Response<CompanyResponse>
+    suspend fun updateUserCompany(
+        @Part("name") name: String,
+        @Part("cep") cep: String,
+        @Part("cnpj") cnpj: String,
+        @Part("description") description: String,
+        @Part("segment_id") segmentId: Int,
+        @Part("cellphone") cellphone: String,
+        @Part("email") email: String,
+        @Part("visible") visible: Boolean,
+        @Part("city") city: String,
+        @Part("neighborhood") neighborhood: String,
+        @Part thumbnail: MultipartBody.Part?,
+        @Part banner: MultipartBody.Part?
+    ): Response<CompanyResponse>
 
-    @Headers("Content-Type: application/json")
+    @Multipart
     @POST("me/companies")
-    suspend fun insertUserCompany(@Body request: CompanyRequest): Response<CompanyResponse>
+    suspend fun insertUserCompany(
+        @Part("name") name: String,
+        @Part("cep") cep: String,
+        @Part("cnpj") cnpj: String,
+        @Part("description") description: String,
+        @Part("segment_id") segmentId: Int,
+        @Part("cellphone") cellphone: String,
+        @Part("email") email: String,
+        @Part("visible") visible: Boolean,
+        @Part("city") city: String,
+        @Part("neighborhood") neighborhood: String,
+        @Part thumbnail: MultipartBody.Part,
+        @Part banner: MultipartBody.Part
+    ): Response<CompanyResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/companies/_/search")
@@ -114,7 +142,7 @@ interface DecoleClient {
     @Headers("Content-Type: application/json")
     @PUT("me/change_password")
     // TODO: check if route and request and response types match with required
-    suspend fun changeUserPassword(@Body request: UserChangePasswordRequest): Response<UserUpdateResponse>
+    suspend fun changeUserPassword(@Body request: UserChangePasswordRequest): Response<Unit>
 
     @Headers("Content-Type: application/json")
     @POST("generate_reset_password")
@@ -157,6 +185,7 @@ interface DecoleClient {
             return Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl("https://api.decole.app/v1/")
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(DecoleClient::class.java)

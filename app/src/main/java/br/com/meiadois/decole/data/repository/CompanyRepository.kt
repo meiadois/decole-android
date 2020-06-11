@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
-import br.com.meiadois.decole.data.localdb.entity.Segment
 import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
-import br.com.meiadois.decole.data.network.request.CompanyRequest
 import br.com.meiadois.decole.data.network.request.LikeRequest
 import br.com.meiadois.decole.data.network.request.LikeSenderRequest
 import br.com.meiadois.decole.data.network.response.*
@@ -19,8 +17,8 @@ import br.com.meiadois.decole.util.extension.toCompanyModel
 import br.com.meiadois.decole.util.extension.toMyCompany
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 import java.util.*
-import java.util.prefs.Preferences
 
 class CompanyRepository(
     private val client: DecoleClient,
@@ -70,29 +68,25 @@ class CompanyRepository(
         visible: Boolean,
         city: String,
         neighborhood: String,
-        thumbnail: String = "",
-        banner: String = ""
+        thumbnail: MultipartBody.Part?,
+        banner: MultipartBody.Part?
     ): CompanyResponse {
-        val res = callClient {
+        return callClient {
             client.updateUserCompany(
-                CompanyRequest(
-                    name,
-                    description,
-                    segmentId,
-                    cnpj,
-                    cellphone,
-                    email,
-                    cep,
-                    city,
-                    neighborhood,
-                    visible,
-                    thumbnail,
-                    banner
-                )
+                name,
+                cep,
+                cnpj,
+                description,
+                segmentId,
+                cellphone,
+                email,
+                visible,
+                city,
+                neighborhood,
+                thumbnail,
+                banner
             )
         }
-        fetchCompany()
-        return res
     }
 
     suspend fun insertUserCompany(
@@ -106,29 +100,25 @@ class CompanyRepository(
         visible: Boolean,
         city: String,
         neighborhood: String,
-        thumbnail: String = "",
-        banner: String = ""
+        thumbnail: MultipartBody.Part,
+        banner: MultipartBody.Part
     ): CompanyResponse {
-        val res = callClient {
+        return callClient {
             client.insertUserCompany(
-                CompanyRequest(
-                    name,
-                    description,
-                    segmentId,
-                    cnpj,
-                    cellphone,
-                    email,
-                    cep,
-                    city,
-                    neighborhood,
-                    visible,
-                    thumbnail,
-                    banner
-                )
+                name,
+                cep,
+                cnpj,
+                description,
+                segmentId,
+                cellphone,
+                email,
+                visible,
+                city,
+                neighborhood,
+                thumbnail,
+                banner
             )
         }
-        fetchCompany()
-        return res
     }
 
     suspend fun deletePartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
