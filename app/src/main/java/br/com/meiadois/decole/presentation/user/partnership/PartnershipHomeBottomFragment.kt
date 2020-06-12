@@ -3,6 +3,7 @@ package br.com.meiadois.decole.presentation.user.partnership
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
 class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
+
     override val kodein by kodein()
     private val factory: PartnershipHomeBottomViewModelFactory by instance<PartnershipHomeBottomViewModelFactory>()
     private lateinit var viewModel: PartnershipHomeBottomViewModel
@@ -43,6 +45,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_partnership_home_bottom, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,7 +82,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         }
     }
 
-    private fun setActiveMenuItem(itemId: Int){
+    private fun setActiveMenuItem(itemId: Int) {
         currentMenuItemActive = itemId
         ICON_MATCH_ID.let {
             bottom_bar.menu.findItem(it)
@@ -125,8 +128,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         partner_recycler_view.visibility =
             if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.GONE
         layout_empty.visibility =
-            if (contentMode == CONTENT_NO_REGISTERS_FOUND){
-                text_empty.text = when(currentMenuItemActive){
+            if (contentMode == CONTENT_NO_REGISTERS_FOUND) {
+                text_empty.text = when (currentMenuItemActive) {
                     ICON_MATCH_ID -> getString(R.string.no_match_found)
                     ICON_RECEIVED_ID -> getString(R.string.no_received_likes_found)
                     else -> getString(R.string.no_sent_likes_found)
@@ -136,7 +139,11 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         fragment_container_noAccount.visibility =
             if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
         btn_search.visibility =
-            if (contentMode in setOf(CONTENT_LIST_PARTNERS, CONTENT_NO_REGISTERS_FOUND)) View.VISIBLE else View.GONE
+            if (contentMode in setOf(
+                    CONTENT_LIST_PARTNERS,
+                    CONTENT_NO_REGISTERS_FOUND
+                )
+            ) View.VISIBLE else View.GONE
         bottom_bar.visibility = btn_search.visibility
     }
 
@@ -152,7 +159,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     // region DataSet Management
     private fun updateContent(companyId: Int) {
-        when(currentMenuItemActive){
+        when (currentMenuItemActive) {
             ICON_MATCH_ID -> {
                 viewModel.recyclerDataSet.value = viewModel.matchesList.value
                 viewModel.getUserMatches(companyId)
@@ -165,11 +172,12 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 viewModel.recyclerDataSet.value = viewModel.receivedLikesList.value
                 viewModel.getReceivedLikes(companyId)
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 
-    private fun setRecyclerViewDataSet(list: List<Like>){
+    private fun setRecyclerViewDataSet(list: List<Like>) {
         setProgressBarVisibility(false)
         if (list.isNotEmpty()) {
             setContentVisibility(CONTENT_LIST_PARTNERS)
@@ -213,7 +221,13 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     private fun onPartnerItemClick(context: Context, like: Like) {
         val intent: Intent = PartnershipPopUpActivity.getStartIntent(
-            context, like.id, like.partnerCompany.id, like.userCompany.id, like.isSender, currentMenuItemActive)
+            context,
+            like.id,
+            like.partnerCompany.id,
+            like.userCompany.id,
+            like.isSender,
+            currentMenuItemActive
+        )
         startActivityForResult(intent, PARTNERSHIP_POPUP_ACTIONS_REQUEST_CODE)
     }
 
@@ -248,7 +262,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         }
     }
 
-    private fun showBottomAppBar(){
+    private fun showBottomAppBar() {
         bottom_bar.behavior.slideUp(bottom_bar)
     }
 
