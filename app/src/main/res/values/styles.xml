@@ -8,6 +8,7 @@
         <item name="android:fontFamily">@string/default_font</item>
         <item name="android:textSize">16sp</item>
         <item name="android:windowAnimationStyle">@style/slide_activity_animation</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
     </style>
 
     <style name="white_text_display">
@@ -52,7 +53,7 @@
     <style name="btn_outlined_primary" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="strokeColor">@color/colorPrimary</item>
+        <item name="strokeColor">@color/colorPrimaryLight</item>
         <item name="android:textColor">@color/colorTextIcons</item>
         <item name="android:textSize">12sp</item>
     </style>
@@ -114,5 +115,24 @@
 
     <style name="exposed_dropdown_text_view">
         <item name="boxStrokeWidth">0dp</item>
+    </style>
+
+    <style name="filter_chip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/bg_chip_state_list</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
+        <item name="bottomSheetStyle">@style/PartnerBottomSheetStyle</item>
+    </style>
+
+    <style name="PartnerBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 </resources>

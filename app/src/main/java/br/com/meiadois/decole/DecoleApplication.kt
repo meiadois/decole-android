@@ -59,5 +59,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { PartnershipCompanyProfileViewModelFactory(instance(), instance())}
         bind() from singleton { ChangePasswordViewModelFactory(instance())}
         bind() from singleton { PwRecoveryViewModelFactory(instance()) }
+        bind() from singleton { PartnerBottomSheetViewModelFactory(instance()) }
     }
 }

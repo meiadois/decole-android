@@ -100,7 +100,7 @@
                     android:layout_marginVertical="4dp"
                     android:orientation="vertical">
                     <TextView
-                        android:drawableStart="@drawable/ic_whatsapp_white"
+                        android:drawableStart="@drawable/ic_whatsapp"
                         android:layout_marginVertical="4dp"
                         android:id="@+id/popup_window_phone"
                         android:layout_width="wrap_content"

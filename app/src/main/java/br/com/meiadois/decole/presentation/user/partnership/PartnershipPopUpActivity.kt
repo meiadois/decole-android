@@ -16,9 +16,9 @@ import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeBottomFragment.Companion.ICON_MATCH_ID
-import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeBottomFragment.Companion.ICON_RECEIVED_ID
-import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeBottomFragment.Companion.ICON_SENT_ID
+import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeBottomFragment.Companion.CHIP_CONNECTED
+import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeBottomFragment.Companion.CHIP_INVITE_RECEIVED
+import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeBottomFragment.Companion.CHIP_INVITE_SENT
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
@@ -116,15 +116,15 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     // region Content Management
     private fun setContextButtons(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender: Boolean, contentMode: Int){
         when(contentMode){
-            ICON_MATCH_ID -> {
+            CHIP_CONNECTED -> {
                 popup_window_match_button_layout.visibility = View.VISIBLE
                 setMatchButtonListener(likeId, partnerId, userCompanyId, isUserSender)
             }
-            ICON_RECEIVED_ID -> {
+            CHIP_INVITE_RECEIVED -> {
                 popup_window_received_button_layout.visibility = View.VISIBLE
                 setReceivedButtonsListener(likeId, partnerId, userCompanyId, isUserSender)
             }
-            ICON_SENT_ID -> {
+            CHIP_INVITE_SENT -> {
                 popup_window_sent_button_layout.visibility = View.VISIBLE
                 setSentButtonListener(likeId, partnerId, userCompanyId, isUserSender)
             }

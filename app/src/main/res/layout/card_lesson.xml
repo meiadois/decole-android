@@ -17,7 +17,7 @@
             android:id="@+id/status_rect"
             android:layout_width="5dp"
             android:layout_height="60dp"
-            android:src="@{lesson.completed? @drawable/light_timeline_rect : @drawable/dark_timeline_rect}"
+            android:src="@{lesson.completed? @drawable/dark_timeline_rect : @drawable/light_timeline_rect}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/card"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
             android:id="@+id/status_image"
             android:layout_width="52dp"
             android:layout_height="52dp"
-            android:src="@{lesson.completed? @drawable/ic_light_dot_timeline : @drawable/ic_dark_dot_timeline}"
+            android:src="@{lesson.completed? @drawable/ic_dark_dot_timeline : @drawable/ic_light_dot_timeline}"
             app:layout_constraintBottom_toTopOf="@+id/status_rect"
             app:layout_constraintEnd_toStartOf="@+id/card"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDarker"
+                android:background="@color/colorPrimary"
                 android:padding="10dp">
 
                 <TextView
