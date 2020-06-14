@@ -229,8 +229,8 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         progress_bar?.visibility = if (visible) View.VISIBLE else View.GONE
     }
     private fun setMetricsNotFound(ex: ClientException){
-        scrollview_education.visibility = View.GONE
-        container_education_metrics.visibility = View.VISIBLE
+        scrollview_education?.visibility = View.GONE
+        container_education_metrics?.visibility = View.VISIBLE
         if (ex.code == 500)
             text_no_found.visibility = View.VISIBLE
     }

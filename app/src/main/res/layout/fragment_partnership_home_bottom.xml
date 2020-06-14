@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/background"
     android:id="@+id/fragment_bottom_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,7 +15,9 @@
         android:paddingTop="16dp"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/partnership_scroolable_view"
@@ -27,36 +30,90 @@
             android:layout_height="match_parent"
             android:descendantFocusability="beforeDescendants"
             android:focusableInTouchMode="true"
-            android:padding="16dp"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/partner_recycler_view"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/container_chips"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/card_partner" />
-
-            <!-- No Partners Found Layout -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="15dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="10dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <HorizontalScrollView
+                    android:scrollbars="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:id="@+id/chip_group"
+                        app:singleSelection="true"
+                        app:singleLine="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/interesting_chip"
+                            style="@style/filter_chip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:text="@string/interesting_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/interested_chip"
+                            style="@style/filter_chip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/interested_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/connected_chip"
+                            style="@style/filter_chip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/connected_label" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                tools:visibility="gone"
+                android:id="@+id/partner_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_chips"
+                tools:listitem="@layout/card_partner" />
+
+            <!-- No Partners Found Layout -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                tools:visibility="visible"
+                android:id="@+id/layout_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:paddingStart="48dp"
+                android:paddingEnd="48dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/container_chips">
+
                 <ImageView
                     android:id="@+id/image_empty"
+                    app:layout_constraintVertical_bias=".3"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:src="@drawable/ic_undraw_empty"
@@ -67,30 +124,45 @@
                     tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:id="@+id/text_empty"
+                    android:id="@+id/text_title_empty"
+                    android:textColor="@color/colorPrimaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    app:layout_constraintVertical_bias=".3"
+                    android:layout_margin="8dp"
+                    android:textStyle="bold"
+                    android:text="@string/ooops"
                     android:textAlignment="center"
-                    tools:text="MENSAGEM AQUI"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/text_empty"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/image_empty" />
+
+                <TextView
+                    android:id="@+id/text_empty"
+                    android:textColor="@color/colorPrimaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    tools:text="@string/no_partner_found"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- No Account Layout -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fragment_container_noAccount"
-                android:visibility="gone"
-                android:padding="32dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="32dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/container_chips">
 
                 <ImageView
                     android:id="@+id/image_clipboard"
@@ -108,10 +180,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="@string/welcome_partnership_title"
-                    android:textStyle="bold"
-                    android:textAllCaps="true"
                     android:textAlignment="center"
-                    android:textColor="#ffffff"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/image_clipboard" />
@@ -124,7 +196,7 @@
                     android:layout_marginTop="24dp"
                     android:text="@string/partnership_no_account"
                     android:textAlignment="center"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/colorPrimaryText"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_title_partner" />
@@ -149,32 +221,20 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:backgroundTint="@color/colorPrimaryDarker"
-        app:fabAlignmentMode="end"
-        app:fabCradleMargin="5dp"
-        app:fabCradleRoundedCornerRadius="20dp"
-        app:fabCradleVerticalOffset="10dp"
-        app:hideOnScroll="true"
-        app:menu="@menu/bottom_partnership_menu" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDarker"
-        android:foregroundTint="@color/colorPrimaryDarker"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_mdi_search"
         android:tooltipText="@string/search_tooltip"
         app:borderWidth="0dp"
-        app:layout_anchor="@id/bottom_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35dp"
-        app:tint="@android:color/white"
-        tools:targetApi="o" />
+        app:tint="@android:color/white" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

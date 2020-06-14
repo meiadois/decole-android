@@ -22,7 +22,6 @@
         <activity android:name=".presentation.user.HomeActivity" />
         <activity android:name=".presentation.user.account.AccountActivity" />
         <activity android:name=".presentation.user.account.ChangePasswordActivity" />
-        <activity android:name=".presentation.user.partnership.PartnershipPopUpActivity" />
         <activity android:name=".presentation.instagram.HasInstagramAccountActivity" />
         <activity android:name=".presentation.instagram.InstagramIntroActivity" />
         <activity android:name=".presentation.welcome.WelcomeSlideActivity" />

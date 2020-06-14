@@ -1,6 +1,10 @@
 package br.com.meiadois.decole.data.model
 
-class Company() {
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+class Company() : Parcelable {
     var id: Int = 0
     var name: String = ""
     var cep: String = ""

@@ -45,7 +45,6 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.fragment_partnership_home_bottom, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,18 +54,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
         setContentVisibility(CONTENT_NONE)
         setProgressBarVisibility(true)
-        setActiveMenuItem(ICON_MATCH_ID)
         setDataSetObservers()
-
-        bottom_bar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == currentMenuItemActive)
-                return@setOnMenuItemClickListener true
-            if (menuItem.itemId !in setOf(ICON_MATCH_ID, ICON_RECEIVED_ID, ICON_SENT_ID))
-                return@setOnMenuItemClickListener false
-            setActiveMenuItem(menuItem.itemId)
-            updateContent(viewModel.company!!.id)
-            true
-        }
+        configureChipFilter()
 
         btn_search.setOnClickListener {
             Intent(view.context, PartnershipSearchActivity::class.java).also {
@@ -79,22 +68,6 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             Intent(view.context, AccountActivity::class.java).also {
                 view.context.startActivity(it)
             }
-        }
-    }
-
-    private fun setActiveMenuItem(itemId: Int) {
-        currentMenuItemActive = itemId
-        ICON_MATCH_ID.let {
-            bottom_bar.menu.findItem(it)
-                .setIcon(if (itemId == it) R.drawable.ic_mdi_connected_companies_selected else R.drawable.ic_mdi_connected_companies)
-        }
-        ICON_RECEIVED_ID.let {
-            bottom_bar.menu.findItem(it)
-                .setIcon(if (itemId == it) R.drawable.ic_mdi_likes_recived_selected else R.drawable.ic_mdi_likes_recived)
-        }
-        ICON_SENT_ID.let {
-            bottom_bar.menu.findItem(it)
-                .setIcon(if (itemId == it) R.drawable.ic_mdi_likes_sent_selected else R.drawable.ic_mdi_likes_sent)
         }
     }
 
@@ -130,8 +103,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         layout_empty.visibility =
             if (contentMode == CONTENT_NO_REGISTERS_FOUND) {
                 text_empty.text = when (currentMenuItemActive) {
-                    ICON_MATCH_ID -> getString(R.string.no_match_found)
-                    ICON_RECEIVED_ID -> getString(R.string.no_received_likes_found)
+                    CHIP_CONNECTED -> getString(R.string.no_match_found)
+                    CHIP_INVITE_RECEIVED -> getString(R.string.no_received_likes_found)
                     else -> getString(R.string.no_sent_likes_found)
                 }
                 View.VISIBLE
@@ -139,12 +112,12 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         fragment_container_noAccount.visibility =
             if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
         btn_search.visibility =
+            if (contentMode in setOf(CONTENT_LIST_PARTNERS, CONTENT_NO_PARTNERS_FOUND)) View.VISIBLE else View.GONE
             if (contentMode in setOf(
                     CONTENT_LIST_PARTNERS,
                     CONTENT_NO_REGISTERS_FOUND
                 )
             ) View.VISIBLE else View.GONE
-        bottom_bar.visibility = btn_search.visibility
     }
 
     private fun showGenericErrorMessage() {
@@ -159,21 +132,20 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     // region DataSet Management
     private fun updateContent(companyId: Int) {
-        when (currentMenuItemActive) {
-            ICON_MATCH_ID -> {
+        when(currentMenuItemActive){
+            CHIP_CONNECTED -> {
                 viewModel.recyclerDataSet.value = viewModel.matchesList.value
                 viewModel.getUserMatches(companyId)
             }
-            ICON_SENT_ID -> {
+            CHIP_INVITE_SENT -> {
                 viewModel.recyclerDataSet.value = viewModel.sentLikesList.value
                 viewModel.getSentLikes(companyId)
             }
-            ICON_RECEIVED_ID -> {
+            CHIP_INVITE_RECEIVED -> {
                 viewModel.recyclerDataSet.value = viewModel.receivedLikesList.value
                 viewModel.getReceivedLikes(companyId)
             }
-            else -> {
-            }
+            else -> {}
         }
     }
 
@@ -195,19 +167,19 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     private fun setDataSetObservers() {
         viewModel.matchesList.observe(viewLifecycleOwner, Observer {
             it?.let {
-                if (currentMenuItemActive == ICON_MATCH_ID)
+                if (currentMenuItemActive == CHIP_CONNECTED)
                     setRecyclerViewDataSet(it)
             }
         })
         viewModel.sentLikesList.observe(viewLifecycleOwner, Observer {
             it?.let {
-                if (currentMenuItemActive == ICON_SENT_ID)
+                if (currentMenuItemActive == CHIP_INVITE_SENT)
                     setRecyclerViewDataSet(it)
             }
         })
         viewModel.receivedLikesList.observe(viewLifecycleOwner, Observer {
             it?.let {
-                if (currentMenuItemActive == ICON_RECEIVED_ID)
+                if (currentMenuItemActive == CHIP_INVITE_RECEIVED)
                     setRecyclerViewDataSet(it)
             }
         })
@@ -219,16 +191,32 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
     // endregion
 
+    private fun configureChipFilter(){
+        connected_chip.isChecked = true
+        currentMenuItemActive = CHIP_CONNECTED
+
+        interesting_chip.setOnClickListener {
+            currentMenuItemActive = CHIP_INVITE_SENT
+            updateContent(viewModel.company!!.id)
+        }
+
+        interested_chip.setOnClickListener {
+            currentMenuItemActive = CHIP_INVITE_RECEIVED
+            updateContent(viewModel.company!!.id)
+        }
+
+        connected_chip.setOnClickListener {
+            currentMenuItemActive = CHIP_CONNECTED
+            updateContent(viewModel.company!!.id)
+        }
+    }
+
     private fun onPartnerItemClick(context: Context, like: Like) {
-        val intent: Intent = PartnershipPopUpActivity.getStartIntent(
-            context,
-            like.id,
-            like.partnerCompany.id,
-            like.userCompany.id,
-            like.isSender,
-            currentMenuItemActive
-        )
-        startActivityForResult(intent, PARTNERSHIP_POPUP_ACTIONS_REQUEST_CODE)
+        val bottomSheet = PartnerBottomSheetDialog()
+        val bundle = Bundle()
+        bundle.putParcelable("inviteDetails", like)
+        bottomSheet.arguments = bundle
+        bottomSheet.show(parentFragmentManager, "partnerBottomSheet")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -237,33 +225,25 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 UNDO_PARTNERSHIP_DELETED_RESULT_CODE -> {
                     data?.let {
                         viewModel.removeMatch(it.getIntExtra(UNDO_PARTNERSHIP_DELETED_TAG, 0))
-                        showBottomAppBar()
                     }
                 }
                 PARTNERSHIP_CANCELED_RESULT_CODE -> {
                     data?.let {
                         viewModel.removeSentLike(it.getIntExtra(PARTNERSHIP_CANCELED_TAG, 0))
-                        showBottomAppBar()
                     }
                 }
                 PARTNERSHIP_DENIED_RESULT_CODE -> {
                     data?.let {
                         viewModel.removeReceivedLike(it.getIntExtra(PARTNERSHIP_DENIED_TAG, 0))
-                        showBottomAppBar()
                     }
                 }
                 PARTNERSHIP_ACCEPTED_RESULT_CODE -> {
                     data?.let {
                         viewModel.removeReceivedLike(it.getIntExtra(PARTNERSHIP_ACCEPTED_TAG, 0))
-                        showBottomAppBar()
                     }
                 }
             }
         }
-    }
-
-    private fun showBottomAppBar() {
-        bottom_bar.behavior.slideUp(bottom_bar)
     }
 
     class PartnerRecyclerAdapter(
@@ -324,10 +304,11 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         private const val CONTENT_NONE = 0
         private const val CONTENT_NO_ACCOUNT = 1
         private const val CONTENT_LIST_PARTNERS = 2
+        private const val CONTENT_NO_PARTNERS_FOUND = 3
         private const val CONTENT_NO_REGISTERS_FOUND = 3
 
-        const val ICON_SENT_ID = R.id.menu_waiting_response
-        const val ICON_RECEIVED_ID = R.id.menu_to_respond
-        const val ICON_MATCH_ID = R.id.menu_connected
+        const val CHIP_INVITE_SENT = R.id.menu_waiting_response
+        const val CHIP_INVITE_RECEIVED = R.id.menu_to_respond
+        const val CHIP_CONNECTED = R.id.menu_connected
     }
 }

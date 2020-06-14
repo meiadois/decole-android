@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/container_partner_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet_background"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/sheet_text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="@string/partner_bottom_sheet_default_title"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryText"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextIcons"
+        android:padding="24dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_company_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".0">
+
+            <ImageView
+                android:id="@+id/image_partner"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_circle_logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/container_texts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_partner"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/sheet_text_partner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="15sp"
+                    tool:text="NOME DO PARCEIRO" />
+
+                <TextView
+                    android:id="@+id/sheet_text_partner_segment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="12sp"
+                    tool:text="SEGMENTO DO PARCEIRO" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/container_company_info">
+
+            <TextView
+                android:id="@+id/sheet_text_partner_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tool:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lobortis eu sapien sed ornare. Maecenas dolor massa, congue et aliquet in, ultricies in sem. Morbi eget ornare felis." />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/sheet_text_partner_description">
+
+                <TextView
+                    android:id="@+id/sheet_text_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="4dp"
+                    android:drawableStart="@drawable/ic_whatsapp"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/colorPrimaryText"
+                    android:visibility="visible"
+                    tool:text="(71) 00000-0000" />
+
+                <TextView
+                    android:id="@+id/sheet_text_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="4dp"
+                    android:drawableStart="@drawable/ic_mail_white"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/colorPrimaryText"
+                    android:visibility="visible"
+                    tool:text="contato@empresa.com" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_invite_received_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextIcons"
+        android:padding="24dp"
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/btn_primary_invite_received"
+            style="@style/btn_primary"
+            android:text="@string/label_accept_invite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_secondary_invite_received"
+            style="@style/btn_secondary"
+            android:text="@string/label_decline_invite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_primary_invite_received" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/container_invite_sent_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextIcons"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="gone"
+        tool:visibility="visible">
+
+        <TextView
+            android:id="@+id/btn_primary_invite_sent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_waiting_reply"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccentOrange"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_secondary_invite_sent"
+            style="@style/btn_secondary"
+            android:text="@string/label_cancel_invite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_match_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextIcons"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="gone"
+        tool:visibility="visible">
+
+        <TextView
+            android:id="@+id/btn_primary_match"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vocês são parceiros desde dd/MM/yyyy"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_secondary_match"
+            style="@style/btn_secondary"
+            android:text="@string/label_cancel_partnership"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_primary_invite_sent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_loading_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTextIcons"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:visibility="gone"
+        tool:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+</LinearLayout>
