@@ -74,8 +74,8 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     }
 
     private fun setContentVisibility(contentMode: Int){
-        container_company_layout_account.visibility = if (contentMode == CONTENT_WITH_ACCOUNT) View.VISIBLE else View.GONE
-        container_company_layout_no_account.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
+        container_company_layout_account?.visibility = if (contentMode == CONTENT_WITH_ACCOUNT) View.VISIBLE else View.GONE
+        container_company_layout_no_account?.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
     }
 
     private fun showUserCompany(company: MyCompany){

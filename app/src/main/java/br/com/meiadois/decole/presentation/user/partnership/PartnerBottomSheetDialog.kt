@@ -26,6 +26,8 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
     private val factory: PartnerBottomSheetViewModelFactory by instance<PartnerBottomSheetViewModelFactory>()
     private lateinit var viewModel: PartnerBottomSheetViewModel
 
+    lateinit var onDismissListener: OnActionCompletedListener
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,6 +44,8 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.listener = this
 
         arguments?.getParcelable<Like>("inviteDetails")?.let {
             viewModel.inviteInfo = it
@@ -116,22 +120,16 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
 
     override fun onSuccess() {
         toggleLoading(false)
-
-        (dialog as? BottomSheetDialog)?.let {
-            it.behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
+        dismiss()
+        onDismissListener.handle()
     }
 
     private fun toggleLoading(loading: Boolean) {
         if(loading){
-            container_invite_received_footer.visibility = View.GONE
-            container_invite_sent_footer.visibility = View.GONE
-            container_match_footer.visibility = View.GONE
+            container_actions.visibility = View.GONE
             container_loading_footer.visibility = View.VISIBLE
         }else {
-            container_invite_received_footer.visibility = View.VISIBLE
-            container_invite_sent_footer.visibility = View.VISIBLE
-            container_match_footer.visibility = View.VISIBLE
+            container_actions.visibility = View.VISIBLE
             container_loading_footer.visibility = View.GONE
         }
     }
@@ -143,5 +141,9 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
+    }
+
+    interface OnActionCompletedListener{
+        fun handle()
     }
 }

@@ -3,10 +3,10 @@ package br.com.meiadois.decole.presentation.user.partnership
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.presentation.user.account.AccountActivity
-import br.com.meiadois.decole.presentation.user.partnership.PartnershipSearchActivity.Companion.PARTNERSHIP_SEARCH_COMPANY_ID
+import br.com.meiadois.decole.presentation.user.partnership.PartnershipDiscoveryActivity.Companion.PARTNERSHIP_SEARCH_COMPANY_ID
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
@@ -23,11 +23,13 @@ import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
+
 
 class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
@@ -58,7 +60,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         configureChipFilter()
 
         btn_search.setOnClickListener {
-            Intent(view.context, PartnershipSearchActivity::class.java).also {
+            Intent(view.context, PartnershipDiscoveryActivity::class.java).also {
                 it.putExtra(PARTNERSHIP_SEARCH_COMPANY_ID, viewModel.company!!.id)
                 view.context.startActivity(it)
             }
@@ -192,27 +194,43 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     // endregion
 
     private fun configureChipFilter(){
+
+        chip_group.setOnCheckedChangeListener { chipGroup, _ ->
+            chipGroup.children.forEach {
+                val chip = it as Chip
+                chip.isCheckable = it.id != chipGroup.checkedChipId
+                chip.isChecked = (chip.id == chipGroup.checkedChipId) || (chipGroup.checkedChipId == -1)
+            }
+        }
+
         connected_chip.isChecked = true
         currentMenuItemActive = CHIP_CONNECTED
 
         interesting_chip.setOnClickListener {
             currentMenuItemActive = CHIP_INVITE_SENT
-            updateContent(viewModel.company!!.id)
+            viewModel.company?.id?.let { id -> updateContent(id) }
         }
 
         interested_chip.setOnClickListener {
             currentMenuItemActive = CHIP_INVITE_RECEIVED
-            updateContent(viewModel.company!!.id)
+            viewModel.company?.id?.let { id -> updateContent(id) }
         }
 
         connected_chip.setOnClickListener {
             currentMenuItemActive = CHIP_CONNECTED
-            updateContent(viewModel.company!!.id)
+            viewModel.company?.id?.let { id -> updateContent(id) }
         }
     }
 
     private fun onPartnerItemClick(context: Context, like: Like) {
         val bottomSheet = PartnerBottomSheetDialog()
+        bottomSheet.onDismissListener = object :
+            PartnerBottomSheetDialog.OnActionCompletedListener {
+            override fun handle() {
+                updateContent(viewModel.company!!.id)
+            }
+
+        }
         val bundle = Bundle()
         bundle.putParcelable("inviteDetails", like)
         bottomSheet.arguments = bundle
@@ -307,8 +325,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         private const val CONTENT_NO_PARTNERS_FOUND = 3
         private const val CONTENT_NO_REGISTERS_FOUND = 3
 
-        const val CHIP_INVITE_SENT = R.id.menu_waiting_response
-        const val CHIP_INVITE_RECEIVED = R.id.menu_to_respond
-        const val CHIP_CONNECTED = R.id.menu_connected
+        const val CHIP_INVITE_SENT = 5
+        const val CHIP_INVITE_RECEIVED = 6
+        const val CHIP_CONNECTED = 7
     }
 }

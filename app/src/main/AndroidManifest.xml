@@ -16,20 +16,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.pwrecovery.PwRecoveryHomeActivity" />
-        <activity android:name=".presentation.user.education.FinishedRouteActivity" />
-        <activity android:name=".presentation.user.education.RouteDetailsActivity" />
-        <activity android:name=".presentation.user.HomeActivity" />
-        <activity android:name=".presentation.user.account.AccountActivity" />
-        <activity android:name=".presentation.user.account.ChangePasswordActivity" />
-        <activity android:name=".presentation.instagram.HasInstagramAccountActivity" />
-        <activity android:name=".presentation.instagram.InstagramIntroActivity" />
-        <activity android:name=".presentation.welcome.WelcomeSlideActivity" />
-        <activity android:name=".presentation.welcome.WelcomeInfoActivity" />
-        <activity android:name=".presentation.user.education.StartInteractiveModeActivity" />
-        <activity android:name=".presentation.user.partnership.PartnershipSearchActivity" />
-        <activity android:name=".presentation.auth.RegisterActivity" />
-        <activity android:name=".presentation.auth.LoginActivity">
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.user.partnership.PartnershipDiscoveryActivity"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.pwrecovery.PwRecoveryHomeActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.user.education.FinishedRouteActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.user.education.RouteDetailsActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.user.HomeActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.user.account.AccountActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.user.account.ChangePasswordActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.instagram.HasInstagramAccountActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.instagram.InstagramIntroActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.welcome.WelcomeSlideActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.welcome.WelcomeInfoActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.user.education.StartInteractiveModeActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.auth.RegisterActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.auth.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
