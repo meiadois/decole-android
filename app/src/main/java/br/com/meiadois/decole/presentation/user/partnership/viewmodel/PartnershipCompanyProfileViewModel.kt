@@ -1,6 +1,7 @@
 package br.com.meiadois.decole.presentation.user.partnership.viewmodel
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.data.model.Company
@@ -15,7 +16,9 @@ class PartnershipCompanyProfileViewModel(
 private val companyRepository: CompanyRepository,
 private val segmentRepository: SegmentRepository
 ) : ViewModel() {
-    
+
+    var companyId: Int? = null
+
     var name: String? = null
     var banner: String? = null
     var description: String? = null
@@ -91,4 +94,8 @@ private val segmentRepository: SegmentRepository
 
         }
     }
+
+//    fun onApplyFilterButtonClicked(view: View){
+//
+//    }
 }

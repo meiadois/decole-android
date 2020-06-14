@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.presentation.user.account.AccountActivity
-import br.com.meiadois.decole.presentation.user.partnership.PartnershipSearchActivity.Companion.PARTNERSHIP_SEARCH_COMPANY_ID
+import br.com.meiadois.decole.presentation.user.partnership.PartnershipDiscoveryActivity.Companion.PARTNERSHIP_SEARCH_COMPANY_ID
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
@@ -24,7 +24,6 @@ import br.com.meiadois.decole.util.extension.longSnackbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import org.kodein.di.KodeinAware
@@ -61,7 +60,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         configureChipFilter()
 
         btn_search.setOnClickListener {
-            Intent(view.context, PartnershipSearchActivity::class.java).also {
+            Intent(view.context, PartnershipDiscoveryActivity::class.java).also {
                 it.putExtra(PARTNERSHIP_SEARCH_COMPANY_ID, viewModel.company!!.id)
                 view.context.startActivity(it)
             }

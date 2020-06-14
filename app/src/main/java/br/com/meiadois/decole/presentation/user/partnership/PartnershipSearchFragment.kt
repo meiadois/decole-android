@@ -1,59 +1,68 @@
 package br.com.meiadois.decole.presentation.user.partnership
 
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.databinding.ActivitySearchPartnerBinding
+import br.com.meiadois.decole.databinding.FragmentSearchPartnerBinding
+import br.com.meiadois.decole.presentation.pwrecovery.PwRecoveryCodeFragment
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModelFactory
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_search_partner.*
+import kotlinx.android.synthetic.main.fragment_search_partner.*
 import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
+import org.kodein.di.android.x.kodein
 
-class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
+class PartnershipSearchFragment : Fragment(), KodeinAware {
+
     override val kodein by kodein()
-    private val factory: PartnershipCompanyProfileViewModelFactory by instance<PartnershipCompanyProfileViewModelFactory>()
-    private lateinit var mViewModel: PartnershipCompanyProfileViewModel
+    private val mViewModel: PartnershipCompanyProfileViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        overridePendingTransition(0, 0)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding: FragmentSearchPartnerBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_search_partner, container, false
+        )
+        binding.viewModel = mViewModel
 
-        mViewModel =
-            ViewModelProvider(this, factory).get(PartnershipCompanyProfileViewModel::class.java)
+        return binding.root
+    }
 
-        val binding: ActivitySearchPartnerBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_search_partner)
-
-        binding.apply {
-            viewModel = mViewModel
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setLoadingView()
-        setAdapterToSegmentDropdown()
         setCompaniesAdapter()
         setContentCardCompanyView()
 
-        btn_back.setOnClickListener {
-            finish()
+        parentFragmentManager.popBackStack()
+
+        toolbar_filter_button.setOnClickListener {
+            val nextFragment = PartnershipSearchFilterFragment()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, nextFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        toolbar_back_button.setOnClickListener {
+            activity?.finish()
         }
         btn_md_checked.setOnClickListener {
-            val companyId = intent.getIntExtra(PARTNERSHIP_SEARCH_COMPANY_ID, 0)
             try {
-                mViewModel.sendLike(companyId, mViewModel.company.value!!.id)
+                mViewModel.sendLike(mViewModel.companyId!!, mViewModel.company.value!!.id)
                 mViewModel.removeCompany(mViewModel.company.value!!.id)
             } catch (ex: Exception) {
                 Log.i("sendLikes.ex", ex.message!!)
@@ -62,16 +71,16 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
         }
         btn_md_close.setOnClickListener {
             when {
-                mViewModel.companies.value!!.count()-1 > mViewModel.state -> {
+                mViewModel.companies.value!!.count() - 1 > mViewModel.state -> {
                     mViewModel.getUpdateCompany()
                 }
                 mViewModel.companies.value!!.count() == 1 -> {
                     layout_bottom_search.longSnackbar("Infelizmente só essa companhia está disponível nesse segmento")
                 }
-                mViewModel.companies.value!!.count()-1 == mViewModel.state -> {
+                mViewModel.companies.value!!.count() - 1 == mViewModel.state -> {
                     btn_md_close.visibility = View.INVISIBLE
                     btn_md_checked.visibility = View.INVISIBLE
-                    layout_bottom_search.shortSnackbar("Você chegou ao fim da lista.Retornamos para o início"){
+                    layout_bottom_search.shortSnackbar("Você chegou ao fim da lista.Retornamos para o início") {
                         it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                                 mViewModel.getUpdateCompany()
@@ -85,44 +94,9 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun setAdapterToSegmentDropdown() {
-        mViewModel.segments.observe(this, Observer { it ->
-            it?.let { segments ->
-                var segmentsString = segments.map { it.name }.toTypedArray()
-                segmentsString = segmentsString.plusElement("Todos os Segmentos")
-                filled_exposed_dropdown.setAdapter(
-                    ArrayAdapter(
-                        this, R.layout.layout_exposed_dropdown_search_item, segmentsString
-                    )
-                )
-                filled_exposed_dropdown.inputType = InputType.TYPE_NULL
-                filled_exposed_dropdown.setText("Todos os Segmentos", false)
-                filled_exposed_dropdown.setOnItemClickListener { parent, view, position, id ->
-                    val segment = segments.firstOrNull {
-                        it.name == segmentsString[position]
-                    }
-                    if (segment == null) {
-                        try {
-                            mViewModel.getAllCompanies()
-                        } catch (ex: Exception) {
-                            Log.i("getAllComp.ex", ex.message!!)
-                        }
-                    } else {
-                        try {
-                            mViewModel.getCompaniesBySegment(segment.id!!)
-                        } catch (ex: Exception) {
-                            Log.i("getCompBySeg.ex", ex.message!!)
-                        }
-                    }
-                }
-
-            }
-        })
-    }
-
     private fun setCompaniesAdapter() {
         progress_bar.visibility
-        mViewModel.companies.observe(this, Observer {
+        mViewModel.companies.observe(viewLifecycleOwner, Observer {
             if (mViewModel.companies.value!!.isNotEmpty()) {
                 mViewModel.company.value = mViewModel.companies.value?.get(0)
                 btn_md_checked.visibility = View.VISIBLE
@@ -139,7 +113,7 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
         })
     }
 
-    private fun setLoadingView(){
+    private fun setLoadingView() {
         btn_md_checked.visibility = View.GONE
         btn_md_close.visibility = View.GONE
         cardview_company_profile.visibility = View.GONE
@@ -148,7 +122,7 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun setContentCardCompanyView() {
-        mViewModel.company.observe(this, Observer {
+        mViewModel.company.observe(viewLifecycleOwner, Observer {
             it?.let {
                 text_profile_name.text = it.name
                 text_profile_description.text = it.description
@@ -162,7 +136,4 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
         progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
-    companion object {
-        const val PARTNERSHIP_SEARCH_COMPANY_ID = "company_id"
-    }
 }
