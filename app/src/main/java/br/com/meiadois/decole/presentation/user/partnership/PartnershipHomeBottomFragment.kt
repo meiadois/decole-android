@@ -21,6 +21,7 @@ import br.com.meiadois.decole.presentation.user.partnership.viewmodel.Partnershi
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.longSnackbar
+import br.com.meiadois.decole.util.extension.toCompanyModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
@@ -82,7 +83,12 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     private fun init() {
         Coroutines.main {
             try {
-                updateContent(viewModel.getUserCompany().id)
+                viewModel.getUserCompany().observe(viewLifecycleOwner, Observer {
+                    if (it == null)
+                        throw Exception()
+                    updateContent(it.company.id)
+                    viewModel.company = it.toCompanyModel()
+                })
             } catch (ex: ClientException) {
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
                 else showGenericErrorMessage()
