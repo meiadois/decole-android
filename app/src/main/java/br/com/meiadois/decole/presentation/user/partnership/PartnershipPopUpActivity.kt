@@ -27,7 +27,6 @@ import br.com.meiadois.decole.util.extension.longSnackbar
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.popupwindow_partner.*
-import kotlinx.android.synthetic.main.popupwindow_partner.progress_bar
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance

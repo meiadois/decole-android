@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,13 +16,9 @@ import br.com.meiadois.decole.presentation.user.partnership.viewmodel.Partnershi
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Glide.init
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_search_partner.*
-import kotlinx.android.synthetic.main.activity_search_partner.progress_bar
-import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -66,22 +61,25 @@ class PartnershipSearchActivity : AppCompatActivity(), KodeinAware {
             mViewModel.getUpdateCompany()
         }
         btn_md_close.setOnClickListener {
-            if(mViewModel.companies.value!!.count()-1 > mViewModel.state) {
-                mViewModel.getUpdateCompany()
-            }else if(mViewModel.companies.value!!.count() == 1){
-                layout_bottom_search.longSnackbar("Infelizmente só essa companhia está disponível nesse segmento")
-            }
-            else if(mViewModel.companies.value!!.count()-1 == mViewModel.state) {
-                btn_md_close.visibility = View.INVISIBLE
-                btn_md_checked.visibility = View.INVISIBLE
-                layout_bottom_search.shortSnackbar("Você chegou ao fim da lista.Retornamos para o início"){
-                    it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                            mViewModel.getUpdateCompany()
-                            btn_md_close.visibility = View.VISIBLE
-                            btn_md_checked.visibility = View.VISIBLE
-                        }
-                    })
+            when {
+                mViewModel.companies.value!!.count()-1 > mViewModel.state -> {
+                    mViewModel.getUpdateCompany()
+                }
+                mViewModel.companies.value!!.count() == 1 -> {
+                    layout_bottom_search.longSnackbar("Infelizmente só essa companhia está disponível nesse segmento")
+                }
+                mViewModel.companies.value!!.count()-1 == mViewModel.state -> {
+                    btn_md_close.visibility = View.INVISIBLE
+                    btn_md_checked.visibility = View.INVISIBLE
+                    layout_bottom_search.shortSnackbar("Você chegou ao fim da lista.Retornamos para o início"){
+                        it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                                mViewModel.getUpdateCompany()
+                                btn_md_close.visibility = View.VISIBLE
+                                btn_md_checked.visibility = View.VISIBLE
+                            }
+                        })
+                    }
                 }
             }
         }

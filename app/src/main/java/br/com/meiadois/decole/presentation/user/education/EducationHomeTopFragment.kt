@@ -9,11 +9,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.presentation.user.education.viewmodel.EducationHomeTopViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.EducationHomeTopViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeTopFragment
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
@@ -40,13 +41,26 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(EducationHomeTopViewModel::class.java)
+        init()
+//      teste()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
+    private fun init(){
+        scrollview_education?.visibility = View.GONE
+        container_education_metrics?.visibility = View.GONE
         setProgressBarVisibility(true)
         setMetricsData()
+    }
 
-//        setBarChart(50f,40f)
-//        setPieChart(200, 50)
-//        setAvarageChart(80.6f)
+    private fun teste() {
+        setBarChart(50f, 40f)
+        setPieChart(200, 50)
+        setAvarageChart(80.6f)
+        scrollview_education.visibility = View.VISIBLE
     }
 
     private fun setAvarageChart(avarage: Float) {
@@ -55,26 +69,24 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
     private fun setBarChart(followers: Float, following: Float) {
 
-        var axValue = 0f
-        if (followers >= following) {
-            axValue = followers + 10
+        val axValue = if (followers >= following) {
+            followers + 10
         } else {
-            axValue = following + 10
+            following + 10
         }
-        val first_bar: ArrayList<BarEntry> = ArrayList();
-        first_bar.add(BarEntry(0f, followers.toFloat()))
-        val second_bar: ArrayList<BarEntry> = ArrayList();
-        second_bar.add(BarEntry(2f, following.toFloat()))
+        val firstBar: ArrayList<BarEntry> = ArrayList()
+        firstBar.add(BarEntry(0f, followers))
+        val secondBar: ArrayList<BarEntry> = ArrayList()
+        secondBar.add(BarEntry(2f, following))
 
+        val dataSetFirstBar = BarDataSet(firstBar, "")
+        val dataSetSecondBar = BarDataSet(secondBar, "")
 
-        val dataSetFirstBar = BarDataSet(first_bar, "")
-        val dataSetSecondBar = BarDataSet(second_bar, "")
-
-        // set bar label
+        //subtitle config view
         val legend = barChartView.legend
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM)
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT)
-        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL)
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
         legend.setDrawInside(false)
 
         val footerEntries = arrayListOf<LegendEntry>()
@@ -101,12 +113,11 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         )
 
         legend.setCustom(footerEntries)
-        legend.setXOffset(-2f)
-        legend.setYEntrySpace(0f)
-        legend.setTextSize(9f)
+        legend.xOffset = -2f
+        legend.yEntrySpace = 0f
+        legend.textSize = 9f
 
         dataSetFirstBar.color = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-
         dataSetFirstBar.valueTextColor = Color.BLACK
         dataSetFirstBar.valueTextSize = 10f
 
@@ -114,34 +125,36 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
             ContextCompat.getColor(requireContext(), R.color.colorPrimaryDarker)
         dataSetSecondBar.valueTextColor = Color.BLACK
         dataSetSecondBar.valueTextSize = 10f
-
+        //end subtitle
+        //chart config view
         barChartView.data = BarData(dataSetFirstBar, dataSetSecondBar)
         barChartView.setFitBars(true)
-        barChartView.getDescription().setEnabled(false);
+        barChartView.description.isEnabled = false
 
         barChartView.animateY(1000)
         barChartView.axisLeft.isEnabled = false
         barChartView.axisRight.isEnabled = false
-        barChartView.xAxis.isEnabled = false
         barChartView.axisLeft.labelCount = 5
-        barChartView.axisLeft.axisMaximum = axValue.toFloat()
+        barChartView.axisLeft.axisMaximum = axValue
         barChartView.axisLeft.axisMinimum = 0f
-        barChartView.xAxis.setGranularity(1f)
-        barChartView.xAxis.setGranularityEnabled(true)
+        barChartView.xAxis.isEnabled = false
+        barChartView.xAxis.isGranularityEnabled = true
+        barChartView.xAxis.granularity = 1f
         barChartView.xAxis.setCenterAxisLabels(true)
         barChartView.xAxis.setDrawGridLines(false)
         barChartView.xAxis.textSize = 9f
 
-        barChartView.setDoubleTapToZoomEnabled(false)
+        barChartView.isDoubleTapToZoomEnabled = false
+        //end config
     }
 
     private fun setPieChart(with: Int, without: Int) {
 
-        val visitors: ArrayList<PieEntry> = ArrayList();
+        val visitors: ArrayList<PieEntry> = ArrayList()
         visitors.add(PieEntry(with.toFloat(), ""))
         visitors.add(PieEntry(without.toFloat(), ""))
 
-        val colors: ArrayList<Int> = ArrayList();
+        val colors: ArrayList<Int> = ArrayList()
         colors.add(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
         colors.add(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDarker))
 
@@ -153,9 +166,9 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         barPie.setDrawIcons(false)
 
         val legend = pieChartView.legend
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM)
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT)
-        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL)
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
         legend.setDrawInside(false)
 
         val footerEntries = arrayListOf<LegendEntry>()
@@ -183,45 +196,60 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
         legend.setCustom(footerEntries)
         legend.textColor = Color.BLACK
-        legend.setTextSize(10f)
-        legend.setYOffset(4f)
-        legend.setXOffset(5f)
+        legend.textSize = 10f
+        legend.yOffset = 4f
+        legend.xOffset = 5f
 
         pieChartView.data = PieData(barPie)
         pieChartView.description.text = "Post"
         pieChartView.description.textSize = 10f
         pieChartView.description.xOffset = 30f
-
-//      pieChartView.animate()
-        pieChartView.setRotationEnabled(false)
+        pieChartView.animate()
+        pieChartView.isRotationEnabled = false
     }
 
     private fun setMetricsData() {
         Coroutines.main {
-            try {
-                val metric = viewModel.getUsermetrics()
-                setBarChart(
-                    metric.followers.value,
-                    metric.following.value
-                )
-                setPieChart(
-                    metric.posts_with_hashtags.value.toInt(),
-                    metric.publications.value.toInt() - metric.posts_with_hashtags.value.toInt()
-                )
-                setAvarageChart(
-                    metric.mean_of_comments.value
-                // segment_id must be string, visible must be string
-                )
-            }catch (ex: Exception){
-                Log.i("Fragment_top_exception", ex.message?:"")
-                layout_education_top.shortSnackbar("Cadastre um instagram para podermos analisar.")
-            }finally{
+            if (viewModel.getUserSocialNetworks()) {
+                try {
+                    val metric = viewModel.getUsermetrics()
+                    setBarChart(
+                        metric.followers.value,
+                        metric.following.value
+                    )
+                    setPieChart(
+                        metric.posts_with_hashtags.value.toInt(),
+                        metric.publications.value.toInt() - metric.posts_with_hashtags.value.toInt()
+                    )
+                    setAvarageChart(
+                        metric.mean_of_comments.value
+                    )
+                    scrollview_education.visibility = View.VISIBLE
+                } catch (ex: ClientException) {
+                    setMetricsNotFound(ex)
+                } catch (ex: Exception) {
+                    Log.i("Fragment_top_exception", ex.message ?: "")
+                } finally {
+                    setProgressBarVisibility(false)
+                }
+            } else {
                 setProgressBarVisibility(false)
+                container_education_metrics?.visibility = View.VISIBLE
+                text_no_registered?.visibility = View.VISIBLE
             }
         }
     }
 
     private fun setProgressBarVisibility(visible: Boolean) {
-        progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
+        progress_bar?.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    private fun setMetricsNotFound(ex: ClientException) {
+        setProgressBarVisibility(false)
+        scrollview_education?.visibility = View.GONE
+        container_education_metrics?.visibility = View.VISIBLE
+        when (ex.code) {
+            500 -> text_no_found?.visibility = View.VISIBLE
+        }
     }
 }

@@ -13,24 +13,24 @@
         android:layout_gravity="center"
         android:paddingTop="16dp"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
-
+    <!--Card metrics-->
     <HorizontalScrollView
+        android:id="@+id/scrollview_education"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="gone">
 
-        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="140dp"
@@ -40,16 +40,15 @@
 
                 app:cardCornerRadius="5dp">
 
-                                <com.github.mikephil.charting.charts.BarChart
-                                    android:layout_margin="4dp"
-                                    android:id="@+id/barChartView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:contentDescription="grafico de barra"
-                                    >
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChartView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:contentDescription="grafico de barra">
 
 
-                                </com.github.mikephil.charting.charts.BarChart>
+                </com.github.mikephil.charting.charts.BarChart>
 
             </androidx.cardview.widget.CardView>
 
@@ -57,58 +56,56 @@
                 android:id="@+id/cardView2"
                 android:layout_width="140dp"
                 android:layout_height="120dp"
-                app:cardBackgroundColor="@color/card_background"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                app:cardCornerRadius="5dp"
-                >
-                        <com.github.mikephil.charting.charts.PieChart
-                            android:layout_margin="4dp"
-                            android:id="@+id/pieChartView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="grafico de barra"
-                            >
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="5dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChartView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:contentDescription="grafico de barra">
 
 
-                        </com.github.mikephil.charting.charts.PieChart>
+                </com.github.mikephil.charting.charts.PieChart>
 
 
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView3"
                 android:layout_width="140dp"
                 android:layout_height="120dp"
                 app:cardBackgroundColor="@color/card_background"
-                app:cardCornerRadius="5dp"
-                >
+                app:cardCornerRadius="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="8dp"
-                    >
+                    android:padding="8dp">
 
 
                     <TextView
-
                         android:id="@+id/text_metrics_avarage"
                         android:layout_width="118dp"
                         android:layout_height="53dp"
                         android:text=""
+                        android:textAlignment="center"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="40dp"
-                        android:textAlignment="center"/>
+                        android:textSize="40dp" />
+
                     <TextView
                         android:id="@+id/route_title"
                         android:layout_width="118dp"
                         android:layout_height="wrap_content"
-                        android:text="Média de Post na semana"
-                        android:textColor="@color/colorPrimaryDarker"
-                        android:textSize="15dp"
                         android:layout_marginBottom="5sp"
-                        android:textAlignment="center"/>
+                        android:text="Média de Post na semana"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDarker"
+                        android:textSize="15dp" />
                 </LinearLayout>
 
 
@@ -117,7 +114,62 @@
 
         </LinearLayout>
     </HorizontalScrollView>
+    <!--Not Found-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_education_metrics"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone">
 
+        <LinearLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="@string/title_metrics"
+                android:id="@+id/text_title_partner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_no_registered"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="65dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="65dp"
+                android:text="@string/instagram_not_registered"
+                android:textColor="@color/colorDivider"
+                android:textAlignment="center"
+                android:textSize="13sp" />
+            <TextView
+                android:id="@+id/text_no_found"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="65dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="65dp"
+                android:text="@string/instagram_not_found"
+                android:textColor="@color/colorDivider"
+                android:textAlignment="center"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
