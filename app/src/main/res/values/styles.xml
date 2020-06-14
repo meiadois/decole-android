@@ -75,6 +75,7 @@
 
     <style name="MyTextInputEditText" parent="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
     </style>
 
     <style name="progress_bar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
@@ -100,8 +101,6 @@
     <style name="normal_input_single_layout_with_error" parent="normal_input_single_layout">
         <item name="errorTextColor">@color/text_filed_error_color</item>
         <item name="errorIconTint">@color/text_filed_error_color</item>
-        <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_marginTop">4dp</item>
         <item name="errorEnabled">true</item>
     </style>
 
@@ -114,6 +113,7 @@
     </style>
 
     <style name="exposed_dropdown_text_view">
+        <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="boxStrokeWidth">0dp</item>
     </style>
 

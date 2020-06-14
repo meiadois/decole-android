@@ -307,8 +307,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         private const val CONTENT_NO_PARTNERS_FOUND = 3
         private const val CONTENT_NO_REGISTERS_FOUND = 3
 
-        const val CHIP_INVITE_SENT = R.id.menu_waiting_response
-        const val CHIP_INVITE_RECEIVED = R.id.menu_to_respond
-        const val CHIP_CONNECTED = R.id.menu_connected
+        const val CHIP_INVITE_SENT = 5
+        const val CHIP_INVITE_RECEIVED = 6
+        const val CHIP_CONNECTED = 7
     }
 }
