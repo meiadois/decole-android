@@ -1,6 +1,8 @@
 package br.com.meiadois.decole.util.extension
 
 import br.com.meiadois.decole.data.localdb.entity.Lesson
+import br.com.meiadois.decole.data.localdb.entity.Segment as SegmentEntity
+import br.com.meiadois.decole.data.localdb.entity.Company as CompanyEntity
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
 import br.com.meiadois.decole.data.localdb.entity.Route
 import br.com.meiadois.decole.data.localdb.entity.User
@@ -8,12 +10,17 @@ import br.com.meiadois.decole.data.model.*
 import br.com.meiadois.decole.data.network.response.*
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
 import br.com.meiadois.decole.presentation.user.account.binding.ImageData
+import br.com.meiadois.decole.presentation.user.account.binding.UserAccountData
 import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
 import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 
 fun UserDTO.parseToUserEntity() = User(this.jwt, this.name, this.email, this.introduced)
 
-fun RouteDTO.parseEntity() = Route (
+fun UserAccountData.parseToUserEntity() = User(jwt, name, email, introduced)
+
+fun User.parseToUserAccountData() = UserAccountData(name, email, jwt, introduced)
+
+fun RouteDTO.parseEntity() = Route(
     this.id,
     this.title,
     this.description,
@@ -68,15 +75,25 @@ fun List<SegmentResponse>.toSegmentModelList(): List<Segment> {
 
 fun SegmentResponse.toSegmentModel() = Segment(this.id, this.name)
 
-fun MetricsResponse.toMetricModel() = Metrics( this.sucess, this.error_message, this.value)
+fun MetricsResponse.toMetricModel() = Metrics(this.sucess, this.error_message, this.value)
 
-fun List<SegmentResponse>.toSegmentModelListDb(): List<br.com.meiadois.decole.data.localdb.entity.Segment> {
+fun List<SegmentResponse>.toSegmentEntityList(): List<SegmentEntity> {
     return this.map {
-        it.toSegmentModelDb()
+        it.toSegmentEntity()
     }
 }
 
-fun SegmentResponse.toSegmentModelDb() = br.com.meiadois.decole.data.localdb.entity.Segment(this.id!!, this.name)
+fun Segment.toSegmentEntity() = SegmentEntity(id!!, name)
+
+fun SegmentResponse.toSegmentEntity() = SegmentEntity(id!!, name)
+
+fun SegmentEntity.toSegmentModel(): Segment = Segment(id, name)
+
+fun List<SegmentEntity>.parseToSegmentModelList(): List<Segment> {
+    return this.map {
+        it.toSegmentModel()
+    }
+}
 
 fun CompanyResponse.toCompanyModel(): Company {
     return Company(
@@ -96,25 +113,96 @@ fun CompanyResponse.toCompanyModel(): Company {
     )
 }
 
-fun CompanyResponse.toMyCompany(): MyCompany {
-    return MyCompany(id, name, thumbnail, segment?.name ?: "")
-}
-
-fun CompanySearchResponse.toCompanySearchModel(): Company {
-    return Company(
+fun Company.toCompanyEntity(): CompanyEntity {
+    return CompanyEntity(
         id,
         name,
-        "",
-        "",
+        thumbnail,
+        cep,
         banner,
         cnpj,
         cellphone,
         email,
         description,
-        false,
-        "",
-        "",
+        visible,
+        city,
+        neighborhood,
+        segment?.id ?: 0
+    )
+}
+
+fun CompanyResponse.toCompanyEntity(): CompanyEntity {
+    return CompanyEntity(
+        id,
+        name,
+        thumbnail,
+        cep,
+        banner,
+        cnpj,
+        cellphone,
+        email,
+        description,
+        visible,
+        city,
+        neighborhood,
+        segment?.id ?: 0
+    )
+}
+
+fun CompanyResponse.toMyCompany(): MyCompany {
+    return MyCompany(
+        this.toCompanyEntity(),
+        this.segment?.toSegmentEntity()
+    )
+}
+
+fun MyCompany.toCompanyAccountData(): CompanyAccountData {
+    return CompanyAccountData(
+        company.id,
+        company.name,
+        company.cep,
+        ImageData(path = company.thumbnail),
+        ImageData(path = company.banner),
+        company.cnpj,
+        company.cellphone,
+        company.email,
+        company.description,
+        company.visible,
+        company.city!!,
+        company.neighborhood!!,
+        segment?.id ?: -1,
+        segment?.name
+    )
+}
+
+fun MyCompany.toCompanyModel(): Company {
+    return Company(
+        company.id,
+        company.name,
+        company.cep,
+        company.thumbnail,
+        company.banner,
+        company.cnpj,
+        company.cellphone,
+        company.email,
+        company.description,
+        company.visible,
+        company.city,
+        company.neighborhood,
         segment?.toSegmentModel()
+    )
+}
+
+fun CompanySearchResponse.toCompanySearchModel(): Company {
+    return Company(
+        id = id,
+        name = name,
+        banner = banner,
+        cnpj = cnpj,
+        cellphone = cellphone,
+        email = email,
+        description = description,
+        segment = segment?.toSegmentModel()
     )
 }
 
@@ -138,12 +226,6 @@ fun List<CompanySearchResponse>.toCompanySearchModelList(): List<Company> {
             it.toCompanySearchModel()
         }
     return listOf()
-}
-
-fun CompanyResponse.toCompanyAccountData(): CompanyAccountData {
-    return CompanyAccountData(
-        id, name, cep, ImageData(path = thumbnail), ImageData(path = banner), cnpj, cellphone, email, description, visible, city, neighborhood, segment?.id ?: -1, segment?.name
-    )
 }
 
 fun List<LikeResponse>.toLikeModelList(userCompanyId: Int): List<Like> {

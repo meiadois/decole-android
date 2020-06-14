@@ -21,7 +21,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
-
 class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     override val kodein by kodein()
     private val factory: PartnershipHomeTopViewModelFactory by instance<PartnershipHomeTopViewModelFactory>()
@@ -48,43 +47,46 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
         init()
     }
 
-    private fun init(){
+    private fun init() {
         Coroutines.main {
-            try{
+            try {
                 viewModel.getUserCompany().observe(
-                    this,Observer{
+                    this, Observer {
                         it?.let {
                             setContentVisibility(CONTENT_WITH_ACCOUNT)
                             showUserCompany(it)
                         }
                     }
                 )
-            }catch (ex: ClientException){
+            } catch (ex: ClientException) {
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
-            }catch (ex: Exception){
-                Log.i("Fragment_top_exception", ex.message?:"")
-            }finally {
+            } catch (ex: Exception) {
+                Log.i("Fragment_top_exception", ex.message ?: "")
+            } finally {
                 setProgressBarVisibility(false)
             }
         }
     }
 
-    private fun setProgressBarVisibility(visible: Boolean){
+    private fun setProgressBarVisibility(visible: Boolean) {
         top_progress_bar?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
-    private fun setContentVisibility(contentMode: Int){
+    private fun setContentVisibility(contentMode: Int) {
         container_company_layout_account.visibility = if (contentMode == CONTENT_WITH_ACCOUNT) View.VISIBLE else View.GONE
         container_company_layout_no_account.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
     }
 
-    private fun showUserCompany(company: MyCompany){
-        text_partner_name.text = company.name
-        text_partner_segment.text = company.segment
-        Glide.with(container_company_layout_account).load(company.thumbnail).apply(RequestOptions.circleCropTransform()).into(image_partner)
+    private fun showUserCompany(company: MyCompany) {
+        company.let {
+            text_partner_name.text = it.company.name
+            text_partner_segment.text = it.segment?.name
+            Glide.with(container_company_layout_account).load(it.company.thumbnail)
+                .apply(RequestOptions.circleCropTransform()).into(image_partner)
+        }
     }
 
-    companion object{
+    companion object {
         private const val CONTENT_NONE = 0
         private const val CONTENT_NO_ACCOUNT = 1
         private const val CONTENT_WITH_ACCOUNT = 2

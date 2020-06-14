@@ -19,8 +19,7 @@ import br.com.meiadois.decole.presentation.user.account.validation.*
 import br.com.meiadois.decole.service.LogOutService
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
-import br.com.meiadois.decole.util.extension.toCompanyAccountData
-import br.com.meiadois.decole.util.extension.toSegmentModelList
+import br.com.meiadois.decole.util.extension.*
 import com.google.android.material.textfield.TextInputLayout
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -56,7 +55,11 @@ class AccountViewModel(
     private fun getSegments() {
         Coroutines.main {
             try {
-                segments.value = segmentRepository.getAllSegments().toSegmentModelList()
+                segmentRepository.getAllSegments().observeForever {
+                    it?.let {
+                        segments.value = it.parseToSegmentModelList()
+                    }
+                }
             } catch (ex: Exception) {
                 Log.i("AccountViewModel.init", ex.message ?: "no error message")
             }
@@ -66,8 +69,7 @@ class AccountViewModel(
     private fun getUser() {
         try {
             userRepository.getUser().observeForever { user ->
-                userData.value =
-                    if (user != null) UserAccountData(user.name, user.email) else UserAccountData()
+                userData.value = user?.parseToUserAccountData() ?: UserAccountData()
             }
         } catch (ex: Exception) {
             userData.value = UserAccountData()
@@ -78,10 +80,15 @@ class AccountViewModel(
     private fun getUserCompany() {
         Coroutines.main {
             try {
-                companyData.value = companyRepository.getUserCompany().toCompanyAccountData()
-                companyData.value!!.thumbnail.name = getFileName(companyData.value!!.thumbnail.path)
-                companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
-                isUpdatingCompany = true
+                companyRepository.getMyCompany().observeForever {
+                    if (it != null) {
+                        companyData.value = it.toCompanyAccountData()
+                        companyData.value!!.thumbnail.name = getFileName(companyData.value!!.thumbnail.path)
+                        companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
+                        isUpdatingCompany = true
+                    } else
+                        companyData.value = CompanyAccountData(email = userData.value!!.email)
+                }
             } catch (ex: Exception) {
                 companyData.value = CompanyAccountData(email = userData.value!!.email)
                 Log.i("AccountViewModel.init", ex.message ?: "no error message")
@@ -194,6 +201,7 @@ class AccountViewModel(
                     )
 
                     userRepository.updateUser(userData.value!!.name, userData.value!!.email)
+                    userRepository.saveUser(userData.value!!.parseToUserEntity())
 
                     if (isUpdatingInstagram) {
                         if (userNetworksData.value!!.instagram.isEmpty())

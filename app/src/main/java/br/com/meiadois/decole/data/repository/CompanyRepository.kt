@@ -12,9 +12,7 @@ import br.com.meiadois.decole.data.network.request.LikeSenderRequest
 import br.com.meiadois.decole.data.network.response.*
 import br.com.meiadois.decole.data.preferences.PreferenceProvider
 import br.com.meiadois.decole.util.Coroutines
-import br.com.meiadois.decole.util.extension.isFetchNeeded
-import br.com.meiadois.decole.util.extension.toCompanyModel
-import br.com.meiadois.decole.util.extension.toMyCompany
+import br.com.meiadois.decole.util.extension.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -28,7 +26,7 @@ class CompanyRepository(
     private val companyUser = MutableLiveData<Company>()
 
     init {
-        companyUser.observeForever{
+        companyUser.observeForever {
             saveCompany(it)
         }
     }
@@ -39,21 +37,15 @@ class CompanyRepository(
         }
     }
 
-    suspend fun getCompaniesBySegment(segmentId: Int): List<CompanySearchResponse>{
+    suspend fun getCompaniesBySegment(segmentId: Int): List<CompanySearchResponse> {
         return callClient {
             client.getCompaniesBySegment(segmentId)
         }
     }
 
-    suspend fun getAllCompanies(): List<CompanySearchResponse>{
-        return callClient{
-            client.getAllCompanies()
-        }
-    }
-
-    suspend fun getUserCompany(): CompanyResponse {
+    suspend fun getAllCompanies(): List<CompanySearchResponse> {
         return callClient {
-            client.getUserCompany()
+            client.getAllCompanies()
         }
     }
 
@@ -71,7 +63,7 @@ class CompanyRepository(
         thumbnail: MultipartBody.Part?,
         banner: MultipartBody.Part?
     ): CompanyResponse {
-        return callClient {
+        val response = callClient {
             client.updateUserCompany(
                 name,
                 cep,
@@ -87,6 +79,8 @@ class CompanyRepository(
                 banner
             )
         }
+        companyUser.postValue(response.toCompanyModel())
+        return response
     }
 
     suspend fun insertUserCompany(
@@ -103,7 +97,7 @@ class CompanyRepository(
         thumbnail: MultipartBody.Part,
         banner: MultipartBody.Part
     ): CompanyResponse {
-        return callClient {
+        val response = callClient {
             client.insertUserCompany(
                 name,
                 cep,
@@ -119,6 +113,8 @@ class CompanyRepository(
                 banner
             )
         }
+        companyUser.postValue(response.toCompanyModel())
+        return response
     }
 
     suspend fun deletePartnership(likeId: Int, senderId: Int, recipientId: Int): LikePutResponse {
@@ -143,7 +139,7 @@ class CompanyRepository(
         client.deleteLike(likeId)
     }
 
-    suspend fun sendLikes(senderId: Int, recipientId: Int): LikePutResponse{
+    suspend fun sendLikes(senderId: Int, recipientId: Int): LikePutResponse {
         return callClient {
             client.sendLike(LikeSenderRequest(senderId, recipientId))
         }
@@ -168,20 +164,21 @@ class CompanyRepository(
     }
 
     private suspend fun fetchCompany(): CompanyResponse {
-        val res = callClient {
+        val response = callClient {
             client.getUserCompany()
         }
-        companyUser.postValue(res.toCompanyModel())
-        return res
+        companyUser.postValue(response.toCompanyModel())
+        return response
     }
 
-    private fun saveCompany(company:Company) {
+    private fun saveCompany(company: Company) {
         prefs.saveLastCompanyFetch(System.currentTimeMillis())
-
-       // val comp = MyCompany(company.id,company.name,company.thumbnail,company.cep,company.banner,company.cnpj,company.cellphone,company.email,company.description,company.visible,company.city,company.neighborhood,company.segment.id)
-        val comp = MyCompany(company.id,company.name,company.thumbnail,company.segment!!.name)
         Coroutines.io {
-            db.getCompanyDao().upsert(comp)
+            company.segment?.let{
+                if (it.id != null)
+                    db.getSegmentDao().upsert(it.toSegmentEntity())
+            }
+            db.getCompanyDao().upsert(company.toCompanyEntity())
         }
     }
 
@@ -190,8 +187,7 @@ class CompanyRepository(
             val lastFetch = prefs.getLastCompanyFetch()
             if (lastFetch == 0L || Date(lastFetch).isFetchNeeded())
                 return@withContext MutableLiveData(fetchCompany().toMyCompany())
-            MutableLiveData(db.getCompanyDao().getUserCompanyLocal())
+            MutableLiveData(db.getCompanyDao().getUserCompanyWithSegment())
         }
     }
-
 }

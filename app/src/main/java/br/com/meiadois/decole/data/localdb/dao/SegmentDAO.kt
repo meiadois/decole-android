@@ -10,14 +10,16 @@ import br.com.meiadois.decole.data.localdb.entity.Segment
 @Dao
 interface SegmentDAO {
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(segments: List<Segment>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(segment:List<Segment>)
+    suspend fun upsert(segment: Segment)
 
     @Query("SELECT * FROM Segment WHERE id = :id")
-    suspend fun getSegmentLocal(id: Int): Segment
+    suspend fun getSegmentById(id: Int): Segment
 
     @Query("SELECT * FROM Segment")
-    fun getSegmentLocalAll(): LiveData<List<Segment>>
+    fun getAllSegments(): LiveData<List<Segment>>
 
 }

@@ -469,7 +469,7 @@
                         style="@style/normal_input_single_layout_with_error"
                         android:id="@+id/socialNetwork_instagram_input">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:inputType="textCapWords|textNoSuggestions"
+                            android:inputType="textNoSuggestions"
                             android:id="@+id/input_socialNetwork_instagram"
                             android:singleLine="true"
                             android:layout_width="match_parent"
@@ -485,7 +485,7 @@
                         style="@style/normal_input_single_layout_with_error"
                         android:id="@+id/socialNetwork_facebook_input">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:inputType="textEmailAddress|textNoSuggestions"
+                            android:inputType="textNoSuggestions"
                             android:id="@+id/input_socialNetwork_facebook"
                             android:singleLine="true"
                             android:layout_width="match_parent"

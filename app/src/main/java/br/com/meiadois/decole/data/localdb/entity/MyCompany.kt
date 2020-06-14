@@ -1,23 +1,13 @@
 package br.com.meiadois.decole.data.localdb.entity
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import br.com.meiadois.decole.data.model.Segment
+import androidx.room.Embedded
+import androidx.room.Relation
 
-@Entity
 data class MyCompany(
-    @PrimaryKey(autoGenerate = false) val id: Int,
-    val name: String,
-    val thumbnail: String,
-    val segment: String
-    /*val cep: String,
-    val banner: String,
-    val cnpj: String,
-    val  cellphone: String,
-    val email: String,
-    val description: String,
-    val  visible: Boolean,
-    val city: String?,
-    val neighborhood: String?,
-    val segmentid: Int*/
+    @Embedded val company: Company,
+    @Relation(
+        parentColumn = "segmentId",
+        entityColumn = "id"
+    )
+    val segment: Segment?
 )
