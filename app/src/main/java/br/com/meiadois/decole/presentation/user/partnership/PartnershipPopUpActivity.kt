@@ -24,15 +24,8 @@ import br.com.meiadois.decole.presentation.user.partnership.viewmodel.Partnershi
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipPopUpViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.extension.longSnackbar
-import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_route_details.*
-import kotlinx.android.synthetic.main.fragment_education_home_top.*
-import kotlinx.android.synthetic.main.layout_floating_widget.view.*
 import kotlinx.android.synthetic.main.popupwindow_partner.*
 import kotlinx.android.synthetic.main.popupwindow_partner.progress_bar
 import org.kodein.di.KodeinAware
@@ -47,7 +40,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         overridePendingTransition(0, 0)
-        setContentView(R.layout.fragment_education_home_top)
+        setContentView(R.layout.popupwindow_partner)
 
         val bundle = intent.extras
         val likeId: Int = bundle?.getInt(EXTRA_LIKE_ID, -1) ?: -1
@@ -59,7 +52,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         viewModel = ViewModelProvider(this, factory).get(PartnershipPopUpViewModel::class.java)
         setContentVisibility(CONTENT_LOADING)
 
-        getCompany(partnerId){
+        getCompany(partnerId) {
             setContextButtons(likeId, partnerId, userCompanyId, isUserSender, contentMode)
         }
 
@@ -69,7 +62,6 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
 
         setOpenDialAppOrWhatsAppListener()
         setOpenMailAppListener()
-
     }
 
     private fun getCompany(partnerId: Int, callback: () -> Unit) {
@@ -102,11 +94,14 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         popup_window_phone.setOnClickListener {
             val number: String = popup_window_phone.text.toString()
             val intent: Intent
-            if (!isWhatsappInstalled()){
+            if (!isWhatsappInstalled()) {
                 intent = Intent(Intent.ACTION_DIAL)
                 intent.data = Uri.parse("tel:$number")
-            }else
-                intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=$number"))
+            } else
+                intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://api.whatsapp.com/send?phone=$number")
+                )
             startActivity(intent)
         }
     }
@@ -140,15 +135,15 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
     // endregion
 
     // region Content Management
-    private fun setContentVisibility(contentMode: Int){
+    private fun setContentVisibility(contentMode: Int) {
         progress_bar.visibility = if (contentMode == CONTENT_LOADING) View.VISIBLE else View.GONE
         popup_window_view.visibility = if (contentMode == CONTENT_LOADING) View.INVISIBLE else View.VISIBLE
         popup_window_partnership_actions_divider.visibility = popup_window_view.visibility
         popup_window_contact_layout.visibility = popup_window_view.visibility
     }
 
-    private fun setContextButtons(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender: Boolean, contentMode: Int){
-        when(contentMode){
+    private fun setContextButtons(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender: Boolean, contentMode: Int) {
+        when (contentMode) {
             ICON_MATCH_ID -> {
                 popup_window_match_button_layout.visibility = View.VISIBLE
                 setMatchButtonListener(likeId, partnerId, userCompanyId, isUserSender)
@@ -164,7 +159,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun setMatchButtonListener(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender: Boolean){
+    private fun setMatchButtonListener(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender: Boolean) {
         match_button.setOnClickListener {
             Coroutines.main {
                 try {
@@ -186,7 +181,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun setReceivedButtonsListener(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender: Boolean){
+    private fun setReceivedButtonsListener(likeId: Int, partnerId: Int, userCompanyId: Int, isUserSender: Boolean) {
         received_button_primary.setOnClickListener {
             Coroutines.main {
                 try {
@@ -227,7 +222,7 @@ class PartnershipPopUpActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun setSentButtonListener(likeId: Int){
+    private fun setSentButtonListener(likeId: Int) {
         sent_button.setOnClickListener {
             Coroutines.main {
                 try {
