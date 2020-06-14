@@ -150,4 +150,5 @@
     <string name="account_me_header_subtitle">Informações da minha conta</string>
     <string name="account_company_header_subtitle">Informações da minha empresa</string>
     <string name="social_network_header_subtitle">Informações das minhas redes sociais</string>
+    <string name="long_press_confirmation">Toque e segure para confirmar</string>
 </resources>

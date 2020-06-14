@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Like
@@ -68,19 +70,71 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
     private fun configureActions() {
 
         btn_primary_invite_received.setOnClickListener {
-            viewModel.confirmPartnership()
+            val button = it as Button
+            if (button.text != getString(R.string.long_press_confirmation)){
+                button.text = getString(R.string.long_press_confirmation)
+                button.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireContext(), R.drawable.ic_mdi_warning), null, null, null)
+            }
+        }
+
+        btn_secondary_invite_received.setOnLongClickListener {
+            val button = it as Button
+            if (button.text == getString(R.string.long_press_confirmation)){
+                viewModel.confirmPartnership()
+                return@setOnLongClickListener true
+            }
+            return@setOnLongClickListener false
         }
 
         btn_secondary_invite_received.setOnClickListener {
-            viewModel.cancelPartnership()
+            val button = it as Button
+            if (button.text != getString(R.string.long_press_confirmation)){
+                button.text = getString(R.string.long_press_confirmation)
+                button.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireContext(), R.drawable.ic_mdi_warning), null, null, null)
+            }
+        }
+
+        btn_secondary_invite_received.setOnLongClickListener {
+            val button = it as Button
+            if (button.text == getString(R.string.long_press_confirmation)){
+                viewModel.cancelPartnership()
+                return@setOnLongClickListener true
+            }
+            return@setOnLongClickListener false
         }
 
         btn_secondary_invite_sent.setOnClickListener {
-            viewModel.deletePartnership()
+            val button = it as Button
+            if (button.text != getString(R.string.long_press_confirmation)){
+                button.text = getString(R.string.long_press_confirmation)
+                button.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireContext(), R.drawable.ic_mdi_warning), null, null, null)
+            }
+        }
+
+        btn_secondary_invite_sent.setOnLongClickListener {
+            val button = it as Button
+            if (button.text == getString(R.string.long_press_confirmation)){
+                viewModel.deletePartnership()
+                return@setOnLongClickListener true
+            }
+            return@setOnLongClickListener false
         }
 
         btn_secondary_match.setOnClickListener {
-            viewModel.deletePartnership()
+            val button = it as Button
+            if (button.text != getString(R.string.long_press_confirmation)){
+                button.text = getString(R.string.long_press_confirmation)
+                button.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(requireContext(), R.drawable.ic_mdi_warning), null, null, null)
+            }
+        }
+
+        btn_secondary_match.setOnLongClickListener {
+            val button = it as Button
+            if (button.text == getString(R.string.long_press_confirmation)){
+                viewModel.deletePartnership()
+                return@setOnLongClickListener true
+            }
+            return@setOnLongClickListener false
         }
 
         sheet_text_phone.setOnClickListener {

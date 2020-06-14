@@ -40,10 +40,29 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
         super.onViewCreated(view, savedInstanceState)
 
         toolbar_back_button.setOnClickListener {
-            val nextFragment = PartnershipSearchFragment()
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, nextFragment)
-                .commit()
+            handleBackNavigation()
+        }
+
+        btn_apply_filter.setOnClickListener {
+            mViewModel.segmentFilter.value = mViewModel.segmentClicked
+            val segment = mViewModel.segments.value?.firstOrNull {
+                it.name == mViewModel.segmentFilter.value
+            }
+            if (segment == null) {
+                try {
+                    mViewModel.getAllCompanies()
+                } catch (ex: Exception) {
+                    Log.i("getAllComp.ex", ex.message!!)
+                }
+            } else {
+                try {
+                    mViewModel.getCompaniesBySegment(segment.id!!)
+                } catch (ex: Exception) {
+                    Log.i("getCompBySeg.ex", ex.message!!)
+                }
+            }
+
+            handleBackNavigation()
         }
 
         setAdapterToSegmentDropdown()
@@ -64,29 +83,20 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
                     )
                 )
                 filled_exposed_dropdown.inputType = InputType.TYPE_NULL
-                filled_exposed_dropdown.setText(mViewModel.segment ?:"Todos os Segmentos", false)
-                filled_exposed_dropdown.setOnItemClickListener { parent, view, position, id ->
-                    mViewModel.segment = segmentsString[position]
-                    val segment = segments.firstOrNull {
-                        it.name == segmentsString[position]
-                    }
-                    if (segment == null) {
-                        try {
-                            mViewModel.getAllCompanies()
-                        } catch (ex: Exception) {
-                            Log.i("getAllComp.ex", ex.message!!)
-                        }
-                    } else {
-                        try {
-                            mViewModel.getCompaniesBySegment(segment.id!!)
-                        } catch (ex: Exception) {
-                            Log.i("getCompBySeg.ex", ex.message!!)
-                        }
-                    }
+                filled_exposed_dropdown.setText(mViewModel.segmentFilter.value ?:"Todos os Segmentos", false)
+                filled_exposed_dropdown.setOnItemClickListener { _, _, position, _ ->
+                    mViewModel.segmentClicked = segmentsString[position]
                 }
 
             }
         })
+    }
+
+    private fun handleBackNavigation() {
+        val nextFragment = PartnershipSearchFragment()
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, nextFragment)
+            .commit()
     }
 
 }

@@ -22,9 +22,11 @@ private val segmentRepository: SegmentRepository
     var name: String? = null
     var banner: String? = null
     var description: String? = null
-    var segment: String? = null
 
     var state: Int = 0
+
+    var segmentClicked: String? = null
+    var segmentFilter: MutableLiveData<String> = MutableLiveData()
 
     var company: MutableLiveData<Company> = MutableLiveData()
 
@@ -94,8 +96,4 @@ private val segmentRepository: SegmentRepository
 
         }
     }
-
-//    fun onApplyFilterButtonClicked(view: View){
-//
-//    }
 }

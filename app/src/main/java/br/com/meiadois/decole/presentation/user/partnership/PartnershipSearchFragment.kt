@@ -92,6 +92,10 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 }
             }
         }
+
+        mViewModel.segmentFilter.observe(viewLifecycleOwner, Observer {
+            setLoadingView()
+        })
     }
 
     private fun setCompaniesAdapter() {

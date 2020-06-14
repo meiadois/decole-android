@@ -152,11 +152,13 @@
             android:visibility="visible">
 
             <Button
+                android:textSize="13sp"
                 android:id="@+id/btn_primary_invite_received"
                 style="@style/btn_primary"
                 android:text="@string/label_accept_invite" />
 
             <Button
+                android:textSize="13sp"
                 android:id="@+id/btn_secondary_invite_received"
                 style="@style/btn_secondary"
                 android:text="@string/label_decline_invite"/>
@@ -185,6 +187,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
+                android:textSize="13sp"
                 android:id="@+id/btn_secondary_invite_sent"
                 style="@style/btn_secondary"
                 android:text="@string/label_cancel_invite"
@@ -215,6 +218,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
+                android:textSize="13sp"
                 android:id="@+id/btn_secondary_match"
                 style="@style/btn_secondary"
                 android:text="@string/label_cancel_partnership"
