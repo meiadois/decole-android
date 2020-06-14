@@ -137,91 +137,92 @@
         android:layout_height="1dp"
         android:background="@color/colorDivider" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container_invite_received_footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorTextIcons"
-        android:padding="24dp"
-        android:visibility="visible">
-
-        <Button
-            android:id="@+id/btn_primary_invite_received"
-            style="@style/btn_primary"
-            android:text="@string/label_accept_invite"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btn_secondary_invite_received"
-            style="@style/btn_secondary"
-            android:text="@string/label_decline_invite"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_primary_invite_received" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <LinearLayout
-        android:id="@+id/container_invite_sent_footer"
+        android:id="@+id/container_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTextIcons"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:visibility="gone"
-        tool:visibility="visible">
-
-        <TextView
-            android:id="@+id/btn_primary_invite_sent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/container_invite_received_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_waiting_reply"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccentOrange"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@color/colorTextIcons"
+            android:padding="24dp"
+            android:visibility="visible">
 
-        <Button
-            android:id="@+id/btn_secondary_invite_sent"
-            style="@style/btn_secondary"
-            android:text="@string/label_cancel_invite"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <Button
+                android:id="@+id/btn_primary_invite_received"
+                style="@style/btn_primary"
+                android:text="@string/label_accept_invite" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_secondary_invite_received"
+                style="@style/btn_secondary"
+                android:text="@string/label_decline_invite"/>
 
-    <LinearLayout
-        android:id="@+id/container_match_footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorTextIcons"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:visibility="gone"
-        tool:visibility="visible">
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/btn_primary_match"
+        <LinearLayout
+            android:id="@+id/container_invite_sent_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Vocês são parceiros desde dd/MM/yyyy"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="@color/colorTextIcons"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="gone"
+            tool:visibility="visible">
 
-        <Button
-            android:id="@+id/btn_secondary_match"
-            style="@style/btn_secondary"
-            android:text="@string/label_cancel_partnership"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_primary_invite_sent" />
+            <TextView
+                android:id="@+id/btn_primary_invite_sent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_waiting_reply"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccentOrange"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:id="@+id/btn_secondary_invite_sent"
+                style="@style/btn_secondary"
+                android:text="@string/label_cancel_invite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_match_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTextIcons"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="gone"
+            tool:visibility="visible">
+
+            <TextView
+                android:id="@+id/btn_primary_match"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vocês são parceiros desde dd/MM/yyyy"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_secondary_match"
+                style="@style/btn_secondary"
+                android:text="@string/label_cancel_partnership"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_primary_invite_sent" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

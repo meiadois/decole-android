@@ -224,6 +224,13 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     private fun onPartnerItemClick(context: Context, like: Like) {
         val bottomSheet = PartnerBottomSheetDialog()
+        bottomSheet.onDismissListener = object :
+            PartnerBottomSheetDialog.OnActionCompletedListener {
+            override fun handle() {
+                updateContent(viewModel.company!!.id)
+            }
+
+        }
         val bundle = Bundle()
         bundle.putParcelable("inviteDetails", like)
         bottomSheet.arguments = bundle

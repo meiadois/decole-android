@@ -64,8 +64,9 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
                     )
                 )
                 filled_exposed_dropdown.inputType = InputType.TYPE_NULL
-                filled_exposed_dropdown.setText("Todos os Segmentos", false)
+                filled_exposed_dropdown.setText(mViewModel.segment ?:"Todos os Segmentos", false)
                 filled_exposed_dropdown.setOnItemClickListener { parent, view, position, id ->
+                    mViewModel.segment = segmentsString[position]
                     val segment = segments.firstOrNull {
                         it.name == segmentsString[position]
                     }

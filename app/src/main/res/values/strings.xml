@@ -118,7 +118,7 @@
     <string name="search_tooltip">Buscar</string>
     <string name="no_match_found">Você ainda não firmou parcerias :(</string>
     <string name="no_received_likes_found">Você ainda não recebeu convites de parceria :(</string>
-    <string name="no_sent_likes_found">Nenhum like enviado. Clique no botão de busca e procure por uma empresa parceira.</string>
+    <string name="no_sent_likes_found">Nenhum convite de parceria enviado. Clique no botão de busca e procure por potenciais parceiros.</string>
     <string name="Incomplete_registration_title">Cadastro incompleto</string>
     <string name="interesting_label">Me interessam</string>
     <string name="interested_label">Interessadas</string>
