@@ -45,18 +45,14 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         super.onResume()
         init()
     }
+
     private fun init(){
         scrollview_education?.visibility = View.GONE
         container_education_metrics?.visibility = View.GONE
+        text_no_registered.visibility = View.GONE
+        text_no_found.visibility = View.GONE
         setProgressBarVisibility(true)
         setMetricsData()
-    }
-
-    private fun teste() {
-        setBarChart(50f, 40f)
-        setPieChart(200, 50)
-        setAvarageChart(80.6f)
-        scrollview_education.visibility = View.VISIBLE
     }
 
     private fun setAvarageChart(avarage: Float) {
