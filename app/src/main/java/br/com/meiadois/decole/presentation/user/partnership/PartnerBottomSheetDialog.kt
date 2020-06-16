@@ -1,5 +1,6 @@
 package br.com.meiadois.decole.presentation.user.partnership
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -21,6 +22,7 @@ import kotlinx.android.synthetic.main.layout_partner_bottom_sheet.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
+import java.text.SimpleDateFormat
 
 class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, PartnerActionListener {
 
@@ -61,7 +63,7 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
                 .apply(RequestOptions.circleCropTransform()).into(image_partner)
 
             if (it.status == "accepted")
-                renderAcceptedSheet()
+                renderAcceptedSheet(formatDate(it.acceptedAt!!))
             else if (it.isSender)
                 renderSenderFooter()
         }
@@ -109,10 +111,18 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
 
     }
 
-    private fun renderAcceptedSheet() {
+    private fun renderAcceptedSheet(matchDate: String) {
         sheet_text_title.text = getString(R.string.partner_bottom_sheet_accepted_invite_title)
+        sheet_text_partner_since.text = getString(R.string.label_partners_since, matchDate)
         container_invite_received_footer.visibility = View.GONE
         container_match_footer.visibility = View.VISIBLE
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun formatDate(date: String): String {
+        val formatter = SimpleDateFormat("dd/MM/yyyy")
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        return formatter.format(parser.parse(date)!!)
     }
 
     private fun renderSenderFooter() {

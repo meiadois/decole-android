@@ -9,5 +9,6 @@ data class Like(
     val status: String,
     val partnerCompany: Company,
     val userCompany: Company,
-    val isSender: Boolean = false
+    val isSender: Boolean = false,
+    val acceptedAt: String? = null
 ) : Parcelable

@@ -251,7 +251,8 @@ fun List<LikeResponse>.toLikeModelList(userCompanyId: Int): List<Like> {
             it.status,
             partnerCompany.toCompanyModel(),
             userCompany.toCompanyModel(),
-            isSender
+            isSender,
+            it.acceptedAt
         )
     }
 }
