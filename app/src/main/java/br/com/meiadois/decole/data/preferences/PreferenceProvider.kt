@@ -8,6 +8,7 @@ private const val KEY_ROUTE_LAST_FETCH = "ROUTE_LAST_FETCH"
 private const val KEY_LESSON_LAST_FETCH = "LESSON_LAST_FETCH"
 private const val KEY_COMPANY_LAST_FETCH = "COMPANY_LAST_FETCH"
 private const val KEY_SEGMENT_LAST_FETCH = "SEGMENT_LAST_FETCH"
+private const val KEY_ACCOUNT_LAST_FETCH = "ACCOUNT_LAST_FETCH"
 
 private const val LESSON_DIVIDER = ": "
 
@@ -66,6 +67,13 @@ class PreferenceProvider(
             .apply()
 
     fun getLastSegmentFetch(): Long = preference.getLong(KEY_SEGMENT_LAST_FETCH, 0L)
+
+    fun saveLastAccountFetch(fetchedAt: Long) =
+        preference.edit()
+            .putLong(KEY_ACCOUNT_LAST_FETCH, fetchedAt)
+            .apply()
+
+    fun getLastAccountFetch(): Long = preference.getLong(KEY_ACCOUNT_LAST_FETCH, 0L)
 
     fun clear() = preference.edit().clear().apply()
 }

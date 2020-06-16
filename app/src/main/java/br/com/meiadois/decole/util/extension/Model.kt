@@ -3,6 +3,7 @@ package br.com.meiadois.decole.util.extension
 import br.com.meiadois.decole.data.localdb.entity.Lesson
 import br.com.meiadois.decole.data.localdb.entity.Segment as SegmentEntity
 import br.com.meiadois.decole.data.localdb.entity.Company as CompanyEntity
+import br.com.meiadois.decole.data.localdb.entity.Account as AccountEntity
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
 import br.com.meiadois.decole.data.localdb.entity.Route
 import br.com.meiadois.decole.data.localdb.entity.User
@@ -11,6 +12,7 @@ import br.com.meiadois.decole.data.network.response.*
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
 import br.com.meiadois.decole.presentation.user.account.binding.ImageData
 import br.com.meiadois.decole.presentation.user.account.binding.UserAccountData
+import br.com.meiadois.decole.presentation.user.account.binding.UserSocialNetwork
 import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
 import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 
@@ -253,3 +255,39 @@ fun List<LikeResponse>.toLikeModelList(userCompanyId: Int): List<Like> {
         )
     }
 }
+
+fun AccountResponse.toAccountEntity(): AccountEntity =
+    AccountEntity(id, username, channel?.name ?: "", channel?.category ?: "")
+
+fun List<AccountResponse>.parseToAccountEntityList(): List<AccountEntity> {
+    return this.map {
+        it.toAccountEntity()
+    }
+}
+
+fun AccountResponse.toAccountModel(): Account =
+    Account(id, username, channel?.name ?: "", channel?.category ?: "")
+
+fun List<AccountResponse>.parseToAccountModelList(): List<Account> {
+    return this.map {
+        it.toAccountModel()
+    }
+}
+
+fun AccountEntity.toAccountModel(): Account = Account(id, userName, channelName, channelCategory)
+
+fun List<AccountEntity>.toAccountModelList(): List<Account> {
+    return this.map {
+        it.toAccountModel()
+    }
+}
+
+fun Account.toAccountEntity(): AccountEntity = AccountEntity(id, userName, channelName, channelCategory)
+
+fun List<Account>.toAccountEntityList(): List<AccountEntity> {
+    return this.map {
+        it.toAccountEntity()
+    }
+}
+
+fun UserSocialNetwork.toAccountModel(): Account = Account(id, userName, channelName, category)

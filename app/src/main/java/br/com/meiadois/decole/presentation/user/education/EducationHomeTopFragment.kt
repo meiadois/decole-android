@@ -12,10 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.presentation.user.education.viewmodel.EducationHomeTopViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.EducationHomeTopViewModelFactory
-import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeTopFragment
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
-import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.data.*
@@ -41,8 +39,6 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(EducationHomeTopViewModel::class.java)
-        init()
-//      teste()
     }
 
     override fun onResume() {
@@ -209,9 +205,9 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
     private fun setMetricsData() {
         Coroutines.main {
-            if (viewModel.getUserSocialNetworks()) {
+            if (viewModel.userHasInstagram()) {
                 try {
-                    val metric = viewModel.getUsermetrics()
+                    val metric = viewModel.getUserMetrics()
                     setBarChart(
                         metric.followers.value,
                         metric.following.value

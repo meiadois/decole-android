@@ -8,7 +8,7 @@ import br.com.meiadois.decole.data.localdb.dao.*
 import br.com.meiadois.decole.data.localdb.entity.*
 
 @Database(
-    entities = [User::class, Route::class, Lesson::class, Company::class, Segment::class],
+    entities = [User::class, Route::class, Lesson::class, Company::class, Segment::class, Account::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -17,6 +17,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getLessonDao(): LessonDAO
     abstract fun getCompanyDao(): CompanyDAO
     abstract fun getSegmentDao(): SegmentDAO
+    abstract fun getAccountDao(): AccountDAO
 
     companion object {
         @Volatile

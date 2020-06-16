@@ -1,6 +1,5 @@
 package br.com.meiadois.decole
 
-
 import android.app.Application
 import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
@@ -36,6 +35,7 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { PreferenceProvider(instance()) }
         bind() from singleton { LogOutService(instance(), instance()) }
         bind() from singleton { UserRepository(instance(), instance()) }
+        bind() from singleton { AccountRepository(instance(), instance(), instance()) }
         bind() from singleton { RouteRepository(instance(), instance(), instance()) }
         bind() from singleton { LessonRepository(instance(), instance(), instance()) }
         bind() from singleton { CompanyRepository(instance(), instance(),instance()) }
@@ -49,7 +49,7 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { RouteDetailsViewModelFactory(instance(), instance()) }
         bind() from singleton { StartInteractiveModeViewModelFactory(instance()) }
         bind() from singleton { PartnershipHomeBottomViewModelFactory(instance()) }
-        bind() from singleton { AccountViewModelFactory(instance(), instance(), instance(), instance(), instance()) }
+        bind() from singleton { AccountViewModelFactory(instance(), instance(), instance(), instance(), instance(), instance()) }
         bind() from singleton { PartnershipHomeTopViewModelFactory(instance()) }
         bind() from singleton { EducationHomeTopViewModelFactory(instance(), instance()) }
         bind() from singleton { FinishedRouteViewModelFactory(instance(), instance()) }

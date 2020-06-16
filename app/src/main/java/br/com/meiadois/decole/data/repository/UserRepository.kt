@@ -7,7 +7,6 @@ import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
 
-
 class UserRepository(
     private val client: DecoleClient,
     private val db: AppDatabase
@@ -63,28 +62,6 @@ class UserRepository(
         callClient {
             client.changeUserPassword(UserChangePasswordRequest(currentPassword, newPassword))
         }
-    }
-
-    suspend fun getUserAccounts(): List<AccountResponse> {
-        return callClient {
-            client.getUserAccounts()
-        }
-    }
-
-    suspend fun insertUserAccount(channelName: String, userName: String): AccountResponse {
-        return callClient {
-            client.insertUserAccount(AccountRequest(userName, channelName))
-        }
-    }
-
-    suspend fun updateUserAccount(channelName: String, userName: String): AccountResponse {
-        return callClient {
-            client.updateUserAccount(channelName, AccountRequest(userName))
-        }
-    }
-
-    suspend fun deleteUserAccount(channelName: String) {
-        client.deleteUserAccount(channelName)
     }
 
     suspend fun saveUser(user: User) = db.getUserDao().upsert(user)
