@@ -84,10 +84,11 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         Coroutines.main {
             try {
                 viewModel.getUserCompany().observe(viewLifecycleOwner, Observer {
-                    if (it == null)
-                        throw Exception()
-                    updateContent(it.company.id)
-                    viewModel.company = it.toCompanyModel()
+                    if (it != null) {
+                        updateContent(it.company.id)
+                        viewModel.company = it.toCompanyModel()
+                    } else
+                        setContentVisibility(CONTENT_NO_ACCOUNT)
                 })
             } catch (ex: ClientException) {
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
@@ -106,8 +107,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
 
     private fun setContentVisibility(contentMode: Int) {
-        partner_recycler_view.visibility =
-            if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.GONE
+        partner_recycler_view.visibility = if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.GONE
         layout_empty.visibility =
             if (contentMode == CONTENT_NO_REGISTERS_FOUND) {
                 text_empty.text = when (currentMenuItemActive) {
@@ -117,15 +117,15 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 }
                 View.VISIBLE
             } else View.GONE
-        fragment_container_noAccount.visibility =
-            if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
+        fragment_container_noAccount.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
         btn_search.visibility =
-            if (contentMode in setOf(CONTENT_LIST_PARTNERS, CONTENT_NO_PARTNERS_FOUND)) View.VISIBLE else View.GONE
             if (contentMode in setOf(
                     CONTENT_LIST_PARTNERS,
-                    CONTENT_NO_REGISTERS_FOUND
+                    CONTENT_NO_REGISTERS_FOUND,
+                    CONTENT_NO_PARTNERS_FOUND
                 )
             ) View.VISIBLE else View.GONE
+        container_chips.visibility = btn_search.visibility
     }
 
     private fun showGenericErrorMessage() {
@@ -140,7 +140,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     // region DataSet Management
     private fun updateContent(companyId: Int) {
-        when(currentMenuItemActive){
+        when (currentMenuItemActive) {
             CHIP_CONNECTED -> {
                 viewModel.recyclerDataSet.value = viewModel.matchesList.value
                 viewModel.getUserMatches(companyId)
@@ -153,7 +153,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 viewModel.recyclerDataSet.value = viewModel.receivedLikesList.value
                 viewModel.getReceivedLikes(companyId)
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 
@@ -165,7 +166,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 setHasFixedSize(true)
                 adapter = PartnerRecyclerAdapter(list, context) {
-                    onPartnerItemClick(context, it)
+                    onPartnerItemClick(it)
                 }
             }
         } else
@@ -199,7 +200,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
     // endregion
 
-    private fun configureChipFilter(){
+    private fun configureChipFilter() {
 
         chip_group.setOnCheckedChangeListener { chipGroup, _ ->
             chipGroup.children.forEach {
@@ -228,14 +229,13 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         }
     }
 
-    private fun onPartnerItemClick(context: Context, like: Like) {
+    private fun onPartnerItemClick(like: Like) {
         val bottomSheet = PartnerBottomSheetDialog()
         bottomSheet.onDismissListener = object :
             PartnerBottomSheetDialog.OnActionCompletedListener {
             override fun handle() {
                 updateContent(viewModel.company!!.id)
             }
-
         }
         val bundle = Bundle()
         bundle.putParcelable("inviteDetails", like)
@@ -329,7 +329,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         private const val CONTENT_NO_ACCOUNT = 1
         private const val CONTENT_LIST_PARTNERS = 2
         private const val CONTENT_NO_PARTNERS_FOUND = 3
-        private const val CONTENT_NO_REGISTERS_FOUND = 3
+        private const val CONTENT_NO_REGISTERS_FOUND = 4
 
         const val CHIP_INVITE_SENT = 5
         const val CHIP_INVITE_RECEIVED = 6
