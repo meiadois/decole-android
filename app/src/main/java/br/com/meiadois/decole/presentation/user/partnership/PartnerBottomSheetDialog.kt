@@ -1,5 +1,6 @@
 package br.com.meiadois.decole.presentation.user.partnership
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -14,6 +15,8 @@ import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnerBottomSheetViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnerBottomSheetViewModelFactory
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -21,6 +24,7 @@ import kotlinx.android.synthetic.main.layout_partner_bottom_sheet.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
+import java.text.SimpleDateFormat
 
 class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, PartnerActionListener {
 
@@ -49,7 +53,7 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
 
         viewModel.listener = this
 
-        arguments?.getParcelable<Like>("inviteDetails")?.let {
+        arguments?.getParcelable<Like>(INVITE_DETAILS_KEY)?.let {
             viewModel.inviteInfo = it
 
             sheet_text_partner_name.text = it.partnerCompany.name
@@ -57,12 +61,13 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
             sheet_text_partner_description.text = it.partnerCompany.description
             sheet_text_phone.text = it.partnerCompany.cellphone
             sheet_text_email.text = it.partnerCompany.email
+            Glide.with(container_company_info).load(it.partnerCompany.thumbnail)
+                .apply(RequestOptions.circleCropTransform()).into(image_partner)
 
-            if (it.status == "accepted") {
-                renderAcceptedSheet()
-            } else if (it.isSender) {
+            if (it.status == "accepted")
+                renderAcceptedSheet(formatDate(it.acceptedAt!!))
+            else if (it.isSender)
                 renderSenderFooter()
-            }
         }
         configureActions()
     }
@@ -140,11 +145,14 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
         sheet_text_phone.setOnClickListener {
             val number: String = sheet_text_phone.text.toString()
             val intent: Intent
-            if (!isWhatsAppInstalled()){
+            if (!isWhatsAppInstalled()) {
                 intent = Intent(Intent.ACTION_DIAL)
                 intent.data = Uri.parse("tel:$number")
-            }else
-                intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=$number"))
+            } else
+                intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://api.whatsapp.com/send?phone=$number")
+                )
             startActivity(intent)
         }
 
@@ -157,10 +165,18 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
 
     }
 
-    private fun renderAcceptedSheet() {
+    private fun renderAcceptedSheet(matchDate: String) {
         sheet_text_title.text = getString(R.string.partner_bottom_sheet_accepted_invite_title)
+        sheet_text_partner_since.text = getString(R.string.label_partners_since, matchDate)
         container_invite_received_footer.visibility = View.GONE
         container_match_footer.visibility = View.VISIBLE
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun formatDate(date: String): String {
+        val formatter = SimpleDateFormat("dd/MM/yyyy")
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        return formatter.format(parser.parse(date)!!)
     }
 
     private fun renderSenderFooter() {
@@ -179,10 +195,10 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
     }
 
     private fun toggleLoading(loading: Boolean) {
-        if(loading){
+        if (loading) {
             container_actions.visibility = View.GONE
             container_loading_footer.visibility = View.VISIBLE
-        }else {
+        } else {
             container_actions.visibility = View.VISIBLE
             container_loading_footer.visibility = View.GONE
         }
@@ -190,14 +206,21 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
 
     private fun isWhatsAppInstalled(): Boolean {
         return try {
-            context?.applicationContext?.packageManager?.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+            context?.applicationContext?.packageManager?.getPackageInfo(
+                "com.whatsapp",
+                PackageManager.GET_ACTIVITIES
+            )
             true
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
     }
 
-    interface OnActionCompletedListener{
+    interface OnActionCompletedListener {
         fun handle()
+    }
+
+    companion object {
+        const val INVITE_DETAILS_KEY = "INVITE_DETAILS"
     }
 }

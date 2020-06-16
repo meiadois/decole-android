@@ -1,18 +1,11 @@
 package br.com.meiadois.decole.data.repository
 
-import androidx.lifecycle.MutableLiveData
 import br.com.meiadois.decole.data.localdb.AppDatabase
-import br.com.meiadois.decole.data.localdb.entity.MyCompany
-import br.com.meiadois.decole.data.localdb.entity.Segment
 import br.com.meiadois.decole.data.localdb.entity.User
-import br.com.meiadois.decole.data.model.Company
 import br.com.meiadois.decole.data.network.RequestHandler
 import br.com.meiadois.decole.data.network.client.DecoleClient
 import br.com.meiadois.decole.data.network.request.*
 import br.com.meiadois.decole.data.network.response.*
-import br.com.meiadois.decole.util.Coroutines
-import br.com.meiadois.decole.util.extension.toCompanyModel
-
 
 class UserRepository(
     private val client: DecoleClient,
@@ -69,28 +62,6 @@ class UserRepository(
         callClient {
             client.changeUserPassword(UserChangePasswordRequest(currentPassword, newPassword))
         }
-    }
-
-    suspend fun getUserAccounts(): List<AccountResponse> {
-        return callClient {
-            client.getUserAccounts()
-        }
-    }
-
-    suspend fun insertUserAccount(channelName: String, userName: String): AccountResponse {
-        return callClient {
-            client.insertUserAccount(AccountRequest(userName, channelName))
-        }
-    }
-
-    suspend fun updateUserAccount(channelName: String, userName: String): AccountResponse {
-        return callClient {
-            client.updateUserAccount(channelName, AccountRequest(userName))
-        }
-    }
-
-    suspend fun deleteUserAccount(channelName: String) {
-        client.deleteUserAccount(channelName)
     }
 
     suspend fun saveUser(user: User) = db.getUserDao().upsert(user)

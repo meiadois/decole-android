@@ -12,10 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.presentation.user.education.viewmodel.EducationHomeTopViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.EducationHomeTopViewModelFactory
-import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeTopFragment
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
-import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.data.*
@@ -41,14 +39,21 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, factory).get(EducationHomeTopViewModel::class.java)
-
-        setProgressBarVisibility(true)
-        setMetricsData()
-//      teste()
     }
 
-    private fun teste(){
-        setBarChart(50f,40f)
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
+    private fun init(){
+        scrollview_education?.visibility = View.GONE
+        container_education_metrics?.visibility = View.GONE
+        setProgressBarVisibility(true)
+        setMetricsData()
+    }
+
+    private fun teste() {
+        setBarChart(50f, 40f)
         setPieChart(200, 50)
         setAvarageChart(80.6f)
         scrollview_education.visibility = View.VISIBLE
@@ -200,27 +205,32 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
     private fun setMetricsData() {
         Coroutines.main {
-            try {
-                val metric = viewModel.getUsermetrics()
-                setBarChart(
-                    metric.followers.value,
-                    metric.following.value
-                )
-                setPieChart(
-                    metric.posts_with_hashtags.value.toInt(),
-                    metric.publications.value.toInt() - metric.posts_with_hashtags.value.toInt()
-                )
-                setAvarageChart(
-                    metric.mean_of_comments.value
-                    // segment_id must be string, visible must be string
-                )
-                scrollview_education.visibility = View.VISIBLE
-            }catch (ex: ClientException){
-                setMetricsNotFound(ex)
-            }catch (ex: Exception){
-                Log.i("Fragment_top_exception", ex.message?:"")
-            }finally{
+            if (viewModel.userHasInstagram()) {
+                try {
+                    val metric = viewModel.getUserMetrics()
+                    setBarChart(
+                        metric.followers.value,
+                        metric.following.value
+                    )
+                    setPieChart(
+                        metric.posts_with_hashtags.value.toInt(),
+                        metric.publications.value.toInt() - metric.posts_with_hashtags.value.toInt()
+                    )
+                    setAvarageChart(
+                        metric.mean_of_comments.value
+                    )
+                    scrollview_education.visibility = View.VISIBLE
+                } catch (ex: ClientException) {
+                    setMetricsNotFound(ex)
+                } catch (ex: Exception) {
+                    Log.i("Fragment_top_exception", ex.message ?: "")
+                } finally {
+                    setProgressBarVisibility(false)
+                }
+            } else {
                 setProgressBarVisibility(false)
+                container_education_metrics?.visibility = View.VISIBLE
+                text_no_registered?.visibility = View.VISIBLE
             }
         }
     }
@@ -228,10 +238,13 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
     private fun setProgressBarVisibility(visible: Boolean) {
         progress_bar?.visibility = if (visible) View.VISIBLE else View.GONE
     }
-    private fun setMetricsNotFound(ex: ClientException){
+
+    private fun setMetricsNotFound(ex: ClientException) {
+        setProgressBarVisibility(false)
         scrollview_education?.visibility = View.GONE
         container_education_metrics?.visibility = View.VISIBLE
-        if (ex.code == 500)
-            text_no_found?.visibility = View.VISIBLE
+        when (ex.code) {
+            500 -> text_no_found?.visibility = View.VISIBLE
+        }
     }
 }

@@ -9,6 +9,8 @@ data class LikeResponse(
     val id: Int,
     @Json(name = "status")
     val status: String,
+    @Json(name = "accepted_at")
+    val acceptedAt: String?,
     @Json(name = "sender_id")
     val sender_id: Int?,
     @Json(name = "recipient_id")

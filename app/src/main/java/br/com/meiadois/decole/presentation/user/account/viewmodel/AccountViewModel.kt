@@ -11,16 +11,12 @@ import br.com.meiadois.decole.data.model.Segment
 import br.com.meiadois.decole.data.network.response.CepResponse
 import br.com.meiadois.decole.data.repository.*
 import br.com.meiadois.decole.presentation.user.account.AccountListener
-import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
-import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
-import br.com.meiadois.decole.presentation.user.account.binding.UserAccountData
-import br.com.meiadois.decole.presentation.user.account.binding.UserSocialNetworksData
+import br.com.meiadois.decole.presentation.user.account.binding.*
 import br.com.meiadois.decole.presentation.user.account.validation.*
 import br.com.meiadois.decole.service.LogOutService
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
-import br.com.meiadois.decole.util.extension.toCompanyAccountData
-import br.com.meiadois.decole.util.extension.toSegmentModelList
+import br.com.meiadois.decole.util.extension.*
 import com.google.android.material.textfield.TextInputLayout
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -28,6 +24,7 @@ import okhttp3.RequestBody
 import java.io.File
 
 class AccountViewModel(
+    private val accountRepository: AccountRepository,
     private val segmentRepository: SegmentRepository,
     private val companyRepository: CompanyRepository,
     private val userRepository: UserRepository,
@@ -36,7 +33,7 @@ class AccountViewModel(
 ) : ViewModel() {
     var companyData: MutableLiveData<CompanyAccountData> = MutableLiveData<CompanyAccountData>()
     var userData: MutableLiveData<UserAccountData> = MutableLiveData<UserAccountData>()
-    var userNetworksData: MutableLiveData<UserSocialNetworksData> = MutableLiveData<UserSocialNetworksData>()
+    var userAccountsData: MutableLiveData<UserAccountsData> = MutableLiveData<UserAccountsData>()
 
     var segments: MutableLiveData<List<Segment>> = MutableLiveData<List<Segment>>()
 
@@ -47,16 +44,20 @@ class AccountViewModel(
 
     // region initializer methods
     init {
-        getUserSocialNetworks()
-        getUserCompany()
-        getSegments()
         getUser()
+        getUserCompany()
+        getUserSocialNetworks()
+        getSegments()
     }
 
     private fun getSegments() {
         Coroutines.main {
             try {
-                segments.value = segmentRepository.getAllSegments().toSegmentModelList()
+                segmentRepository.getAllSegments().observeForever {
+                    it?.let {
+                        segments.value = it.parseToSegmentModelList()
+                    }
+                }
             } catch (ex: Exception) {
                 Log.i("AccountViewModel.init", ex.message ?: "no error message")
             }
@@ -66,8 +67,7 @@ class AccountViewModel(
     private fun getUser() {
         try {
             userRepository.getUser().observeForever { user ->
-                userData.value =
-                    if (user != null) UserAccountData(user.name, user.email) else UserAccountData()
+                userData.value = user?.parseToUserAccountData() ?: UserAccountData()
             }
         } catch (ex: Exception) {
             userData.value = UserAccountData()
@@ -78,10 +78,15 @@ class AccountViewModel(
     private fun getUserCompany() {
         Coroutines.main {
             try {
-                companyData.value = companyRepository.getUserCompany().toCompanyAccountData()
-                companyData.value!!.thumbnail.name = getFileName(companyData.value!!.thumbnail.path)
-                companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
-                isUpdatingCompany = true
+                companyRepository.getMyCompany().observeForever {
+                    if (it != null) {
+                        companyData.value = it.toCompanyAccountData()
+                        companyData.value!!.thumbnail.name = getFileName(companyData.value!!.thumbnail.path)
+                        companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
+                        isUpdatingCompany = true
+                    } else
+                        companyData.value = CompanyAccountData(email = userData.value!!.email)
+                }
             } catch (ex: Exception) {
                 companyData.value = CompanyAccountData(email = userData.value!!.email)
                 Log.i("AccountViewModel.init", ex.message ?: "no error message")
@@ -91,23 +96,28 @@ class AccountViewModel(
 
     private fun getUserSocialNetworks() {
         Coroutines.main {
+            val userAccounts = UserAccountsData(
+                instagram = UserSocialNetwork(channelName = INSTAGRAM_CHANNEL, category = SOCIAL_NETWORK_CATEGORY),
+                facebook = UserSocialNetwork(channelName = FACEBOOK_CHANNEL, category = SOCIAL_NETWORK_CATEGORY)
+            )
             try {
-                val userSocialNetworksData = UserSocialNetworksData()
-                userRepository.getUserAccounts().map {
-                    if (it.channel!!.name == INSTAGRAM_CHANNEL){
-                        userSocialNetworksData.instagram = it.username
-                        isUpdatingInstagram = true
-                    }
-                    if (it.channel.name == FACEBOOK_CHANNEL){
-                        userSocialNetworksData.facebook = it.username
-                        isUpdatingFacebook = true
-                    }
+                accountRepository.getUserAccounts().let { accounts ->
+                    if (accounts.isNotEmpty())
+                        for (account in accounts)
+                            if (account.channelName == INSTAGRAM_CHANNEL) {
+                                userAccounts.instagram.userName = account.userName
+                                userAccounts.instagram.id = account.id
+                                isUpdatingInstagram = true
+                            } else if (account.channelName == FACEBOOK_CHANNEL) {
+                                userAccounts.facebook.userName = account.userName
+                                userAccounts.facebook.id = account.id
+                                isUpdatingFacebook = true
+                            }
                 }
-                userNetworksData.value = userSocialNetworksData
             } catch (ex: Exception) {
-                userNetworksData.value = UserSocialNetworksData()
                 Log.i("AccountViewModel.init", ex.message ?: "no error message")
             }
+            userAccountsData.value = userAccounts
         }
     }
     // endregion
@@ -194,22 +204,11 @@ class AccountViewModel(
                     )
 
                     userRepository.updateUser(userData.value!!.name, userData.value!!.email)
+                    userRepository.saveUser(userData.value!!.parseToUserEntity())
 
-                    if (isUpdatingInstagram) {
-                        if (userNetworksData.value!!.instagram.isEmpty())
-                            userRepository.deleteUserAccount(INSTAGRAM_CHANNEL)
-                        else
-                            userRepository.updateUserAccount(INSTAGRAM_CHANNEL, userNetworksData.value!!.instagram)
-                    } else if (userNetworksData.value!!.instagram.isNotEmpty())
-                        userRepository.insertUserAccount(INSTAGRAM_CHANNEL, userNetworksData.value!!.instagram)
+                    executeAccountAction(isUpdatingInstagram, userAccountsData.value!!.instagram)
 
-                    if (isUpdatingFacebook) {
-                        if (userNetworksData.value!!.facebook.isEmpty())
-                            userRepository.deleteUserAccount(FACEBOOK_CHANNEL)
-                        else
-                            userRepository.updateUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)
-                    } else if (userNetworksData.value!!.facebook.isNotEmpty())
-                        userRepository.insertUserAccount(FACEBOOK_CHANNEL, userNetworksData.value!!.facebook)
+                    executeAccountAction(isUpdatingFacebook, userAccountsData.value!!.facebook)
 
                     accountListener?.onActionSuccess()
                 } catch (ex: ClientException) {
@@ -231,6 +230,16 @@ class AccountViewModel(
                 }
             }
         }
+    }
+
+    private suspend fun executeAccountAction(isUpdating: Boolean, account: UserSocialNetwork) {
+        if (isUpdating) {
+            if (account.userName.isEmpty())
+                accountRepository.deleteUserAccount(account.toAccountModel())
+            else
+                accountRepository.updateUserAccount(account.toAccountModel())
+        } else if (account.userName.isNotEmpty())
+            accountRepository.insertUserAccount(account.toAccountModel())
     }
 
     private fun getMultipartBodyPart(imagePath: String, imageType: String, parameterName: String): MultipartBody.Part {
@@ -257,9 +266,9 @@ class AccountViewModel(
             companyData.value!!.description = companyData.value!!.description.trim()
             companyData.value!!.neighborhood = companyData.value!!.neighborhood.trim()
         }
-        if (userNetworksData.value != null){
-            userNetworksData.value!!.instagram = userNetworksData.value!!.instagram.trim()
-            userNetworksData.value!!.facebook = userNetworksData.value!!.facebook.trim()
+        if (userAccountsData.value != null){
+            userAccountsData.value!!.instagram.userName = userAccountsData.value!!.instagram.userName.trim()
+            userAccountsData.value!!.facebook.userName = userAccountsData.value!!.facebook.userName.trim()
         }
     }
     // endregion
@@ -385,9 +394,9 @@ class AccountViewModel(
     }
 
     private fun validateUserSocialNetworks(view: View): Boolean {
-        val socialNetworks: UserSocialNetworksData = userNetworksData.value!!
+        val accounts: UserAccountsData = userAccountsData.value!!
 
-        var isValid = StringValidator(socialNetworks.instagram)
+        var isValid = StringValidator(accounts.instagram.userName)
             .addValidation(MaxLengthRule(30,
                 view.context.getString(
                     R.string.max_text_length_error_message,
@@ -395,7 +404,7 @@ class AccountViewModel(
             .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_INSTAGRAM, it.error) }
             .validate()
 
-        isValid = isValid and StringValidator(socialNetworks.facebook)
+        isValid = isValid and StringValidator(accounts.facebook.userName)
             .addValidation(MaxLengthRule(50,
                 view.context.getString(
                     R.string.max_text_length_error_message,
@@ -413,6 +422,8 @@ class AccountViewModel(
     companion object{
         private const val INSTAGRAM_CHANNEL = "Instagram"
         private const val FACEBOOK_CHANNEL = "Facebook"
+
+        private const val SOCIAL_NETWORK_CATEGORY = "SocialNetwork"
 
         private const val FILE_NAME_IN_DIRECTORY_REGEX_PATTERN = "[^/]*$"
     }

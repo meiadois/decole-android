@@ -1,18 +1,19 @@
 package br.com.meiadois.decole.data.localdb.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
+import br.com.meiadois.decole.data.localdb.entity.Company
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
-
 
 @Dao
 interface CompanyDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(myCompany: MyCompany)
+    suspend fun upsert(myCompany: Company)
 
-    @Query("SELECT * FROM MyCompany")
-    suspend fun getUserCompanyLocal(): MyCompany
+    @Query("SELECT * FROM Company")
+    suspend fun getUserCompany(): Company
+
+    @Transaction
+    @Query("SELECT * FROM Company")
+    suspend fun getUserCompanyWithSegment(): MyCompany
 }

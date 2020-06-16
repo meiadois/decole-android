@@ -15,12 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.presentation.user.account.AccountActivity
+import br.com.meiadois.decole.presentation.user.partnership.PartnerBottomSheetDialog.Companion.INVITE_DETAILS_KEY
 import br.com.meiadois.decole.presentation.user.partnership.PartnershipDiscoveryActivity.Companion.PARTNERSHIP_SEARCH_COMPANY_ID
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.extension.longSnackbar
+import br.com.meiadois.decole.util.extension.toCompanyModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
@@ -82,7 +84,13 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     private fun init() {
         Coroutines.main {
             try {
-                updateContent(viewModel.getUserCompany().id)
+                viewModel.getUserCompany().observe(viewLifecycleOwner, Observer {
+                    if (it != null) {
+                        updateContent(it.company.id)
+                        viewModel.company = it.toCompanyModel()
+                    } else
+                        setContentVisibility(CONTENT_NO_ACCOUNT)
+                })
             } catch (ex: ClientException) {
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
                 else showGenericErrorMessage()
@@ -100,8 +108,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
 
     private fun setContentVisibility(contentMode: Int) {
-        partner_recycler_view.visibility =
-            if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.GONE
+        partner_recycler_view.visibility = if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.GONE
         layout_empty.visibility =
             if (contentMode == CONTENT_NO_REGISTERS_FOUND) {
                 text_empty.text = when (currentMenuItemActive) {
@@ -111,15 +118,15 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 }
                 View.VISIBLE
             } else View.GONE
-        fragment_container_noAccount.visibility =
-            if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
+        fragment_container_noAccount.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
         btn_search.visibility =
-            if (contentMode in setOf(CONTENT_LIST_PARTNERS, CONTENT_NO_PARTNERS_FOUND)) View.VISIBLE else View.GONE
             if (contentMode in setOf(
                     CONTENT_LIST_PARTNERS,
-                    CONTENT_NO_REGISTERS_FOUND
+                    CONTENT_NO_REGISTERS_FOUND,
+                    CONTENT_NO_PARTNERS_FOUND
                 )
             ) View.VISIBLE else View.GONE
+        container_chips.visibility = btn_search.visibility
     }
 
     private fun showGenericErrorMessage() {
@@ -134,7 +141,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     // region DataSet Management
     private fun updateContent(companyId: Int) {
-        when(currentMenuItemActive){
+        when (currentMenuItemActive) {
             CHIP_CONNECTED -> {
                 viewModel.recyclerDataSet.value = viewModel.matchesList.value
                 viewModel.getUserMatches(companyId)
@@ -147,7 +154,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 viewModel.recyclerDataSet.value = viewModel.receivedLikesList.value
                 viewModel.getReceivedLikes(companyId)
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 
@@ -159,7 +167,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 setHasFixedSize(true)
                 adapter = PartnerRecyclerAdapter(list, context) {
-                    onPartnerItemClick(context, it)
+                    onPartnerItemClick(it)
                 }
             }
         } else
@@ -193,7 +201,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
     // endregion
 
-    private fun configureChipFilter(){
+    private fun configureChipFilter() {
 
         chip_group.setOnCheckedChangeListener { chipGroup, _ ->
             chipGroup.children.forEach {
@@ -222,17 +230,16 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         }
     }
 
-    private fun onPartnerItemClick(context: Context, like: Like) {
+    private fun onPartnerItemClick(like: Like) {
         val bottomSheet = PartnerBottomSheetDialog()
         bottomSheet.onDismissListener = object :
             PartnerBottomSheetDialog.OnActionCompletedListener {
             override fun handle() {
                 updateContent(viewModel.company!!.id)
             }
-
         }
         val bundle = Bundle()
-        bundle.putParcelable("inviteDetails", like)
+        bundle.putParcelable(INVITE_DETAILS_KEY, like)
         bottomSheet.arguments = bundle
         bottomSheet.show(parentFragmentManager, "partnerBottomSheet")
     }
@@ -323,7 +330,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         private const val CONTENT_NO_ACCOUNT = 1
         private const val CONTENT_LIST_PARTNERS = 2
         private const val CONTENT_NO_PARTNERS_FOUND = 3
-        private const val CONTENT_NO_REGISTERS_FOUND = 3
+        private const val CONTENT_NO_REGISTERS_FOUND = 4
 
         const val CHIP_INVITE_SENT = 5
         const val CHIP_INVITE_RECEIVED = 6

@@ -90,7 +90,8 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_number_1"/>
+                        android:src="@drawable/ic_number_1"
+                        tools:ignore="ContentDescription" />
 
                     <LinearLayout
                         android:gravity="center"
@@ -104,7 +105,7 @@
                             android:text="@string/account_me_hearder_text"
                             android:textAllCaps="true"
                             android:textColor="@color/colorPrimaryText"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -113,7 +114,7 @@
                             android:text="@string/account_me_header_subtitle"
                             android:textAllCaps="true"
                             android:textColor="@color/colorSecondaryText"
-                            android:textSize="11sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -186,7 +187,8 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_number_2"/>
+                        android:src="@drawable/ic_number_2"
+                        tools:ignore="ContentDescription" />
 
                     <LinearLayout
                         android:gravity="center"
@@ -200,7 +202,7 @@
                             android:text="@string/account_company_hearder_text"
                             android:textAllCaps="true"
                             android:textColor="@color/colorPrimaryText"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -209,7 +211,7 @@
                             android:text="@string/account_company_header_subtitle"
                             android:textAllCaps="true"
                             android:textColor="@color/colorSecondaryText"
-                            android:textSize="11sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -482,7 +484,8 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_number_3"/>
+                        android:src="@drawable/ic_number_3"
+                        tools:ignore="ContentDescription" />
 
                     <LinearLayout
                         android:gravity="center"
@@ -529,12 +532,12 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:inputType="textNoSuggestions"
                             android:id="@+id/input_socialNetwork_instagram"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapWords|textNoSuggestions"
                             android:singleLine="true"
-                            android:text="@={viewModel.userNetworksData.instagram}" />
+                            android:text="@={viewModel.userAccountsData.instagram.userName}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -546,12 +549,12 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:inputType="textNoSuggestions"
                             android:id="@+id/input_socialNetwork_facebook"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress|textNoSuggestions"
                             android:singleLine="true"
-                            android:text="@={viewModel.userNetworksData.facebook}" />
+                            android:text="@={viewModel.userAccountsData.facebook.userName}" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
                 <!-- SocialNetwork Section -->

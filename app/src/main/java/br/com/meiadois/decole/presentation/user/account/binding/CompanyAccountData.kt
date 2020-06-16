@@ -21,7 +21,7 @@ class CompanyAccountData() : BaseObservable() {
     @Bindable
     var city: String = ""
 
-    fun setCityAndNotify(value: String){
+    fun setCityAndNotify(value: String) {
         city = value
         notifyPropertyChanged(BR.city)
     }
@@ -29,7 +29,7 @@ class CompanyAccountData() : BaseObservable() {
     @Bindable
     var neighborhood: String = ""
 
-    fun setNeighborhoodAndNotify(value: String){
+    fun setNeighborhoodAndNotify(value: String) {
         neighborhood = value
         notifyPropertyChanged(BR.neighborhood)
     }
@@ -74,11 +74,11 @@ class ImageData() : BaseObservable() {
 
     @Bindable
     var name: String = ""
-    set(value) {
-        if (field != value)
-            field = value
-        notifyPropertyChanged(BR.name)
-    }
+        set(value) {
+            if (field != value)
+                field = value
+            notifyPropertyChanged(BR.name)
+        }
 
     constructor(
         path: String = "",

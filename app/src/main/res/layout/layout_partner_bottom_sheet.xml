@@ -46,7 +46,8 @@
                 android:src="@drawable/ic_circle_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tool:ignore="ContentDescription" />
 
             <LinearLayout
                 android:id="@+id/container_texts"
@@ -207,10 +208,10 @@
             tool:visibility="visible">
 
             <TextView
-                android:id="@+id/btn_primary_match"
+                android:id="@+id/sheet_text_partner_since"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Vocês são parceiros desde dd/MM/yyyy"
+                android:text="@string/label_partners_since"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
