@@ -29,6 +29,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
+import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.progress_bar
+import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.swipe_refresh
+import kotlinx.android.synthetic.main.fragment_route_list.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
@@ -73,6 +76,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 view.context.startActivity(it)
             }
         }
+
+        swipe_refresh.setOnRefreshListener { init(true) }
     }
 
     override fun onResume() {
@@ -81,12 +86,12 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
     // endregion
 
-    private fun init() {
+    private fun init(fromSwipeRefresh: Boolean = false) {
         Coroutines.main {
             try {
                 viewModel.getUserCompany().observe(viewLifecycleOwner, Observer {
                     if (it != null) {
-                        updateContent(it.company.id)
+                        updateContent(it.company.id, fromSwipeRefresh)
                         viewModel.company = it.toCompanyModel()
                     } else
                         setContentVisibility(CONTENT_NO_ACCOUNT)
@@ -99,7 +104,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             } catch (ex: Exception) {
                 showGenericErrorMessage()
             } finally {
-                setProgressBarVisibility(false)
+                if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
+                else setProgressBarVisibility(false)
             }
         }
     }
@@ -143,7 +149,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     // endregion
 
     // region DataSet Management
-    private fun updateContent(companyId: Int) {
+    private fun updateContent(companyId: Int, fromSwipeRefresh: Boolean = false) {
         Coroutines.main {
             try {
                 when (currentMenuItemActive) {
@@ -167,7 +173,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             } catch (ex: Exception) {
                 showGenericErrorMessage()
             } finally {
-                setProgressBarVisibility(false)
+                if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
+                else setProgressBarVisibility(false)
             }
         }
     }

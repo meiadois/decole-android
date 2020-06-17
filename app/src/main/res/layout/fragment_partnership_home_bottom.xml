@@ -19,260 +19,267 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/partnership_scroolable_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/partnership_scroolable_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:descendantFocusability="beforeDescendants"
-            android:focusableInTouchMode="true"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- ChipsLayout -->
-            <LinearLayout
-                android:id="@+id/container_chips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:descendantFocusability="beforeDescendants"
+                android:focusableInTouchMode="true"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <HorizontalScrollView
-                    android:scrollbars="none"
-                    android:layout_width="match_parent"
+                <!-- ChipsLayout -->
+                <LinearLayout
+                    android:id="@+id/container_chips"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:ignore="UselessParent">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:id="@+id/chip_group"
-                        app:singleSelection="true"
-                        app:singleLine="true"
+                    <HorizontalScrollView
+                        android:scrollbars="none"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="UselessParent">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:id="@+id/chip_group"
+                            app:singleSelection="true"
+                            app:singleLine="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/interesting_chip"
+                                style="@style/filter_chip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:text="@string/interesting_label" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/interested_chip"
+                                style="@style/filter_chip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/interested_label" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/connected_chip"
+                                style="@style/filter_chip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/connected_label" />
+
+                        </com.google.android.material.chip.ChipGroup>
+
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
+                <!-- RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/partner_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/container_chips"
+                    tools:listitem="@layout/card_partner" />
+
+                <!-- No Partners Found Layout -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:padding="48dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/container_chips">
+
+                    <ImageView
+                        android:id="@+id/image_empty"
+                        app:layout_constraintVertical_bias=".3"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_undraw_empty"
+                        app:layout_constraintBottom_toTopOf="@+id/text_empty"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/text_title_empty"
+                        android:textColor="@color/colorPrimaryText"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:layout_constraintVertical_bias=".3"
+                        android:layout_margin="8dp"
+                        android:textStyle="bold"
+                        android:text="@string/ooops"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toTopOf="@+id/text_empty"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/image_empty" />
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/interesting_chip"
-                            style="@style/filter_chip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12sp"
-                            android:text="@string/interesting_label" />
+                    <TextView
+                        android:id="@+id/text_empty"
+                        android:textColor="@color/colorPrimaryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        tools:text="@string/no_partner_found"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/interested_chip"
-                            style="@style/filter_chip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/interested_label" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/connected_chip"
-                            style="@style/filter_chip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/connected_label" />
-
-                    </com.google.android.material.chip.ChipGroup>
-
-                </HorizontalScrollView>
-
-            </LinearLayout>
-
-            <!-- RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/partner_recycler_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/container_chips"
-                tools:listitem="@layout/card_partner" />
-
-            <!-- No Partners Found Layout -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:padding="48dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/container_chips">
-
-                <ImageView
-                    android:id="@+id/image_empty"
-                    app:layout_constraintVertical_bias=".3"
+                <!-- No Internet Connection Layout -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_no_internet"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:src="@drawable/ic_undraw_empty"
-                    app:layout_constraintBottom_toTopOf="@+id/text_empty"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/text_title_empty"
-                    android:textColor="@color/colorPrimaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintVertical_bias=".3"
-                    android:layout_margin="8dp"
-                    android:textStyle="bold"
-                    android:text="@string/ooops"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toTopOf="@+id/text_empty"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image_empty" />
-
-                <TextView
-                    android:id="@+id/text_empty"
-                    android:textColor="@color/colorPrimaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    tools:text="@string/no_partner_found"
-                    android:textAlignment="center"
+                    android:layout_height="match_parent"
+                    android:padding="48dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/container_chips">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/image_no_internet"
+                        app:layout_constraintVertical_bias=".3"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_undraw_camping"
+                        app:layout_constraintBottom_toTopOf="@+id/text_title_no_internet"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
 
-            <!-- No Internet Connection Layout -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_no_internet"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="48dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/container_chips">
+                    <TextView
+                        android:id="@+id/text_title_no_internet"
+                        android:textColor="@color/colorPrimaryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintVertical_bias=".3"
+                        android:layout_margin="8dp"
+                        android:textStyle="bold"
+                        android:text="@string/ooops"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toTopOf="@+id/text_no_internet"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/image_no_internet" />
 
-                <ImageView
-                    android:id="@+id/image_no_internet"
-                    app:layout_constraintVertical_bias=".3"
+                    <TextView
+                        android:id="@+id/text_no_internet"
+                        android:textColor="@color/colorPrimaryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/partnership_bottom_no_internet_connection_message"
+                        android:textAlignment="center"
+                        app:layout_constraintTop_toBottomOf="@+id/text_title_no_internet"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- No Account Layout -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/fragment_container_noAccount"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:src="@drawable/ic_undraw_camping"
-                    app:layout_constraintBottom_toTopOf="@+id/text_title_no_internet"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/text_title_no_internet"
-                    android:textColor="@color/colorPrimaryText"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintVertical_bias=".3"
-                    android:layout_margin="8dp"
-                    android:textStyle="bold"
-                    android:text="@string/ooops"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toTopOf="@+id/text_no_internet"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image_no_internet" />
-
-                <TextView
-                    android:id="@+id/text_no_internet"
-                    android:textColor="@color/colorPrimaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/partnership_bottom_no_internet_connection_message"
-                    android:textAlignment="center"
-                    app:layout_constraintTop_toBottomOf="@+id/text_title_no_internet"
+                    android:padding="32dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/container_chips">
+
+                    <ImageView
+                        android:id="@+id/image_clipboard"
+                        android:layout_width="304dp"
+                        android:layout_height="163dp"
+                        android:src="@drawable/ic_clipboard_clean"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/text_title_partner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/welcome_partnership_title"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorPrimaryText"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/image_clipboard" />
+
+
+                    <TextView
+                        android:id="@+id/text_no_account_found"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/partnership_no_account"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryText"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_title_partner" />
+
+                    <Button
+                        app:layout_constraintTop_toBottomOf="@+id/text_no_account_found"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="@string/register_business"
+                        android:id="@+id/btn_register_business"
+                        android:layout_marginHorizontal="48dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="36dp"
+                        android:layout_marginTop="36dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        style="@style/btn_primary"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- No Account Layout -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fragment_container_noAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="32dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/container_chips">
+        </androidx.core.widget.NestedScrollView>
 
-                <ImageView
-                    android:id="@+id/image_clipboard"
-                    android:layout_width="304dp"
-                    android:layout_height="163dp"
-                    android:src="@drawable/ic_clipboard_clean"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/text_title_partner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/welcome_partnership_title"
-                    android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image_clipboard" />
-
-
-                <TextView
-                    android:id="@+id/text_no_account_found"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/partnership_no_account"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryText"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_title_partner" />
-
-                <Button
-                    app:layout_constraintTop_toBottomOf="@+id/text_no_account_found"
-                    app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="@string/register_business"
-                    android:id="@+id/btn_register_business"
-                    android:layout_marginHorizontal="48dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="36dp"
-                    android:layout_marginTop="36dp"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    style="@style/btn_primary"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_search"
