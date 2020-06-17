@@ -18,37 +18,31 @@ class PartnershipHomeBottomViewModel(
     val recyclerDataSet: MutableLiveData<List<Like>> = MutableLiveData()
     var company: Company? = null
 
-    fun getUserMatches(companyId: Int) {
-        Coroutines.main {
-            matchesList.value = companyRepository.getUserMatches().toLikeModelList(companyId)
+    suspend fun getUserMatches(companyId: Int) {
+        matchesList.value = companyRepository.getUserMatches().toLikeModelList(companyId)
+    }
+
+    suspend fun getSentLikes(companyId: Int) {
+        sentLikesList.value = companyRepository.getUserSentLikes().map {
+            Like(
+                it.id,
+                it.status,
+                it.recipient_company.toCompanyModel(),
+                Company(id = companyId),
+                true
+            )
         }
     }
 
-    fun getSentLikes(companyId: Int) {
-        Coroutines.main {
-            sentLikesList.value = companyRepository.getUserSentLikes().map {
-                Like(
-                    it.id,
-                    it.status,
-                    it.recipient_company.toCompanyModel(),
-                    Company(id = companyId),
-                    true
-                )
-            }
-        }
-    }
-
-    fun getReceivedLikes(companyId: Int) {
-        Coroutines.main {
-            receivedLikesList.value = companyRepository.getUserReceivedLikes().map {
-                Like(
-                    it.id,
-                    it.status,
-                    it.sender_company.toCompanyModel(),
-                    Company(id = companyId),
-                    false
-                )
-            }
+    suspend fun getReceivedLikes(companyId: Int) {
+        receivedLikesList.value = companyRepository.getUserReceivedLikes().map {
+            Like(
+                it.id,
+                it.status,
+                it.sender_company.toCompanyModel(),
+                Company(id = companyId),
+                false
+            )
         }
     }
 

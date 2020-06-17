@@ -28,6 +28,9 @@
         <b>Parabéns!</b> Você concluiu esta lição. Que tal continuar avançando?
     </string>
 
+    <!-- NetworkConnectionInterceptor -->
+    <string name="no_internet_connection_error_message">Certifique-se que você possui uma conexão de dados ativa</string>
+
     <!-- Welcome Slide Activity -->
     <string name="welcome_slide_title">Podemos te ajudar de várias formas!</string>
     <string name="welcome_education_title">EDUCAÇÃO</string>
@@ -62,8 +65,6 @@
     <string name="getting_data_failed_error_message">Falha ao obter dados.</string>
     <string name="register_business">Cadastrar Negócio</string>
     <string name="reload">Recarregar</string>
-
-    <!-- Partnership PopUp -->
 
     <!-- Account -->
     <string name="back_arrow_content_description">Voltar</string>
@@ -132,6 +133,8 @@
     <string name="label_partners_since">Vocês são parceiros desde %1$s</string>
     <string name="label_cancel_invite">Cancelar convite</string>
     <string name="label_cancel_partnership">Cancelar parceria</string>
+    <string name="partnership_bottom_no_internet_connection_message">Parece que você não está conectado à internet. Tente novamente quando possuir uma conexão estável.</string>
+    <string name="cant_load_content_error_message">Não Foi possível carregar o conteúdo.</string>
 
     <!--Password recovery-->
     <string name="pw_recovery_home_label">Para continuar com o processo de recuperação de senha, insira um e-mail válido.</string>

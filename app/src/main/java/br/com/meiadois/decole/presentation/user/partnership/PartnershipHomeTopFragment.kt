@@ -14,6 +14,7 @@ import br.com.meiadois.decole.presentation.user.partnership.viewmodel.Partnershi
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
+import br.com.meiadois.decole.util.exception.NoInternetException
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_partnership_home_top.*
@@ -60,6 +61,8 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
                 )
             } catch (ex: ClientException) {
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
+            } catch (ex: NoInternetException) {
+                setContentVisibility(CONTENT_NO_INTERNET)
             } catch (ex: Exception) {
                 Log.i("Fragment_top_exception", ex.message ?: "")
             } finally {
@@ -75,6 +78,7 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     private fun setContentVisibility(contentMode: Int) {
         container_company_layout_account?.visibility = if (contentMode == CONTENT_WITH_ACCOUNT) View.VISIBLE else View.GONE
         container_company_layout_no_account?.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
+        container_company_layout_no_internet?.visibility = if (contentMode == CONTENT_NO_INTERNET) View.VISIBLE else View.GONE
     }
 
     private fun showUserCompany(company: MyCompany) {
@@ -89,6 +93,7 @@ class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     companion object {
         private const val CONTENT_NONE = 0
         private const val CONTENT_NO_ACCOUNT = 1
-        private const val CONTENT_WITH_ACCOUNT = 2
+        private const val CONTENT_NO_INTERNET = 2
+        private const val CONTENT_WITH_ACCOUNT = 3
     }
 }

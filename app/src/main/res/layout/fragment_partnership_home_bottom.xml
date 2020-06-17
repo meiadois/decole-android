@@ -86,7 +86,6 @@
 
             <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
-                tools:visibility="gone"
                 android:id="@+id/partner_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -101,13 +100,11 @@
 
             <!-- No Partners Found Layout -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                tools:visibility="visible"
                 android:id="@+id/layout_empty"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
-                android:paddingStart="48dp"
-                android:paddingEnd="48dp"
+                android:padding="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -148,6 +145,60 @@
                     android:layout_marginTop="10dp"
                     tools:text="@string/no_partner_found"
                     android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- No Internet Connection Layout -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_no_internet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="48dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/container_chips">
+
+                <ImageView
+                    android:id="@+id/image_no_internet"
+                    app:layout_constraintVertical_bias=".3"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_undraw_camping"
+                    app:layout_constraintBottom_toTopOf="@+id/text_title_no_internet"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/text_title_no_internet"
+                    android:textColor="@color/colorPrimaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintVertical_bias=".3"
+                    android:layout_margin="8dp"
+                    android:textStyle="bold"
+                    android:text="@string/ooops"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toTopOf="@+id/text_no_internet"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_no_internet" />
+
+                <TextView
+                    android:id="@+id/text_no_internet"
+                    android:textColor="@color/colorPrimaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/partnership_bottom_no_internet_connection_message"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@+id/text_title_no_internet"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>

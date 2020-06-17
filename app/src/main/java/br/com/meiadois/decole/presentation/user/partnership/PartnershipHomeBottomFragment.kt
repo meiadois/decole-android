@@ -21,6 +21,7 @@ import br.com.meiadois.decole.presentation.user.partnership.viewmodel.Partnershi
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
+import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.toCompanyModel
 import com.bumptech.glide.Glide
@@ -31,7 +32,6 @@ import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
-
 
 class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
@@ -94,6 +94,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             } catch (ex: ClientException) {
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
                 else showGenericErrorMessage()
+            } catch (ex: NoInternetException) {
+                setContentVisibility(CONTENT_NO_INTERNET)
             } catch (ex: Exception) {
                 showGenericErrorMessage()
             } finally {
@@ -119,6 +121,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 View.VISIBLE
             } else View.GONE
         fragment_container_noAccount.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
+        layout_no_internet.visibility = if (contentMode == CONTENT_NO_INTERNET) View.VISIBLE else View.GONE
         btn_search.visibility =
             if (contentMode in setOf(
                     CONTENT_LIST_PARTNERS,
@@ -141,20 +144,30 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     // region DataSet Management
     private fun updateContent(companyId: Int) {
-        when (currentMenuItemActive) {
-            CHIP_CONNECTED -> {
-                viewModel.recyclerDataSet.value = viewModel.matchesList.value
-                viewModel.getUserMatches(companyId)
-            }
-            CHIP_INVITE_SENT -> {
-                viewModel.recyclerDataSet.value = viewModel.sentLikesList.value
-                viewModel.getSentLikes(companyId)
-            }
-            CHIP_INVITE_RECEIVED -> {
-                viewModel.recyclerDataSet.value = viewModel.receivedLikesList.value
-                viewModel.getReceivedLikes(companyId)
-            }
-            else -> {
+        Coroutines.main {
+            try {
+                when (currentMenuItemActive) {
+                    CHIP_CONNECTED -> {
+                        viewModel.recyclerDataSet.value = viewModel.matchesList.value
+                        viewModel.getUserMatches(companyId)
+                    }
+                    CHIP_INVITE_SENT -> {
+                        viewModel.recyclerDataSet.value = viewModel.sentLikesList.value
+                        viewModel.getSentLikes(companyId)
+                    }
+                    CHIP_INVITE_RECEIVED -> {
+                        viewModel.recyclerDataSet.value = viewModel.receivedLikesList.value
+                        viewModel.getReceivedLikes(companyId)
+                    }
+                    else -> {
+                    }
+                }
+            } catch (ex: NoInternetException) {
+                setContentVisibility(CONTENT_NO_INTERNET)
+            } catch (ex: Exception) {
+                showGenericErrorMessage()
+            } finally {
+                setProgressBarVisibility(false)
             }
         }
     }
@@ -328,9 +341,10 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
         private const val CONTENT_NONE = 0
         private const val CONTENT_NO_ACCOUNT = 1
-        private const val CONTENT_LIST_PARTNERS = 2
-        private const val CONTENT_NO_PARTNERS_FOUND = 3
-        private const val CONTENT_NO_REGISTERS_FOUND = 4
+        private const val CONTENT_NO_INTERNET = 2
+        private const val CONTENT_LIST_PARTNERS = 3
+        private const val CONTENT_NO_PARTNERS_FOUND = 4
+        private const val CONTENT_NO_REGISTERS_FOUND = 5
 
         const val CHIP_INVITE_SENT = 5
         const val CHIP_INVITE_RECEIVED = 6
