@@ -23,12 +23,15 @@ import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewMod
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.Mask
+import br.com.meiadois.decole.util.exception.NoInternetException
+import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_account.*
+import kotlinx.android.synthetic.main.activity_account.progress_bar
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -44,12 +47,12 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         super.onCreate(savedInstanceState)
         accountViewModel = ViewModelProvider(this, factory).get(AccountViewModel::class.java)
         accountViewModel.accountListener = this
-        val binding: ActivityAccountBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_account)
+        val binding: ActivityAccountBinding = DataBindingUtil.setContentView(this, R.layout.activity_account)
         binding.apply {
             viewModel = accountViewModel
             lifecycleOwner = this@AccountActivity
         }
+        init()
         setAdapterToSegmentDropdown()
         setRemoveErrorListener()
         setClickListeners()
@@ -159,6 +162,43 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     // endregion
 
     // region Local Functions
+    private fun init() {
+        setContentVisibility(CONTENT_NO_CONTENT)
+        setPageProgressBarVisibility(true)
+        Coroutines.main {
+            try {
+                accountViewModel.init()
+                setPageProgressBarVisibility(false)
+                setContentVisibility(CONTENT_FORM)
+            } catch (ex: NoInternetException) {
+                setPageProgressBarVisibility(false)
+                setContentVisibility(CONTENT_NO_INTERNET)
+            } catch (ex: Exception) {
+                setPageProgressBarVisibility(false)
+                showGenericErrorMessage()
+            }
+        }
+    }
+
+    private fun setContentVisibility(contentMode: Int) {
+        container_layout.visibility = if (contentMode == CONTENT_FORM) View.VISIBLE else View.GONE
+        container_button.visibility = container_layout.visibility
+        account_no_internet_layout.visibility = if (contentMode == CONTENT_NO_INTERNET) View.VISIBLE else View.GONE
+    }
+
+    private fun setPageProgressBarVisibility(visible: Boolean) {
+        page_progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    private fun showGenericErrorMessage() {
+        account_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message)) { snackbar ->
+            snackbar.setAction(getString(R.string.reload)) {
+                init()
+                snackbar.dismiss()
+            }
+        }
+    }
+
     private fun setImageInputs() {
         thumbnail_fake_input.bringToFront()
         thumbnail_fake_input.setOnClickListener {
@@ -315,10 +355,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
 
     private fun setInputMasks() {
         input_company_telephone.addTextChangedListener(
-            Mask.mask(
-                Mask.getTelMaskWithCountryCode("55"),
-                input_company_telephone
-            )
+            Mask.mask(Mask.getTelMaskWithCountryCode("55"), input_company_telephone)
         )
         input_company_cnpj.addTextChangedListener(Mask.mask(Mask.CNPJ_MASK, input_company_cnpj))
         input_company_cep.addTextChangedListener(Mask.mask(Mask.CEP_MASK, input_company_cep) {
@@ -370,5 +407,9 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         private const val IMAGE_LOGO_RESULT = 200
 
         private const val DEFAULT_IMAGE_TYPE = "image/*"
+
+        private const val CONTENT_NO_INTERNET = 1
+        private const val CONTENT_NO_CONTENT = 2
+        private const val CONTENT_FORM = 3
     }
 }

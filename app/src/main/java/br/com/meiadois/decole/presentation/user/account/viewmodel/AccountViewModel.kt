@@ -43,23 +43,17 @@ class AccountViewModel(
     private var isUpdatingFacebook: Boolean = false
 
     // region initializer methods
-    init {
-        getUser()
-        getUserCompany()
+    suspend fun init() {
         getUserSocialNetworks()
         getSegments()
+        getUserCompany()
+        getUser()
     }
 
-    private fun getSegments() {
-        Coroutines.main {
-            try {
-                segmentRepository.getAllSegments().observeForever {
-                    it?.let {
-                        segments.value = it.parseToSegmentModelList()
-                    }
-                }
-            } catch (ex: Exception) {
-                Log.i("AccountViewModel.init", ex.message ?: "no error message")
+    private suspend fun getSegments() {
+        segmentRepository.getAllSegments().observeForever {
+            it?.let {
+                segments.value = it.parseToSegmentModelList()
             }
         }
     }
@@ -71,54 +65,46 @@ class AccountViewModel(
             }
         } catch (ex: Exception) {
             userData.value = UserAccountData()
-            Log.i("AccountViewModel.init", ex.message ?: "no error message")
+            throw ex
         }
     }
 
-    private fun getUserCompany() {
-        Coroutines.main {
-            try {
-                companyRepository.getMyCompany().observeForever {
-                    if (it != null) {
-                        companyData.value = it.toCompanyAccountData()
-                        companyData.value!!.thumbnail.name = getFileName(companyData.value!!.thumbnail.path)
-                        companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
-                        isUpdatingCompany = true
-                    } else
-                        companyData.value = CompanyAccountData(email = userData.value!!.email)
-                }
-            } catch (ex: Exception) {
-                companyData.value = CompanyAccountData(email = userData.value!!.email)
-                Log.i("AccountViewModel.init", ex.message ?: "no error message")
+    private suspend fun getUserCompany() {
+        try {
+            companyRepository.getMyCompany().observeForever {
+                if (it != null) {
+                    companyData.value = it.toCompanyAccountData()
+                    companyData.value!!.thumbnail.name = getFileName(companyData.value!!.thumbnail.path)
+                    companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
+                    isUpdatingCompany = true
+                } else
+                    companyData.value = CompanyAccountData(email = userData.value!!.email)
             }
+        } catch (ex: Exception) {
+            companyData.value = CompanyAccountData(email = userData.value!!.email)
+            throw ex
         }
     }
 
-    private fun getUserSocialNetworks() {
-        Coroutines.main {
-            val userAccounts = UserAccountsData(
-                instagram = UserSocialNetwork(channelName = INSTAGRAM_CHANNEL, category = SOCIAL_NETWORK_CATEGORY),
-                facebook = UserSocialNetwork(channelName = FACEBOOK_CHANNEL, category = SOCIAL_NETWORK_CATEGORY)
-            )
-            try {
-                accountRepository.getUserAccounts().let { accounts ->
-                    if (accounts.isNotEmpty())
-                        for (account in accounts)
-                            if (account.channelName == INSTAGRAM_CHANNEL) {
-                                userAccounts.instagram.userName = account.userName
-                                userAccounts.instagram.id = account.id
-                                isUpdatingInstagram = true
-                            } else if (account.channelName == FACEBOOK_CHANNEL) {
-                                userAccounts.facebook.userName = account.userName
-                                userAccounts.facebook.id = account.id
-                                isUpdatingFacebook = true
-                            }
-                }
-            } catch (ex: Exception) {
-                Log.i("AccountViewModel.init", ex.message ?: "no error message")
-            }
-            userAccountsData.value = userAccounts
+    private suspend fun getUserSocialNetworks() {
+        val userAccounts = UserAccountsData(
+            instagram = UserSocialNetwork(channelName = INSTAGRAM_CHANNEL, category = SOCIAL_NETWORK_CATEGORY),
+            facebook = UserSocialNetwork(channelName = FACEBOOK_CHANNEL, category = SOCIAL_NETWORK_CATEGORY)
+        )
+        accountRepository.getUserAccounts().let { accounts ->
+            if (accounts.isNotEmpty())
+                for (account in accounts)
+                    if (account.channelName == INSTAGRAM_CHANNEL) {
+                        userAccounts.instagram.userName = account.userName
+                        userAccounts.instagram.id = account.id
+                        isUpdatingInstagram = true
+                    } else if (account.channelName == FACEBOOK_CHANNEL) {
+                        userAccounts.facebook.userName = account.userName
+                        userAccounts.facebook.id = account.id
+                        isUpdatingFacebook = true
+                    }
         }
+        userAccountsData.value = userAccounts
     }
     // endregion
 

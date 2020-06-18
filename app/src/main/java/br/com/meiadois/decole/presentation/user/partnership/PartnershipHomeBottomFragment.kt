@@ -99,13 +99,15 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             } catch (ex: ClientException) {
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
                 else showGenericErrorMessage()
+                if (fromSwipeRefresh) hideSwipe()
             } catch (ex: NoInternetException) {
                 setContentVisibility(CONTENT_NO_INTERNET)
+                if (fromSwipeRefresh) hideSwipe()
             } catch (ex: Exception) {
                 showGenericErrorMessage()
+                if (fromSwipeRefresh) hideSwipe()
             } finally {
-                if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
-                else setProgressBarVisibility(false)
+                setProgressBarVisibility(false)
             }
         }
     }
@@ -114,6 +116,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     private fun setProgressBarVisibility(visible: Boolean) {
         progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
     }
+
+    private fun hideSwipe() { swipe_refresh?.isRefreshing = false }
 
     private fun setContentVisibility(contentMode: Int) {
         partner_recycler_view.visibility = if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.GONE
@@ -173,7 +177,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             } catch (ex: Exception) {
                 showGenericErrorMessage()
             } finally {
-                if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
+                if (fromSwipeRefresh) hideSwipe()
                 else setProgressBarVisibility(false)
             }
         }
