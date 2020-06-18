@@ -13,12 +13,19 @@ import br.com.meiadois.decole.R
 import br.com.meiadois.decole.databinding.FragmentSearchPartnerBinding
 import br.com.meiadois.decole.presentation.pwrecovery.PwRecoveryCodeFragment
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel
+import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
+import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
+import br.com.meiadois.decole.util.extension.toCompanyModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import kotlinx.android.synthetic.main.fragment_search_partner.*
+import kotlinx.android.synthetic.main.fragment_search_partner.progress_bar
+import kotlinx.android.synthetic.main.fragment_search_partner.swipe_refresh
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 
@@ -42,11 +49,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setLoadingView()
-        setCompaniesAdapter()
-        setContentCardCompanyView()
-
+        swipe_refresh.setOnRefreshListener { init(true) }
         parentFragmentManager.popBackStack()
 
         toolbar_filter_button.setOnClickListener {
@@ -56,7 +59,6 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 .addToBackStack(null)
                 .commit()
         }
-
         toolbar_back_button.setOnClickListener {
             activity?.finish()
         }
@@ -91,6 +93,22 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                     }
                 }
             }
+        }
+    }
+
+    private fun init(fromSwipeRefresh: Boolean = false) {
+        Coroutines.main {
+            try {
+                setLoadingView()
+                setCompaniesAdapter()
+                setContentCardCompanyView()
+                }
+            catch(ex:Exception){
+                Log.i("SwipeRefresh.ex", ex.message!!)
+            }
+                if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
+                else setProgressVisibility(false)
+
         }
     }
 
