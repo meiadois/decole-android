@@ -24,12 +24,14 @@ import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewMod
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.Mask
 import br.com.meiadois.decole.util.exception.NoInternetException
+import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_account.*
+import kotlinx.android.synthetic.main.activity_account.progress_bar
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -51,6 +53,11 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             lifecycleOwner = this@AccountActivity
         }
         init()
+        setAdapterToSegmentDropdown()
+        setRemoveErrorListener()
+        setClickListeners()
+        setImageInputs()
+        setInputMasks()
     }
 
     // region Permissions
@@ -168,25 +175,28 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
                 setContentVisibility(CONTENT_NO_INTERNET)
             } catch (ex: Exception) {
                 setPageProgressBarVisibility(false)
-                setContentVisibility(CONTENT_UNKNOWN_ERROR)
+                showGenericErrorMessage()
             }
         }
-        setAdapterToSegmentDropdown()
-        setRemoveErrorListener()
-        setClickListeners()
-        setImageInputs()
-        setInputMasks()
     }
 
     private fun setContentVisibility(contentMode: Int) {
         container_layout.visibility = if (contentMode == CONTENT_FORM) View.VISIBLE else View.GONE
         container_button.visibility = container_layout.visibility
         account_no_internet_layout.visibility = if (contentMode == CONTENT_NO_INTERNET) View.VISIBLE else View.GONE
-        account_unknown_error_layout.visibility = if (contentMode == CONTENT_UNKNOWN_ERROR) View.VISIBLE else View.GONE
     }
 
     private fun setPageProgressBarVisibility(visible: Boolean) {
         page_progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    private fun showGenericErrorMessage() {
+        account_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message)) { snackbar ->
+            snackbar.setAction(getString(R.string.reload)) {
+                init()
+                snackbar.dismiss()
+            }
+        }
     }
 
     private fun setImageInputs() {
@@ -398,7 +408,6 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
 
         private const val DEFAULT_IMAGE_TYPE = "image/*"
 
-        private const val CONTENT_UNKNOWN_ERROR = 0
         private const val CONTENT_NO_INTERNET = 1
         private const val CONTENT_NO_CONTENT = 2
         private const val CONTENT_FORM = 3

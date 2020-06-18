@@ -612,15 +612,6 @@
                         android:text="@string/partnership_bottom_no_internet_connection_message"
                         android:textAlignment="center" />
                 </LinearLayout>
-
-                <!-- Unknown Error Layout -->
-                <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/account_unknown_error_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                </LinearLayout>
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
