@@ -166,7 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:padding="32dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/content_"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -229,25 +229,29 @@
                         android:id="@+id/btn_md_close"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
+                        android:visibility="gone"
                         android:src="@drawable/ic_decline_match"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.3"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        tools:visibility="visible"/>
 
                     <ImageView
                         android:id="@+id/btn_md_checked"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:src="@drawable/ic_accept_match"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.7"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        tools:visibility="visible"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

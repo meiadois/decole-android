@@ -94,6 +94,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 }
             }
         }
+        init()
     }
 
     private fun init(fromSwipeRefresh: Boolean = false) {
@@ -102,13 +103,13 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 setLoadingView()
                 setCompaniesAdapter()
                 setContentCardCompanyView()
+                mViewModel.state = 0
                 }
             catch(ex:Exception){
                 Log.i("SwipeRefresh.ex", ex.message!!)
             }
                 if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
                 else setProgressVisibility(false)
-
         }
     }
 
