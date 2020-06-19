@@ -148,7 +148,7 @@ class ValidTelephoneRule(override val errorMessage: String): BaseRule<String?>{
             .replace(" ", "")
             .replace("-", "")
             .replace("+", "")
-        return BetweenLengthRule(12, 13, String()).validate(tel) && IsDigitsOnlyRule(String()).validate(tel)
+        return ExactLengthRule(13, String()).validate(tel) && IsDigitsOnlyRule(String()).validate(tel)
     }
 }
 
