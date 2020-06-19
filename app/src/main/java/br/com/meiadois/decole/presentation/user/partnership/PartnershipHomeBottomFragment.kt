@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.progress_bar
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.swipe_refresh
-import kotlinx.android.synthetic.main.fragment_route_list.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
@@ -88,6 +87,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
     private fun init(fromSwipeRefresh: Boolean = false) {
         Coroutines.main {
+            var changeLoadingVisibility = true
             try {
                 viewModel.getUserCompany().observe(viewLifecycleOwner, Observer {
                     if (it != null) {
@@ -96,18 +96,19 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                     } else
                         setContentVisibility(CONTENT_NO_ACCOUNT)
                 })
+                changeLoadingVisibility = false
             } catch (ex: ClientException) {
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
-                else showGenericErrorMessage()
-                if (fromSwipeRefresh) hideSwipe()
+                else showGenericErrorMessage(true)
             } catch (ex: NoInternetException) {
                 setContentVisibility(CONTENT_NO_INTERNET)
-                if (fromSwipeRefresh) hideSwipe()
             } catch (ex: Exception) {
-                showGenericErrorMessage()
-                if (fromSwipeRefresh) hideSwipe()
+                showGenericErrorMessage(true)
             } finally {
-                setProgressBarVisibility(false)
+                if (changeLoadingVisibility) {
+                    if (fromSwipeRefresh) hideSwipe()
+                    else setProgressBarVisibility(false)
+                }
             }
         }
     }
@@ -142,10 +143,11 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         container_chips.visibility = btn_search.visibility
     }
 
-    private fun showGenericErrorMessage() {
+    private fun showGenericErrorMessage(showProgressBar: Boolean = false) {
         fragment_bottom_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message)) { snackbar ->
             snackbar.setAction(getString(R.string.reload)) {
                 init()
+                setProgressBarVisibility(showProgressBar)
                 snackbar.dismiss()
             }
         }
