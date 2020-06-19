@@ -40,7 +40,7 @@
     <string name="partnership_slide_label">E ainda podemos aproximar você de outros micro empreendedores, para te ajudar a firmar parcerias!</string>
 
     <!-- Empty list of companies to match -->
-    <string name="list_error_title">Oops :x</string>
+    <string name="list_error_title">OOPS :x</string>
     <string name="text_error_title">Acabaram as empresas disponíveis, tente outro segmento ou volte mais tarde.</string>
 
     <!-- Login/Registration -->

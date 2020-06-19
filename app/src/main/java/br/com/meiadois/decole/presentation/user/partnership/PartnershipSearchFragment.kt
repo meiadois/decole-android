@@ -11,18 +11,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.databinding.FragmentSearchPartnerBinding
-import br.com.meiadois.decole.presentation.pwrecovery.PwRecoveryCodeFragment
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel
 import br.com.meiadois.decole.util.Coroutines
-import br.com.meiadois.decole.util.exception.ClientException
-import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
-import br.com.meiadois.decole.util.extension.toCompanyModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import kotlinx.android.synthetic.main.fragment_search_partner.*
 import kotlinx.android.synthetic.main.fragment_search_partner.progress_bar
 import kotlinx.android.synthetic.main.fragment_search_partner.swipe_refresh
@@ -80,14 +75,12 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                     layout_bottom_search.longSnackbar("Infelizmente só essa companhia está disponível nesse segmento")
                 }
                 mViewModel.companies.value!!.count() - 1 == mViewModel.state -> {
-                    btn_md_close.visibility = View.INVISIBLE
-                    btn_md_checked.visibility = View.INVISIBLE
+                    linear_button_container.visibility = View.INVISIBLE
                     layout_bottom_search.shortSnackbar("Você chegou ao fim da lista.Retornamos para o início") {
                         it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                                mViewModel.getUpdateCompany()
-                                btn_md_close.visibility = View.VISIBLE
-                                btn_md_checked.visibility = View.VISIBLE
+                                init(true)
+                                //linear_button_container.visibility = View.VISIBLE
                             }
                         })
                     }
@@ -103,7 +96,6 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 setLoadingView()
                 setCompaniesAdapter()
                 setContentCardCompanyView()
-                mViewModel.state = 0
                 }
             catch(ex:Exception){
                 Log.i("SwipeRefresh.ex", ex.message!!)
@@ -111,6 +103,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
                 else setProgressVisibility(false)
         }
+        mViewModel.state=0
     }
 
     private fun setCompaniesAdapter() {
@@ -118,13 +111,11 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
         mViewModel.companies.observe(viewLifecycleOwner, Observer {
             if (mViewModel.companies.value!!.isNotEmpty()) {
                 mViewModel.company.value = mViewModel.companies.value?.get(0)
-                btn_md_checked.visibility = View.VISIBLE
-                btn_md_close.visibility = View.VISIBLE
+                linear_button_container.visibility = View.VISIBLE
                 cardview_company_profile.visibility = View.VISIBLE
                 fragment_container_noCompanies.visibility = View.GONE
             } else {
-                btn_md_checked.visibility = View.GONE
-                btn_md_close.visibility = View.GONE
+                linear_button_container.visibility = View.GONE
                 cardview_company_profile.visibility = View.GONE
                 fragment_container_noCompanies.visibility = View.VISIBLE
             }
@@ -133,8 +124,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
     }
 
     private fun setLoadingView() {
-        btn_md_checked.visibility = View.GONE
-        btn_md_close.visibility = View.GONE
+        linear_button_container.visibility = View.GONE
         cardview_company_profile.visibility = View.GONE
         fragment_container_noCompanies.visibility = View.GONE
         setProgressVisibility(true)
