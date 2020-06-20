@@ -30,11 +30,12 @@
 
     <!-- Welcome Slide Activity -->
     <string name="welcome_slide_title">Podemos te ajudar de várias formas!</string>
-    <string name="welcome_education_title">EDUCAÇÃO</string>
-    <string name="welcome_partnership_title">PARCERIAS</string>
+    <string name="welcome_education_title">Educação</string>
+    <string name="welcome_partnership_title">Parcerias</string>
     <string name="education_slide_label">Podemos acompanhar você em <b>percursos</b> que pretendem demonstrar atitudes que podem impulsionar seu negócio nas mídias digitais.</string>
     <string name="marketplace_slide_label">Vamos te acompanhar também em percursos que pretendem expor seu negócio nas maiores plataformas de vendas on-line.</string>
     <string name="partnership_slide_label">E ainda podemos aproximar você de outros micro empreendedores, para te ajudar a firmar parcerias!</string>
+    <string name="welcome_slide_label">Bem vindo(a) ao <b>Decole!</b></string>
 
     <!-- Empty list of companies to match -->
     <string name="list_error_title">Oops :x</string>
