@@ -63,7 +63,8 @@
                         android:src="@drawable/ic_online_commerce"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/title" />
+                        app:layout_constraintTop_toBottomOf="@+id/title"
+                        android:contentDescription="@string/welcome_content_description" />
 
                     <TextView
                         android:id="@+id/text_info"
@@ -106,19 +107,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_dot_nao_visto" />
+            android:src="@drawable/ic_dot_nao_visto"
+            android:contentDescription="@string/breadcrumb_description" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_dot_ativo" />
+            android:src="@drawable/ic_dot_ativo"
+            android:contentDescription="@string/breadcrumb_description" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_dot_nao_visto" />
+            android:src="@drawable/ic_dot_nao_visto"
+            android:contentDescription="@string/breadcrumb_description" />
 
     </LinearLayout>
 

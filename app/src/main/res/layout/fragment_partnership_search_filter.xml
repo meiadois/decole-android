@@ -58,7 +58,6 @@
             android:id="@+id/account_scroolable_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/container_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bottom_header_guideline">
@@ -79,7 +78,8 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_number_1" />
+                        android:src="@drawable/ic_number_1"
+                        android:contentDescription="@string/number_description" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Segmento"
+                            android:text="@string/segment"
                             android:textAllCaps="true"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="13sp"
@@ -99,10 +99,11 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Filtre pelo segmento das empresas"
+                            android:text="@string/filter"
                             android:textAllCaps="true"
                             android:textColor="@color/colorSecondaryText"
-                            android:textSize="11sp" />
+                            android:textSize="11sp"
+                            tools:ignore="SmallSp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -136,34 +137,6 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/container_button"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@color/colorTextIcons"-->
-<!--            android:elevation="15dp"-->
-<!--            android:gravity="center"-->
-<!--            android:paddingHorizontal="32dp"-->
-<!--            android:paddingVertical="24dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent">-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btn_save"-->
-<!--                style="@style/btn_primary"-->
-<!--                android:onClick="@{viewModel::onApplyFilterButtonClicked}"-->
-<!--                android:text="Aplicar filtros"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/account_company_form" />-->
-
-<!--            <ProgressBar-->
-<!--                android:id="@+id/progress_bar"-->
-<!--                style="@style/circle_progress_bar"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:visibility="gone" />-->
-
-<!--        </LinearLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

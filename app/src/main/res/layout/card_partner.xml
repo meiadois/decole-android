@@ -17,14 +17,15 @@
             android:layout_height="match_parent"
             android:background="@color/colorTextIcons"
             android:paddingStart="16dp"
-            android:paddingEnd="32dp"
             android:paddingTop="10dp"
+            android:paddingEnd="32dp"
             android:paddingBottom="10dp">
 
             <ImageView
                 android:id="@+id/image_partner"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
+                android:contentDescription="@string/map_companies_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -35,40 +36,40 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="44dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/image_partner"
-                app:layout_constraintEnd_toStartOf="@+id/image_status"
-                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:orientation="vertical">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/image_status"
+                app:layout_constraintStart_toEndOf="@+id/image_partner"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/text_partner_name"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    tools:text="NOME DO PARCEIRO"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="15sp"
-                     />
+                    tools:text="NOME DO PARCEIRO" />
 
                 <TextView
                     android:id="@+id/text_partner_segment"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    tools:text="SEGMENTO DO PARCEIRO"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/colorSecondaryText"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="SEGMENTO DO PARCEIRO" />
 
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/image_status"
                 android:layout_width="24dp"
-                tools:src="@drawable/ic_mdi_access_time"
                 android:layout_height="24dp"
+                android:contentDescription="@string/map_companies_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_mdi_access_time" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

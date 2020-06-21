@@ -13,9 +13,16 @@
     <string name="ask_again_for_overlay_permission">Para seguir adiante, você precisa clicar no botão e realizar a permissão.</string>
 
     <!-- Description -->
-    <string name="instagram_profile_image_description">Perfil do Instagram</string>
-    <string name="instagram_introduction_image_description">Construção do Instagram</string>
+    <string name="instagram_profile_description">Perfil do Instagram</string>
+    <string name="instagram_introduction_description">Construção do Instagram</string>
+    <string name="instagram_interactive_description">Introdução Interativa</string>
+    <string name="welcome_content_description">Introdução</string>
     <string name="lesson_completed_content_description">Lição Concluída</string>
+    <string name="breadcrumb_description">Migalha de Pão</string>
+    <string name="map_lessons_description">Detalhes de Lições</string>
+    <string name="map_companies_description">Detalhes de Companhias</string>
+    <string name="map_routes_description">Detalhes de Rotas</string>
+    <string name="chart_content_description">Detalhes dos Gráficos</string>
     <string name="back_arrow_content_description">Voltar</string>
     <string name="number_description">Etapa</string>
     <string name="logout_content_description">Sair</string>
@@ -29,7 +36,6 @@
 
     <!-- Route Detais Activity -->
     <string name="route_details_progress_label" type="id">%d/%d PASSOS</string>
-
 
     <!-- Start Interactive Mode Activity -->
     <string name="ask_for_overlay_permission">
@@ -160,6 +166,10 @@
     <string name="partnership_bottom_no_internet_connection_message">Parece que você não está conectado à internet. Tente novamente quando possuir uma conexão estável.</string>
     <string name="cant_load_content_error_message">Não Foi possível carregar o conteúdo.</string>
 
+    <!-- Partnership Search -->
+    <string name="segment">Segmento</string>
+    <string name="filter">Filtre pelo segmento das empresas</string>
+
     <!-- Password recovery -->
     <string name="pw_recovery_home_label">Para continuar com o processo de recuperação de senha, insira um e-mail válido.</string>
     <string name="pw_recovery_email_input">digite um e-mail</string>
@@ -174,6 +184,7 @@
     <string name="title_metrics">Ops! Aconteceu algo errado</string>
     <string name="instagram_not_found">Instagram cadastrado não foi encontrado, certifique-se de que a conta inserida está correta.</string>
     <string name="instagram_not_registered">Por favor, inserir um instagram na parte de perfil para podermos exibir algumas análises.</string>
+    <string name="metrics_avarege_subtitle">Média de Posts na semana</string>
     <string name="ooops">Ooops!</string>
     <string name="account_me_header_subtitle">Informações da minha conta</string>
     <string name="account_company_header_subtitle">Informações da minha empresa</string>

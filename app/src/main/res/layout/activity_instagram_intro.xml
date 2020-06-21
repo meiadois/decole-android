@@ -39,7 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/inner_image_guideline_top"
-            android:contentDescription="@string/instagram_introduction_image_description" />
+            android:contentDescription="@string/instagram_introduction_description" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/inner_image_guideline_bottom"
