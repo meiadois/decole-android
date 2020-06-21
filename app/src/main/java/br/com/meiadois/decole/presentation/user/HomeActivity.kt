@@ -59,7 +59,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
-            return if (position == 0) getString(R.string.education_title) else getString(R.string.partner_title)
+            return if (position == 0) getString(R.string.welcome_education_title) else getString(R.string.welcome_partnership_title)
         }
     }
 

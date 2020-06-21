@@ -49,12 +49,12 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
     }
 
 
-
     private fun setAdapterToSegmentDropdown() {
         mViewModel.segments.observe(viewLifecycleOwner, Observer { it ->
             it?.let { segments ->
                 var segmentsString = segments.map { it.name }.toTypedArray()
-                segmentsString = segmentsString.plusElement("Todos os Segmentos")
+                segmentsString =
+                    segmentsString.plusElement(context?.getString(R.string.all_segments)!!)
                 filled_exposed_dropdown.setAdapter(
                     ArrayAdapter(
                         requireContext(),
@@ -63,20 +63,16 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
                     )
                 )
                 filled_exposed_dropdown.inputType = InputType.TYPE_NULL
-                filled_exposed_dropdown.setText(mViewModel.segmentFilter.value ?:"Todos os Segmentos", false)
+                filled_exposed_dropdown.setText(
+                    mViewModel.segmentFilter.value ?: context?.getString(R.string.all_segments),
+                    false
+                )
                 filled_exposed_dropdown.setOnItemClickListener { _, _, position, _ ->
                     mViewModel.segmentClicked = segmentsString[position]
                 }
 
             }
         })
-    }
-
-    private fun handleBackNavigation() {
-        val nextFragment = PartnershipSearchFragment()
-        val transaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, nextFragment)
-            .commit()
     }
 
 }
