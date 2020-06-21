@@ -1,7 +1,9 @@
 package br.com.meiadois.decole.presentation.pwrecovery.viewmodel
 
+import android.content.Context
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
+import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.presentation.pwrecovery.listener.CodeListener
 import br.com.meiadois.decole.presentation.pwrecovery.listener.HomeListener
@@ -25,9 +27,9 @@ class PwRecoveryViewModel(
     var codeListener: CodeListener? = null
     var resetListener: ResetListener? = null
 
-    fun onHomeNextButtonClicked() {
+    fun onHomeNextButtonClicked(context: Context?) {
         homeListener?.onStarted()
-        validateEmail()
+        validateEmail(context)
         if (emailErrorMessage != null) {
             homeListener?.onFailure(null)
             return
@@ -44,7 +46,7 @@ class PwRecoveryViewModel(
         homeListener?.onSuccess()
     }
 
-    fun onCodeNextButtonClicked() = Coroutines.main {
+    fun onCodeNextButtonClicked(context: Context?) = Coroutines.main {
         codeListener?.onStarted()
 
         try {
@@ -52,17 +54,17 @@ class PwRecoveryViewModel(
             if (res.isValid) {
                 codeListener?.onSuccess()
             } else {
-                codeListener?.onFailure("O código não é válido")
+                codeListener?.onFailure(context?.getString(R.string.code_invalid_error_message))
             }
         } catch (ex: ClientException) {
             codeListener?.onFailure(ex.message)
         }
     }
 
-    fun onResetFinishButtonClicked() = Coroutines.main {
+    fun onResetFinishButtonClicked(context: Context?) = Coroutines.main {
         resetListener?.onStarted()
-        validatePassword()
-        validateConfirmPassword()
+        validatePassword(context)
+        validateConfirmPassword(context)
 
         if (passwordErrorMessage != null || passwordConfirmationErrorMessage != null) {
             resetListener?.onFailure(null)
@@ -78,24 +80,29 @@ class PwRecoveryViewModel(
         resetListener?.onSuccess()
     }
 
-    private fun validateEmail() {
-        emailErrorMessage = if (email.trim().isEmpty()) "Você precisa inserir seu e-mail."
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()) "Você precisa inserir um e-mail válido"
-        else null
+    private fun validateEmail(context: Context?) {
+        emailErrorMessage =
+            if (email.trim().isEmpty()) context?.getString(R.string.empty_email_error_message)
+            else if (!Patterns.EMAIL_ADDRESS.matcher(email.trim())
+                    .matches()
+            ) context?.getString(R.string.email_invalid_error_message)
+            else null
     }
 
-    private fun validatePassword() {
-        passwordErrorMessage = if (password.trim().isEmpty()) "Você precisa inserir uma senha."
-        else null
+    private fun validatePassword(context: Context?) {
+        passwordErrorMessage =
+            if (password.trim().isEmpty()) context?.getString(R.string.empty_password_error_message)
+            else null
     }
 
-    private fun validateConfirmPassword() {
+    private fun validateConfirmPassword(context: Context?) {
         if (passwordConfirmation.trim().isEmpty()) {
-            passwordConfirmationErrorMessage = "Você precisa inserir a confirmação da senha."
+            passwordConfirmationErrorMessage =
+                context?.getString(R.string.empty_confirm_password_error_message)
             return
         }
         if (password.compareTo(passwordConfirmation) != 0) {
-            passwordConfirmationErrorMessage = "As senhas não coincidem."
+            passwordConfirmationErrorMessage = context?.getString(R.string.confirm_password_diff_error_message)
             return
         }
         passwordConfirmationErrorMessage = null

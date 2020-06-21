@@ -52,7 +52,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias=".5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
+                android:contentDescription="@string/icon_logo_green_2_description" />
 
             <ImageView
                 android:id="@+id/btn_back"
@@ -63,7 +64,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/top_logo"
                 app:layout_constraintHorizontal_bias=".3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
+                android:contentDescription="@string/back_arrow_content_description" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/image_guideline_bottom"
@@ -109,7 +111,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_register_email_input"
                 style="@style/normal_input_single_layout"
@@ -128,7 +129,6 @@
                     android:text="@={viewModel.email}" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_register_password_input"

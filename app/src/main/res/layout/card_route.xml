@@ -48,7 +48,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/route_description"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_mdi_lock" />
+                tools:src="@drawable/ic_mdi_lock"
+                android:contentDescription="@string/map_routes_description" />
 
             <TextView
                 android:id="@+id/route_description"

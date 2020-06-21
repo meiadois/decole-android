@@ -41,14 +41,14 @@ class PwRecoveryHomeFragment : Fragment(), KodeinAware, HomeListener {
 
         input_recovery_email.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                mViewModel.onHomeNextButtonClicked()
+                mViewModel.onHomeNextButtonClicked(this.context)
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
         }
 
         btn_home_next.setOnClickListener {
-            mViewModel.onHomeNextButtonClicked()
+            mViewModel.onHomeNextButtonClicked(this.context)
         }
     }
 

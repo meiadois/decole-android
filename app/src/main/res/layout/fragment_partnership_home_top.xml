@@ -109,4 +109,48 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- No Internet Connection Layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_company_layout_no_internet"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="@string/ooops"
+                android:id="@+id/text_title_no_internet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_no_internet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="65dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="65dp"
+                android:text="@string/cant_load_content_error_message"
+                android:textColor="@color/colorDivider"
+                android:textAlignment="center"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

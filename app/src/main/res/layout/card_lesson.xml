@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="lesson"
             type="br.com.meiadois.decole.data.localdb.entity.Lesson" />
@@ -17,6 +18,7 @@
             android:id="@+id/status_rect"
             android:layout_width="5dp"
             android:layout_height="60dp"
+            android:contentDescription="@string/map_lessons_description"
             android:src="@{lesson.completed? @drawable/dark_timeline_rect : @drawable/light_timeline_rect}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/card"
@@ -27,6 +29,7 @@
             android:id="@+id/status_image"
             android:layout_width="52dp"
             android:layout_height="52dp"
+            android:contentDescription="@string/map_lessons_description"
             android:src="@{lesson.completed? @drawable/ic_dark_dot_timeline : @drawable/ic_light_dot_timeline}"
             app:layout_constraintBottom_toTopOf="@+id/status_rect"
             app:layout_constraintEnd_toStartOf="@+id/card"
@@ -67,7 +70,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

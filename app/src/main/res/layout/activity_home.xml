@@ -33,7 +33,8 @@
             app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
+            app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
+            android:contentDescription="@string/icon_logo_description" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -43,7 +44,8 @@
             android:src="@drawable/ic_mdi_account_circle"
             app:layout_constraintBottom_toTopOf="@id/image_guideline_bottom"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_guideline_top" />
+            app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
+            android:contentDescription="@string/icon_profile_description" />
 
         <androidx.constraintlayout.widget.Guideline
             app:layout_constraintGuide_percent="0.85"

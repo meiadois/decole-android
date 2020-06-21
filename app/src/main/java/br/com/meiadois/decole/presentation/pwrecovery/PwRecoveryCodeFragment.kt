@@ -33,23 +33,22 @@ class PwRecoveryCodeFragment : Fragment(), KodeinAware, CodeListener {
         )
         binding.viewModel = mViewModel
         mViewModel.codeListener = this
-
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        input_register_email.setOnEditorActionListener { _, actionId, _ ->
+        input_register_email.setOnEditorActionListener { _ , actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                mViewModel.onCodeNextButtonClicked()
+                mViewModel.onCodeNextButtonClicked(this.context)
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
         }
 
         btn_code_next.setOnClickListener {
-            mViewModel.onCodeNextButtonClicked()
+            mViewModel.onCodeNextButtonClicked(this.context)
         }
     }
 

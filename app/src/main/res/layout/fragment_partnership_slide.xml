@@ -23,7 +23,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,15 +30,15 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:padding="24dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_height="wrap_content">
+                android:padding="24dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/main_image"
@@ -47,12 +46,13 @@
                         android:layout_height="0dp"
                         android:layout_marginStart="48dp"
                         android:layout_marginEnd="48dp"
+                        android:contentDescription="@string/welcome_content_description"
                         android:src="@drawable/ic_undraw_agreement"
-                        app:layout_constraintVertical_bias=".2"
                         app:layout_constraintBottom_toTopOf="@+id/image_guideline_bottom"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias=".2" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/image_guideline_bottom"
@@ -65,10 +65,11 @@
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:contentDescription="@string/welcome_content_description"
                         android:text="@string/welcome_partnership_title"
                         android:textColor="@color/colorPrimaryText"
                         android:textSize="20sp"
-                        android:layout_marginTop="16dp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -91,9 +92,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </ScrollView>
-
 
     </androidx.cardview.widget.CardView>
 
@@ -112,18 +111,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
+            android:contentDescription="@string/breadcrumb_description"
             android:src="@drawable/ic_dot_nao_visto" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
+            android:contentDescription="@string/breadcrumb_description"
             android:src="@drawable/ic_dot_nao_visto" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
+            android:contentDescription="@string/breadcrumb_description"
             android:src="@drawable/ic_dot_ativo" />
 
     </LinearLayout>

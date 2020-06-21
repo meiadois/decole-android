@@ -80,7 +80,7 @@
                 <!--Previous button-->
                 <ImageView
                     android:id="@+id/prev_btn"
-                    android:layout_width="30dp"
+                    android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_weight="0.5"
                     android:src="@drawable/ic_arrow_left"
@@ -120,7 +120,7 @@
                 android:id="@+id/close_btn"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="40dp"
+                android:layout_marginStart="40dp"
                 android:src="@drawable/ic_close"
                 android:visibility="invisible"
                 tools:ignore="ContentDescription" />

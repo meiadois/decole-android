@@ -85,7 +85,7 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
         footerEntries.add(
             LegendEntry(
-                "Seguidores",
+                context?.getString(R.string.followers_label),
                 Legend.LegendForm.SQUARE,
                 8f,
                 8f,
@@ -95,7 +95,7 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         )
         footerEntries.add(
             LegendEntry(
-                "Seguindo",
+                context?.getString(R.string.following_label),
                 Legend.LegendForm.SQUARE,
                 8f,
                 8f,
@@ -166,7 +166,7 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
 
         footerEntries.add(
             LegendEntry(
-                "Com #",
+                context?.getString(R.string.has_hashtag_label),
                 Legend.LegendForm.SQUARE,
                 10f,
                 8f,
@@ -176,7 +176,7 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         )
         footerEntries.add(
             LegendEntry(
-                "Sem #",
+                context?.getString(R.string.no_has_hashtag_label),
                 Legend.LegendForm.SQUARE,
                 10f,
                 8f,
@@ -192,7 +192,7 @@ class EducationHomeTopFragment : Fragment(), KodeinAware {
         legend.xOffset = 5f
 
         pieChartView.data = PieData(barPie)
-        pieChartView.description.text = "Post"
+        pieChartView.description.text = context?.getString(R.string.post_label)
         pieChartView.description.textSize = 10f
         pieChartView.description.xOffset = 30f
         pieChartView.animate()

@@ -23,11 +23,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorTextIcons">
+            android:fillViewport="true"
+            android:scrollbars="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -48,6 +48,7 @@
                         android:layout_marginStart="48dp"
                         android:layout_marginEnd="48dp"
                         android:src="@drawable/ic_instagram_like"
+                        android:contentDescription="@string/welcome_content_description"
                         app:layout_constraintVertical_bias=".2"
                         app:layout_constraintBottom_toTopOf="@+id/image_guideline_bottom"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -112,19 +113,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_dot_ativo" />
+            android:src="@drawable/ic_dot_ativo"
+            android:contentDescription="@string/breadcrumb_description" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_dot_nao_visto" />
+            android:src="@drawable/ic_dot_nao_visto"
+            android:contentDescription="@string/breadcrumb_description" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_dot_nao_visto" />
+            android:src="@drawable/ic_dot_nao_visto"
+            android:contentDescription="@string/breadcrumb_description" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

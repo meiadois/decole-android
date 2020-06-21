@@ -21,6 +21,7 @@ import br.com.meiadois.decole.presentation.user.partnership.viewmodel.Partnershi
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
+import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.toCompanyModel
 import com.bumptech.glide.Glide
@@ -28,10 +29,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
+import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.progress_bar
+import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.swipe_refresh
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
-
 
 class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
@@ -73,6 +75,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 view.context.startActivity(it)
             }
         }
+
+        swipe_refresh.setOnRefreshListener { init(true) }
     }
 
     override fun onResume() {
@@ -81,23 +85,30 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     }
     // endregion
 
-    private fun init() {
+    private fun init(fromSwipeRefresh: Boolean = false) {
         Coroutines.main {
+            var changeLoadingVisibility = true
             try {
                 viewModel.getUserCompany().observe(viewLifecycleOwner, Observer {
                     if (it != null) {
-                        updateContent(it.company.id)
+                        updateContent(it.company.id, fromSwipeRefresh)
                         viewModel.company = it.toCompanyModel()
                     } else
                         setContentVisibility(CONTENT_NO_ACCOUNT)
                 })
+                changeLoadingVisibility = false
             } catch (ex: ClientException) {
                 if (ex.code == 404) setContentVisibility(CONTENT_NO_ACCOUNT)
-                else showGenericErrorMessage()
+                else showGenericErrorMessage(true)
+            } catch (ex: NoInternetException) {
+                setContentVisibility(CONTENT_NO_INTERNET)
             } catch (ex: Exception) {
-                showGenericErrorMessage()
+                showGenericErrorMessage(true)
             } finally {
-                setProgressBarVisibility(false)
+                if (changeLoadingVisibility) {
+                    if (fromSwipeRefresh) hideSwipe()
+                    else setProgressBarVisibility(false)
+                }
             }
         }
     }
@@ -106,6 +117,8 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     private fun setProgressBarVisibility(visible: Boolean) {
         progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
     }
+
+    private fun hideSwipe() { swipe_refresh?.isRefreshing = false }
 
     private fun setContentVisibility(contentMode: Int) {
         partner_recycler_view.visibility = if (contentMode == CONTENT_LIST_PARTNERS) View.VISIBLE else View.GONE
@@ -119,6 +132,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
                 View.VISIBLE
             } else View.GONE
         fragment_container_noAccount.visibility = if (contentMode == CONTENT_NO_ACCOUNT) View.VISIBLE else View.GONE
+        layout_no_internet.visibility = if (contentMode == CONTENT_NO_INTERNET) View.VISIBLE else View.GONE
         btn_search.visibility =
             if (contentMode in setOf(
                     CONTENT_LIST_PARTNERS,
@@ -129,10 +143,11 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         container_chips.visibility = btn_search.visibility
     }
 
-    private fun showGenericErrorMessage() {
+    private fun showGenericErrorMessage(showProgressBar: Boolean = false) {
         fragment_bottom_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message)) { snackbar ->
             snackbar.setAction(getString(R.string.reload)) {
                 init()
+                setProgressBarVisibility(showProgressBar)
                 snackbar.dismiss()
             }
         }
@@ -140,21 +155,32 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
     // endregion
 
     // region DataSet Management
-    private fun updateContent(companyId: Int) {
-        when (currentMenuItemActive) {
-            CHIP_CONNECTED -> {
-                viewModel.recyclerDataSet.value = viewModel.matchesList.value
-                viewModel.getUserMatches(companyId)
-            }
-            CHIP_INVITE_SENT -> {
-                viewModel.recyclerDataSet.value = viewModel.sentLikesList.value
-                viewModel.getSentLikes(companyId)
-            }
-            CHIP_INVITE_RECEIVED -> {
-                viewModel.recyclerDataSet.value = viewModel.receivedLikesList.value
-                viewModel.getReceivedLikes(companyId)
-            }
-            else -> {
+    private fun updateContent(companyId: Int, fromSwipeRefresh: Boolean = false) {
+        Coroutines.main {
+            try {
+                when (currentMenuItemActive) {
+                    CHIP_CONNECTED -> {
+                        viewModel.recyclerDataSet.value = viewModel.matchesList.value
+                        viewModel.getUserMatches(companyId)
+                    }
+                    CHIP_INVITE_SENT -> {
+                        viewModel.recyclerDataSet.value = viewModel.sentLikesList.value
+                        viewModel.getSentLikes(companyId)
+                    }
+                    CHIP_INVITE_RECEIVED -> {
+                        viewModel.recyclerDataSet.value = viewModel.receivedLikesList.value
+                        viewModel.getReceivedLikes(companyId)
+                    }
+                    else -> {
+                    }
+                }
+            } catch (ex: NoInternetException) {
+                setContentVisibility(CONTENT_NO_INTERNET)
+            } catch (ex: Exception) {
+                showGenericErrorMessage()
+            } finally {
+                if (fromSwipeRefresh) hideSwipe()
+                else setProgressBarVisibility(false)
             }
         }
     }
@@ -328,9 +354,10 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
 
         private const val CONTENT_NONE = 0
         private const val CONTENT_NO_ACCOUNT = 1
-        private const val CONTENT_LIST_PARTNERS = 2
-        private const val CONTENT_NO_PARTNERS_FOUND = 3
-        private const val CONTENT_NO_REGISTERS_FOUND = 4
+        private const val CONTENT_NO_INTERNET = 2
+        private const val CONTENT_LIST_PARTNERS = 3
+        private const val CONTENT_NO_PARTNERS_FOUND = 4
+        private const val CONTENT_NO_REGISTERS_FOUND = 5
 
         const val CHIP_INVITE_SENT = 5
         const val CHIP_INVITE_RECEIVED = 6

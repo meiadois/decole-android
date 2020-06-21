@@ -44,6 +44,7 @@
                 android:id="@+id/main_image"
                 android:layout_width="280dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/lesson_completed_content_description"
                 android:src="@drawable/ic_undraw_winners"
                 app:layout_constraintBottom_toTopOf="@id/inner_image_guideline_bottom"
                 app:layout_constraintEnd_toEndOf="parent"

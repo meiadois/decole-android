@@ -3,6 +3,7 @@ package br.com.meiadois.decole.presentation.auth.viewmodel
 import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.ViewModel
+import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.repository.UserRepository
 import br.com.meiadois.decole.presentation.auth.AuthListener
 import br.com.meiadois.decole.util.Coroutines
@@ -26,10 +27,10 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
 
     fun onRegisterButtonClick(view: View) {
         authListener?.onStarted()
-        validateUsername()
-        validateEmail()
-        validatePassword()
-        validateConfirmPassword()
+        validateUsername(view)
+        validateEmail(view)
+        validatePassword(view)
+        validateConfirmPassword(view)
 
         if (nameErrorMessage != null || emailErrorMessage != null || passwordErrorMessage != null || confirmPasswordErrorMessage != null) {
             authListener?.onFailure(null)
@@ -57,32 +58,32 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
         }
     }
 
-    private fun validateUsername() {
-        nameErrorMessage = if (name.trim().isEmpty()) "Você precisa inserir um nome."
+    private fun validateUsername(view: View) {
+        nameErrorMessage = if (name.trim().isEmpty()) view.context.getString(R.string.username_empty)
         else null
     }
 
-    private fun validatePassword() {
-        passwordErrorMessage = if (password.trim().isEmpty()) "Você precisa inserir uma senha."
+    private fun validatePassword(view: View) {
+        passwordErrorMessage = if (password.trim().isEmpty()) view.context.getString(R.string.empty_password_error_message)
         else null
     }
 
-    private fun validateConfirmPassword() {
+    private fun validateConfirmPassword(view: View) {
         if (confirmPassword.trim().isEmpty()) {
-            confirmPasswordErrorMessage = "Você precisa inserir a confirmação da senha."
+            confirmPasswordErrorMessage = view.context.getString(R.string.empty_confirm_password_error_message)
             return
         }
         if (password.compareTo(confirmPassword) != 0) {
-            confirmPasswordErrorMessage = "As senhas não coincidem."
+            confirmPasswordErrorMessage = view.context.getString(R.string.confirm_password_diff_error_message)
             return
         }
         confirmPasswordErrorMessage = null
         return
     }
 
-    private fun validateEmail() {
-        emailErrorMessage = if (email.trim().isEmpty()) "Você precisa inserir seu e-mail."
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()) "Você precisa inserir um e-mail válido"
+    private fun validateEmail(view: View) {
+        emailErrorMessage = if (email.trim().isEmpty()) view.context.getString(R.string.empty_email_error_message)
+        else if (!Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()) view.context.getString(R.string.email_invalid_error_message)
         else null
 
     }

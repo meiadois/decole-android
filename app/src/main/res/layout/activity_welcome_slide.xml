@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
@@ -56,13 +56,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
-                        android:src="@drawable/ic_dot_visto" />
+                        android:src="@drawable/ic_dot_visto"
+                        android:contentDescription="@string/breadcrumb_description" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
-                        android:src="@drawable/ic_dot_ativo" />
+                        android:src="@drawable/ic_dot_ativo"
+                        android:contentDescription="@string/breadcrumb_description"/>
 
                 </LinearLayout>
 

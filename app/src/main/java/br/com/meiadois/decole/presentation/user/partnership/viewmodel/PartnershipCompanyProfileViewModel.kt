@@ -1,7 +1,6 @@
 package br.com.meiadois.decole.presentation.user.partnership.viewmodel
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.data.model.Company
@@ -30,22 +29,22 @@ private val segmentRepository: SegmentRepository
 
     var company: MutableLiveData<Company> = MutableLiveData()
 
-    var segments: MutableLiveData<List<Segment>> = MutableLiveData<List<Segment>>()
-    var companies: MutableLiveData<List<Company>> = MutableLiveData<List<Company>>()
+    var segments: MutableLiveData<List<Segment>> = MutableLiveData()
+    var companies: MutableLiveData<List<Company>> = MutableLiveData()
 
-    init{
+    init {
         getSegments()
         getAllCompanies()
     }
 
-    fun getUpdateCompany(){
+    fun getUpdateCompany() {
         try {
-            if (state < companies.value!!.count()-1)
+            if (state < companies.value!!.count() - 1)
                 state += 1
             else
                 state = 0
             company.postValue(companies.value?.get(state))
-        }catch(ex: Exception){
+        } catch (ex: Exception) {
             Log.i("getUpdateCompany.ex", ex.message!!)
         }
     }
@@ -63,34 +62,35 @@ private val segmentRepository: SegmentRepository
     fun getCompaniesBySegment(segmentId: Int) {
         Coroutines.main {
             try {
-                companies.value = companyRepository.getCompaniesBySegment(segmentId).toCompanySearchModelList()
+                companies.value =
+                    companyRepository.getCompaniesBySegment(segmentId).toCompanySearchModelList()
             } catch (ex: Exception) {
                 Log.i("getCompanyBySegment.ex", ex.message!!)
             }
         }
     }
 
-    fun getAllCompanies(){
+    fun getAllCompanies() {
         Coroutines.main {
-            try{
+            try {
                 companies.value = companyRepository.getAllCompanies().toCompanySearchModelList()
-                if(companies.value!!.isNotEmpty())
+                if (companies.value!!.isNotEmpty())
                     company.value = companies.value?.get(0)
-            }catch (ex: Exception){
+            } catch (ex: Exception) {
                 Log.i("getAllCompanies.ex", ex.message!!)
             }
         }
     }
 
-    fun removeCompany(companyId: Int){
+    fun removeCompany(companyId: Int) {
         companies.value = companies.value?.filter { company -> company.id != companyId }
     }
 
-    fun sendLike( senderId: Int, recipientId: Int ){
-        Coroutines.main{
-            try{
+    fun sendLike(senderId: Int, recipientId: Int) {
+        Coroutines.main {
+            try {
                 companyRepository.sendLikes(senderId, recipientId)
-            }catch(ex: Exception){
+            } catch (ex: Exception) {
                 Log.i("sendLike.ex", ex.message!!)
             }
 

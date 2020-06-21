@@ -2,7 +2,6 @@ package br.com.meiadois.decole.presentation.user.partnership
 
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,29 +39,10 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
         super.onViewCreated(view, savedInstanceState)
 
         toolbar_back_button.setOnClickListener {
-            handleBackNavigation()
-        }
-
-        btn_apply_filter.setOnClickListener {
-            mViewModel.segmentFilter.value = mViewModel.segmentClicked
-            val segment = mViewModel.segments.value?.firstOrNull {
-                it.name == mViewModel.segmentFilter.value
-            }
-            if (segment == null) {
-                try {
-                    mViewModel.getAllCompanies()
-                } catch (ex: Exception) {
-                    Log.i("getAllComp.ex", ex.message!!)
-                }
-            } else {
-                try {
-                    mViewModel.getCompaniesBySegment(segment.id!!)
-                } catch (ex: Exception) {
-                    Log.i("getCompBySeg.ex", ex.message!!)
-                }
-            }
-
-            handleBackNavigation()
+            val nextFragment = PartnershipSearchFragment()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, nextFragment)
+                .commit()
         }
 
         setAdapterToSegmentDropdown()
