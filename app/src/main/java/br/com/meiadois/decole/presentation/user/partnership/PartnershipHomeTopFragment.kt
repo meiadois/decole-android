@@ -24,7 +24,7 @@ import org.kodein.di.generic.instance
 
 class PartnershipHomeTopFragment : Fragment(), KodeinAware {
     override val kodein by kodein()
-    private val factory: PartnershipHomeTopViewModelFactory by instance<PartnershipHomeTopViewModelFactory>()
+    private val factory: PartnershipHomeTopViewModelFactory by instance()
     private lateinit var viewModel: PartnershipHomeTopViewModel
 
     override fun onCreateView(

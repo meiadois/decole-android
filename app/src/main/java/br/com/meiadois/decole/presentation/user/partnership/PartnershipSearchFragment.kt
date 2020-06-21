@@ -72,15 +72,14 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                     mViewModel.getUpdateCompany()
                 }
                 mViewModel.companies.value!!.count() == 1 -> {
-                    layout_bottom_search.longSnackbar("Infelizmente só essa companhia está disponível nesse segmento")
+                    layout_bottom_search.longSnackbar(getString(R.string.only_one_company_found))
                 }
                 mViewModel.companies.value!!.count() - 1 == mViewModel.state -> {
                     linear_button_container.visibility = View.INVISIBLE
-                    layout_bottom_search.shortSnackbar("Você chegou ao fim da lista.Retornamos para o início") {
+                    layout_bottom_search.shortSnackbar(getString(R.string.end_of_list_companies)) {
                         it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                                 init(true)
-                                //linear_button_container.visibility = View.VISIBLE
                             }
                         })
                     }
@@ -96,14 +95,13 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 setLoadingView()
                 setCompaniesAdapter()
                 setContentCardCompanyView()
-                }
-            catch(ex:Exception){
+            } catch (ex: Exception) {
                 Log.i("SwipeRefresh.ex", ex.message!!)
             }
-                if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
-                else setProgressVisibility(false)
+            if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
+            else setProgressVisibility(false)
         }
-        mViewModel.state=0
+        mViewModel.state = 0
     }
 
     private fun setCompaniesAdapter() {

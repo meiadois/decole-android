@@ -42,14 +42,14 @@ class PwRecoveryResetFragment : Fragment(), KodeinAware, ResetListener {
 
         input_recovery_password_confirmation.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                mViewModel.onResetFinishButtonClicked()
+                mViewModel.onResetFinishButtonClicked(this.context)
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
         }
 
         btn_reset_finish.setOnClickListener {
-            mViewModel.onResetFinishButtonClicked()
+            mViewModel.onResetFinishButtonClicked(this.context)
         }
     }
 
