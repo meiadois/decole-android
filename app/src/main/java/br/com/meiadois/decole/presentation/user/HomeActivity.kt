@@ -22,15 +22,17 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val newFragment: Fragment =
-            EducationHomeTopFragment()
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.top_container, newFragment)
-            .addToBackStack(null)
-            .commit()
+//        Top fragment structure, temporarily removed
+//        val newFragment: Fragment =
+//            EducationHomeTopFragment()
+//        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.top_container, newFragment)
+//            .addToBackStack(null)
+//            .commit()
 
         bottom_view_pager.adapter = UserHomeBottomSlideAdapter(supportFragmentManager)
-        bottom_view_pager.addOnPageChangeListener(CustomOnPageChangeListener(supportFragmentManager))
+//        Top fragment structure, temporarily removed
+//        bottom_view_pager.addOnPageChangeListener(CustomOnPageChangeListener(supportFragmentManager))
 
         tab_layout.setupWithViewPager(bottom_view_pager)
 
@@ -62,30 +64,30 @@ class HomeActivity : AppCompatActivity() {
             return if (position == 0) getString(R.string.welcome_education_title) else getString(R.string.welcome_partnership_title)
         }
     }
-
-    class CustomOnPageChangeListener(private val fm: FragmentManager) :
-        ViewPager.OnPageChangeListener {
-        override fun onPageScrollStateChanged(state: Int) {
-        }
-
-        override fun onPageScrolled(
-            position: Int,
-            positionOffset: Float,
-            positionOffsetPixels: Int
-        ) {
-        }
-
-        override fun onPageSelected(position: Int) {
-            val newFragment: Fragment =
-                if (position == 0) EducationHomeTopFragment() else PartnershipHomeTopFragment()
-            val transaction: FragmentTransaction = fm.beginTransaction()
-
-            transaction.replace(R.id.top_container, newFragment)
-            transaction.addToBackStack(null)
-
-            transaction.commit()
-        }
-
-    }
+//    Top fragment structure, temporarily removed
+//    class CustomOnPageChangeListener(private val fm: FragmentManager) :
+//        ViewPager.OnPageChangeListener {
+//        override fun onPageScrollStateChanged(state: Int) {
+//        }
+//
+//        override fun onPageScrolled(
+//            position: Int,
+//            positionOffset: Float,
+//            positionOffsetPixels: Int
+//        ) {
+//        }
+//
+//        override fun onPageSelected(position: Int) {
+//            val newFragment: Fragment =
+//                if (position == 0) EducationHomeTopFragment() else PartnershipHomeTopFragment()
+//            val transaction: FragmentTransaction = fm.beginTransaction()
+//
+//            transaction.replace(R.id.top_container, newFragment)
+//            transaction.addToBackStack(null)
+//
+//            transaction.commit()
+//        }
+//
+//    }
 
 }

@@ -72,15 +72,15 @@
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <FrameLayout
-            android:id="@+id/top_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias=".0"
-            app:layout_constraintBottom_toTopOf="@+id/tab_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_height="100dp"/>
+<!--        <FrameLayout-->
+<!--            android:id="@+id/top_container"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintVertical_bias=".0"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/tab_layout"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            tools:layout_height="100dp"/>-->
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"

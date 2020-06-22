@@ -45,6 +45,7 @@
                 android:hint="@string/pw_recovery_code_input">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorTextIcons"
                     android:id="@+id/input_register_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -1,9 +1,11 @@
 package br.com.meiadois.decole.presentation.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -42,6 +44,8 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
         input_register_confirm_password.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
                 registerViewModel.onRegisterButtonClick(v)
                 return@setOnEditorActionListener true
             }

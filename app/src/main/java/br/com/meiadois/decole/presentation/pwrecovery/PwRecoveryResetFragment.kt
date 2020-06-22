@@ -1,10 +1,12 @@
 package br.com.meiadois.decole.presentation.pwrecovery
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -40,8 +42,10 @@ class PwRecoveryResetFragment : Fragment(), KodeinAware, ResetListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        input_recovery_password_confirmation.setOnEditorActionListener { _, actionId, _ ->
+        input_recovery_password_confirmation.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
                 mViewModel.onResetFinishButtonClicked(this.context)
                 return@setOnEditorActionListener true
             }
