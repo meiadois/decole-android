@@ -68,7 +68,7 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
                 if (it.lessons.isNotEmpty()) {
                     toggleLoading(false)
                     scroll_container.post {
-                        scroll_container.smoothScrollTo(0, Int.MAX_VALUE)
+                        scroll_container.fullScroll(View.FOCUS_DOWN)
                     }
                     initRecyclerView(it.lessons.toLessonItemList())
                 }

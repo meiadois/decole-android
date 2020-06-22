@@ -81,8 +81,7 @@ class AccountViewModel(
                     companyData.value = CompanyAccountData(email = userData.value!!.email)
             }
         } catch (ex: Exception) {
-            companyData.value = CompanyAccountData(email = userData.value!!.email)
-            throw ex
+            companyData.value = userData.value?.email?.let { CompanyAccountData(email = it) }
         }
     }
 
