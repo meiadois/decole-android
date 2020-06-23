@@ -44,10 +44,10 @@ class AccountViewModel(
 
     // region initializer methods
     suspend fun init() {
-        getUserSocialNetworks()
-        getSegments()
-        getUserCompany()
         getUser()
+        getSegments()
+        getUserSocialNetworks()
+        getUserCompany()
     }
 
     private suspend fun getSegments() {
@@ -81,7 +81,8 @@ class AccountViewModel(
                     companyData.value = CompanyAccountData(email = userData.value!!.email)
             }
         } catch (ex: Exception) {
-            companyData.value = userData.value?.email?.let { CompanyAccountData(email = it) }
+            companyData.value = CompanyAccountData(email = userData.value!!.email)
+            if (ex !is ClientException) throw ex
         }
     }
 
@@ -239,7 +240,7 @@ class AccountViewModel(
         )
     }
 
-    private fun trimProperties(){
+    private fun trimProperties() {
         if (userData.value != null){
             userData.value!!.name = userData.value!!.name.trim()
             userData.value!!.email = userData.value!!.email.trim()

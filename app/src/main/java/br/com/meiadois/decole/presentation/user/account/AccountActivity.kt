@@ -23,6 +23,7 @@ import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewMod
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.Mask
+import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
@@ -168,14 +169,15 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         Coroutines.main {
             try {
                 accountViewModel.init()
-                setPageProgressBarVisibility(false)
                 setContentVisibility(CONTENT_FORM)
             } catch (ex: NoInternetException) {
-                setPageProgressBarVisibility(false)
                 setContentVisibility(CONTENT_NO_INTERNET)
-            } catch (ex: Exception) {
-                setPageProgressBarVisibility(false)
+            } catch (ex: ClientException) {
                 showGenericErrorMessage()
+            } catch (ex: Exception) {
+                showGenericErrorMessage()
+            } finally {
+                setPageProgressBarVisibility(false)
             }
         }
     }
