@@ -119,7 +119,7 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
         btn_secondary_invite_sent.setOnLongClickListener {
             val button = it as Button
             if (button.text == getString(R.string.long_press_confirmation)){
-                viewModel.deletePartnership()
+                viewModel.deleteLike()
                 return@setOnLongClickListener true
             }
             return@setOnLongClickListener false
