@@ -7,8 +7,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -59,6 +61,9 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         setClickListeners()
         setImageInputs()
         setInputMasks()
+
+        input_company_description.imeOptions = EditorInfo.IME_ACTION_DONE
+        input_company_description.setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
     }
 
     // region Permissions

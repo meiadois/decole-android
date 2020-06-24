@@ -325,8 +325,7 @@
                                 android:id="@+id/input_company_description"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="textCapSentences"
-                                android:singleLine="true"
+                                android:inputType="textCapSentences|textMultiLine"
                                 android:text="@={viewModel.companyData.description}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
