@@ -316,7 +316,9 @@
                             android:hint="@string/account_company_description_hint"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView">
+                            app:layout_constraintTop_toBottomOf="@+id/textView"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="@{viewModel.MAX_DESCRIPTION_SIZE}">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/input_company_description"

@@ -309,7 +309,7 @@ class AccountViewModel(
                 view.context.getString(
                     R.string.required_field_error_message,
                     view.context.getString(R.string.account_company_description_hint))))
-            .addValidation(MaxLengthRule(144,
+            .addValidation(MaxLengthRule(MAX_DESCRIPTION_SIZE,
                 view.context.getString(
                     R.string.max_text_length_error_message,
                     view.context.getString(R.string.account_company_description_hint), 144)))
@@ -412,5 +412,7 @@ class AccountViewModel(
         private const val SOCIAL_NETWORK_CATEGORY = "SocialNetwork"
 
         private const val FILE_NAME_IN_DIRECTORY_REGEX_PATTERN = "[^/]*$"
+
+        const val MAX_DESCRIPTION_SIZE = 144
     }
 }
