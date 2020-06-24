@@ -82,7 +82,7 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
             }
         }
 
-        btn_secondary_invite_received.setOnLongClickListener {
+        btn_primary_invite_received.setOnLongClickListener {
             val button = it as Button
             if (button.text == getString(R.string.long_press_confirmation)){
                 viewModel.confirmPartnership()
