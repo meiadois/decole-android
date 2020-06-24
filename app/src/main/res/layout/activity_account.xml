@@ -286,6 +286,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textCapWords|textNoSuggestions"
+                                android:imeOptions="actionDone"
                                 android:singleLine="true"
                                 android:text="@={viewModel.companyData.name}" />
                         </com.google.android.material.textfield.TextInputLayout>
