@@ -11,6 +11,16 @@ class LessonItem(val lesson: Lesson) : BindableItem<CardLessonBinding>() {
 
     override fun bind(viewBinding: CardLessonBinding, position: Int) {
         viewBinding.lesson = lesson
+
+        val imageRes =
+            when {
+                lesson.locked -> R.drawable.ic_light_dot_timeline_locked
+                lesson.completed -> R.drawable.ic_dark_dot_timeline
+                else -> R.drawable.ic_light_dot_timeline
+            }
+
+        viewBinding.statusImage.setImageResource(imageRes)
     }
+
 
 }

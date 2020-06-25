@@ -53,7 +53,8 @@ fun List<LessonDTO>.parseToLessonEntity(routeId: Long) = this.map { dto ->
         dto.id,
         dto.title,
         dto.completed,
-        routeId
+        routeId,
+        dto.locked
     )
 }
 

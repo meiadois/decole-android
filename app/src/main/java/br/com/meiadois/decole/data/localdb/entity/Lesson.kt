@@ -8,5 +8,6 @@ data class Lesson(
     @PrimaryKey(autoGenerate = false) val id: Long,
     val title: String,
     val completed: Boolean,
-    val routeId: Long
+    val routeId: Long,
+    val locked: Boolean
 )

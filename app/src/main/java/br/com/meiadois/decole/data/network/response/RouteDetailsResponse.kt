@@ -22,5 +22,7 @@ data class LessonDTO(
     @Json(name = "title")
     val title: String,
     @Json(name = "done")
-    val completed: Boolean
+    val completed: Boolean,
+    @Json(name = "locked")
+    val locked: Boolean
 )
