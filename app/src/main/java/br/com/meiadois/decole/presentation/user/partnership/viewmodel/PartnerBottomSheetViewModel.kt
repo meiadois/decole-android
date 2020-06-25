@@ -14,38 +14,54 @@ class PartnerBottomSheetViewModel(
     lateinit var listener: PartnerActionListener
 
     fun deletePartnership() = Coroutines.main {
-        listener.onStarted()
-        companyRepository.deletePartnership(
-            inviteInfo.id,
-            if (inviteInfo.isSender) inviteInfo.userCompany.id else inviteInfo.partnerCompany.id,
-            if (inviteInfo.isSender) inviteInfo.partnerCompany.id else inviteInfo.userCompany.id
-        )
-        listener.onSuccess()
+        try {
+            listener.onStarted()
+            companyRepository.deletePartnership(
+                inviteInfo.id,
+                if (inviteInfo.isSender) inviteInfo.userCompany.id else inviteInfo.partnerCompany.id,
+                if (inviteInfo.isSender) inviteInfo.partnerCompany.id else inviteInfo.userCompany.id
+            )
+            listener.onSuccess()
+        } catch (ex: Exception) {
+            listener.onFailure()
+        }
     }
 
     fun confirmPartnership() = Coroutines.main {
-        listener.onStarted()
-        companyRepository.confirmPartnership(
-            inviteInfo.id,
-            if (inviteInfo.isSender) inviteInfo.userCompany.id else inviteInfo.partnerCompany.id,
-            if (inviteInfo.isSender) inviteInfo.partnerCompany.id else inviteInfo.userCompany.id
-        )
-        listener.onSuccess()
+        try {
+            listener.onStarted()
+            companyRepository.confirmPartnership(
+                inviteInfo.id,
+                if (inviteInfo.isSender) inviteInfo.userCompany.id else inviteInfo.partnerCompany.id,
+                if (inviteInfo.isSender) inviteInfo.partnerCompany.id else inviteInfo.userCompany.id
+            )
+            listener.onSuccess()
+        } catch (ex: Exception) {
+            listener.onFailure()
+        }
     }
 
     fun cancelPartnership() = Coroutines.main {
-        listener.onStarted()
-        companyRepository.cancelPartnership(
-            inviteInfo.id,
-            if (inviteInfo.isSender) inviteInfo.userCompany.id else inviteInfo.partnerCompany.id,
-            if (inviteInfo.isSender) inviteInfo.partnerCompany.id else inviteInfo.userCompany.id
-        )
-        listener.onSuccess()
+        try {
+            listener.onStarted()
+            companyRepository.cancelPartnership(
+                inviteInfo.id,
+                if (inviteInfo.isSender) inviteInfo.userCompany.id else inviteInfo.partnerCompany.id,
+                if (inviteInfo.isSender) inviteInfo.partnerCompany.id else inviteInfo.userCompany.id
+            )
+            listener.onSuccess()
+        } catch (ex: Exception) {
+            listener.onFailure()
+        }
     }
 
     fun deleteLike() = Coroutines.main {
-        listener.onStarted()
-        companyRepository.deleteLike(inviteInfo.id)
-        listener.onSuccess()
+        try {
+            listener.onStarted()
+            companyRepository.deleteLike(inviteInfo.id)
+            listener.onSuccess()
+        } catch (ex: Exception) {
+            listener.onFailure()
+        }
     }
 }

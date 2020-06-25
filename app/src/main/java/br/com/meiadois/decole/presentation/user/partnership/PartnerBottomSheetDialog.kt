@@ -15,6 +15,7 @@ import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnerBottomSheetViewModel
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnerBottomSheetViewModelFactory
+import br.com.meiadois.decole.util.extension.shortToast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -190,6 +191,12 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
 
     override fun onSuccess() {
         toggleLoading(false)
+        dismiss()
+        onDismissListener.handle()
+    }
+
+    override fun onFailure() {
+        container_partner_bottom_sheet.shortToast(getString(R.string.error_when_executing_the_action))
         dismiss()
         onDismissListener.handle()
     }
