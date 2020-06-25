@@ -102,11 +102,11 @@ class FloatingViewService : Service() {
 
         closeButtonCollapsed.setOnClickListener {
             //close the service and remove the from from the window
-            exitInteractiveMode()
+            exitInteractiveMode(false)
         }
         nextButton.setOnClickListener {
             when (val nextStep = currentStepIndex + 1) {
-                steps.size -> exitInteractiveMode()
+                steps.size -> exitInteractiveMode(true)
                 else -> changeStep(nextStep)
             }
         }
@@ -199,11 +199,18 @@ class FloatingViewService : Service() {
         }
     }
 
-    private fun exitInteractiveMode() {
-        Intent(this, FinishedRouteActivity::class.java).also {
+    private fun exitInteractiveMode(finished: Boolean) {
+        if(finished){
+            Intent(this, FinishedRouteActivity::class.java).also {
+                it.addFlags(FLAG_ACTIVITY_NEW_TASK)
+                it.putExtra("targetRouteParent", routeParent)
+                it.putExtra("lessonDone", lessonClicked)
+                startActivity(it)
+                stopSelf()
+            }
+        }
+        Intent(this, HomeActivity::class.java).also {
             it.addFlags(FLAG_ACTIVITY_NEW_TASK)
-            it.putExtra("targetRouteParent", routeParent)
-            it.putExtra("lessonDone", lessonClicked)
             startActivity(it)
             stopSelf()
         }
