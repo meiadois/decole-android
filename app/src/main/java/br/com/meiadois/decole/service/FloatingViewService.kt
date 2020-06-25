@@ -17,7 +17,6 @@ import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Step
 import br.com.meiadois.decole.presentation.user.HomeActivity
 import br.com.meiadois.decole.presentation.user.education.FinishedRouteActivity
-import br.com.meiadois.decole.presentation.user.education.RouteDetailsActivity
 
 class FloatingViewService : Service() {
 
@@ -200,7 +199,7 @@ class FloatingViewService : Service() {
     }
 
     private fun exitInteractiveMode(finished: Boolean) {
-        if(finished){
+        if (finished) {
             Intent(this, FinishedRouteActivity::class.java).also {
                 it.addFlags(FLAG_ACTIVITY_NEW_TASK)
                 it.putExtra("targetRouteParent", routeParent)
@@ -208,12 +207,14 @@ class FloatingViewService : Service() {
                 startActivity(it)
                 stopSelf()
             }
+        } else {
+            Intent(this, HomeActivity::class.java).also {
+                it.addFlags(FLAG_ACTIVITY_NEW_TASK)
+                startActivity(it)
+                stopSelf()
+            }
         }
-        Intent(this, HomeActivity::class.java).also {
-            it.addFlags(FLAG_ACTIVITY_NEW_TASK)
-            startActivity(it)
-            stopSelf()
-        }
+
     }
 
     private fun isViewCollapsed(): Boolean {
