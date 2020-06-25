@@ -167,6 +167,7 @@ class PartnerBottomSheetDialog : BottomSheetDialogFragment(), KodeinAware, Partn
     }
 
     private fun renderAcceptedSheet(matchDate: String) {
+        container_contact.visibility = View.VISIBLE
         sheet_text_title.text = getString(R.string.partner_bottom_sheet_accepted_invite_title)
         sheet_text_partner_since.text = getString(R.string.label_partners_since, matchDate)
         container_invite_received_footer.visibility = View.GONE

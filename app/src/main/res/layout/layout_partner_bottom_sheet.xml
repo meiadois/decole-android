@@ -100,6 +100,8 @@
                 tool:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lobortis eu sapien sed ornare. Maecenas dolor massa, congue et aliquet in, ultricies in sem. Morbi eget ornare felis." />
 
             <LinearLayout
+                android:id="@+id/container_contact"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -114,7 +116,6 @@
                     android:drawableStart="@drawable/ic_whatsapp"
                     android:drawablePadding="10dp"
                     android:textColor="@color/colorPrimaryText"
-                    android:visibility="visible"
                     tool:text="(71) 00000-0000" />
 
                 <TextView
@@ -125,7 +126,6 @@
                     android:drawableStart="@drawable/ic_mail_white"
                     android:drawablePadding="10dp"
                     android:textColor="@color/colorPrimaryText"
-                    android:visibility="visible"
                     tool:text="contato@empresa.com" />
             </LinearLayout>
 
