@@ -39,31 +39,30 @@ class RouteListFragment : Fragment(), KodeinAware {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        init()
         return inflater.inflate(R.layout.fragment_route_list, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setProgressBarVisibility(true)
+        init()
         mFragmentViewModel =
             ViewModelProvider(this, factoryFragment).get(RouteListViewModel::class.java)
         bindUi()
     }
+
 
     @SuppressLint("FragmentLiveDataObserve")
     private fun bindUi() = Coroutines.main {
         swipe_refresh.setOnRefreshListener {
             init(true)
         }
-        progress_bar.visibility = View.VISIBLE
         mFragmentViewModel.routes.await().observe(this, Observer {
-            progress_bar.visibility = View.GONE
             initRecyclerView(it.toRouteItemList())
         })
     }
 
     private fun init(fromSwipeRefresh: Boolean = false) {
-        val changeLoadingVisibility = true
         Coroutines.main {
             try {
                 mFragmentViewModel.onListRefresh()
@@ -73,10 +72,9 @@ class RouteListFragment : Fragment(), KodeinAware {
             } catch (ex: Exception) {
                 showGenericErrorMessage()
             } finally {
-                if (changeLoadingVisibility) {
-                    if (fromSwipeRefresh) hideSwipe()
-                    else setProgressBarVisibility(false)
-                }
+                if (fromSwipeRefresh) hideSwipe()
+                else setProgressBarVisibility(false)
+                
             }
         }
     }
@@ -105,7 +103,8 @@ class RouteListFragment : Fragment(), KodeinAware {
 
     //content
     private fun setContentVisibility(contentMode: Int) {
-        route_recycler_view.visibility = if (contentMode == CONTENT_NONE) View.VISIBLE else View.GONE
+        route_recycler_view.visibility =
+            if (contentMode == CONTENT_NONE) View.VISIBLE else View.GONE
         layout_no_internet_routes.visibility =
             if (contentMode == CONTENT_NO_INTERNET) View.VISIBLE else View.GONE
 
