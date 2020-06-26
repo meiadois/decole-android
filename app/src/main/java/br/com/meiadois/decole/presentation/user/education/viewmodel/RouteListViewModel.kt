@@ -19,17 +19,15 @@ class RouteListViewModel(
         routeRepository.getRoutes()
     }
 
-    fun onItemClick(item: Route, view: View) {
-        Coroutines.io {
-            lessonRepository.fetchLessons(item.id)
-        }
+    suspend fun onItemClick(item: Route, view: View) {
+        lessonRepository.fetchLessons(item.id)
+
         Intent(view.context, RouteDetailsActivity::class.java).also {
             it.putExtra("itemId", item.id)
             view.context.startActivity(it)
         }
     }
 
-    fun onListRefresh() = Coroutines.main {
-        routeRepository.fetchRoutes()
-    }
+    suspend fun onListRefresh() = routeRepository.fetchRoutes()
+
 }

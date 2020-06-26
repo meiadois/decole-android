@@ -14,6 +14,9 @@ import br.com.meiadois.decole.databinding.ActivityWelcomeSlideBinding
 import br.com.meiadois.decole.presentation.user.HomeActivity
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewModel
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewModelFactory
+import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.NoInternetException
+import br.com.meiadois.decole.util.extension.longSnackbar
 import kotlinx.android.synthetic.main.activity_welcome_slide.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -26,7 +29,7 @@ class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
 
     private lateinit var mViewModel: WelcomeSlideViewModel
 
-    var pageSelected = 0
+    private var pageSelected = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +72,28 @@ class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun callNextActivity() {
-        mViewModel.introduce()
-        Intent(this, HomeActivity::class.java).also {
-            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(it)
+        Coroutines.io {
+            try {
+                mViewModel.introduce()
+                Intent(this, HomeActivity::class.java).also {
+                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(it)
+                }
+            } catch (ex: NoInternetException) {
+                scroll_slide.longSnackbar(getString(R.string.no_internet_connection_error_message)) { snackbar ->
+                    snackbar.setAction(getString(R.string.reload)) {
+                        snackbar.dismiss()
+                    }
+                }
+            } catch (ex: Exception) {
+                scroll_slide.longSnackbar(getString(R.string.sendding_data_failed_error_message)) { snackbar ->
+                    snackbar.setAction(getString(R.string.reload)) {
+                        snackbar.dismiss()
+                    }
+                }
+            }finally {
+                callNextActivity()
+            }
         }
     }
 

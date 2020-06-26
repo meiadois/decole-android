@@ -16,6 +16,7 @@ import br.com.meiadois.decole.presentation.user.account.validation.*
 import br.com.meiadois.decole.service.LogOutService
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
+import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.*
 import com.google.android.material.textfield.TextInputLayout
 import okhttp3.MediaType
@@ -74,7 +75,8 @@ class AccountViewModel(
             companyRepository.getMyCompany().observeForever {
                 if (it != null) {
                     companyData.value = it.toCompanyAccountData()
-                    companyData.value!!.thumbnail.name = getFileName(companyData.value!!.thumbnail.path)
+                    companyData.value!!.thumbnail.name =
+                        getFileName(companyData.value!!.thumbnail.path)
                     companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
                     isUpdatingCompany = true
                 } else
@@ -88,8 +90,14 @@ class AccountViewModel(
 
     private suspend fun getUserSocialNetworks() {
         val userAccounts = UserAccountsData(
-            instagram = UserSocialNetwork(channelName = INSTAGRAM_CHANNEL, category = SOCIAL_NETWORK_CATEGORY),
-            facebook = UserSocialNetwork(channelName = FACEBOOK_CHANNEL, category = SOCIAL_NETWORK_CATEGORY)
+            instagram = UserSocialNetwork(
+                channelName = INSTAGRAM_CHANNEL,
+                category = SOCIAL_NETWORK_CATEGORY
+            ),
+            facebook = UserSocialNetwork(
+                channelName = FACEBOOK_CHANNEL,
+                category = SOCIAL_NETWORK_CATEGORY
+            )
         )
         accountRepository.getUserAccounts().let { accounts ->
             if (accounts.isNotEmpty())
@@ -112,7 +120,9 @@ class AccountViewModel(
     fun onTextFieldChange(textInputLayout: TextInputLayout): TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable) {}
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) { textInputLayout.error = null }
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            textInputLayout.error = null
+        }
     }
 
     fun onCepFieldChange(cep: String) {
@@ -160,13 +170,15 @@ class AccountViewModel(
                             getMultipartBodyPart(
                                 companyData.value!!.thumbnail.path,
                                 companyData.value!!.thumbnail.type,
-                                "thumbnail")
+                                "thumbnail"
+                            )
                         else null,
                         if (companyData.value!!.banner.updated)
                             getMultipartBodyPart(
                                 companyData.value!!.banner.path,
                                 companyData.value!!.banner.type,
-                                "banner")
+                                "banner"
+                            )
                         else null
                     ) else companyRepository.insertUserCompany(
                         companyData.value!!.name,
@@ -182,11 +194,13 @@ class AccountViewModel(
                         getMultipartBodyPart(
                             companyData.value!!.thumbnail.path,
                             companyData.value!!.thumbnail.type,
-                            "thumbnail"),
+                            "thumbnail"
+                        ),
                         getMultipartBodyPart(
                             companyData.value!!.banner.path,
                             companyData.value!!.banner.type,
-                            "banner")
+                            "banner"
+                        )
                     )
 
                     userRepository.updateUser(userData.value!!.name, userData.value!!.email)
@@ -197,22 +211,30 @@ class AccountViewModel(
                     executeAccountAction(isUpdatingFacebook, userAccountsData.value!!.facebook)
 
                     accountListener?.onActionSuccess()
+                } catch (ex: NoInternetException) {
+                    accountListener?.onActionError(
+                        view.context.getString(R.string.no_internet_connection_error_message)
+                    )
                 } catch (ex: ClientException) {
                     accountListener?.onActionError(
                         if (ex.code == 400)
-                            Regex(" \\[(.*?)\\]").replace(ex.message!!, "")
+                            Regex(" \\[(.*?)]").replace(ex.message!!, "")
                         else
                             null
                     )
-                    Log.i("AccountFormEx.Cli", "" +
-                            "\nstatus code: ${ex.code}" +
-                            "\nmessage: ${ex.message ?: "no error message"}" +
-                            "\ncause: ${ex.cause?.toString() ?: "no cause"}")
+                    Log.i(
+                        "AccountFormEx.Cli", "" +
+                                "\nstatus code: ${ex.code}" +
+                                "\nmessage: ${ex.message ?: "no error message"}" +
+                                "\ncause: ${ex.cause?.toString() ?: "no cause"}"
+                    )
                 } catch (ex: Exception) {
                     accountListener?.onActionError(null)
-                    Log.i("AccountFormEx.Ex", "" +
-                            "\nmessage: ${ex.message ?: "no error message"}" +
-                            "\ncause: ${ex.cause?.toString() ?: "no cause"}")
+                    Log.i(
+                        "AccountFormEx.Ex", "" +
+                                "\nmessage: ${ex.message ?: "no error message"}" +
+                                "\ncause: ${ex.cause?.toString() ?: "no cause"}"
+                    )
                 }
             }
         }
@@ -228,7 +250,11 @@ class AccountViewModel(
             accountRepository.insertUserAccount(account.toAccountModel())
     }
 
-    private fun getMultipartBodyPart(imagePath: String, imageType: String, parameterName: String): MultipartBody.Part {
+    private fun getMultipartBodyPart(
+        imagePath: String,
+        imageType: String,
+        parameterName: String
+    ): MultipartBody.Part {
         val file = File(imagePath)
         return MultipartBody.Part.createFormData(
             parameterName,
@@ -241,20 +267,22 @@ class AccountViewModel(
     }
 
     private fun trimProperties() {
-        if (userData.value != null){
+        if (userData.value != null) {
             userData.value!!.name = userData.value!!.name.trim()
             userData.value!!.email = userData.value!!.email.trim()
         }
-        if (companyData.value != null){
+        if (companyData.value != null) {
             companyData.value!!.name = companyData.value!!.name.trim()
             companyData.value!!.city = companyData.value!!.city.trim()
             companyData.value!!.email = companyData.value!!.email.trim()
             companyData.value!!.description = companyData.value!!.description.trim()
             companyData.value!!.neighborhood = companyData.value!!.neighborhood.trim()
         }
-        if (userAccountsData.value != null){
-            userAccountsData.value!!.instagram.userName = userAccountsData.value!!.instagram.userName.trim()
-            userAccountsData.value!!.facebook.userName = userAccountsData.value!!.facebook.userName.trim()
+        if (userAccountsData.value != null) {
+            userAccountsData.value!!.instagram.userName =
+                userAccountsData.value!!.instagram.userName.trim()
+            userAccountsData.value!!.facebook.userName =
+                userAccountsData.value!!.facebook.userName.trim()
         }
     }
     // endregion
@@ -270,16 +298,30 @@ class AccountViewModel(
         val user: UserAccountData = userData.value!!
 
         var isValid = StringValidator(user.name)
-            .addValidation(NotNullOrEmptyRule(
-                view.context.getString(
-                    R.string.required_field_error_message,
-                    view.context.getString(R.string.account_me_name_hint))))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_NAME, it.error) }
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.account_me_name_hint)
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.USER_NAME,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(user.email)
             .addValidation(ValidEmailRule(view.context.getString(R.string.invalid_email_error_message)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_EMAIL, it.error) }
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.USER_EMAIL,
+                    it.error
+                )
+            }
             .validate()
 
         return isValid
@@ -289,91 +331,190 @@ class AccountViewModel(
         val company: CompanyAccountData = companyData.value!!
 
         var isValid = StringValidator(company.name)
-            .addValidation(NotNullOrEmptyRule(
-                view.context.getString(
-                    R.string.required_field_error_message,
-                    view.context.getString(R.string.account_company_name_hint))))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_NAME, it.error) }
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.account_company_name_hint)
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_NAME,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and IntegerValidator(company.segmentId)
-            .addValidation(MinRule(1,
-                view.context.getString(
-                    R.string.required_field_error_message,
-                    view.context.getString(R.string.account_company_segment_hint))))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_SEGMENT, it.error) }
+            .addValidation(
+                MinRule(
+                    1,
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.account_company_segment_hint)
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_SEGMENT,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(company.description)
-            .addValidation(NotNullOrEmptyRule(
-                view.context.getString(
-                    R.string.required_field_error_message,
-                    view.context.getString(R.string.account_company_description_hint))))
-            .addValidation(MaxLengthRule(MAX_DESCRIPTION_SIZE,
-                view.context.getString(
-                    R.string.max_text_length_error_message,
-                    view.context.getString(R.string.account_company_description_hint), 144)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_DESCRIPTION, it.error) }
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.account_company_description_hint)
+                    )
+                )
+            )
+            .addValidation(
+                MaxLengthRule(
+                    MAX_DESCRIPTION_SIZE,
+                    view.context.getString(
+                        R.string.max_text_length_error_message,
+                        view.context.getString(R.string.account_company_description_hint), 144
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_DESCRIPTION,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(company.cep)
             .addValidation(ValidCepRule(view.context.getString(R.string.invalid_cep_error_message)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_CEP, it.error) }
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_CEP,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(company.city)
-            .addValidation(NotNullOrEmptyRule(
-                view.context.getString(
-                    R.string.required_field_error_message,
-                    view.context.getString(R.string.account_company_city_hint))))
-            .addValidation(MaxLengthRule(28,
-                view.context.getString(
-                    R.string.max_text_length_error_message,
-                    view.context.getString(R.string.account_company_city_hint), 28)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_CITY, it.error) }
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.account_company_city_hint)
+                    )
+                )
+            )
+            .addValidation(
+                MaxLengthRule(
+                    28,
+                    view.context.getString(
+                        R.string.max_text_length_error_message,
+                        view.context.getString(R.string.account_company_city_hint), 28
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_CITY,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(company.neighborhood)
-            .addValidation(NotNullOrEmptyRule(
-                view.context.getString(
-                    R.string.required_field_error_message,
-                    view.context.getString(R.string.account_company_neighborhood_hint))))
-            .addValidation(MaxLengthRule(35,
-                view.context.getString(
-                    R.string.max_text_length_error_message,
-                    view.context.getString(R.string.account_company_neighborhood_hint), 35)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_NEIGHBORHOOD, it.error) }
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.account_company_neighborhood_hint)
+                    )
+                )
+            )
+            .addValidation(
+                MaxLengthRule(
+                    35,
+                    view.context.getString(
+                        R.string.max_text_length_error_message,
+                        view.context.getString(R.string.account_company_neighborhood_hint), 35
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_NEIGHBORHOOD,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(company.cnpj)
             .addValidation(ValidCnpjRule(view.context.getString(R.string.invalid_cnpj_error_message)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_CNPJ, it.error) }
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_CNPJ,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(company.cellphone)
             .addValidation(ValidTelephoneRule(view.context.getString(R.string.invalid_telephone_error_message)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_CELLPHONE, it.error) }
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_CELLPHONE,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(company.email)
             .addValidation(ValidEmailRule(view.context.getString(R.string.invalid_email_error_message)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_EMAIL, it.error) }
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_EMAIL,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(company.thumbnail.path)
-            .addValidation(NotNullOrEmptyRule(
-                view.context.getString(
-                    R.string.required_field_error_message,
-                    view.context.getString(R.string.account_company_logo_hint))))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_THUMBNAIL, it.error) }
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.account_company_logo_hint)
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_THUMBNAIL,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(company.banner.path)
-            .addValidation(NotNullOrEmptyRule(
-                view.context.getString(
-                    R.string.required_field_error_message,
-                    view.context.getString(R.string.account_company_banner))))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.COMPANY_BANNER, it.error) }
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.account_company_banner)
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.COMPANY_BANNER,
+                    it.error
+                )
+            }
             .validate()
 
         return isValid
@@ -383,19 +524,39 @@ class AccountViewModel(
         val accounts: UserAccountsData = userAccountsData.value!!
 
         var isValid = StringValidator(accounts.instagram.userName)
-            .addValidation(MaxLengthRule(30,
-                view.context.getString(
-                    R.string.max_text_length_error_message,
-                    view.context.getString(R.string.socialNetwork_instagram_hint), 30)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_INSTAGRAM, it.error) }
+            .addValidation(
+                MaxLengthRule(
+                    30,
+                    view.context.getString(
+                        R.string.max_text_length_error_message,
+                        view.context.getString(R.string.socialNetwork_instagram_hint), 30
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.USER_INSTAGRAM,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(accounts.facebook.userName)
-            .addValidation(MaxLengthRule(50,
-                view.context.getString(
-                    R.string.max_text_length_error_message,
-                    view.context.getString(R.string.socialNetwork_facebook_hint), 50)))
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_FACEBOOK, it.error) }
+            .addValidation(
+                MaxLengthRule(
+                    50,
+                    view.context.getString(
+                        R.string.max_text_length_error_message,
+                        view.context.getString(R.string.socialNetwork_facebook_hint), 50
+                    )
+                )
+            )
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.USER_FACEBOOK,
+                    it.error
+                )
+            }
             .validate()
 
         return isValid
@@ -405,7 +566,7 @@ class AccountViewModel(
     fun getFileName(filePath: String): String = Regex(FILE_NAME_IN_DIRECTORY_REGEX_PATTERN)
         .find(filePath)?.value.toString()
 
-    companion object{
+    companion object {
         private const val INSTAGRAM_CHANNEL = "Instagram"
         private const val FACEBOOK_CHANNEL = "Facebook"
 
