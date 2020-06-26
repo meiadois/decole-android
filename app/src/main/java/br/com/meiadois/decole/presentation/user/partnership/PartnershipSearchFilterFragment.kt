@@ -13,7 +13,11 @@ import androidx.lifecycle.Observer
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.databinding.FragmentPartnershipSearchFilterBinding
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel
+import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.NoInternetException
+import br.com.meiadois.decole.util.extension.longSnackbar
 import kotlinx.android.synthetic.main.fragment_partnership_search_filter.*
+import kotlinx.android.synthetic.main.fragment_partnership_search_filter.progress_bar
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 
@@ -39,12 +43,33 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
         super.onViewCreated(view, savedInstanceState)
 
         toolbar_back_button.setOnClickListener {
-            val nextFragment = PartnershipSearchFragment()
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, nextFragment)
-                .commit()
+            handleBackNavigation()
         }
 
+        btn_apply_filter.setOnClickListener {
+            Coroutines.main {
+                mViewModel.segmentFilter.value = mViewModel.segmentClicked
+                val segment = mViewModel.segments.value?.firstOrNull {
+                    it.name == mViewModel.segmentFilter.value
+                }
+                try {
+                    setProgressBarVisibility(true)
+                    if (segment == null) mViewModel.getAllCompanies() else mViewModel.getCompaniesBySegment(
+                        segment.id!!
+                    )
+                    handleBackNavigation()
+                } catch (ex: NoInternetException) {
+                    view.longSnackbar(getString(R.string.no_internet_connection_error_message)) { snackbar ->
+                        snackbar.setAction(getString(R.string.ok)) {
+                            snackbar.dismiss()
+                        }
+                        setProgressBarVisibility(false)
+                    }
+                } catch (ex: Exception) {
+                    showGenericErrorMessage()
+                }
+            }
+        }
         setAdapterToSegmentDropdown()
     }
 
@@ -73,6 +98,26 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
 
             }
         })
+    }
+
+    private fun handleBackNavigation() {
+        val nextFragment = PartnershipSearchFragment()
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, nextFragment)
+            .commit()
+    }
+
+    private fun showGenericErrorMessage() {
+        container_button.longSnackbar(getString(R.string.getting_data_failed_error_message)) { snackbar ->
+            snackbar.setAction(getString(R.string.ok)) {
+                snackbar.dismiss()
+            }
+        }
+    }
+
+    private fun setProgressBarVisibility(visible: Boolean) {
+        progress_bar?.visibility = if (visible) View.VISIBLE else View.GONE
+        btn_apply_filter?.visibility = if (!visible) View.VISIBLE else View.GONE
     }
 
 }

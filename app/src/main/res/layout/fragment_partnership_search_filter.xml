@@ -17,6 +17,18 @@
         android:background="@color/background"
         tools:context=".presentation.user.account.AccountActivity">
 
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/circle_progress_bar"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone" />
+
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -137,6 +149,26 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+        <LinearLayout
+            android:id="@+id/container_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTextIcons"
+            android:elevation="15dp"
+            android:gravity="center"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="24dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/btn_apply_filter"
+                style="@style/btn_primary"
+                android:text="@string/apply_segments"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/account_company_form" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

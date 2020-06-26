@@ -55,7 +55,7 @@ class RouteListFragment : Fragment(), KodeinAware {
 
     @SuppressLint("FragmentLiveDataObserve")
     private fun bindUi() = Coroutines.main {
-        swipe_refresh.setOnRefreshListener {
+        swipe_refresh?.setOnRefreshListener {
             init(true)
         }
         mFragmentViewModel.routes.await().observe(this, Observer {
@@ -112,9 +112,9 @@ class RouteListFragment : Fragment(), KodeinAware {
 
     //content
     private fun setContentVisibility(contentMode: Int) {
-        route_recycler_view.visibility =
+        route_recycler_view?.visibility =
             if (contentMode == CONTENT_NONE) View.VISIBLE else View.GONE
-        layout_no_internet_routes.visibility =
+        layout_no_internet_routes?.visibility =
             if (contentMode == CONTENT_NO_INTERNET) View.VISIBLE else View.GONE
 
     }
@@ -130,7 +130,7 @@ class RouteListFragment : Fragment(), KodeinAware {
     }
 
     private fun setProgressBarVisibility(visible: Boolean) {
-        progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
+        progress_bar?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun hideSwipe() {

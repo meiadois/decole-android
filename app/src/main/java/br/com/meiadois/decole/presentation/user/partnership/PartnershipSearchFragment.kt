@@ -1,7 +1,6 @@
 package br.com.meiadois.decole.presentation.user.partnership
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import br.com.meiadois.decole.R
 import br.com.meiadois.decole.databinding.FragmentSearchPartnerBinding
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.bumptech.glide.Glide
@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search_partner.*
 import kotlinx.android.synthetic.main.fragment_search_partner.progress_bar
 import kotlinx.android.synthetic.main.fragment_search_partner.swipe_refresh
+import kotlinx.android.synthetic.main.fragment_search_partner.toolbar_back_button
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 
@@ -54,18 +55,29 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 .addToBackStack(null)
                 .commit()
         }
+
         toolbar_back_button.setOnClickListener {
             activity?.finish()
         }
+
         btn_md_checked.setOnClickListener {
-            try {
-                mViewModel.sendLike(mViewModel.companyId!!, mViewModel.company.value!!.id)
-                mViewModel.removeCompany(mViewModel.company.value!!.id)
-            } catch (ex: Exception) {
-                Log.i("sendLikes.ex", ex.message!!)
+            Coroutines.main {
+                try {
+                    mViewModel.sendLike(mViewModel.companyId!!, mViewModel.company.value!!.id)
+                    mViewModel.removeCompany(mViewModel.company.value!!.id)
+                } catch (ex: NoInternetException) {
+                    view.longSnackbar(getString(R.string.no_internet_connection_error_message)) { snackbar ->
+                        snackbar.setAction(getString(R.string.ok)) {
+                            snackbar.dismiss()
+                        }
+                    }
+                } catch (ex: Exception){
+                    showGenericErrorMessage()
+                }
+                mViewModel.getUpdateCompany()
             }
-            mViewModel.getUpdateCompany()
         }
+
         btn_md_close.setOnClickListener {
             when {
                 mViewModel.companies.value!!.count() - 1 > mViewModel.state -> {
@@ -96,7 +108,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 setCompaniesAdapter()
                 setContentCardCompanyView()
             } catch (ex: Exception) {
-                Log.i("SwipeRefresh.ex", ex.message!!)
+                showGenericErrorMessage()
             }
             if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
             else setProgressVisibility(false)
@@ -143,4 +155,11 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
         progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
+    private fun showGenericErrorMessage() {
+        swipe_refresh.longSnackbar(getString(R.string.getting_data_failed_error_message)) { snackbar ->
+            snackbar.setAction(getString(R.string.ok)) {
+                snackbar.dismiss()
+            }
+        }
+    }
 }

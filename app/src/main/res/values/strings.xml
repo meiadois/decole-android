@@ -168,6 +168,7 @@
     <string name="segment">Segmento</string>
     <string name="filter">Filtre pelo segmento das empresas</string>
     <string name="all_segments">Todos os Segmentos</string>
+    <string name="apply_segments">Aplicar filtros</string>
 
     <!-- Password recovery -->
     <string name="pw_recovery_home_label">Para continuar com o processo de recuperação de senha, insira um e-mail válido.</string>
