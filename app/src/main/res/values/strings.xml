@@ -83,6 +83,7 @@
 
     <!-- Partnership Home BottomFragment -->
     <string name="getting_data_failed_error_message">Falha ao obter dados.</string>
+    <string name="sendding_data_failed_error_message">Falha ao enviar dados.</string>
     <string name="register_business">Cadastrar Negócio</string>
     <string name="reload">Recarregar</string>
 

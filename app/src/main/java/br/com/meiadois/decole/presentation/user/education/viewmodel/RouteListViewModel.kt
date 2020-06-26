@@ -16,7 +16,7 @@ class RouteListViewModel(
 ) : ViewModel() {
 
     val routes by lazyDeferred {
-        routeRepository.getRoutes()
+            routeRepository.getRoutes()
     }
 
     fun onItemClick(item: Route, view: View) {
@@ -29,7 +29,6 @@ class RouteListViewModel(
         }
     }
 
-    fun onListRefresh() = Coroutines.main {
-        routeRepository.fetchRoutes()
-    }
+    suspend fun onListRefresh() = routeRepository.fetchRoutes()
+
 }
