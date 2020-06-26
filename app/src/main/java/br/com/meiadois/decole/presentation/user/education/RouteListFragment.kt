@@ -85,18 +85,24 @@ class RouteListFragment : Fragment(), KodeinAware {
             addAll(routeItem)
 
             setOnItemClickListener { item, view ->
-                Coroutines.io {
+                Coroutines.main {
                     try {
                         if (item is RouteItem) {
                             if (!item.route.locked) {
+                                setContentVisibility(CONTENT_LOADING)
                                 mFragmentViewModel.onItemClick(item.route, view)
                             } else {
                                 view.longSnackbar(getString(R.string.route_access_denied))
                             }
                         }
                     } catch (ex: NoInternetException) {
-                        view.longSnackbar(getString(R.string.no_internet_connection_error_message))
-                    }  catch (ex: Exception) {
+                        view.longSnackbar(getString(R.string.no_internet_connection_error_message)) { snackbar ->
+                            snackbar.setAction(getString(R.string.ok)) {
+                                snackbar.dismiss()
+                            }
+                        }
+                        setContentVisibility(CONTENT_NONE)
+                    } catch (ex: Exception) {
                         showGenericErrorMessage()
                     }
                 }
@@ -116,6 +122,7 @@ class RouteListFragment : Fragment(), KodeinAware {
             if (contentMode == CONTENT_NONE) View.VISIBLE else View.GONE
         layout_no_internet_routes?.visibility =
             if (contentMode == CONTENT_NO_INTERNET) View.VISIBLE else View.GONE
+        progress_bar?.visibility = if (contentMode == CONTENT_LOADING) View.VISIBLE else View.GONE
 
     }
 
@@ -140,6 +147,7 @@ class RouteListFragment : Fragment(), KodeinAware {
 
     companion object {
         private const val CONTENT_NONE = 0
-        private const val CONTENT_NO_INTERNET = 1
+        private const val CONTENT_LOADING = 1
+        private const val CONTENT_NO_INTERNET = 2
     }
 }
