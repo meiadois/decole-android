@@ -18,10 +18,13 @@ import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteDetailsViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteDetailsViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.NoInternetException
+import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.toLessonItemList
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_route_details.*
+import kotlinx.android.synthetic.main.activity_route_details.progress_bar
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -29,7 +32,7 @@ import org.kodein.di.generic.instance
 
 class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
 
-    override val kodein by kodein();
+    override val kodein by kodein()
     private val factory: RouteDetailsViewModelFactory by instance<RouteDetailsViewModelFactory>()
 
     private lateinit var mViewModel: RouteDetailsViewModel
@@ -52,7 +55,7 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             onBackPressed()
         }
         btn_jump.setOnClickListener {
-            mViewModel.onJumpButtonClick()
+            jumpRoute(it)
             onBackPressed()
         }
 
@@ -108,8 +111,7 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
         btn_jump.visibility =
             if (route.lessonsCompleted != route.lessonsAvailable) View.VISIBLE else View.INVISIBLE
         btn_jump.setOnClickListener {
-            toggleLoading(true)
-            mViewModel.onJumpButtonClick()
+            jumpRoute(it)
         }
     }
 
@@ -121,6 +123,7 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
                 if (item is LessonItem) {
                     mViewModel.onItemClick(item.lesson, view)
                 }
+                toggleLoading(false)
             }
         }
 
@@ -130,5 +133,35 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             setHasFixedSize(true)
             adapter = mAdapter
         }
+
     }
+
+    private fun showGenericErrorMessage() {
+        root_content.longSnackbar(getString(R.string.getting_data_failed_error_message)) { snackbar ->
+            snackbar.setAction(getString(R.string.reload)) {
+                toggleLoading(false)
+                snackbar.dismiss()
+            }
+        }
+    }
+
+    private fun jumpRoute(view: View) {
+        Coroutines.main {
+            try {
+                mViewModel.onJumpButtonClick()
+            } catch (ex: NoInternetException) {
+                view.longSnackbar(getString(R.string.no_internet_connection_error_message)) { snackbar ->
+                    snackbar.setAction(getString(R.string.ok)) {
+                        toggleLoading(false)
+                        snackbar.dismiss()
+                    }
+                }
+            } catch (ex: Exception) {
+                showGenericErrorMessage()
+            } finally {
+                toggleLoading(true)
+            }
+        }
+    }
+
 }

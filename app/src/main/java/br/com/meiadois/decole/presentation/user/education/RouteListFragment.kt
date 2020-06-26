@@ -14,6 +14,7 @@ import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteListViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.toRouteItemList
@@ -74,21 +75,29 @@ class RouteListFragment : Fragment(), KodeinAware {
             } finally {
                 if (fromSwipeRefresh) hideSwipe()
                 else setProgressBarVisibility(false)
-                
             }
         }
     }
 
     private fun initRecyclerView(routeItem: List<RouteItem>) {
+
         val mAdapter = GroupAdapter<ViewHolder>().apply {
             addAll(routeItem)
 
             setOnItemClickListener { item, view ->
-                if (item is RouteItem) {
-                    if (!item.route.locked) {
-                        mFragmentViewModel.onItemClick(item.route, view)
-                    } else {
-                        view.longSnackbar(getString(R.string.route_access_denied))
+                Coroutines.io {
+                    try {
+                        if (item is RouteItem) {
+                            if (!item.route.locked) {
+                                mFragmentViewModel.onItemClick(item.route, view)
+                            } else {
+                                view.longSnackbar(getString(R.string.route_access_denied))
+                            }
+                        }
+                    } catch (ex: NoInternetException) {
+                        view.longSnackbar(getString(R.string.no_internet_connection_error_message))
+                    }  catch (ex: Exception) {
+                        showGenericErrorMessage()
                     }
                 }
             }

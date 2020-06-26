@@ -16,13 +16,12 @@ class RouteListViewModel(
 ) : ViewModel() {
 
     val routes by lazyDeferred {
-            routeRepository.getRoutes()
+        routeRepository.getRoutes()
     }
 
-    fun onItemClick(item: Route, view: View) {
-        Coroutines.io {
-            lessonRepository.fetchLessons(item.id)
-        }
+    suspend fun onItemClick(item: Route, view: View) {
+        lessonRepository.fetchLessons(item.id)
+
         Intent(view.context, RouteDetailsActivity::class.java).also {
             it.putExtra("itemId", item.id)
             view.context.startActivity(it)

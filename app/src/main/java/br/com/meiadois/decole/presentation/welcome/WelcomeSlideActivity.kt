@@ -82,17 +82,17 @@ class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
             } catch (ex: NoInternetException) {
                 scroll_slide.longSnackbar(getString(R.string.no_internet_connection_error_message)) { snackbar ->
                     snackbar.setAction(getString(R.string.reload)) {
-                        callNextActivity()
                         snackbar.dismiss()
                     }
                 }
             } catch (ex: Exception) {
                 scroll_slide.longSnackbar(getString(R.string.sendding_data_failed_error_message)) { snackbar ->
                     snackbar.setAction(getString(R.string.reload)) {
-                        callNextActivity()
                         snackbar.dismiss()
                     }
                 }
+            }finally {
+                callNextActivity()
             }
         }
     }
