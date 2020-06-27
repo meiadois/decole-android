@@ -18,6 +18,18 @@
         android:theme="@style/AppTheme">
         <activity
             android:screenOrientation="portrait"
+            android:name=".presentation.maintenance.MaintenanceActivity"/>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".presentation.splash.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.user.partnership.PartnershipDiscoveryActivity"/>
         <activity
             android:screenOrientation="portrait"
@@ -57,13 +69,7 @@
             android:name=".presentation.auth.RegisterActivity" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".presentation.auth.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".presentation.auth.LoginActivity"/>
 
         <service android:name=".service.FloatingViewService" />
     </application>

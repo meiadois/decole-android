@@ -195,4 +195,6 @@
     <string name="no_has_hashtag_label">Sem #</string>
     <string name="post_label">Post</string>
     <string name="long_press_confirmation">Toque e segure para confirmar</string>
+    <string name="technical_problems">Problemas técnicos</string>
+    <string name="technical_problems_secondary">Olá! Estamos passando por problemas técnicos, por favor, volte mais tarde.</string>
 </resources>

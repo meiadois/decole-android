@@ -44,12 +44,6 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
         loginViewModel.authListener = this
 
-        loginViewModel.getLoggedInUser().observe(this, Observer { user ->
-            user?.let {
-                startNextActivity(user.introduced)
-            }
-        })
-
         input_password.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

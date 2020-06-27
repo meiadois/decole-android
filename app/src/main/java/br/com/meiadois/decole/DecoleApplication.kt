@@ -10,6 +10,7 @@ import br.com.meiadois.decole.data.repository.*
 import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFactory
 import br.com.meiadois.decole.presentation.pwrecovery.viewmodel.PwRecoveryViewModelFactory
+import br.com.meiadois.decole.presentation.splash.viewmodel.SplashViewModelFactory
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
 import br.com.meiadois.decole.presentation.user.account.viewmodel.ChangePasswordViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.*
@@ -59,5 +60,6 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { ChangePasswordViewModelFactory(instance())}
         bind() from singleton { PwRecoveryViewModelFactory(instance()) }
         bind() from singleton { PartnerBottomSheetViewModelFactory(instance()) }
+        bind() from singleton { SplashViewModelFactory(instance()) }
     }
 }

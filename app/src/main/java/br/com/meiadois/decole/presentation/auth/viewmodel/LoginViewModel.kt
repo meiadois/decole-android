@@ -22,7 +22,6 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     var passwordErrorMessage: String? = null
     var password: String = ""
     var authListener: AuthListener? = null
-    fun getLoggedInUser() = userRepository.getUser()
 
     fun onLoginButtonClick(view: View) {
         authListener?.onStarted()
