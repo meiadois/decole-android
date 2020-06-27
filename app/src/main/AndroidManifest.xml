@@ -57,6 +57,9 @@
             android:name=".presentation.auth.RegisterActivity" />
         <activity
             android:screenOrientation="portrait"
+            android:name=".presentation.errorhandler.ErrorHandlerActivity" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.auth.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -8,6 +8,7 @@
     <string name="skip"><u>Pular</u></string>
     <string name="logout"><u>Sair</u></string>
     <string name="ok">OK</string>
+    <string name="back_to_home_page">Voltar para o início</string>
     <string name="default_font">sans-serif-light</string>
     <string name="route_access_denied">Você não tem acesso a essa rota</string>
     <string name="ask_again_for_overlay_permission">Para seguir adiante, você precisa clicar no botão e realizar a permissão.</string>
@@ -146,7 +147,7 @@
     <string name="no_received_likes_found">Você ainda não recebeu convites de parceria :(</string>
     <string name="no_sent_likes_found">Nenhum convite de parceria enviado. Clique no botão de busca e procure por potenciais parceiros.</string>
     <string name="only_one_company_found">Infelizmente só essa companhia está disponível nesse segmento.</string>
-    <string name="end_of_list_companies">Você chegou ao fim da lista.Retornamos para o início.</string>
+    <string name="end_of_list_companies">Você chegou ao fim da lista. Retornamos para o início.</string>
     <string name="Incomplete_registration_title">Cadastro incompleto</string>
     <string name="interesting_label">Me interessam</string>
     <string name="interested_label">Interessadas</string>
@@ -193,4 +194,7 @@
     <string name="no_has_hashtag_label">Sem #</string>
     <string name="post_label">Post</string>
     <string name="long_press_confirmation">Toque e segure para confirmar</string>
+
+    <!-- Global Error Handler -->
+    <string name="global_error_handler_message">Ocorreu uma falha inesperada ao executar a ação.\nPor favor, tente novamente.</string>
 </resources>
