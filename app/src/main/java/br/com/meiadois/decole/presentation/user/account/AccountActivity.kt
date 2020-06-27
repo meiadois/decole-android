@@ -80,8 +80,8 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
 
     private fun showRequestPermissionRationale(resultCode: Int){
         MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.permission_rationale_title))
-            .setMessage(getString(R.string.permission_rationale_message))
+            .setTitle(getString(R.string.storage_permission_rationale_title))
+            .setMessage(getString(R.string.storage_permission_rationale_message))
             .setNeutralButton(getString(R.string.ok)) { _, _ ->
                 initPickingFromGallery(resultCode, false)
             }
@@ -380,7 +380,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
                         segments.map { it.name }.toTypedArray()
                     )
                 )
-                filled_exposed_dropdown.inputType = android.text.InputType.TYPE_NULL
+                filled_exposed_dropdown.inputType = InputType.TYPE_NULL
                 if (accountViewModel.companyData.value == null)
                     accountViewModel.companyData.observe(this, Observer {
                         updateSegmentDropdown(
