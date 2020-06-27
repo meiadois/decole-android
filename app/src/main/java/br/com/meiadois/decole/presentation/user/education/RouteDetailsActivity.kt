@@ -150,6 +150,7 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             try {
                 mViewModel.onJumpButtonClick()
             } catch (ex: NoInternetException) {
+                toggleLoading(true)
                 view.longSnackbar(getString(R.string.no_internet_connection_error_message)) { snackbar ->
                     snackbar.setAction(getString(R.string.ok)) {
                         toggleLoading(false)
@@ -159,7 +160,7 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             } catch (ex: Exception) {
                 showGenericErrorMessage()
             } finally {
-                toggleLoading(true)
+                toggleLoading(false)
             }
         }
     }
