@@ -1,6 +1,8 @@
 package br.com.meiadois.decole
 
 import android.app.Application
+import android.content.Intent
+import android.util.Log
 import br.com.meiadois.decole.data.localdb.AppDatabase
 import br.com.meiadois.decole.data.network.NetworkConnectionInterceptor
 import br.com.meiadois.decole.data.network.RequestInterceptor
@@ -9,6 +11,7 @@ import br.com.meiadois.decole.data.preferences.PreferenceProvider
 import br.com.meiadois.decole.data.repository.*
 import br.com.meiadois.decole.presentation.auth.viewmodel.LoginViewModelFactory
 import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFactory
+import br.com.meiadois.decole.presentation.errorhandler.ErrorHandlerActivity
 import br.com.meiadois.decole.presentation.pwrecovery.viewmodel.PwRecoveryViewModelFactory
 import br.com.meiadois.decole.presentation.splash.viewmodel.SplashViewModelFactory
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
@@ -61,5 +64,30 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { PwRecoveryViewModelFactory(instance()) }
         bind() from singleton { PartnerBottomSheetViewModelFactory(instance()) }
         bind() from singleton { SplashViewModelFactory(instance()) }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        Thread.setDefaultUncaughtExceptionHandler { _, ex ->
+            logException(ex)
+            handleUncaughtException()
+        }
+    }
+
+    private fun logException(ex: Throwable) {
+        var stackTrace = ""
+        for (item in ex.stackTrace)
+            stackTrace += "\n\t${item.className} | ${item.methodName} | ${item.lineNumber}"
+        Log.i("GlobalErrorH", "Exception:\n" +
+                "message: ${ex.message ?: "no message"}\n" +
+                "cause: ${ex.cause ?: "no cause"}\n" +
+                "stackTrace: $stackTrace")
+    }
+
+    private fun handleUncaughtException() {
+        Intent(this, ErrorHandlerActivity::class.java).also {
+            it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(it)
+        }
     }
 }

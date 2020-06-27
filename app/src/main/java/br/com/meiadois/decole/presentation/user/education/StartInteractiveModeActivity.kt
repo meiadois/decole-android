@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.TextUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -18,16 +19,17 @@ import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInterac
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.StartInteractiveModeViewModelFactory
 import br.com.meiadois.decole.service.FloatingViewService
 import br.com.meiadois.decole.util.Coroutines
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_start_interactive_mode.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.lang.Exception
 
 class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
-
-    private val drawOverAppPermissionCode = 2084
-
     override val kodein by kodein()
     private val factory: StartInteractiveModeViewModelFactory by instance<StartInteractiveModeViewModelFactory>()
 
@@ -35,40 +37,108 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val binding: ActivityStartInteractiveModeBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_start_interactive_mode)
-
         mViewModel = ViewModelProvider(this, factory).get(StartInteractiveModeViewModel::class.java)
-
         binding.apply {
             viewModel = mViewModel
         }
-
         mViewModel.lessonClicked.value = intent.getLongExtra("lessonId", 0L)
-
         initializeViewComponents()
     }
 
+    //region Permissions
     @ExperimentalCoroutinesApi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == drawOverAppPermissionCode) {
-            if (isOverLaysAllowed(this)) {
-                startFloatingView(this, mViewModel.steps.getCompleted().value!!)
-            } else {
-                Toast.makeText(
-                    this,
-                    getString(R.string.ask_again_for_overlay_permission),
-                    Toast.LENGTH_SHORT
-                ).show()
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            DRAW_OVER_APP_RESULT_CODE -> {
+                if (isOverLaysAllowed(this)) {
+                    if (isMIUI())
+                        showPermissionRationaleForMIUI()
+                    else
+                        startFloatingView(this, mViewModel.steps.getCompleted().value!!)
+                } else
+                    Toast.makeText(
+                        this,
+                        getString(R.string.ask_again_for_overlay_permission),
+                        Toast.LENGTH_LONG
+                    ).show()
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
+            MIUI_ADDITIONAL_PERMISSION_RESULT_CODE -> {
+                startFloatingView(this, mViewModel.steps.getCompleted().value!!)
+            }
+            else -> {
+            }
         }
     }
 
-    private fun startFloatingView(c: Context?, steps: List<Step>) {
+    private fun askPermissionToOverLays() {
+        val intent = Intent(
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            Uri.parse("package:$packageName")
+        )
+        startActivityForResult(intent, DRAW_OVER_APP_RESULT_CODE)
+    }
 
+    private fun isOverLaysAllowed(c: Context?): Boolean {
+        return !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(c))
+    }
+    //endregion
+
+    //region MIUI treatment
+    private fun isMIUI(): Boolean = !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.name"))
+
+    @Suppress("SameParameterValue")
+    private fun getSystemProperty(propName: String): String? {
+        val line: String
+        var input: BufferedReader? = null
+        try {
+            input = BufferedReader(
+                InputStreamReader(
+                    Runtime.getRuntime().exec("getprop $propName").inputStream
+                ), 1024
+            )
+            line = input.readLine()
+            input.close()
+        } catch (ex: Exception) {
+            return null
+        } finally {
+            if (input != null) {
+                try {
+                    input.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        return line
+    }
+
+    private fun showPermissionRationaleForMIUI() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.display_popup_permission_rationale_title))
+            .setMessage(getString(R.string.display_popup_permission_rationale_message))
+            .setNeutralButton(getString(R.string.ok)) { _, _ ->
+                openMIUIAdditionalPermissions()
+            }
+            .show()
+    }
+
+    private fun openMIUIAdditionalPermissions() {
+        Intent("miui.intent.action.APP_PERM_EDITOR").also {
+            it.setClassName(
+                "com.miui.securitycenter",
+                "com.miui.permcenter.permissions.PermissionsEditorActivity"
+            )
+            it.putExtra("extra_pkgname", packageName)
+            startActivityForResult(it, MIUI_ADDITIONAL_PERMISSION_RESULT_CODE)
+        }
+    }
+    //endregion
+
+    //region Local
+    private fun startFloatingView(c: Context?, steps: List<Step>) {
         Intent(c, FloatingViewService::class.java).also {
             it.putExtra("lessonId", mViewModel.lessonClicked.value!!)
             it.putExtra("routeId", intent.getLongExtra("routeId", 0L))
@@ -91,16 +161,10 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
             }
         })
     }
+    // endregion
 
-    private fun askPermissionToOverLays() {
-        val intent = Intent(
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-            Uri.parse("package:$packageName")
-        )
-        startActivityForResult(intent, drawOverAppPermissionCode)
-    }
-
-    private fun isOverLaysAllowed(c: Context?): Boolean {
-        return !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(c))
+    companion object {
+        private const val DRAW_OVER_APP_RESULT_CODE = 2084
+        private const val MIUI_ADDITIONAL_PERMISSION_RESULT_CODE = 2085
     }
 }

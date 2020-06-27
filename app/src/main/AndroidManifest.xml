@@ -69,6 +69,9 @@
             android:name=".presentation.auth.RegisterActivity" />
         <activity
             android:screenOrientation="portrait"
+            android:name=".presentation.errorhandler.ErrorHandlerActivity" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.auth.LoginActivity"/>
 
         <service android:name=".service.FloatingViewService" />

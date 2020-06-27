@@ -8,6 +8,7 @@
     <string name="skip"><u>Pular</u></string>
     <string name="logout"><u>Sair</u></string>
     <string name="ok">OK</string>
+    <string name="back_to_home_page">Voltar para o início</string>
     <string name="default_font">sans-serif-light</string>
     <string name="route_access_denied">Você não tem acesso a essa rota</string>
     <string name="ask_again_for_overlay_permission">Para seguir adiante, você precisa clicar no botão e realizar a permissão.</string>
@@ -38,9 +39,9 @@
     <string name="route_details_progress_label" type="id">%d/%d PASSOS</string>
 
     <!-- Start Interactive Mode Activity -->
-    <string name="ask_for_overlay_permission">
-        As próximas etapas serão <b>interativas</b>, continue usando seu aparelho normalmente enquanto segue os passos do nosso assistente na tela.
-    </string>
+    <string name="ask_for_overlay_permission">As próximas etapas serão <b>interativas</b>, continue usando seu aparelho normalmente enquanto segue os passos do nosso assistente na tela.</string>
+    <string name="display_popup_permission_rationale_title">Permitir que usemos janelas pop-up em segundo plano?</string>
+    <string name="display_popup_permission_rationale_message">Isso permite que o nosso assistente consiga se comunicar com o aplicativo Decole mesmo que ele esteja em segundo plano! Para isso basta clicar no item \"Mostrar janelas pop-up enquanto estiver executando em segundo plano\" e clicar em \"Permitir\".</string>
 
     <!-- Finished Route Activity -->
     <string name="finished_route_praise">
@@ -113,8 +114,8 @@
     <string name="socialNetwork_instagram_hint">meu instagram</string>
     <string name="socialNetwork_facebook_hint">meu facebook</string>
     <string name="socialNetwork_hearder_text">Minhas redes sociais</string>
-    <string name="permission_rationale_title">Deseja selecionar uma imagem?</string>
-    <string name="permission_rationale_message">Permita-nos acessar arquivos do dispositivo. Isso significa que, quando for selecionar uma imagem para a sua empresa, poderemos abrir a galeria para você.</string>
+    <string name="storage_permission_rationale_title">Deseja selecionar uma imagem?</string>
+    <string name="storage_permission_rationale_message">Permita-nos acessar arquivos do dispositivo. Isso significa que, quando for selecionar uma imagem para a sua empresa, poderemos abrir a galeria para você.</string>
 
     <!-- Change Password -->
     <string name="changePassword_me_subtitle_text">Alterando senha</string>
@@ -147,7 +148,7 @@
     <string name="no_received_likes_found">Você ainda não recebeu convites de parceria :(</string>
     <string name="no_sent_likes_found">Nenhum convite de parceria enviado. Clique no botão de busca e procure por potenciais parceiros.</string>
     <string name="only_one_company_found">Infelizmente só essa companhia está disponível nesse segmento.</string>
-    <string name="end_of_list_companies">Você chegou ao fim da lista.Retornamos para o início.</string>
+    <string name="end_of_list_companies">Você chegou ao fim da lista. Retornamos para o início.</string>
     <string name="Incomplete_registration_title">Cadastro incompleto</string>
     <string name="interesting_label">Me interessam</string>
     <string name="interested_label">Interessadas</string>
@@ -197,4 +198,7 @@
     <string name="long_press_confirmation">Toque e segure para confirmar</string>
     <string name="technical_problems">Problemas técnicos</string>
     <string name="technical_problems_secondary">Olá! Estamos passando por problemas técnicos, por favor, volte mais tarde.</string>
+
+    <!-- Global Error Handler -->
+    <string name="global_error_handler_message">Ocorreu uma falha inesperada ao executar a ação.\nPor favor, tente novamente.</string>
 </resources>
