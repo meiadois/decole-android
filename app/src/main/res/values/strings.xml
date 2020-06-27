@@ -41,7 +41,7 @@
     <!-- Start Interactive Mode Activity -->
     <string name="ask_for_overlay_permission">As próximas etapas serão <b>interativas</b>, continue usando seu aparelho normalmente enquanto segue os passos do nosso assistente na tela.</string>
     <string name="display_popup_permission_rationale_title">Permitir que usemos janelas pop-up em segundo plano?</string>
-    <string name="display_popup_permission_rationale_message">Isso permite que o nosso assiste consiga se comunicar com o aplicativo Decole mesmo que ele esteja em segundo plano! Para isso basta clicar no item \"Mostrar janelas pop-up enquanto estiver executando em segundo plano\" e clicar em \"Permitir\".</string>
+    <string name="display_popup_permission_rationale_message">Isso permite que o nosso assistente consiga se comunicar com o aplicativo Decole mesmo que ele esteja em segundo plano! Para isso basta clicar no item \"Mostrar janelas pop-up enquanto estiver executando em segundo plano\" e clicar em \"Permitir\".</string>
 
     <!-- Finished Route Activity -->
     <string name="finished_route_praise">
