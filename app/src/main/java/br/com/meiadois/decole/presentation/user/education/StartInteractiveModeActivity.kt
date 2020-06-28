@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,7 +21,11 @@ import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.Star
 import br.com.meiadois.decole.service.FloatingViewService
 import br.com.meiadois.decole.util.Coroutines
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import br.com.meiadois.decole.util.exception.ClientException
+import br.com.meiadois.decole.util.exception.NoInternetException
+import br.com.meiadois.decole.util.extension.longSnackbar
 import kotlinx.android.synthetic.main.activity_start_interactive_mode.*
+import kotlinx.android.synthetic.main.activity_start_interactive_mode.btn_next
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -29,9 +34,12 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.lang.Exception
 
-class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
+class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListener, KodeinAware {
+
+    private val drawOverAppPermissionCode = 2084
+
     override val kodein by kodein()
-    private val factory: StartInteractiveModeViewModelFactory by instance<StartInteractiveModeViewModelFactory>()
+    private val factory: StartInteractiveModeViewModelFactory by instance()
 
     private lateinit var mViewModel: StartInteractiveModeViewModel
 
@@ -43,11 +51,35 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
         binding.apply {
             viewModel = mViewModel
         }
+
+        mViewModel.interactiveListener = this
+
         mViewModel.lessonClicked.value = intent.getLongExtra("lessonId", 0L)
         initializeViewComponents()
     }
 
-    //region Permissions
+    override fun onStarted() {
+
+    }
+
+    override fun onSuccess() {
+
+
+    }
+
+    override fun onFailure(ex: Exception) {
+        when (ex) {
+            is NoInternetException ->
+                layout_start_interactive.longSnackbar(layout_start_interactive.context.getString(R.string.no_internet_connection_error_message))
+            is ClientException ->
+                layout_start_interactive.longSnackbar(layout_start_interactive.context.getString(R.string.getting_data_failed_error_message))
+            else ->
+                layout_start_interactive.longSnackbar(layout_start_interactive.context.getString(R.string.error_when_executing_the_action))
+        }
+
+    }
+
+
     @ExperimentalCoroutinesApi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -162,6 +194,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
         })
     }
     // endregion
+
 
     companion object {
         private const val DRAW_OVER_APP_RESULT_CODE = 2084
