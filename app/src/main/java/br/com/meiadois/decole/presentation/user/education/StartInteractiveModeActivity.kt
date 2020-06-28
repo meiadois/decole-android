@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -18,18 +19,22 @@ import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInterac
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.StartInteractiveModeViewModelFactory
 import br.com.meiadois.decole.service.FloatingViewService
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.exception.ClientException
+import br.com.meiadois.decole.util.exception.NoInternetException
+import br.com.meiadois.decole.util.extension.longSnackbar
 import kotlinx.android.synthetic.main.activity_start_interactive_mode.*
+import kotlinx.android.synthetic.main.activity_start_interactive_mode.btn_next
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
-class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
+class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListener, KodeinAware {
 
     private val drawOverAppPermissionCode = 2084
 
     override val kodein by kodein()
-    private val factory: StartInteractiveModeViewModelFactory by instance<StartInteractiveModeViewModelFactory>()
+    private val factory: StartInteractiveModeViewModelFactory by instance()
 
     private lateinit var mViewModel: StartInteractiveModeViewModel
 
@@ -45,10 +50,34 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
             viewModel = mViewModel
         }
 
+        mViewModel.interactiveListener = this
+
         mViewModel.lessonClicked.value = intent.getLongExtra("lessonId", 0L)
 
         initializeViewComponents()
     }
+
+    override fun onStarted() {
+
+    }
+
+    override fun onSuccess() {
+
+
+    }
+
+    override fun onFailure(ex: Exception) {
+        when (ex) {
+            is NoInternetException ->
+                layout_start_interactive.longSnackbar(layout_start_interactive.context.getString(R.string.no_internet_connection_error_message))
+            is ClientException ->
+                layout_start_interactive.longSnackbar(layout_start_interactive.context.getString(R.string.getting_data_failed_error_message))
+            else ->
+                layout_start_interactive.longSnackbar(layout_start_interactive.context.getString(R.string.error_when_executing_the_action))
+        }
+
+    }
+
 
     @ExperimentalCoroutinesApi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -68,7 +97,6 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun startFloatingView(c: Context?, steps: List<Step>) {
-
         Intent(c, FloatingViewService::class.java).also {
             it.putExtra("lessonId", mViewModel.lessonClicked.value!!)
             it.putExtra("routeId", intent.getLongExtra("routeId", 0L))
@@ -103,4 +131,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), KodeinAware {
     private fun isOverLaysAllowed(c: Context?): Boolean {
         return !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(c))
     }
+
+
+
 }

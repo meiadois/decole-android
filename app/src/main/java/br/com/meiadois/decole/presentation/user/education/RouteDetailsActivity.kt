@@ -120,7 +120,9 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
             addAll(items)
 
             setOnItemClickListener { item, view ->
+
                 if (item is LessonItem && !item.lesson.locked) {
+
                     mViewModel.onItemClick(item.lesson, view)
                 }
                 toggleLoading(false)
