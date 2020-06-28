@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -35,9 +34,6 @@ import java.io.InputStreamReader
 import java.lang.Exception
 
 class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListener, KodeinAware {
-
-    private val drawOverAppPermissionCode = 2084
-
     override val kodein by kodein()
     private val factory: StartInteractiveModeViewModelFactory by instance()
 
@@ -58,14 +54,9 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
         initializeViewComponents()
     }
 
-    override fun onStarted() {
+    override fun onStarted() {}
 
-    }
-
-    override fun onSuccess() {
-
-
-    }
+    override fun onSuccess() {}
 
     override fun onFailure(ex: Exception) {
         when (ex) {
@@ -79,7 +70,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
 
     }
 
-
+    //ask_overlay_region
     @ExperimentalCoroutinesApi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
