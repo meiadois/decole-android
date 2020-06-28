@@ -91,8 +91,6 @@ class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
                         snackbar.dismiss()
                     }
                 }
-            }finally {
-                callNextActivity()
             }
         }
     }

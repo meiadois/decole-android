@@ -186,7 +186,6 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
     }
     // endregion
 
-
     companion object {
         private const val DRAW_OVER_APP_RESULT_CODE = 2084
         private const val MIUI_ADDITIONAL_PERMISSION_RESULT_CODE = 2085
