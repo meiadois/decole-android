@@ -2,6 +2,7 @@ package br.com.meiadois.decole.presentation.user.account
 
 import android.Manifest.permission.*
 import android.app.Activity
+import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -29,6 +30,7 @@ import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
+import br.com.meiadois.decole.util.receiver.NetworkChangeReceiver
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -41,8 +43,9 @@ import org.kodein.di.generic.instance
 
 class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     override val kodein by kodein()
-    private val factory: AccountViewModelFactory by instance<AccountViewModelFactory>()
+    private val factory: AccountViewModelFactory by instance()
     private lateinit var accountViewModel: AccountViewModel
+    private var mNetworkReceiver: BroadcastReceiver? = null
 
     private var resultForAfterPermissionsGranted: Int = -1
 
@@ -55,7 +58,12 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             viewModel = accountViewModel
             lifecycleOwner = this@AccountActivity
         }
-        init()
+
+        mNetworkReceiver = NetworkChangeReceiver(this) {
+            if (!it) setContentVisibility(CONTENT_NO_INTERNET)
+            init { unregisterNetworkReceiver() }
+        }
+
         setAdapterToSegmentDropdown()
         setRemoveErrorListener()
         setClickListeners()
@@ -168,13 +176,14 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     // endregion
 
     // region Local Functions
-    private fun init() {
+    private fun init(onFinish: () -> Unit) {
         setContentVisibility(CONTENT_NO_CONTENT)
         setPageProgressBarVisibility(true)
         Coroutines.main {
             try {
                 accountViewModel.init()
                 setContentVisibility(CONTENT_FORM)
+                onFinish.invoke()
             } catch (ex: NoInternetException) {
                 setContentVisibility(CONTENT_NO_INTERNET)
             } catch (ex: ClientException) {
@@ -200,7 +209,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     private fun showGenericErrorMessage() {
         account_root_layout.longSnackbar(getString(R.string.getting_data_failed_error_message)) { snackbar ->
             snackbar.setAction(getString(R.string.reload)) {
-                init()
+                init { unregisterNetworkReceiver() }
                 snackbar.dismiss()
             }
         }
@@ -405,6 +414,18 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         val mSegment = segments.firstOrNull { it.name == segmentName }
         filled_exposed_dropdown.setText(mSegment?.name, false)
         accountViewModel.companyData.value?.segmentId = mSegment?.id ?: -1
+    }
+
+    private fun unregisterNetworkReceiver() {
+        if (mNetworkReceiver != null) {
+            unregisterReceiver(mNetworkReceiver)
+            mNetworkReceiver = null
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterNetworkReceiver()
     }
     // endregion
 
