@@ -176,6 +176,10 @@ interface DecoleClient {
     @DELETE("me/accounts/{channel_name}")
     suspend fun deleteUserAccount(@Path("channel_name") channelName: String): Response<Void>
 
+    @Headers("Content-Type: application/json")
+    @GET("infos")
+    suspend fun getAppInfo(): Response<AppInfoResponse>
+
     companion object {
         operator fun invoke(
             interceptor: NetworkConnectionInterceptor,

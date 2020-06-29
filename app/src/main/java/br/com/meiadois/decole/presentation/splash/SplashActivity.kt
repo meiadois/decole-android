@@ -15,6 +15,7 @@ import br.com.meiadois.decole.presentation.splash.viewmodel.SplashViewModel
 import br.com.meiadois.decole.presentation.splash.viewmodel.SplashViewModelFactory
 import br.com.meiadois.decole.presentation.user.HomeActivity
 import br.com.meiadois.decole.presentation.welcome.WelcomeInfoActivity
+import br.com.meiadois.decole.util.Coroutines
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -38,32 +39,33 @@ class SplashActivity : AppCompatActivity(), KodeinAware {
             viewModel = splashViewModel
         }
 
-        // TODO validar com o backend e remover o delay se necessário
         Handler().postDelayed({
-            startNextActivity(false)
-        }, 1000)
+            getAppInfo()
+        }, 500)
+    }
+
+    private fun getAppInfo() {
+        Coroutines.main {
+            startNextActivity(splashViewModel.getAppInfo().underMaintenance.toBoolean())
+        }
     }
 
     private fun startNextActivity(underMaintenance: Boolean) {
-
         if (underMaintenance)
             Intent(this, MaintenanceActivity::class.java).also {
                 it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(it)
             }
-        else {
+        else
             splashViewModel.getLoggedInUser().observe(this, Observer { user ->
-                if (user != null) {
+                if (user != null)
                     startNonMaintenanceActivity(user.introduced)
-                } else {
+                else
                     Intent(this, LoginActivity::class.java).also {
                         it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(it)
                     }
-                }
             })
-        }
-
     }
 
     private fun startNonMaintenanceActivity(introduced: Boolean) {
@@ -78,5 +80,4 @@ class SplashActivity : AppCompatActivity(), KodeinAware {
                 startActivity(it)
             }
     }
-
 }

@@ -68,4 +68,10 @@ class UserRepository(
 
     fun getUser() = db.getUserDao().find()
 
+    suspend fun getAppInfo(): AppInfoResponse {
+        return callClient {
+            client.getAppInfo()
+        }
+    }
+
 }
