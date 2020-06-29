@@ -49,7 +49,7 @@
     </string>
 
     <!-- NetworkConnectionInterceptor -->
-    <string name="no_internet_connection_error_message">Certifique-se que você possui uma conexão de dados ativa</string>
+    <string name="no_internet_connection_error_message">Certifique-se que você possui uma conexão de dados ativa.</string>
 
     <!-- Welcome Slide Activity -->
     <string name="welcome_slide_title">Podemos te ajudar de várias formas!</string>

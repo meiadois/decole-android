@@ -17,6 +17,7 @@ import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFacto
 import br.com.meiadois.decole.presentation.welcome.WelcomeInfoActivity
 import br.com.meiadois.decole.util.extension.longSnackbar
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_register.root_layout
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -24,7 +25,7 @@ import org.kodein.di.generic.instance
 class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
     override val kodein by kodein()
-    private val factory: RegisterViewModelFactory by instance()
+    private val factory: RegisterViewModelFactory by instance<RegisterViewModelFactory>()
 
     private lateinit var registerViewModel: RegisterViewModel
 
@@ -72,14 +73,20 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
     override fun onFailure(message: String?) {
         toggleLoading(false)
+        message?.let { root_layout.longSnackbar(it) }
+        root_layout.longSnackbar(message ?: getString(R.string.error_when_executing_the_action)) { snackbar ->
+            snackbar.setAction(getString(R.string.ok)) {
+                snackbar.dismiss()
+            }
+        }
+    }
+
+    override fun setErrorMessages(isValid: Boolean) {
+        toggleLoading(isValid)
         layout_register_email_input.error = registerViewModel.emailErrorMessage
         layout_register_username_input.error = registerViewModel.nameErrorMessage
         layout_register_password_input.error = registerViewModel.passwordErrorMessage
         layout_register_confirm_password_input.error = registerViewModel.confirmPasswordErrorMessage
-
-        message?.let {
-            root_layout.longSnackbar(it)
-        }
     }
 
     private fun toggleLoading(boolean: Boolean) {
@@ -91,5 +98,4 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
             btn_register_next.visibility = View.VISIBLE
         }
     }
-
 }

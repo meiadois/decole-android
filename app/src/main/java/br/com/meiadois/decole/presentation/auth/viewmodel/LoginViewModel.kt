@@ -13,7 +13,7 @@ import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.parseToUserEntity
-import java.net.SocketTimeoutException
+import java.lang.Exception
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
@@ -25,33 +25,26 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     fun onLoginButtonClick(view: View) {
         authListener?.onStarted()
-        validateEmail(view)
-        validatePassword(view)
-        if (emailErrorMessage != null || passwordErrorMessage != null) {
-            authListener?.onFailure(null)
-            return
-        }
-
-        Coroutines.main {
-
-            try {
-                val res = userRepository.login(email.trim(), password.trim())
-
-                res.user?.let {
-                    userRepository.saveUser(it.parseToUserEntity())
-                    authListener?.onSuccess(it.parseToUserEntity(), res.message)
-                    return@main
+        val isValid = validateForm(view)
+        if (isValid)
+            Coroutines.main {
+                try {
+                    val res = userRepository.login(email.trim(), password.trim())
+                    res.user?.let {
+                        userRepository.saveUser(it.parseToUserEntity())
+                        authListener?.onSuccess(it.parseToUserEntity(), res.message)
+                        return@main
+                    }
+                    authListener?.onFailure(res.message!!)
+                } catch (ex: ClientException) {
+                    authListener?.onFailure(if (ex.code == 404) ex.message!! else null)
+                } catch (ex: NoInternetException) {
+                    authListener?.onFailure(ex.message!!)
+                } catch (ex: Exception) {
+                    authListener?.onFailure(null)
                 }
-                authListener?.onFailure(res.message!!)
-            } catch (ex: ClientException) {
-                authListener?.onFailure(ex.message!!)
-            } catch (ex: NoInternetException) {
-                authListener?.onFailure(ex.message!!)
-            } catch (ex: SocketTimeoutException) {
-                authListener?.onFailure(ex.message!!)
             }
-
-        }
+        authListener?.setErrorMessages(isValid)
     }
 
     fun onRegisterButtonClick(view: View) {
@@ -66,15 +59,31 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
-    private fun validatePassword(view: View) {
-        passwordErrorMessage = if (password.trim().isEmpty()) view.context.getString(R.string.empty_password_error_message)
-        else null
+    private fun validateForm(view: View): Boolean {
+        val isValid = validatePassword(view)
+        return validateEmail(view) && isValid
     }
 
-    private fun validateEmail(view: View) {
-        emailErrorMessage = if (email.trim().isEmpty()) view.context.getString(R.string.empty_email_error_message)
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()) view.context.getString(R.string.email_invalid_error_message)
-        else null
+    @Suppress("SameParameterValue")
+    private fun validatePassword(view: View): Boolean {
+        if (password.trim().isEmpty()) {
+            passwordErrorMessage = view.context.getString(R.string.empty_password_error_message)
+            return false
+        }
+        passwordErrorMessage = null
+        return true
+    }
 
+    private fun validateEmail(view: View): Boolean {
+        if (email.trim().isEmpty()) {
+            emailErrorMessage = view.context.getString(R.string.empty_email_error_message)
+            return false
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()) {
+            emailErrorMessage = view.context.getString(R.string.email_invalid_error_message)
+            return false
+        }
+        emailErrorMessage = null
+        return true
     }
 }

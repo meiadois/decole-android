@@ -329,6 +329,8 @@ class AccountViewModel(
 
     private fun validateCompanyModel(view: View): Boolean {
         val company: CompanyAccountData = companyData.value!!
+        val maxLengthNeighborhood = 35
+        val maxLengthCity = 28
 
         var isValid = StringValidator(company.name)
             .addValidation(
@@ -379,7 +381,7 @@ class AccountViewModel(
                     MAX_DESCRIPTION_SIZE,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.account_company_description_hint), 144
+                        view.context.getString(R.string.account_company_description_hint), MAX_DESCRIPTION_SIZE
                     )
                 )
             )
@@ -412,10 +414,11 @@ class AccountViewModel(
             )
             .addValidation(
                 MaxLengthRule(
-                    28,
+                    maxLengthCity,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.account_company_city_hint), 28
+                        view.context.getString(R.string.account_company_city_hint),
+                        maxLengthCity
                     )
                 )
             )
@@ -438,10 +441,11 @@ class AccountViewModel(
             )
             .addValidation(
                 MaxLengthRule(
-                    35,
+                    maxLengthNeighborhood,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.account_company_neighborhood_hint), 35
+                        view.context.getString(R.string.account_company_neighborhood_hint),
+                        maxLengthNeighborhood
                     )
                 )
             )
@@ -522,14 +526,17 @@ class AccountViewModel(
 
     private fun validateUserSocialNetworks(view: View): Boolean {
         val accounts: UserAccountsData = userAccountsData.value!!
+        val maxLengthInstagramUsername = 30
+        val maxLengthFacebookUsername = 30
 
         var isValid = StringValidator(accounts.instagram.userName)
             .addValidation(
                 MaxLengthRule(
-                    30,
+                    maxLengthInstagramUsername,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.socialNetwork_instagram_hint), 30
+                        view.context.getString(R.string.socialNetwork_instagram_hint),
+                        maxLengthInstagramUsername
                     )
                 )
             )
@@ -544,10 +551,11 @@ class AccountViewModel(
         isValid = isValid and StringValidator(accounts.facebook.userName)
             .addValidation(
                 MaxLengthRule(
-                    50,
+                    maxLengthFacebookUsername,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.socialNetwork_facebook_hint), 50
+                        view.context.getString(R.string.socialNetwork_facebook_hint),
+                        maxLengthFacebookUsername
                     )
                 )
             )

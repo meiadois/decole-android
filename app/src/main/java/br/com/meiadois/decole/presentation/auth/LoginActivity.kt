@@ -8,7 +8,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.localdb.entity.User
@@ -66,11 +65,17 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
     override fun onFailure(message: String?) {
         toggleLoading(false)
+        root_layout.longSnackbar(message ?: getString(R.string.error_when_executing_the_action)) { snackbar ->
+            snackbar.setAction(getString(R.string.ok)) {
+                snackbar.dismiss()
+            }
+        }
+    }
+
+    override fun setErrorMessages(isValid: Boolean) {
+        toggleLoading(isValid)
         layout_email_input.error = loginViewModel.emailErrorMessage
         layout_password_input.error = loginViewModel.passwordErrorMessage
-        message?.let {
-            root_layout.longSnackbar(it)
-        }
     }
 
     private fun toggleLoading(boolean: Boolean) {
@@ -95,5 +100,4 @@ class LoginActivity : AppCompatActivity(), AuthListener, KodeinAware {
                 startActivity(it)
             }
     }
-
 }

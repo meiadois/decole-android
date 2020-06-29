@@ -6,4 +6,5 @@ interface AuthListener {
     fun onStarted()
     fun onSuccess(user: User, message: String?)
     fun onFailure(message: String?)
+    fun setErrorMessages(isValid: Boolean)
 }
