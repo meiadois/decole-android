@@ -1,5 +1,6 @@
 package br.com.meiadois.decole.presentation.user.education
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -7,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -23,6 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
+import br.com.meiadois.decole.util.receiver.NetworkChangeReceiver
 import kotlinx.android.synthetic.main.activity_start_interactive_mode.*
 import kotlinx.android.synthetic.main.activity_start_interactive_mode.btn_next
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,6 +41,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
     private val factory: StartInteractiveModeViewModelFactory by instance()
 
     private lateinit var mViewModel: StartInteractiveModeViewModel
+    private lateinit var mNetworkReceiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +52,20 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
             viewModel = mViewModel
         }
 
+        mNetworkReceiver = NetworkChangeReceiver(this) {
+            Log.i("AAAAAAA", it.toString())
+            mViewModel.getSteps()
+        }
+
         mViewModel.interactiveListener = this
 
         mViewModel.lessonClicked.value = intent.getLongExtra("lessonId", 0L)
         initializeViewComponents()
     }
 
-    override fun onStarted() {}
+    override fun onStarted() {
+
+    }
 
     override fun onSuccess() {}
 
@@ -67,7 +78,6 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
             else ->
                 layout_start_interactive.longSnackbar(layout_start_interactive.context.getString(R.string.error_when_executing_the_action))
         }
-
     }
 
     //ask_overlay_region
@@ -80,7 +90,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
                     if (isMIUI())
                         showPermissionRationaleForMIUI()
                     else
-                        startFloatingView(this, mViewModel.steps.getCompleted().value!!)
+                        startFloatingView(this, mViewModel.steps.value!!)
                 } else
                     Toast.makeText(
                         this,
@@ -89,7 +99,7 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
                     ).show()
             }
             MIUI_ADDITIONAL_PERMISSION_RESULT_CODE -> {
-                startFloatingView(this, mViewModel.steps.getCompleted().value!!)
+                startFloatingView(this, mViewModel.steps.value!!)
             }
             else -> {
             }
@@ -108,6 +118,15 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
         return !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(c))
     }
     //endregion
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            this.unregisterReceiver(mNetworkReceiver)
+        } catch (ex: Exception) {
+
+        }
+    }
 
     //region MIUI treatment
     private fun isMIUI(): Boolean = !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.name"))
@@ -171,8 +190,8 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
         }
     }
 
-    private fun initializeViewComponents() = Coroutines.main {
-        mViewModel.steps.await().observe(this, Observer { steps ->
+    private fun initializeViewComponents() {
+        mViewModel.steps.observe(this, Observer { steps ->
             btn_next.isEnabled = true
             btn_next.setOnClickListener {
                 if (isOverLaysAllowed(this@StartInteractiveModeActivity)) {
@@ -183,9 +202,9 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
                 }
             }
         })
+        mViewModel.getSteps()
     }
     // endregion
-
 
     companion object {
         private const val DRAW_OVER_APP_RESULT_CODE = 2084
