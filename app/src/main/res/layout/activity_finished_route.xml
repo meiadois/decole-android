@@ -102,6 +102,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bottom_panel_guideline" />
 
+        <TextView
+            android:visibility="gone"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_no_internet_message"
+            android:text="@string/complete_lesson_network_error"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bottom_panel_guideline"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

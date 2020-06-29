@@ -18,13 +18,16 @@ class FinishedRouteViewModel(
 
     fun handleStart(lessonDone: Long) = Coroutines.main {
         if (lessonDone != 0L) {
-            listener!!.onStarted()
-            lessonRepository.complete(lessonDone)
-            lessonRepository.fetchLessons(targetRouteParent.value!!)
-            routeRepository.fetchRoute(targetRouteParent.value!!)
-            listener!!.onSuccess()
-        } else {
-            listener!!.onFailure()
-        }
+            try {
+                listener!!.onStarted()
+                lessonRepository.complete(lessonDone)
+                lessonRepository.fetchLessons(targetRouteParent.value!!)
+                routeRepository.fetchRoute(targetRouteParent.value!!)
+                listener!!.onSuccess()
+            } catch (ex: Exception) {
+                listener!!.onFailure(ex)
+            }
+        } else
+            listener!!.onFailure(null)
     }
 }

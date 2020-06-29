@@ -80,7 +80,8 @@
     <string name="have_instagram_account_question">Possui uma conta para seu negócio?</string>
     <string name="has_no_account">Não possuo conta</string>
     <string name="has_account">Possuo conta</string>
-    <string name="complete_lesson_error">Houve um erro ao processar a avaliação</string>
+    <string name="complete_lesson_error">Houve um erro ao processar a avaliação.</string>
+    <string name="complete_lesson_network_error">Conecte-se à internet para poder completar a lição.</string>
 
     <!-- Partnership Home BottomFragment -->
     <string name="getting_data_failed_error_message">Falha ao obter dados.</string>

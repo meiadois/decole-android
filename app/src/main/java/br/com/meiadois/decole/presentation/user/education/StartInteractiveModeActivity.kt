@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,7 +19,6 @@ import br.com.meiadois.decole.databinding.ActivityStartInteractiveModeBinding
 import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.StartInteractiveModeViewModelFactory
 import br.com.meiadois.decole.service.FloatingViewService
-import br.com.meiadois.decole.util.Coroutines
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
@@ -52,20 +50,20 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
             viewModel = mViewModel
         }
 
-        mNetworkReceiver = NetworkChangeReceiver(this) {
-            Log.i("AAAAAAA", it.toString())
-            mViewModel.getSteps()
-        }
-
         mViewModel.interactiveListener = this
 
         mViewModel.lessonClicked.value = intent.getLongExtra("lessonId", 0L)
+
         initializeViewComponents()
+
+        mNetworkReceiver = NetworkChangeReceiver(this) {
+            if (!it) btn_next.isEnabled = false
+            mViewModel.getSteps()
+        }
     }
 
-    override fun onStarted() {
-
-    }
+    //region InteractiveModeListener
+    override fun onStarted() {}
 
     override fun onSuccess() {}
 
@@ -79,8 +77,9 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
                 layout_start_interactive.longSnackbar(layout_start_interactive.context.getString(R.string.error_when_executing_the_action))
         }
     }
+    //endregion
 
-    //ask_overlay_region
+    //region Permissions
     @ExperimentalCoroutinesApi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -118,15 +117,6 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
         return !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(c))
     }
     //endregion
-
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            this.unregisterReceiver(mNetworkReceiver)
-        } catch (ex: Exception) {
-
-        }
-    }
 
     //region MIUI treatment
     private fun isMIUI(): Boolean = !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.name"))
@@ -197,12 +187,15 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
                 if (isOverLaysAllowed(this@StartInteractiveModeActivity)) {
                     startFloatingView(this@StartInteractiveModeActivity, steps)
                     finish()
-                } else {
+                } else
                     askPermissionToOverLays()
-                }
             }
         })
-        mViewModel.getSteps()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(mNetworkReceiver)
     }
     // endregion
 
