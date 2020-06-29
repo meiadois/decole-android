@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="br.com.meiadois.decole">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,11 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.maintenance.MaintenanceActivity"/>
+            android:name=".presentation.maintenance.MaintenanceActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.splash.SplashActivity">
+            android:name=".presentation.splash.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,50 +30,51 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.user.partnership.PartnershipDiscoveryActivity"/>
+            android:name=".presentation.user.partnership.PartnershipDiscoveryActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.pwrecovery.PwRecoveryHomeActivity" />
+            android:name=".presentation.pwrecovery.PwRecoveryHomeActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.user.education.FinishedRouteActivity" />
+            android:name=".presentation.user.education.FinishedRouteActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.user.education.RouteDetailsActivity" />
+            android:name=".presentation.user.education.RouteDetailsActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.user.HomeActivity" />
+            android:name=".presentation.user.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.user.account.AccountActivity" />
+            android:name=".presentation.user.account.AccountActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.user.account.ChangePasswordActivity" />
+            android:name=".presentation.user.account.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.instagram.HasInstagramAccountActivity" />
+            android:name=".presentation.instagram.HasInstagramAccountActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.instagram.InstagramIntroActivity" />
+            android:name=".presentation.instagram.InstagramIntroActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.welcome.WelcomeSlideActivity" />
+            android:name=".presentation.welcome.WelcomeSlideActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.welcome.WelcomeInfoActivity" />
+            android:name=".presentation.welcome.WelcomeInfoActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.user.education.StartInteractiveModeActivity" />
+            android:name=".presentation.user.education.StartInteractiveModeActivity"
+            android:screenOrientation="portrait" />
+
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.auth.RegisterActivity" />
+            android:name=".presentation.auth.RegisterActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.errorhandler.ErrorHandlerActivity" />
+            android:name=".presentation.errorhandler.ErrorHandlerActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".presentation.auth.LoginActivity"/>
+            android:name=".presentation.auth.LoginActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".service.FloatingViewService" />
     </application>
