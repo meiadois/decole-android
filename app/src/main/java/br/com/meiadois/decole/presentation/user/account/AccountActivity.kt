@@ -26,12 +26,12 @@ import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewMod
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.Mask
+import br.com.meiadois.decole.util.dialog.CustomDialog
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
 import br.com.meiadois.decole.util.receiver.NetworkChangeReceiver
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -87,12 +87,12 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     }
 
     private fun showRequestPermissionRationale(resultCode: Int){
-        MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.storage_permission_rationale_title))
-            .setMessage(getString(R.string.storage_permission_rationale_message))
-            .setNeutralButton(getString(R.string.ok)) { _, _ ->
-                initPickingFromGallery(resultCode, false)
-            }
+        val message = getString(R.string.storage_permission_rationale_message)
+        val title = getString(R.string.storage_permission_rationale_title)
+
+        CustomDialog(this)
+            .create(title, message)
+            .setNeutralButton(getString(R.string.ok)) { initPickingFromGallery(resultCode, false) }
             .show()
     }
 

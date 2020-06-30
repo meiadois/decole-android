@@ -19,7 +19,7 @@ import br.com.meiadois.decole.databinding.ActivityStartInteractiveModeBinding
 import br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.StartInteractiveModeViewModelFactory
 import br.com.meiadois.decole.service.FloatingViewService
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import br.com.meiadois.decole.util.dialog.CustomDialog
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
@@ -148,12 +148,12 @@ class StartInteractiveModeActivity : AppCompatActivity(), InteractiveModeListene
     }
 
     private fun showPermissionRationaleForMIUI() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.display_popup_permission_rationale_title))
-            .setMessage(getString(R.string.display_popup_permission_rationale_message))
-            .setNeutralButton(getString(R.string.ok)) { _, _ ->
-                openMIUIAdditionalPermissions()
-            }
+        val message = getString(R.string.display_popup_permission_rationale_message)
+        val title = getString(R.string.display_popup_permission_rationale_title)
+
+        CustomDialog(this)
+            .create(title, message)
+            .setNeutralButton(getString(R.string.advance)) { openMIUIAdditionalPermissions() }
             .show()
     }
 

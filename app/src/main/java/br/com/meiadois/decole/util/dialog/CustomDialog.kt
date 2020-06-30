@@ -11,10 +11,6 @@ import br.com.meiadois.decole.R
 import kotlinx.android.synthetic.main.layout_custom_dialog.*
 import java.lang.Exception
 
-/*
-    link for the custom dialog in stackoverfow: https://stackoverflow.com/a/62167303/10457149
-*/
-
 class CustomDialog(private val activity: Activity): Dialog(activity) {
     private var isPositiveOrNegativeButtonSet = false
     private var isNeutralButtonSet = false
