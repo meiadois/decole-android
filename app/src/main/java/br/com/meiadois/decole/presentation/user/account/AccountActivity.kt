@@ -11,9 +11,13 @@ import android.provider.MediaStore
 import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -34,12 +38,13 @@ import br.com.meiadois.decole.util.extension.shortSnackbar
 import br.com.meiadois.decole.util.receiver.NetworkChangeReceiver
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_account.*
-import kotlinx.android.synthetic.main.activity_account.progress_bar
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import kotlin.reflect.KClass
 
 class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     override val kodein by kodein()
@@ -242,82 +247,36 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun <T: View> getFirstChildOfTypeList(types: Array<KClass<out T>>, children: Sequence<View>): T? {
+        for (child in children) {
+            for (type in types)
+                if (type.isInstance(child))
+                    return child as T
+            if (child is ViewGroup)
+                return getFirstChildOfTypeList(types, child.children)
+        }
+        return null
+    }
+
     private fun setRemoveErrorListener() {
-        input_company_name.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_name_input
-            )
+        val forms: Array<ViewGroup> = arrayOf(
+            account_me_form,
+            socialNetwork_form,
+            account_company_form,
+            company_banner_frame,
+            company_thumbnail_frame
         )
-        input_company_cep.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_cep_input
-            )
+        val acceptedTypes: Array<KClass<out EditText>> = arrayOf(
+            TextInputEditText::class,
+            AutoCompleteTextView::class
         )
-        input_company_cnpj.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_cnpj_input
-            )
-        )
-        input_company_telephone.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_telephone_input
-            )
-        )
-        input_company_mail.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_mail_input
-            )
-        )
-        input_company_description.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_description_input
-            )
-        )
-        input_company_city.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_city_input
-            )
-        )
-        input_company_neighborhood.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_neighborhood_input
-            )
-        )
-        filled_exposed_dropdown.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_segment_input
-            )
-        )
-        input_me_name.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_me_name_input
-            )
-        )
-        input_me_mail.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_me_mail_input
-            )
-        )
-        input_socialNetwork_instagram.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                socialNetwork_instagram_input
-            )
-        )
-        input_socialNetwork_facebook.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                socialNetwork_facebook_input
-            )
-        )
-        input_company_logo.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_logo_input
-            )
-        )
-        input_company_banner.addTextChangedListener(
-            accountViewModel.onTextFieldChange(
-                account_company_banner_input
-            )
-        )
+        for (form in forms)
+            for (child in form.children)
+                if (child is TextInputLayout) {
+                    val editText = getFirstChildOfTypeList(acceptedTypes, child.children)
+                    editText?.addTextChangedListener(accountViewModel.onTextFieldChange(child))
+                }
     }
 
     override fun riseValidationError(field: FieldsEnum, errorMessage: String) {

@@ -432,6 +432,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <FrameLayout
+                            android:id="@+id/company_thumbnail_frame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -460,6 +461,7 @@
                         </FrameLayout>
 
                         <FrameLayout
+                            android:id="@+id/company_banner_frame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toBottomOf="@+id/textView">
