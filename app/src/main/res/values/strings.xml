@@ -7,6 +7,8 @@
     <string name="finish">Concluir</string>
     <string name="skip"><u>Pular</u></string>
     <string name="logout"><u>Sair</u></string>
+    <string name="exit">Sair</string>
+    <string name="advance">Avançar</string>
     <string name="ok">OK</string>
     <string name="back_to_home_page">Voltar para o início</string>
     <string name="default_font">sans-serif-light</string>
@@ -202,4 +204,8 @@
 
     <!-- Global Error Handler -->
     <string name="global_error_handler_message">Ocorreu uma falha inesperada ao executar a ação.\nPor favor, tente novamente.</string>
+
+    <!-- SplashActivity -->
+    <string name="new_app_version_dialog_title">Nova versão disponível!</string>
+    <string name="new_app_version_dialog_message">O Decole foi atualizado! Por favor, baixe a nova versão para continuar.</string>
 </resources>

@@ -1,3 +1,4 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="custom_dialog_size">50dp</dimen>
 </resources>

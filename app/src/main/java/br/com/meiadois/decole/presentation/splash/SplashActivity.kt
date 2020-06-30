@@ -1,6 +1,7 @@
 package br.com.meiadois.decole.presentation.splash
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import br.com.meiadois.decole.presentation.splash.viewmodel.SplashViewModelFacto
 import br.com.meiadois.decole.presentation.user.HomeActivity
 import br.com.meiadois.decole.presentation.welcome.WelcomeInfoActivity
 import br.com.meiadois.decole.util.Coroutines
+import br.com.meiadois.decole.util.dialog.CustomDialog
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
@@ -46,7 +48,60 @@ class SplashActivity : AppCompatActivity(), KodeinAware {
 
     private fun getAppInfo() {
         Coroutines.main {
-            startNextActivity(splashViewModel.getAppInfo().underMaintenance.toBoolean())
+            val appInfo = splashViewModel.getAppInfo()
+            if (needToUpdate(appInfo.appVersion))
+                showUpdateDialog()
+            else
+                startNextActivity(appInfo.underMaintenance.toBoolean())
+        }
+    }
+
+    private fun needToUpdate(latestVersionString: String): Boolean {
+        try {
+            val appVersionString = packageManager.getPackageInfo(packageName, 0).versionName
+            val appVersionArray = appVersionString.split('.')
+            val latestVersionArray = latestVersionString.split('.')
+
+            appVersionArray.forEachIndexed { index, element ->
+                if (element.toInt() < latestVersionArray[index].toInt())
+                    return true
+            }
+        } catch (ex: Exception) {
+        }
+        return false
+    }
+
+    private fun showUpdateDialog() {
+        val message = getString(R.string.new_app_version_dialog_message)
+        val title = getString(R.string.new_app_version_dialog_title)
+
+        CustomDialog(this)
+            .create(title, message)
+            .setIcon(R.drawable.ic_system_update_green)
+            .setNegativeButton(getString(R.string.exit)) { finish() }
+            .setPositiveButton(getString(R.string.advance)) {
+                openPlayStore()
+                finish()
+            }
+            .show()
+    }
+
+    private fun openPlayStore() {
+        val appPackageName = packageName
+        try {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=$appPackageName")
+                )
+            )
+        } catch (ex: Exception) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+                )
+            )
         }
     }
 
