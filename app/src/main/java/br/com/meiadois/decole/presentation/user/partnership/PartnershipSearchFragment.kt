@@ -14,12 +14,8 @@ import br.com.meiadois.decole.presentation.user.partnership.viewmodel.Partnershi
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
-import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search_partner.*
-import kotlinx.android.synthetic.main.fragment_search_partner.progress_bar
 import kotlinx.android.synthetic.main.fragment_search_partner.swipe_refresh
 import kotlinx.android.synthetic.main.fragment_search_partner.toolbar_back_button
 import org.kodein.di.KodeinAware
@@ -39,7 +35,6 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
             inflater, R.layout.fragment_search_partner, container, false
         )
         binding.viewModel = mViewModel
-
         return binding.root
     }
 
@@ -47,6 +42,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
         super.onViewCreated(view, savedInstanceState)
         swipe_refresh.setOnRefreshListener { init(true) }
         parentFragmentManager.popBackStack()
+        setProgressVisibility(true)
 
         toolbar_filter_button.setOnClickListener {
             val nextFragment = PartnershipSearchFilterFragment()
@@ -71,7 +67,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                             snackbar.dismiss()
                         }
                     }
-                } catch (ex: Exception){
+                } catch (ex: Exception) {
                     showGenericErrorMessage()
                 }
                 mViewModel.getUpdateCompany()
@@ -83,30 +79,20 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 mViewModel.companies.value!!.count() - 1 > mViewModel.state -> {
                     mViewModel.getUpdateCompany()
                 }
-                mViewModel.companies.value!!.count() == 1 -> {
-                    layout_bottom_search.longSnackbar(getString(R.string.only_one_company_found))
-                }
                 mViewModel.companies.value!!.count() - 1 == mViewModel.state -> {
-                    linear_button_container.visibility = View.INVISIBLE
-                    layout_bottom_search.shortSnackbar(getString(R.string.end_of_list_companies)) {
-                        it.addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                                init(true)
-                            }
-                        })
-                    }
+                    setContentVisibility(CONTENT_NO_COMPANIES)
                 }
             }
         }
-        init()
+
+        init(true)
     }
 
     private fun init(fromSwipeRefresh: Boolean = false) {
         Coroutines.main {
             try {
-                setLoadingView()
                 setCompaniesAdapter()
-                setContentCardCompanyView()
+                setDataCardView()
             } catch (ex: Exception) {
                 showGenericErrorMessage()
             }
@@ -117,30 +103,18 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
     }
 
     private fun setCompaniesAdapter() {
-        progress_bar.visibility
         mViewModel.companies.observe(viewLifecycleOwner, Observer {
             if (mViewModel.companies.value!!.isNotEmpty()) {
                 mViewModel.company.value = mViewModel.companies.value?.get(0)
-                linear_button_container.visibility = View.VISIBLE
-                cardview_company_profile.visibility = View.VISIBLE
-                fragment_container_noCompanies.visibility = View.GONE
+                setContentVisibility(CONTENT_HAS_COMPANIES)
             } else {
-                linear_button_container.visibility = View.GONE
-                cardview_company_profile.visibility = View.GONE
-                fragment_container_noCompanies.visibility = View.VISIBLE
+                setContentVisibility(CONTENT_NO_COMPANIES)
             }
             setProgressVisibility(false)
         })
     }
 
-    private fun setLoadingView() {
-        linear_button_container.visibility = View.GONE
-        cardview_company_profile.visibility = View.GONE
-        fragment_container_noCompanies.visibility = View.GONE
-        setProgressVisibility(true)
-    }
-
-    private fun setContentCardCompanyView() {
+    private fun setDataCardView() {
         mViewModel.company.observe(viewLifecycleOwner, Observer {
             it?.let {
                 text_profile_name.text = it.name
@@ -152,7 +126,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
     }
 
     private fun setProgressVisibility(visible: Boolean) {
-        progress_bar.visibility = if (visible) View.VISIBLE else View.GONE
+        progress_bar_search.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun showGenericErrorMessage() {
@@ -161,5 +135,19 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 snackbar.dismiss()
             }
         }
+    }
+
+    private fun setContentVisibility(contentMode: Int) {
+        linear_button_container.visibility =
+            if (contentMode == CONTENT_HAS_COMPANIES) View.VISIBLE else View.GONE
+        cardview_company_profile.visibility =
+            if (contentMode == CONTENT_HAS_COMPANIES) View.VISIBLE else View.GONE
+        fragment_container_noCompanies.visibility =
+            if (contentMode == CONTENT_NO_COMPANIES) View.VISIBLE else View.GONE
+    }
+
+    companion object {
+        private const val CONTENT_HAS_COMPANIES = 0
+        private const val CONTENT_NO_COMPANIES = 1
     }
 }

@@ -78,7 +78,7 @@
                 android:padding="32dp">
 
                 <ProgressBar
-                    android:id="@+id/progress_bar"
+                    android:id="@+id/progress_bar_search"
                     style="@style/circle_progress_bar"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
