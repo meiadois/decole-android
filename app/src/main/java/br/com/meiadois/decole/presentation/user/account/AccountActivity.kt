@@ -262,7 +262,6 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
     private fun setRemoveErrorListener() {
         val forms: Array<ViewGroup> = arrayOf(
             account_me_form,
-            socialNetwork_form,
             account_company_form,
             company_banner_frame,
             company_thumbnail_frame
@@ -294,8 +293,6 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             FieldsEnum.COMPANY_BANNER -> account_company_banner_input
             FieldsEnum.USER_NAME -> account_me_name_input
             FieldsEnum.USER_EMAIL -> account_me_mail_input
-            FieldsEnum.USER_FACEBOOK -> socialNetwork_facebook_input
-            FieldsEnum.USER_INSTAGRAM -> socialNetwork_instagram_input
             else -> null
         }
         textInputLayout?.error = errorMessage

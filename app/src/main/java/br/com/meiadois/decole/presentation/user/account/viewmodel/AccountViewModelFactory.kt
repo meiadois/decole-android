@@ -6,7 +6,6 @@ import br.com.meiadois.decole.data.repository.*
 import br.com.meiadois.decole.service.LogOutService
 
 class AccountViewModelFactory(
-    private val accountRepository: AccountRepository,
     private val segmentRepository: SegmentRepository,
     private val companyRepository: CompanyRepository,
     private val userRepository: UserRepository,
@@ -15,6 +14,6 @@ class AccountViewModelFactory(
 ): ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return AccountViewModel(accountRepository, segmentRepository, companyRepository, userRepository, cepRepository, logOutService) as T
+        return AccountViewModel(segmentRepository, companyRepository, userRepository, cepRepository, logOutService) as T
     }
 }

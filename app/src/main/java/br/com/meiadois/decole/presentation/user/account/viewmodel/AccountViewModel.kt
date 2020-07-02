@@ -25,7 +25,6 @@ import okhttp3.RequestBody
 import java.io.File
 
 class AccountViewModel(
-    private val accountRepository: AccountRepository,
     private val segmentRepository: SegmentRepository,
     private val companyRepository: CompanyRepository,
     private val userRepository: UserRepository,
@@ -34,20 +33,16 @@ class AccountViewModel(
 ) : ViewModel() {
     var companyData: MutableLiveData<CompanyAccountData> = MutableLiveData<CompanyAccountData>()
     var userData: MutableLiveData<UserAccountData> = MutableLiveData<UserAccountData>()
-    var userAccountsData: MutableLiveData<UserAccountsData> = MutableLiveData<UserAccountsData>()
 
     var segments: MutableLiveData<List<Segment>> = MutableLiveData<List<Segment>>()
 
     var accountListener: AccountListener? = null
     private var isUpdatingCompany: Boolean = false
-    private var isUpdatingInstagram: Boolean = false
-    private var isUpdatingFacebook: Boolean = false
 
     // region initializer methods
     suspend fun init() {
         getUser()
         getSegments()
-        getUserSocialNetworks()
         getUserCompany()
     }
 
@@ -86,33 +81,6 @@ class AccountViewModel(
             companyData.value = CompanyAccountData(email = userData.value!!.email)
             if (ex !is ClientException) throw ex
         }
-    }
-
-    private suspend fun getUserSocialNetworks() {
-        val userAccounts = UserAccountsData(
-            instagram = UserSocialNetwork(
-                channelName = INSTAGRAM_CHANNEL,
-                category = SOCIAL_NETWORK_CATEGORY
-            ),
-            facebook = UserSocialNetwork(
-                channelName = FACEBOOK_CHANNEL,
-                category = SOCIAL_NETWORK_CATEGORY
-            )
-        )
-        accountRepository.getUserAccounts().let { accounts ->
-            if (accounts.isNotEmpty())
-                for (account in accounts)
-                    if (account.channelName == INSTAGRAM_CHANNEL) {
-                        userAccounts.instagram.userName = account.userName
-                        userAccounts.instagram.id = account.id
-                        isUpdatingInstagram = true
-                    } else if (account.channelName == FACEBOOK_CHANNEL) {
-                        userAccounts.facebook.userName = account.userName
-                        userAccounts.facebook.id = account.id
-                        isUpdatingFacebook = true
-                    }
-        }
-        userAccountsData.value = userAccounts
     }
     // endregion
 
@@ -155,60 +123,57 @@ class AccountViewModel(
             Coroutines.main {
                 accountListener?.onActionStarted()
                 try {
+                    val company = companyData.value!!
                     if (isUpdatingCompany) companyRepository.updateUserCompany(
-                        companyData.value!!.name,
-                        companyData.value!!.cep,
-                        companyData.value!!.cnpj,
-                        companyData.value!!.description,
-                        companyData.value!!.segmentId,
-                        companyData.value!!.cellphone,
-                        companyData.value!!.email,
-                        companyData.value!!.visible,
-                        companyData.value!!.city,
-                        companyData.value!!.neighborhood,
-                        if (companyData.value!!.thumbnail.updated)
+                        company.name,
+                        company.cep,
+                        company.cnpj,
+                        company.description,
+                        company.segmentId,
+                        company.cellphone,
+                        company.email,
+                        company.visible,
+                        company.city,
+                        company.neighborhood,
+                        if (company.thumbnail.updated)
                             getMultipartBodyPart(
-                                companyData.value!!.thumbnail.path,
-                                companyData.value!!.thumbnail.type,
+                                company.thumbnail.path,
+                                company.thumbnail.type,
                                 "thumbnail"
                             )
                         else null,
-                        if (companyData.value!!.banner.updated)
+                        if (company.banner.updated)
                             getMultipartBodyPart(
-                                companyData.value!!.banner.path,
-                                companyData.value!!.banner.type,
+                                company.banner.path,
+                                company.banner.type,
                                 "banner"
                             )
                         else null
                     ) else companyRepository.insertUserCompany(
-                        companyData.value!!.name,
-                        companyData.value!!.cep,
-                        companyData.value!!.cnpj,
-                        companyData.value!!.description,
-                        companyData.value!!.segmentId,
-                        companyData.value!!.cellphone,
-                        companyData.value!!.email,
-                        companyData.value!!.visible,
-                        companyData.value!!.city,
-                        companyData.value!!.neighborhood,
+                        company.name,
+                        company.cep,
+                        company.cnpj,
+                        company.description,
+                        company.segmentId,
+                        company.cellphone,
+                        company.email,
+                        company.visible,
+                        company.city,
+                        company.neighborhood,
                         getMultipartBodyPart(
-                            companyData.value!!.thumbnail.path,
-                            companyData.value!!.thumbnail.type,
+                            company.thumbnail.path,
+                            company.thumbnail.type,
                             "thumbnail"
                         ),
                         getMultipartBodyPart(
-                            companyData.value!!.banner.path,
-                            companyData.value!!.banner.type,
+                            company.banner.path,
+                            company.banner.type,
                             "banner"
                         )
                     )
 
                     userRepository.updateUser(userData.value!!.name, userData.value!!.email)
                     userRepository.saveUser(userData.value!!.parseToUserEntity())
-
-                    executeAccountAction(isUpdatingInstagram, userAccountsData.value!!.instagram)
-
-                    executeAccountAction(isUpdatingFacebook, userAccountsData.value!!.facebook)
 
                     accountListener?.onActionSuccess()
                 } catch (ex: NoInternetException) {
@@ -240,16 +205,6 @@ class AccountViewModel(
         }
     }
 
-    private suspend fun executeAccountAction(isUpdating: Boolean, account: UserSocialNetwork) {
-        if (isUpdating) {
-            if (account.userName.isEmpty())
-                accountRepository.deleteUserAccount(account.toAccountModel())
-            else
-                accountRepository.updateUserAccount(account.toAccountModel())
-        } else if (account.userName.isNotEmpty())
-            accountRepository.insertUserAccount(account.toAccountModel())
-    }
-
     private fun getMultipartBodyPart(
         imagePath: String,
         imageType: String,
@@ -278,20 +233,13 @@ class AccountViewModel(
             companyData.value!!.description = companyData.value!!.description.trim()
             companyData.value!!.neighborhood = companyData.value!!.neighborhood.trim()
         }
-        if (userAccountsData.value != null) {
-            userAccountsData.value!!.instagram.userName =
-                userAccountsData.value!!.instagram.userName.trim()
-            userAccountsData.value!!.facebook.userName =
-                userAccountsData.value!!.facebook.userName.trim()
-        }
     }
     // endregion
 
     // region Validation
     private fun validateModels(view: View): Boolean {
-        var isValid = validateUserModel(view)
-        isValid = validateCompanyModel(view) and isValid
-        return validateUserSocialNetworks(view) and isValid
+        val isValid = validateUserModel(view)
+        return validateCompanyModel(view) and isValid
     }
 
     private fun validateUserModel(view: View): Boolean {
@@ -523,63 +471,12 @@ class AccountViewModel(
 
         return isValid
     }
-
-    private fun validateUserSocialNetworks(view: View): Boolean {
-        val accounts: UserAccountsData = userAccountsData.value!!
-        val maxLengthInstagramUsername = 30
-        val maxLengthFacebookUsername = 30
-
-        var isValid = StringValidator(accounts.instagram.userName)
-            .addValidation(
-                MaxLengthRule(
-                    maxLengthInstagramUsername,
-                    view.context.getString(
-                        R.string.max_text_length_error_message,
-                        view.context.getString(R.string.socialNetwork_instagram_hint),
-                        maxLengthInstagramUsername
-                    )
-                )
-            )
-            .addErrorCallback {
-                accountListener?.riseValidationError(
-                    FieldsEnum.USER_INSTAGRAM,
-                    it.error
-                )
-            }
-            .validate()
-
-        isValid = isValid and StringValidator(accounts.facebook.userName)
-            .addValidation(
-                MaxLengthRule(
-                    maxLengthFacebookUsername,
-                    view.context.getString(
-                        R.string.max_text_length_error_message,
-                        view.context.getString(R.string.socialNetwork_facebook_hint),
-                        maxLengthFacebookUsername
-                    )
-                )
-            )
-            .addErrorCallback {
-                accountListener?.riseValidationError(
-                    FieldsEnum.USER_FACEBOOK,
-                    it.error
-                )
-            }
-            .validate()
-
-        return isValid
-    }
     // endregion
 
     fun getFileName(filePath: String): String = Regex(FILE_NAME_IN_DIRECTORY_REGEX_PATTERN)
         .find(filePath)?.value.toString()
 
     companion object {
-        private const val INSTAGRAM_CHANNEL = "Instagram"
-        private const val FACEBOOK_CHANNEL = "Facebook"
-
-        private const val SOCIAL_NETWORK_CATEGORY = "SocialNetwork"
-
         private const val FILE_NAME_IN_DIRECTORY_REGEX_PATTERN = "[^/]*$"
 
         const val MAX_DESCRIPTION_SIZE = 144
