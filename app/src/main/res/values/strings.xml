@@ -75,6 +75,12 @@
     <string name="ask_for_new_password">sua senha</string>
     <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
 
+        <!-- Legal description -->
+        <string name="legal_description_first">AO SE CADASTRAR VOCÊ ESTÁ CONCORDANDO COM</string>
+        <string name="legal_description_second">NOSSOS TERMOS DE USO</string>
+        <string name="legal_description_third">E</string>
+        <string name="legal_description_fourth">POLITICA DE PRIVACIDADE</string>
+
     <!-- Instagram -->
     <string name="instagram_intro">Para começar, vamos te acompanhar na construção de um perfil comercial no <b>Instagram</b>.</string>
     <string name="ask_for_instagram_account">Muito legal! Só de possuir um <b>perfil para seu negócio</b> você já está na frente de muitos outros. A gente vai precisar do @ tá bom?</string>

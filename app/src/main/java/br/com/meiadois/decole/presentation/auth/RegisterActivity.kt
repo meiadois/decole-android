@@ -2,10 +2,16 @@ package br.com.meiadois.decole.presentation.auth
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -17,10 +23,10 @@ import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFacto
 import br.com.meiadois.decole.presentation.welcome.WelcomeInfoActivity
 import br.com.meiadois.decole.util.extension.longSnackbar
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_register.root_layout
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+
 
 class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
@@ -43,6 +49,8 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
 
         registerViewModel.authListener = this
 
+        setupLegalDescription()
+
         input_register_confirm_password.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -56,6 +64,39 @@ class RegisterActivity : AppCompatActivity(), AuthListener, KodeinAware {
         btn_back.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    private fun setupLegalDescription() {
+        val textView = legal_description_text
+
+        val spanTxt = SpannableStringBuilder("${getString(R.string.legal_description_first)} ")
+
+        spanTxt.append("${getString(R.string.legal_description_second)} ")
+        spanTxt.setSpan(object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                val url = "https://decole.app/uso"
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
+            }
+        }, spanTxt.length - getString(R.string.legal_description_second).length - 1, spanTxt.length, 0)
+        spanTxt.setSpan(ForegroundColorSpan(getColor(R.color.colorAccentOrange)), 42, spanTxt.length, 0)
+
+        spanTxt.append("${getString(R.string.legal_description_third)} ")
+
+        spanTxt.append("${getString(R.string.legal_description_fourth)} ")
+        spanTxt.setSpan(object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                val url = "https://decole.app/privacidade"
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
+            }
+        }, spanTxt.length - getString(R.string.legal_description_fourth).length - 1, spanTxt.length, 0)
+        spanTxt.setSpan(ForegroundColorSpan(getColor(R.color.colorAccentOrange)), 65, spanTxt.length, 0)
+
+        textView.movementMethod = LinkMovementMethod.getInstance()
+        textView.setText(spanTxt, TextView.BufferType.SPANNABLE)
     }
 
     override fun onStarted() {

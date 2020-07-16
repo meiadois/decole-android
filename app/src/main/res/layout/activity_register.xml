@@ -169,6 +169,17 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/legal_description_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="48dp"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                tools:text="AO SE CADASTRAR VOCÊ  ESTÁ CONCORDANDO COM NOSSOS TERMOS DE USO E POLITICA DE PRIVACIDADE"/>
+
             <ProgressBar
                 android:id="@+id/progress_bar_register"
                 android:layout_width="wrap_content"
