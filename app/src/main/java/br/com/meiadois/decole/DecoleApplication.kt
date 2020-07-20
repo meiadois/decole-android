@@ -21,6 +21,9 @@ import br.com.meiadois.decole.presentation.user.partnership.viewmodel.*
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeInfoViewModelFactory
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewModelFactory
 import br.com.meiadois.decole.service.LogOutService
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -29,6 +32,9 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 
 class DecoleApplication() : Application(), KodeinAware {
+
+    private lateinit var crashlytics: FirebaseCrashlytics
+
     override val kodein = Kodein.lazy {
         import(androidXModule(this@DecoleApplication))
 
@@ -68,6 +74,8 @@ class DecoleApplication() : Application(), KodeinAware {
 
     override fun onCreate() {
         super.onCreate()
+        crashlytics = Firebase.crashlytics
+
         Thread.setDefaultUncaughtExceptionHandler { _, ex ->
             logException(ex)
             handleUncaughtException()
@@ -82,6 +90,8 @@ class DecoleApplication() : Application(), KodeinAware {
                 "message: ${ex.message ?: "no message"}\n" +
                 "cause: ${ex.cause ?: "no cause"}\n" +
                 "stackTrace: $stackTrace")
+
+        crashlytics.recordException(ex)
     }
 
     private fun handleUncaughtException() {
