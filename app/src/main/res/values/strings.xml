@@ -1,3 +1,217 @@
 <resources>
+
+    <!-- Common -->
     <string name="app_name">Decole</string>
+    <string name="next">Continuar</string>
+    <string name="start">Começar</string>
+    <string name="finish">Concluir</string>
+    <string name="skip"><u>Pular</u></string>
+    <string name="logout"><u>Sair</u></string>
+    <string name="exit">Sair</string>
+    <string name="advance">Avançar</string>
+    <string name="ok">OK</string>
+    <string name="back_to_home_page">Voltar para o início</string>
+    <string name="default_font">sans-serif-light</string>
+    <string name="route_access_denied">Você não tem acesso a essa rota</string>
+    <string name="ask_again_for_overlay_permission">Para seguir adiante, você precisa clicar no botão e realizar a permissão.</string>
+
+    <!-- Description -->
+    <string name="instagram_profile_description">Perfil do Instagram</string>
+    <string name="instagram_introduction_description">Construção do Instagram</string>
+    <string name="instagram_interactive_description">Introdução Interativa</string>
+    <string name="welcome_content_description">Introdução</string>
+    <string name="lesson_completed_content_description">Lição Concluída</string>
+    <string name="breadcrumb_description">Migalha de Pão</string>
+    <string name="map_lessons_description">Detalhes de Lições</string>
+    <string name="map_companies_description">Detalhes de Companhias</string>
+    <string name="map_routes_description">Detalhes de Rotas</string>
+    <string name="chart_content_description">Detalhes dos Gráficos</string>
+    <string name="back_arrow_content_description">Voltar</string>
+    <string name="number_description">Etapa</string>
+    <string name="logout_content_description">Sair</string>
+    <string name="icon_logo_description">Icone Branco</string>
+    <string name="icon_logo_green_description">Icone Verde</string>
+    <string name="icon_logo_green_2_description">Icone Verde Menor</string>
+    <string name="icon_profile_description">Icone Perfil</string>
+
+    <!-- Welcome -->
+    <string name="welcome_info_label">Massa! Vamos decolar seu negócio no mundo digital, e para aumentar suas vendas podemos usar as <b>redes sociais</b>, <b>plataformas de vendas on-line</b> e <b>parcerias com outros empreendedores</b>.</string>
+
+    <!-- Route Detais Activity -->
+    <string name="route_details_progress_label" type="id">%d/%d PASSOS</string>
+
+    <!-- Start Interactive Mode Activity -->
+    <string name="ask_for_overlay_permission">As próximas etapas serão <b>interativas</b>, continue usando seu aparelho normalmente enquanto segue os passos do nosso assistente na tela.</string>
+    <string name="display_popup_permission_rationale_title">Permitir que usemos janelas pop-up em segundo plano?</string>
+    <string name="display_popup_permission_rationale_message">Isso permite que o nosso assistente consiga se comunicar com o aplicativo Decole mesmo que ele esteja em segundo plano! Para isso basta clicar no item \"Mostrar janelas pop-up enquanto estiver executando em segundo plano\" e clicar em \"Permitir\".</string>
+
+    <!-- Finished Route Activity -->
+    <string name="finished_route_praise">
+        <b>Parabéns!</b> Você concluiu esta lição. Que tal continuar avançando?
+    </string>
+
+    <!-- NetworkConnectionInterceptor -->
+    <string name="no_internet_connection_error_message">Certifique-se que você possui uma conexão de dados ativa.</string>
+
+    <!-- Welcome Slide Activity -->
+    <string name="welcome_slide_title">Podemos te ajudar de várias formas!</string>
+    <string name="welcome_education_title">Educação</string>
+    <string name="welcome_partnership_title">Parcerias</string>
+    <string name="education_slide_label">Podemos acompanhar você em <b>percursos</b> que pretendem demonstrar atitudes que podem impulsionar seu negócio nas mídias digitais.</string>
+    <string name="marketplace_slide_label">Vamos te acompanhar também em percursos que pretendem expor seu negócio nas maiores plataformas de vendas on-line.</string>
+    <string name="partnership_slide_label">E ainda podemos aproximar você de outros micro empreendedores, para te ajudar a firmar parcerias!</string>
+    <string name="welcome_slide_label">Bem vindo(a) ao <b>Decole!</b></string>
+
+    <!-- Empty list of companies to match -->
+    <string name="list_error_title">OOPS :x</string>
+    <string name="text_error_title">Acabaram as empresas disponíveis, tente outro segmento ou volte mais tarde.</string>
+
+    <!-- Login/Registration -->
+    <string name="ask_for_email">qual o seu e-mail?</string>
+    <string name="ask_for_password">qual a sua senha?</string>
+    <string name="have_no_account_question">Não possui conta?</string>
+    <string name="ask_for_register_email">digite seu melhor e-mail</string>
+    <string name="ask_for_nickname">seu nome (ex. Maria)</string>
+    <string name="ask_for_new_password">sua senha</string>
+    <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
+
+        <!-- Legal description -->
+        <string name="legal_description_first">AO SE CADASTRAR VOCÊ ESTÁ CONCORDANDO COM</string>
+        <string name="legal_description_second">NOSSOS TERMOS DE USO</string>
+        <string name="legal_description_third">E</string>
+        <string name="legal_description_fourth">POLITICA DE PRIVACIDADE</string>
+
+    <!-- Instagram -->
+    <string name="instagram_intro">Para começar, vamos te acompanhar na construção de um perfil comercial no <b>Instagram</b>.</string>
+    <string name="ask_for_instagram_account">Muito legal! Só de possuir um <b>perfil para seu negócio</b> você já está na frente de muitos outros. A gente vai precisar do @ tá bom?</string>
+    <string name="ask_for_instagram_user">seu usuário no instagram</string>
+    <string name="have_instagram_account_question">Possui uma conta para seu negócio?</string>
+    <string name="has_no_account">Não possuo conta</string>
+    <string name="has_account">Possuo conta</string>
+    <string name="complete_lesson_error">Houve um erro ao processar a avaliação.</string>
+    <string name="complete_lesson_network_error">Conecte-se à internet para poder completar a lição.</string>
+
+    <!-- Partnership Home BottomFragment -->
+    <string name="getting_data_failed_error_message">Falha ao obter dados.</string>
+    <string name="sendding_data_failed_error_message">Falha ao enviar dados.</string>
+    <string name="register_business">Cadastrar Negócio</string>
+    <string name="reload">Recarregar</string>
+
+    <!-- Account -->
+    <string name="account_me_hearder_text">Minha conta decole</string>
+    <string name="account_me_name_hint">meu nome</string>
+    <string name="account_me_mail_hint">meu e-mail</string>
+    <string name="account_company_hearder_text">Minha Empresa</string>
+    <string name="be_shown_in_partner_research">Visível para parceria</string>
+    <string name="account_company_name_hint">nome da empresa</string>
+    <string name="account_company_segment_hint">segmento da empresa</string>
+    <string name="account_company_description_hint">breve descrição da empresa</string>
+    <string name="account_company_cep_hint">CEP</string>
+    <string name="account_company_cnpj_hint">CNPJ</string>
+    <string name="account_company_telephone_hint">telefone para contato</string>
+    <string name="account_company_mail_hint">e-mail para contato</string>
+    <string name="save_password">Salvar</string>
+    <string name="save_account_changes">Salvar alterações</string>
+    <string name="account_company_neighborhood_hint">bairro</string>
+    <string name="account_company_city_hint">cidade</string>
+    <string name="account_company_banner">imagem promocional</string>
+    <string name="account_company_logo_hint">logo da empresa</string>
+    <string name="account_company_promotional_photo_hint">foto promocional</string>
+    <string name="success_when_executing_the_action">Ação realizada com sucesso.</string>
+    <string name="error_when_executing_the_action">Falha ao executar ação.</string>
+    <string name="label_change_password"><u><b>ALTERAR MINHA SENHA</b></u></string>
+    <string name="socialNetwork_instagram_hint">meu instagram</string>
+    <string name="socialNetwork_facebook_hint">meu facebook</string>
+    <string name="socialNetwork_hearder_text">Minhas redes sociais</string>
+    <string name="storage_permission_rationale_title">Deseja selecionar uma imagem?</string>
+    <string name="storage_permission_rationale_message">Permita-nos acessar arquivos do dispositivo. Isso significa que, quando for selecionar uma imagem para a sua empresa, poderemos abrir a galeria para você.</string>
+
+    <!-- Change Password -->
+    <string name="changePassword_me_subtitle_text">Alterando senha</string>
+    <string name="changePassword_currentPass_hint">senha atual</string>
+    <string name="changePassword_newPass_hint">nova senha</string>
+    <string name="changePassword_confirmNewPass_hint">confirme a nova senha</string>
+
+    <!-- Validations Messages -->
+    <string name="required_field_error_message">O campo %1$s é obrigatório.</string>
+    <string name="invalid_email_error_message">O e-mail não está em um formato válido.</string>
+    <string name="invalid_cep_error_message">O CEP não está em um formato válido.</string>
+    <string name="invalid_cnpj_error_message">O CNPJ não está em um formato válido.</string>
+    <string name="invalid_telephone_error_message">O telefone não está em um formato válido.</string>
+    <string name="max_text_length_error_message">O campo %1$s não pode ter mais de %2$d caracteres.</string>
+    <string name="min_text_length_error_message">O campo %1$s não pode ter menos de %2$d caracteres.</string>
+    <string name="fields_are_not_equals_error_message">Os campos %1$s e %2$s não são iguais.</string>
+    <string name="empty_password_error_message">Você precisa inserir uma senha.</string>
+    <string name="empty_confirm_password_error_message">Você precisa inserir a confirmação da senha.</string>
+    <string name="confirm_password_diff_error_message">As senhas não coincidem.</string>
+    <string name="empty_email_error_message">Você precisa inserir seu e-mail.</string>
+    <string name="email_invalid_error_message">Você precisa inserir um e-mail válido.</string>
+    <string name="username_empty">Você precisa inserir um nome.</string>
+    <string name="code_invalid_error_message">O código não é válido.</string>
+
+    <!-- Partnership -->
+    <string name="partnership_no_account">Para habilitar essa ferramenta, você precisa ativar o descobrimento de parceiros na tela de configurações e ter seu perfil preenchido</string>
+    <string name="partner_incomplete_register">Você precisa definir como você aparece para os outros usuários</string>
+    <string name="search_tooltip">Buscar</string>
+    <string name="no_match_found">Você ainda não firmou parcerias :(</string>
+    <string name="no_received_likes_found">Você ainda não recebeu convites de parceria :(</string>
+    <string name="no_sent_likes_found">Nenhum convite de parceria enviado. Clique no botão de busca e procure por potenciais parceiros.</string>
+    <string name="only_one_company_found">Infelizmente só essa companhia está disponível nesse segmento.</string>
+    <string name="end_of_list_companies">Você chegou ao fim da lista. Retornamos para o início.</string>
+    <string name="Incomplete_registration_title">Cadastro incompleto</string>
+    <string name="interesting_label">Me interessam</string>
+    <string name="interested_label">Interessadas</string>
+    <string name="connected_label">Conectadas</string>
+    <string name="partner_bottom_sheet_default_title">Informações do convite de parceria</string>
+    <string name="partner_bottom_sheet_accepted_invite_title">Informações da parceria</string>
+    <string name="no_partner_found">Não encontramos nenhum parceiro conectado à você :(</string>
+    <string name="label_accept_invite">Aceitar convite</string>
+    <string name="label_decline_invite">Recusar convite</string>
+    <string name="label_waiting_reply">Aguardando resposta da empresa</string>
+    <string name="label_partners_since">Vocês são parceiros desde %1$s</string>
+    <string name="label_cancel_invite">Cancelar convite</string>
+    <string name="label_cancel_partnership">Cancelar parceria</string>
+    <string name="partnership_bottom_no_internet_connection_message">Parece que você não está conectado à internet. Tente novamente quando possuir uma conexão estável.</string>
+    <string name="cant_load_content_error_message">Não Foi possível carregar o conteúdo.</string>
+
+    <!-- Partnership Search -->
+    <string name="segment">Segmento</string>
+    <string name="filter">Filtre pelo segmento das empresas</string>
+    <string name="all_segments">Todos os Segmentos</string>
+    <string name="apply_segments">Aplicar filtros</string>
+
+    <!-- Password recovery -->
+    <string name="pw_recovery_home_label">Para continuar com o processo de recuperação de senha, insira um e-mail válido.</string>
+    <string name="pw_recovery_email_input">digite um e-mail</string>
+    <string name="pw_recovery_code_input">digite o código recebido</string>
+    <string name="pw_recovery_code_label">Caso exista uma conta associada você receberá uma mensagem contendo um código de 8 dígitos.</string>
+    <string name="pw_recovery_password_input">digite a nova senha</string>
+    <string name="pw_recovery_password_confirmation_input">confirme a nova senha</string>
+    <string name="pw_recovery_reset_label">Para concluir o processo de recuperação de senha, basta preencher os campos abaixo:</string>
+    <string name="forgot_password_question">Esqueceu sua senha?</string>
+
+    <!-- Metrics -->
+    <string name="title_metrics">Ops! Aconteceu algo errado</string>
+    <string name="instagram_not_found">Instagram cadastrado não foi encontrado, certifique-se de que a conta inserida está correta.</string>
+    <string name="instagram_not_registered">Por favor, inserir um instagram na parte de perfil para podermos exibir algumas análises.</string>
+    <string name="metrics_avarege_subtitle">Média de Posts na semana</string>
+    <string name="ooops">Ooops!</string>
+    <string name="account_me_header_subtitle">Informações da minha conta</string>
+    <string name="account_company_header_subtitle">Informações da minha empresa</string>
+    <string name="social_network_header_subtitle">Informações das minhas redes sociais</string>
+    <string name="followers_label">Seguidores</string>
+    <string name="following_label">Seguindo</string>
+    <string name="has_hashtag_label">Com #</string>
+    <string name="no_has_hashtag_label">Sem #</string>
+    <string name="post_label">Post</string>
+    <string name="long_press_confirmation">Toque e segure para confirmar</string>
+    <string name="technical_problems">Problemas técnicos</string>
+    <string name="technical_problems_secondary">Olá! Estamos passando por problemas técnicos, por favor, volte mais tarde.</string>
+
+    <!-- Global Error Handler -->
+    <string name="global_error_handler_message">Ocorreu uma falha inesperada ao executar a ação.\nPor favor, tente novamente.</string>
+
+    <!-- SplashActivity -->
+    <string name="new_app_version_dialog_title">Nova versão disponível!</string>
+    <string name="new_app_version_dialog_message">O Decole foi atualizado! Por favor, baixe a nova versão para continuar.</string>
 </resources>

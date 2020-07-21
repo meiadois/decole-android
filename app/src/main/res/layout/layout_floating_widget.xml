@@ -1,54 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <!--Root container-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         tools:ignore="UselessParent">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/image_guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.18" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/image_guideline_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
+
         <!--View while view is expanded-->
-        <!--View while view is collapsed-->
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/expanded_container"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
             android:background="@drawable/ic_rocket_balloon"
             android:orientation="vertical"
             android:padding="8dp"
             android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintBottom_toTopOf="@+id/image_guideline_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/image_guideline_end">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/close_button"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_close" />
-
-                <ImageView
-                    android:id="@+id/done_button"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/ic_done_button"
-                    android:visibility="invisible" />
-            </LinearLayout>
 
             <ProgressBar
                 android:id="@+id/ProgressBar"
@@ -56,16 +46,24 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
+                android:layout_marginRight="15dp"
+                android:progressTint="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:progress="25" />
 
             <TextView
                 android:id="@+id/StepDescriptionTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="asdasdasdhbashdaushduashduahsduhaudahsudaudhasud"
-                tools:ignore="ContentDescription" />
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ProgressBar"
+                tools:ignore="ContentDescription"
+                tools:text="Exponha claramente o objetivo do perfil,Do que ele trata? É uma empresa de serviços? Uma loja? Qual a sua razão de ser? Deixar isso claro não apenas é o primeiro filtro, mas também prepara o seguidor, ou visitante ao conteúdo o deixando mais confortável e" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -73,11 +71,16 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/StepDescriptionTxt">
                 <!--Previous button-->
                 <ImageView
                     android:id="@+id/prev_btn"
-                    android:layout_width="30dp"
+                    android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_weight="0.5"
                     android:src="@drawable/ic_arrow_left"
@@ -92,18 +95,16 @@
                     android:src="@drawable/ic_arrow_right"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!--View while view is collapsed-->
         <RelativeLayout
             android:id="@+id/collapse_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:layout_marginTop="0dp"
-            android:orientation="vertical"
             android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/expanded_container"
-            app:layout_constraintTop_toBottomOf="@+id/expanded_container">
+            app:layout_constraintTop_toBottomOf="@+id/image_guideline_top"
+            app:layout_constraintStart_toStartOf="parent">
 
             <!--Icon of floating widget -->
             <ImageView
@@ -119,10 +120,11 @@
                 android:id="@+id/close_btn"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="40dp"
+                android:layout_marginStart="40dp"
                 android:src="@drawable/ic_close"
-                android:visibility="gone"
+                android:visibility="invisible"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

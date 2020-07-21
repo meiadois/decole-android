@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/standard_bg"
+        android:scaleType="centerInside"
+        tools:context=".presentation.auth.RegisterActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#BF34494F"
+            android:orientation="horizontal" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/panel_guideline_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".0">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/image_guideline_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".25" />
+
+            <ImageView
+                android:id="@+id/top_logo"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_decole_branco"
+                app:layout_constraintBottom_toTopOf="@+id/image_guideline_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
+                android:contentDescription="@string/icon_logo_green_2_description" />
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_mdi_back"
+                app:layout_constraintBottom_toTopOf="@+id/image_guideline_bottom"
+                app:layout_constraintEnd_toStartOf="@+id/top_logo"
+                app:layout_constraintHorizontal_bias=".3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_guideline_top"
+                android:contentDescription="@string/back_arrow_content_description" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/image_guideline_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.75" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/panel_guideline_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/panel_guideline_bottom"
+            app:layout_constraintVertical_bias=".5">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_register_username_input"
+                style="@style/normal_input_single_layout"
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                android:hint="@string/ask_for_nickname">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorTextIcons"
+                    android:id="@+id/input_register_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName|textCapWords"
+                    android:text="@={viewModel.name}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_register_email_input"
+                style="@style/normal_input_single_layout"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="48dp"
+                android:hint="@string/ask_for_register_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorTextIcons"
+                    android:id="@+id/input_register_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.email}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_register_password_input"
+                style="@style/normal_input_single_layout"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="48dp"
+                android:hint="@string/ask_for_new_password">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorTextIcons"
+                    android:id="@+id/input_register_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.password}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_register_confirm_password_input"
+                style="@style/normal_input_single_layout"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="48dp"
+                android:hint="@string/ask_for_password_confirmation"
+                android:inputType="textPassword">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorTextIcons"
+                    android:id="@+id/input_register_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.confirmPassword}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/legal_description_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="48dp"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                tools:text="AO SE CADASTRAR VOCÊ  ESTÁ CONCORDANDO COM NOSSOS TERMOS DE USO E POLITICA DE PRIVACIDADE"/>
+
+            <ProgressBar
+                android:id="@+id/progress_bar_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:indeterminateTint="@color/colorPrimary"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_register_next"
+                style="@style/btn_primary"
+                android:layout_marginStart="72dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginBottom="25dp"
+                android:onClick="@{viewModel::onRegisterButtonClick}" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

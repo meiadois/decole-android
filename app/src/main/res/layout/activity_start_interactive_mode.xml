@@ -1,108 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@drawable/login_bg"
-android:scaleType="centerCrop"
-tools:context=".activity.StartInteractiveModeActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    <data>
+
+        <variable
+            name="viewModel"
+            type="br.com.meiadois.decole.presentation.user.education.viewmodel.StartInteractiveModeViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@drawable/standard_bg"
+        android:scaleType="centerCrop"
+        tools:context=".presentation.user.education.StartInteractiveModeActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+
+        <LinearLayout
+            android:id="@+id/layout_start_interactive"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="180dp"
-            android:background="#CD34494F"
-            app:layout_constraintStart_toStartOf="parent">
+            android:background="#BF34494F"
+            android:orientation="horizontal" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@id/bottom_panel_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/inner_image_guideline_top"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="44dp"
-                android:text="Pronto, a partir de agora te acompanharemos em uma telinha como a seguinte:"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.2" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="102dp"
-                android:layout_marginStart="72dp"
-                android:layout_marginEnd="72dp"
-                android:layout_marginBottom="208dp"
-                android:background="#27DEBF"
-                android:src="#27DEBF"
+            <ProgressBar
+                android:id="@+id/progress_bar_interactive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Clique no botão começar quando estiver pronto(a)."
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginEnd="48dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:indeterminateTint="@color/colorPrimary"
+                android:visibility="gone" />
 
             <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_marginStart="35dp"
-                android:layout_marginBottom="65dp"
-                android:src="@drawable/ic_circle_logo"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:id="@+id/main_image"
+                android:layout_width="190dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_mobile_feed"
+                app:layout_constraintBottom_toTopOf="@id/inner_image_guideline_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inner_image_guideline_top"
+                android:contentDescription="@string/instagram_interactive_description" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/inner_image_guideline_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.65" />
 
             <TextView
+                android:id="@+id/text_ask_overlay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginBottom="120dp"
-                android:text="Utilize seu smartphone normalmente seguindo as instruções."
+                android:text="@string/ask_for_overlay_permission"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/main_image"
+                app:layout_constraintVertical_bias=".3" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_panel_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.68" />
+
         <Button
-            android:id="@+id/start_interactive_mode"
-            style="@style/btn_next"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="72dp"
-            android:text="COMEÇAR"
+            android:id="@+id/btn_next"
+            android:enabled="false"
+            style="@style/btn_primary"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="72dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bottom_panel_guideline" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

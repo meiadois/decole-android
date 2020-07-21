@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/account_root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        tools:context=".presentation.user.account.AccountActivity">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toTopOf="@id/bottom_header_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_marginStart="48dp"
+                android:layout_alignParentStart="true"
+                android:id="@+id/toolbar_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/back_arrow_content_description"
+                android:src="@drawable/ic_mdi_home" />
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_decole_branco" />
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="48dp"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/toolbar_exit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/logout_content_description"
+                android:src="@drawable/ic_exit_to_app" />
+
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_header_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <ProgressBar
+            android:id="@+id/page_progress_bar"
+            style="@style/circle_progress_bar"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:paddingTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/account_scroolable_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/container_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bottom_header_guideline">
+
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <!-- Form Container Layout -->
+                <LinearLayout
+                    android:id="@+id/container_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!-- User Section -->
+                    <LinearLayout
+                        android:padding="16dp"
+                        android:id="@+id/account_me_hearder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorTextIcons"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_number_1"
+                            tools:ignore="ContentDescription" />
+
+                        <LinearLayout
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/account_me_hearder_text"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorPrimaryText"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/account_me_header_subtitle"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorSecondaryText"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/account_me_form"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:padding="12dp"
+                        android:background="@color/colorTextIcons"
+                        android:orientation="vertical"
+                        android:paddingStart="32dp"
+                        android:paddingEnd="32dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_me_name_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_me_name_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_me_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapWords|textNoSuggestions"
+                                android:singleLine="true"
+                                android:text="@={viewModel.userData.name}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_me_mail_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_me_mail_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_me_mail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textEmailAddress|textNoSuggestions"
+                                android:singleLine="true"
+                                android:text="@={viewModel.userData.email}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:id="@+id/go_to_change_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimaryText"
+                            android:text="@string/label_change_password"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                    <!-- User Section -->
+
+                    <!-- Company Section -->
+                    <LinearLayout
+                        android:padding="16dp"
+                        android:layout_marginTop="4dp"
+                        android:id="@+id/account_company_hearder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorTextIcons"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_number_2"
+                            tools:ignore="ContentDescription" />
+
+                        <LinearLayout
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/account_company_hearder_text"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorPrimaryText"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/account_company_header_subtitle"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorSecondaryText"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/account_company_form"
+                        android:background="@color/colorTextIcons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical"
+                        android:padding="12dp"
+                        android:paddingStart="32dp"
+                        android:paddingEnd="32dp">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:labelFor="@+id/visible_switch_input"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/account_company_hearder">
+
+                            <TextView
+                                android:gravity="center_vertical"
+                                android:textSize="13.5sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:textColor="@color/colorPrimaryText"
+                                android:text="@string/be_shown_in_partner_research" />
+
+                            <!--suppress AndroidUnknownAttribute -->
+                            <Switch
+                                android:layout_gravity="end"
+                                android:trackTint="@color/colorSecondaryText"
+                                android:id="@+id/visible_switch_input"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="@{viewModel.companyData.visible}"
+                                android:onCheckedChanged="@{(button, bool) -> viewModel.onSearchVisibilityChange(bool)}" />
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_company_name_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_company_name_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_company_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapWords|textNoSuggestions"
+                                android:imeOptions="actionDone"
+                                android:singleLine="true"
+                                android:text="@={viewModel.companyData.name}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_company_segment_input"
+                            style="@style/exposed_dropdown_menu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/account_company_segment_hint"
+                            android:labelFor="@+id/filled_exposed_dropdown"
+                            app:errorEnabled="true"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/filled_exposed_dropdown"
+                                style="@style/exposed_dropdown_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_company_description_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_company_description_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="@{viewModel.MAX_DESCRIPTION_SIZE}">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_company_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapSentences|textMultiLine"
+                                android:text="@={viewModel.companyData.description}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_company_cep_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_company_cep_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_company_cep"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:singleLine="true"
+                                android:text="@={viewModel.companyData.cep}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_company_city_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_company_city_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_company_city"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapWords|textNoSuggestions"
+                                android:singleLine="true"
+                                android:text="@={viewModel.companyData.city}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_company_neighborhood_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_company_neighborhood_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_company_neighborhood"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapSentences|textNoSuggestions"
+                                android:singleLine="true"
+                                android:text="@={viewModel.companyData.neighborhood}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_company_cnpj_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_company_cnpj_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_company_cnpj"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:singleLine="true"
+                                android:text="@={viewModel.companyData.cnpj}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_company_telephone_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_company_telephone_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_company_telephone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:singleLine="true"
+                                android:text="@={viewModel.companyData.cellphone}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/account_company_mail_input"
+                            style="@style/normal_input_single_layout_with_error"
+                            android:hint="@string/account_company_mail_hint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/input_company_mail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textEmailAddress|textNoSuggestions"
+                                android:singleLine="true"
+                                android:text="@={viewModel.companyData.email}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <FrameLayout
+                            android:id="@+id/company_thumbnail_frame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <TextView
+                                android:id="@+id/thumbnail_fake_input"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/transparent" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/account_company_logo_input"
+                                style="@style/normal_input_single_layout_with_error"
+                                android:labelFor="@+id/input_company_logo">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/input_company_logo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableEnd="@drawable/ic_image"
+                                    android:hint="@string/account_company_logo_hint"
+                                    android:inputType="text"
+                                    android:singleLine="true"
+                                    android:text="@{viewModel.companyData.thumbnail.name}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/company_banner_frame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <TextView
+                                android:id="@+id/banner_fake_input"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/transparent" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/account_company_banner_input"
+                                style="@style/normal_input_single_layout_with_error"
+                                android:labelFor="@+id/input_company_banner">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/input_company_banner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableEnd="@drawable/ic_image"
+                                    android:hint="@string/account_company_promotional_photo_hint"
+                                    android:inputType="text"
+                                    android:singleLine="true"
+                                    android:text="@{viewModel.companyData.banner.name}" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+                    <!-- Company Section -->
+
+                </LinearLayout>
+
+                <!-- No Internet Layout -->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/account_no_internet_layout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="48dp">
+                    <ImageView
+                        app:layout_constraintVertical_bias=".3"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_undraw_camping"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:textColor="@color/colorPrimaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintVertical_bias=".3"
+                        android:layout_margin="8dp"
+                        android:textStyle="bold"
+                        android:text="@string/ooops"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:textColor="@color/colorPrimaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/partnership_bottom_no_internet_connection_message"
+                        android:textAlignment="center" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:elevation="15dp"
+            android:id="@+id/container_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="24dp"
+            android:gravity="center"
+            android:background="@color/colorTextIcons"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/btn_save"
+                style="@style/btn_primary"
+                android:onClick="@{viewModel::onSaveButtonClick}"
+                android:text="@string/save_account_changes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/account_company_form"/>
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/circle_progress_bar"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,25 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="br.com.meiadois.decole">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".DecoleApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.StartInteractiveModeActivity" />
-        <activity android:name=".activity.PasswordDefinitionActivity" />
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".presentation.maintenance.MaintenanceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.splash.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.user.partnership.PartnershipDiscoveryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.pwrecovery.PwRecoveryHomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.user.education.FinishedRouteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.user.education.RouteDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.user.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.user.account.AccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.user.account.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.instagram.HasInstagramAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.instagram.InstagramIntroActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.welcome.WelcomeSlideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.welcome.WelcomeInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.user.education.StartInteractiveModeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".presentation.auth.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.errorhandler.ErrorHandlerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.auth.LoginActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".service.FloatingViewService" />
     </application>
 

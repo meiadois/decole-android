@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="br.com.meiadois.decole.presentation.pwrecovery.viewmodel.PwRecoveryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.pwrecovery.PwRecoveryHomeActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pw_recovery_code_label"
+                android:textAlignment="center" />
+
+            <TextView
+                style="@style/white_text_display"
+                android:text="@={viewModel.email}"
+                android:textAlignment="center"
+                tools:text="email@email.com" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_input_recovery_code"
+                style="@style/normal_input_single_layout"
+                android:layout_marginTop="15dp"
+                android:hint="@string/pw_recovery_code_input">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorTextIcons"
+                    android:id="@+id/input_register_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:text="@={viewModel.code}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_bar_recovery_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:indeterminateTint="@color/colorPrimary"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_code_next"
+                style="@style/btn_primary"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="25dp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+
