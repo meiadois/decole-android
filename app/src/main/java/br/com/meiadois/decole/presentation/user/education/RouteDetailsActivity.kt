@@ -21,6 +21,8 @@ import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.toLessonItemList
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_route_details.*
@@ -160,6 +162,7 @@ class RouteDetailsActivity : AppCompatActivity(), KodeinAware {
                     }
                 }
             } catch (ex: Exception) {
+                Firebase.crashlytics.recordException(ex)
                 showGenericErrorMessage()
             } finally {
                 toggleLoading(false)

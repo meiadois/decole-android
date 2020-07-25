@@ -13,6 +13,8 @@ import br.com.meiadois.decole.presentation.user.account.validation.*
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 
 class ChangePasswordViewModel(private val userRepository: UserRepository) : ViewModel() {
@@ -42,6 +44,7 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
                             "\ncode: ${ex.code}" +
                             "\ncause: ${ex.cause ?: "no cause"}")
                 } catch (ex: Exception){
+                    Firebase.crashlytics.recordException(ex)
                     accountListener?.onActionError(null)
                     Log.i("ChangePassword.Ex", "\nmessage: ${ex.message ?: "no message"}" +
                             "\nmessage: ${ex.cause ?: "no cause"}")

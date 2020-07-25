@@ -14,10 +14,11 @@ import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 import br.com.meiadois.decole.presentation.user.education.viewmodel.RouteListViewModel
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.RouteListViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
-import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.toRouteItemList
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
@@ -71,6 +72,7 @@ class RouteListFragment : Fragment(), KodeinAware {
             } catch (ex: NoInternetException) {
                 setContentVisibility(CONTENT_NO_INTERNET)
             } catch (ex: Exception) {
+                Firebase.crashlytics.recordException(ex)
                 showGenericErrorMessage()
             } finally {
                 if (fromSwipeRefresh) hideSwipe()
@@ -103,6 +105,7 @@ class RouteListFragment : Fragment(), KodeinAware {
                         }
                         setContentVisibility(CONTENT_NONE)
                     } catch (ex: Exception) {
+                        Firebase.crashlytics.recordException(ex)
                         showGenericErrorMessage()
                     }
                 }

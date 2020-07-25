@@ -15,6 +15,8 @@ import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import com.bumptech.glide.Glide
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_search_partner.*
 import kotlinx.android.synthetic.main.fragment_search_partner.swipe_refresh
 import kotlinx.android.synthetic.main.fragment_search_partner.toolbar_back_button
@@ -68,6 +70,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                         }
                     }
                 } catch (ex: Exception) {
+                    Firebase.crashlytics.recordException(ex)
                     showGenericErrorMessage()
                 }
                 mViewModel.getUpdateCompany()
@@ -94,6 +97,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                 setCompaniesAdapter()
                 setDataCardView()
             } catch (ex: Exception) {
+                Firebase.crashlytics.recordException(ex)
                 showGenericErrorMessage()
             }
             if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
