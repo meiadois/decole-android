@@ -16,6 +16,8 @@ import br.com.meiadois.decole.presentation.user.partnership.viewmodel.Partnershi
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_partnership_search_filter.*
 import kotlinx.android.synthetic.main.fragment_partnership_search_filter.progress_bar
 import org.kodein.di.KodeinAware
@@ -66,6 +68,7 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
                         setProgressBarVisibility(false)
                     }
                 } catch (ex: Exception) {
+                    Firebase.crashlytics.recordException(ex)
                     showGenericErrorMessage()
                 }
             }
