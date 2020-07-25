@@ -73,29 +73,26 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                     Firebase.crashlytics.recordException(ex)
                     showGenericErrorMessage()
                 }
-                mViewModel.getUpdateCompany()
+                if (!mViewModel.getUpdateCompany())
+                    setContentVisibility(CONTENT_NO_COMPANIES)
             }
         }
 
         btn_md_close.setOnClickListener {
-            when {
-                mViewModel.companies.value!!.count() - 1 > mViewModel.state -> {
-                    mViewModel.getUpdateCompany()
-                }
-                mViewModel.companies.value!!.count() - 1 == mViewModel.state -> {
-                    setContentVisibility(CONTENT_NO_COMPANIES)
-                }
-            }
+            mViewModel.removeCompany(mViewModel.company.value!!.id)
+            if (!mViewModel.getUpdateCompany())
+                setContentVisibility(CONTENT_NO_COMPANIES)
         }
 
-        init(true)
+        setCompaniesAdapter()
+        setDataCardView()
+        init()
     }
 
     private fun init(fromSwipeRefresh: Boolean = false) {
         Coroutines.main {
             try {
-                setCompaniesAdapter()
-                setDataCardView()
+                mViewModel.init()
             } catch (ex: Exception) {
                 Firebase.crashlytics.recordException(ex)
                 showGenericErrorMessage()
@@ -103,7 +100,6 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
             if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
             else setProgressVisibility(false)
         }
-        mViewModel.state = 0
     }
 
     private fun setCompaniesAdapter() {
