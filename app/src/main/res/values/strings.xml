@@ -59,7 +59,7 @@
     <string name="welcome_partnership_title">Parcerias</string>
     <string name="education_slide_label">Podemos acompanhar você em <b>percursos</b> que pretendem demonstrar atitudes que podem impulsionar seu negócio nas mídias digitais.</string>
     <string name="marketplace_slide_label">Vamos te acompanhar também em percursos que pretendem expor seu negócio nas maiores plataformas de vendas on-line.</string>
-    <string name="partnership_slide_label">E ainda podemos aproximar você de outros micro empreendedores, para te ajudar a firmar parcerias!</string>
+    <string name="partnership_slide_label">E ainda podemos aproximar você de outros microempreendedores, para te ajudar a firmar parcerias!</string>
     <string name="welcome_slide_label">Bem vindo(a) ao <b>Decole!</b></string>
 
     <!-- Empty list of companies to match -->
@@ -70,7 +70,7 @@
     <string name="ask_for_email">qual o seu e-mail?</string>
     <string name="ask_for_password">qual a sua senha?</string>
     <string name="have_no_account_question">Não possui conta?</string>
-    <string name="ask_for_register_email">digite seu melhor e-mail</string>
+    <string name="ask_for_register_email">digite seu e-mail</string>
     <string name="ask_for_nickname">seu nome (ex. Maria)</string>
     <string name="ask_for_new_password">sua senha</string>
     <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
@@ -79,7 +79,7 @@
         <string name="legal_description_first">AO SE CADASTRAR VOCÊ ESTÁ CONCORDANDO COM</string>
         <string name="legal_description_second">NOSSOS TERMOS DE USO</string>
         <string name="legal_description_third">E</string>
-        <string name="legal_description_fourth">POLITICA DE PRIVACIDADE</string>
+        <string name="legal_description_fourth">POLÍTICA DE PRIVACIDADE</string>
 
     <!-- Instagram -->
     <string name="instagram_intro">Para começar, vamos te acompanhar na construção de um perfil comercial no <b>Instagram</b>.</string>

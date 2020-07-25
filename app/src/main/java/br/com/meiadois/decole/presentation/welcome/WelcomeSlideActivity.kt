@@ -98,7 +98,7 @@ class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
     private fun selectPage(position: Int) {
         pageSelected = position
         when (position) {
-            2 -> btn_next.text = getString(R.string.start)
+            1 -> btn_next.text = getString(R.string.start)
             else -> btn_next.text = getString(R.string.next)
         }
     }
@@ -107,14 +107,13 @@ class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
         FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                1 -> MarketplaceSlideFragment()
-                2 -> PartnershipSlideFragment()
+                1 -> PartnershipSlideFragment()
                 else -> EducationSlideFragment()
             }
         }
 
         override fun getCount(): Int {
-            return 3
+            return 2
         }
     }
 }
