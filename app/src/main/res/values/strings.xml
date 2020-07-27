@@ -29,10 +29,10 @@
     <string name="back_arrow_content_description">Voltar</string>
     <string name="number_description">Etapa</string>
     <string name="logout_content_description">Sair</string>
-    <string name="icon_logo_description">Icone Branco</string>
-    <string name="icon_logo_green_description">Icone Verde</string>
-    <string name="icon_logo_green_2_description">Icone Verde Menor</string>
-    <string name="icon_profile_description">Icone Perfil</string>
+    <string name="icon_logo_description">Ícone Branco</string>
+    <string name="icon_logo_green_description">Ícone Verde</string>
+    <string name="icon_logo_green_2_description">Ícone Verde Menor</string>
+    <string name="icon_profile_description">Ícone Perfil</string>
 
     <!-- Welcome -->
     <string name="welcome_info_label">Massa! Vamos decolar seu negócio no mundo digital, e para aumentar suas vendas podemos usar as <b>redes sociais</b>, <b>plataformas de vendas on-line</b> e <b>parcerias com outros empreendedores</b>.</string>

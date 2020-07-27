@@ -126,7 +126,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
     }
 
     private fun setProgressVisibility(visible: Boolean) {
-        progress_bar_search.visibility = if (visible) View.VISIBLE else View.GONE
+        progress_bar_search?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun showGenericErrorMessage() {
