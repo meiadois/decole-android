@@ -22,6 +22,7 @@ class PartnershipCompanyProfileViewModel(
     var description: String? = null
 
     var segmentClicked: String? = null
+    var isFromFilterScreen: Boolean = false
     var segmentFilter: MutableLiveData<String> = MutableLiveData()
 
     var company: MutableLiveData<Company> = MutableLiveData()
@@ -47,15 +48,11 @@ class PartnershipCompanyProfileViewModel(
     }
 
     suspend fun getCompaniesBySegment(segmentId: Int) {
-        companies.value =
-            companyRepository.getCompaniesBySegment(segmentId).toCompanySearchModelList()
+        companies.value = companyRepository.getCompaniesBySegment(segmentId).toCompanySearchModelList()
     }
 
     suspend fun getAllCompanies() {
         companies.value = companyRepository.getAllCompanies().toCompanySearchModelList()
-        if (companies.value!!.isNotEmpty())
-            company.value = companies.value?.get(0)
-
     }
 
     fun removeCompany(companyId: Int) {

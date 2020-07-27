@@ -42,9 +42,11 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipe_refresh.setOnRefreshListener { init(true) }
         parentFragmentManager.popBackStack()
+
         setProgressVisibility(true)
+
+        swipe_refresh.setOnRefreshListener { init(true) }
 
         toolbar_filter_button.setOnClickListener {
             val nextFragment = PartnershipSearchFilterFragment()
@@ -86,7 +88,8 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
 
         setCompaniesAdapter()
         setDataCardView()
-        init()
+
+        if (!mViewModel.isFromFilterScreen) init()
     }
 
     private fun init(fromSwipeRefresh: Boolean = false) {
@@ -107,9 +110,8 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
             if (mViewModel.companies.value!!.isNotEmpty()) {
                 mViewModel.company.value = mViewModel.companies.value?.get(0)
                 setContentVisibility(CONTENT_HAS_COMPANIES)
-            } else {
+            } else
                 setContentVisibility(CONTENT_NO_COMPANIES)
-            }
             setProgressVisibility(false)
         })
     }
@@ -126,7 +128,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
     }
 
     private fun setProgressVisibility(visible: Boolean) {
-        progress_bar_search.visibility = if (visible) View.VISIBLE else View.GONE
+        progress_bar_search?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun showGenericErrorMessage() {

@@ -43,6 +43,7 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mViewModel.isFromFilterScreen = true
 
         toolbar_back_button.setOnClickListener {
             handleBackNavigation()
@@ -56,15 +57,12 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
                 }
                 try {
                     setProgressBarVisibility(true)
-                    if (segment == null) mViewModel.getAllCompanies() else mViewModel.getCompaniesBySegment(
-                        segment.id!!
-                    )
+                    if (segment == null) mViewModel.getAllCompanies()
+                    else mViewModel.getCompaniesBySegment(segment.id!!)
                     handleBackNavigation()
                 } catch (ex: NoInternetException) {
                     view.longSnackbar(getString(R.string.no_internet_connection_error_message)) { snackbar ->
-                        snackbar.setAction(getString(R.string.ok)) {
-                            snackbar.dismiss()
-                        }
+                        snackbar.setAction(getString(R.string.ok)) { snackbar.dismiss() }
                         setProgressBarVisibility(false)
                     }
                 } catch (ex: Exception) {
@@ -81,8 +79,7 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
         mViewModel.segments.observe(viewLifecycleOwner, Observer { it ->
             it?.let { segments ->
                 var segmentsString = segments.map { it.name }.toTypedArray()
-                segmentsString =
-                    segmentsString.plusElement(context?.getString(R.string.all_segments)!!)
+                segmentsString = segmentsString.plusElement(context?.getString(R.string.all_segments)!!)
                 filled_exposed_dropdown.setAdapter(
                     ArrayAdapter(
                         requireContext(),
@@ -98,7 +95,6 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
                 filled_exposed_dropdown.setOnItemClickListener { _, _, position, _ ->
                     mViewModel.segmentClicked = segmentsString[position]
                 }
-
             }
         })
     }
@@ -106,8 +102,7 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
     private fun handleBackNavigation() {
         val nextFragment = PartnershipSearchFragment()
         val transaction = parentFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, nextFragment)
-            .commit()
+        transaction.replace(R.id.fragment_container, nextFragment).commit()
     }
 
     private fun showGenericErrorMessage() {
@@ -122,5 +117,4 @@ class PartnershipSearchFilterFragment : Fragment(), KodeinAware {
         progress_bar?.visibility = if (visible) View.VISIBLE else View.GONE
         btn_apply_filter?.visibility = if (!visible) View.VISIBLE else View.GONE
     }
-
 }
