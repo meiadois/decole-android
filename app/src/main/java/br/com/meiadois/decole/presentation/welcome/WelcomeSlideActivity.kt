@@ -17,6 +17,8 @@ import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewMod
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_welcome_slide.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -86,6 +88,7 @@ class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
                     }
                 }
             } catch (ex: Exception) {
+                Firebase.crashlytics.recordException(ex)
                 scroll_slide.longSnackbar(getString(R.string.sendding_data_failed_error_message)) { snackbar ->
                     snackbar.setAction(getString(R.string.reload)) {
                         snackbar.dismiss()
@@ -98,7 +101,7 @@ class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
     private fun selectPage(position: Int) {
         pageSelected = position
         when (position) {
-            2 -> btn_next.text = getString(R.string.start)
+            1 -> btn_next.text = getString(R.string.start)
             else -> btn_next.text = getString(R.string.next)
         }
     }
@@ -107,14 +110,13 @@ class WelcomeSlideActivity : AppCompatActivity(), KodeinAware {
         FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                1 -> MarketplaceSlideFragment()
-                2 -> PartnershipSlideFragment()
+                1 -> PartnershipSlideFragment()
                 else -> EducationSlideFragment()
             }
         }
 
         override fun getCount(): Int {
-            return 3
+            return 2
         }
     }
 }

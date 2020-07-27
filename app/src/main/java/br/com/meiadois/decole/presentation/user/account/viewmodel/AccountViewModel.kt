@@ -19,6 +19,8 @@ import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.*
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -101,7 +103,11 @@ class AccountViewModel(
                     companyData.value?.setNeighborhoodAndNotify(cepResponse.neighborhood)
                     companyData.value?.setCityAndNotify(cepResponse.city)
                 } catch (ex: Exception) {
-                    Log.i("CepException", ex.message ?: "no error message")
+                    Log.i("CepException", "\nmessage: ${ex.message ?: "no error message"}\n" +
+                            "cause: ${ex.cause ?: "no cause"}\n" +
+                            "class: ${ex.javaClass.name}")
+                    if (ex !is ClientException)
+                        Firebase.crashlytics.recordException(ex)
                 }
             }
         }
@@ -194,6 +200,7 @@ class AccountViewModel(
                                 "\ncause: ${ex.cause?.toString() ?: "no cause"}"
                     )
                 } catch (ex: Exception) {
+                    Firebase.crashlytics.recordException(ex)
                     accountListener?.onActionError(null)
                     Log.i(
                         "AccountFormEx.Ex", "" +

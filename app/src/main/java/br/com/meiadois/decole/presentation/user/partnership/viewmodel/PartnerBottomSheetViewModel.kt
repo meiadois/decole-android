@@ -5,6 +5,8 @@ import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.data.repository.CompanyRepository
 import br.com.meiadois.decole.presentation.user.partnership.PartnerActionListener
 import br.com.meiadois.decole.util.Coroutines
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 
 class PartnerBottomSheetViewModel(
     private val companyRepository: CompanyRepository
@@ -23,6 +25,7 @@ class PartnerBottomSheetViewModel(
             )
             listener.onSuccess()
         } catch (ex: Exception) {
+            Firebase.crashlytics.recordException(ex)
             listener.onFailure()
         }
     }
@@ -37,6 +40,7 @@ class PartnerBottomSheetViewModel(
             )
             listener.onSuccess()
         } catch (ex: Exception) {
+            Firebase.crashlytics.recordException(ex)
             listener.onFailure()
         }
     }
@@ -51,6 +55,7 @@ class PartnerBottomSheetViewModel(
             )
             listener.onSuccess()
         } catch (ex: Exception) {
+            Firebase.crashlytics.recordException(ex)
             listener.onFailure()
         }
     }
@@ -61,6 +66,7 @@ class PartnerBottomSheetViewModel(
             companyRepository.deleteLike(inviteInfo.id)
             listener.onSuccess()
         } catch (ex: Exception) {
+            Firebase.crashlytics.recordException(ex)
             listener.onFailure()
         }
     }

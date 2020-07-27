@@ -21,9 +21,8 @@ class PartnershipCompanyProfileViewModel(
     var banner: String? = null
     var description: String? = null
 
-    var state: Int = 0
-
     var segmentClicked: String? = null
+    var isFromFilterScreen: Boolean = false
     var segmentFilter: MutableLiveData<String> = MutableLiveData()
 
     var company: MutableLiveData<Company> = MutableLiveData()
@@ -31,19 +30,17 @@ class PartnershipCompanyProfileViewModel(
     var segments: MutableLiveData<List<Segment>> = MutableLiveData()
     var companies: MutableLiveData<List<Company>> = MutableLiveData()
 
-    init {
-        Coroutines.main {
-            getSegments()
-            getAllCompanies()
-        }
+    suspend fun init() {
+        getSegments()
+        getAllCompanies()
     }
 
-    fun getUpdateCompany() {
-        if (state < companies.value!!.count() - 1)
-            state += 1
-        else
-            state = 0
-        company.postValue(companies.value?.get(state))
+    fun getUpdateCompany() :Boolean{
+        if (companies.value!!.isNotEmpty()) {
+            company.postValue(companies.value?.get(0))
+            return true
+        }
+        return false
     }
 
     private suspend fun getSegments() {
@@ -51,15 +48,11 @@ class PartnershipCompanyProfileViewModel(
     }
 
     suspend fun getCompaniesBySegment(segmentId: Int) {
-        companies.value =
-            companyRepository.getCompaniesBySegment(segmentId).toCompanySearchModelList()
+        companies.value = companyRepository.getCompaniesBySegment(segmentId).toCompanySearchModelList()
     }
 
     suspend fun getAllCompanies() {
         companies.value = companyRepository.getAllCompanies().toCompanySearchModelList()
-        if (companies.value!!.isNotEmpty())
-            company.value = companies.value?.get(0)
-
     }
 
     fun removeCompany(companyId: Int) {
@@ -68,6 +61,5 @@ class PartnershipCompanyProfileViewModel(
 
     suspend fun sendLike(senderId: Int, recipientId: Int) {
         companyRepository.sendLikes(senderId, recipientId)
-
     }
 }

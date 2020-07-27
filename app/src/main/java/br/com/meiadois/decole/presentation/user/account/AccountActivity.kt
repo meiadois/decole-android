@@ -40,6 +40,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_account.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -162,6 +164,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             }
         } catch (ex: Exception) {
             Log.i("ImagePickEx", ex.message ?: "No message")
+            Firebase.crashlytics.recordException(ex)
         }
     }
 
@@ -194,6 +197,7 @@ class AccountActivity : AppCompatActivity(), KodeinAware, AccountListener {
             } catch (ex: ClientException) {
                 showGenericErrorMessage()
             } catch (ex: Exception) {
+                Firebase.crashlytics.recordException(ex)
                 showGenericErrorMessage()
             } finally {
                 setPageProgressBarVisibility(false)

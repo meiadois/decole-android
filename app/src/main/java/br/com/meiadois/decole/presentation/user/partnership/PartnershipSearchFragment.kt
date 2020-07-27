@@ -15,6 +15,8 @@ import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.longSnackbar
 import com.bumptech.glide.Glide
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_search_partner.*
 import kotlinx.android.synthetic.main.fragment_search_partner.swipe_refresh
 import kotlinx.android.synthetic.main.fragment_search_partner.toolbar_back_button
@@ -40,9 +42,11 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipe_refresh.setOnRefreshListener { init(true) }
         parentFragmentManager.popBackStack()
+
         setProgressVisibility(true)
+
+        swipe_refresh.setOnRefreshListener { init(true) }
 
         toolbar_filter_button.setOnClickListener {
             val nextFragment = PartnershipSearchFilterFragment()
@@ -68,38 +72,37 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
                         }
                     }
                 } catch (ex: Exception) {
+                    Firebase.crashlytics.recordException(ex)
                     showGenericErrorMessage()
                 }
-                mViewModel.getUpdateCompany()
+                if (!mViewModel.getUpdateCompany())
+                    setContentVisibility(CONTENT_NO_COMPANIES)
             }
         }
 
         btn_md_close.setOnClickListener {
-            when {
-                mViewModel.companies.value!!.count() - 1 > mViewModel.state -> {
-                    mViewModel.getUpdateCompany()
-                }
-                mViewModel.companies.value!!.count() - 1 == mViewModel.state -> {
-                    setContentVisibility(CONTENT_NO_COMPANIES)
-                }
-            }
+            mViewModel.removeCompany(mViewModel.company.value!!.id)
+            if (!mViewModel.getUpdateCompany())
+                setContentVisibility(CONTENT_NO_COMPANIES)
         }
 
-        init(true)
+        setCompaniesAdapter()
+        setDataCardView()
+
+        if (!mViewModel.isFromFilterScreen) init()
     }
 
     private fun init(fromSwipeRefresh: Boolean = false) {
         Coroutines.main {
             try {
-                setCompaniesAdapter()
-                setDataCardView()
+                mViewModel.init()
             } catch (ex: Exception) {
+                Firebase.crashlytics.recordException(ex)
                 showGenericErrorMessage()
             }
             if (fromSwipeRefresh) swipe_refresh?.isRefreshing = false
             else setProgressVisibility(false)
         }
-        mViewModel.state = 0
     }
 
     private fun setCompaniesAdapter() {
@@ -107,9 +110,8 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
             if (mViewModel.companies.value!!.isNotEmpty()) {
                 mViewModel.company.value = mViewModel.companies.value?.get(0)
                 setContentVisibility(CONTENT_HAS_COMPANIES)
-            } else {
+            } else
                 setContentVisibility(CONTENT_NO_COMPANIES)
-            }
             setProgressVisibility(false)
         })
     }
@@ -126,7 +128,7 @@ class PartnershipSearchFragment : Fragment(), KodeinAware {
     }
 
     private fun setProgressVisibility(visible: Boolean) {
-        progress_bar_search.visibility = if (visible) View.VISIBLE else View.GONE
+        progress_bar_search?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun showGenericErrorMessage() {

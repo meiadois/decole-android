@@ -10,6 +10,8 @@ import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
 import br.com.meiadois.decole.util.extension.parseToUserEntity
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 
 class RegisterViewModel(private val userRepository: UserRepository) : ViewModel() {
 
@@ -47,6 +49,7 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
                 } catch (ex: NoInternetException) {
                     authListener?.onFailure(ex.message!!)
                 } catch (ex: Exception) {
+                    Firebase.crashlytics.recordException(ex)
                     authListener?.onFailure(null)
                 }
             }

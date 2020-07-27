@@ -27,6 +27,8 @@ import br.com.meiadois.decole.util.extension.toCompanyModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.chip.Chip
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.card_partner.view.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.*
 import kotlinx.android.synthetic.main.fragment_partnership_home_bottom.progress_bar
@@ -103,6 +105,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             } catch (ex: NoInternetException) {
                 setContentVisibility(CONTENT_NO_INTERNET)
             } catch (ex: Exception) {
+                Firebase.crashlytics.recordException(ex)
                 showGenericErrorMessage(true)
             } finally {
                 if (changeLoadingVisibility) {
@@ -177,6 +180,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
             } catch (ex: NoInternetException) {
                 setContentVisibility(CONTENT_NO_INTERNET)
             } catch (ex: Exception) {
+                Firebase.crashlytics.recordException(ex)
                 showGenericErrorMessage()
             } finally {
                 if (fromSwipeRefresh) hideSwipe()

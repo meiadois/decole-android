@@ -6,6 +6,8 @@ import br.com.meiadois.decole.data.repository.LessonRepository
 import br.com.meiadois.decole.data.repository.RouteRepository
 import br.com.meiadois.decole.presentation.user.education.IMResultListener
 import br.com.meiadois.decole.util.Coroutines
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 
 class FinishedRouteViewModel(
     private val routeRepository: RouteRepository,
@@ -25,6 +27,7 @@ class FinishedRouteViewModel(
                 routeRepository.fetchRoute(targetRouteParent.value!!)
                 listener!!.onSuccess()
             } catch (ex: Exception) {
+                Firebase.crashlytics.recordException(ex)
                 listener!!.onFailure(ex)
             }
         } else
