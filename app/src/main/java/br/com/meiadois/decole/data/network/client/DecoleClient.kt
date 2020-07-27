@@ -192,7 +192,7 @@ interface DecoleClient {
 
             return Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl("https://homologacao.api.decole.app/v1/")
+                .baseUrl("https://api.decole.app/V1/")
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
