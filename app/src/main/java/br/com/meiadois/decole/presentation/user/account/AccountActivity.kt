@@ -27,7 +27,7 @@ import br.com.meiadois.decole.databinding.ActivityAccountBinding
 import br.com.meiadois.decole.presentation.auth.LoginActivity
 import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
 import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModel
-import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
+import br.com.meiadois.decole.presentation.user.account.viewmodel.factory.AccountViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.Mask
 import br.com.meiadois.decole.util.dialog.CustomDialog

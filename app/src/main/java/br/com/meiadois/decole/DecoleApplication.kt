@@ -14,10 +14,13 @@ import br.com.meiadois.decole.presentation.auth.viewmodel.RegisterViewModelFacto
 import br.com.meiadois.decole.presentation.errorhandler.ErrorHandlerActivity
 import br.com.meiadois.decole.presentation.pwrecovery.viewmodel.PwRecoveryViewModelFactory
 import br.com.meiadois.decole.presentation.splash.viewmodel.SplashViewModelFactory
-import br.com.meiadois.decole.presentation.user.account.viewmodel.AccountViewModelFactory
-import br.com.meiadois.decole.presentation.user.account.viewmodel.ChangePasswordViewModelFactory
+import br.com.meiadois.decole.presentation.user.account.viewmodel.factory.AccountViewModelFactory
+import br.com.meiadois.decole.presentation.user.account.viewmodel.factory.ChangePasswordViewModelFactory
 import br.com.meiadois.decole.presentation.user.education.viewmodel.factory.*
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.*
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.factory.PartnerBottomSheetViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.factory.PartnershipCompanyProfileViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.factory.PartnershipHomeBottomViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.factory.PartnershipHomeTopViewModelFactory
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeInfoViewModelFactory
 import br.com.meiadois.decole.presentation.welcome.viewmodel.WelcomeSlideViewModelFactory
 import br.com.meiadois.decole.service.LogOutService
@@ -58,17 +61,46 @@ class DecoleApplication() : Application(), KodeinAware {
         bind() from singleton { RouteListViewModelFactory(instance(), instance()) }
         bind() from singleton { RouteDetailsViewModelFactory(instance(), instance()) }
         bind() from singleton { StartInteractiveModeViewModelFactory(instance()) }
-        bind() from singleton { PartnershipHomeBottomViewModelFactory(instance()) }
-        bind() from singleton { AccountViewModelFactory(instance(), instance(), instance(), instance(), instance()) }
-        bind() from singleton { PartnershipHomeTopViewModelFactory(instance()) }
+        bind() from singleton {
+            PartnershipHomeBottomViewModelFactory(
+                instance()
+            )
+        }
+        bind() from singleton {
+            AccountViewModelFactory(
+                instance(),
+                instance(),
+                instance(),
+                instance(),
+                instance()
+            )
+        }
+        bind() from singleton {
+            PartnershipHomeTopViewModelFactory(
+                instance()
+            )
+        }
         bind() from singleton { EducationHomeTopViewModelFactory(instance(), instance()) }
         bind() from singleton { FinishedRouteViewModelFactory(instance(), instance()) }
         bind() from singleton { WelcomeSlideViewModelFactory(instance()) }
         bind() from singleton { WelcomeInfoViewModelFactory(instance()) }
-        bind() from singleton { PartnershipCompanyProfileViewModelFactory(instance(), instance())}
-        bind() from singleton { ChangePasswordViewModelFactory(instance())}
+        bind() from singleton {
+            PartnershipCompanyProfileViewModelFactory(
+                instance(),
+                instance()
+            )
+        }
+        bind() from singleton {
+            ChangePasswordViewModelFactory(
+                instance()
+            )
+        }
         bind() from singleton { PwRecoveryViewModelFactory(instance()) }
-        bind() from singleton { PartnerBottomSheetViewModelFactory(instance()) }
+        bind() from singleton {
+            PartnerBottomSheetViewModelFactory(
+                instance()
+            )
+        }
         bind() from singleton { SplashViewModelFactory(instance()) }
     }
 

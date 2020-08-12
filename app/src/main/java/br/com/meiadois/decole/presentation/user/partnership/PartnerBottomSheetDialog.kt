@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Like
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnerBottomSheetViewModel
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnerBottomSheetViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.factory.PartnerBottomSheetViewModelFactory
 import br.com.meiadois.decole.util.extension.shortToast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions

@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.localdb.entity.MyCompany
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModel
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeTopViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.factory.PartnershipHomeTopViewModelFactory
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException

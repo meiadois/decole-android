@@ -9,7 +9,7 @@ import br.com.meiadois.decole.R
 import br.com.meiadois.decole.databinding.ActivityChangePasswordBinding
 import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
 import br.com.meiadois.decole.presentation.user.account.viewmodel.ChangePasswordViewModel
-import br.com.meiadois.decole.presentation.user.account.viewmodel.ChangePasswordViewModelFactory
+import br.com.meiadois.decole.presentation.user.account.viewmodel.factory.ChangePasswordViewModelFactory
 import br.com.meiadois.decole.util.extension.shortSnackbar
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar

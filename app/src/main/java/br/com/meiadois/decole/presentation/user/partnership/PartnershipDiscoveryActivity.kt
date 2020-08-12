@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.databinding.ActivityPartnershipDiscoveryBinding
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModel
-import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipCompanyProfileViewModelFactory
+import br.com.meiadois.decole.presentation.user.partnership.viewmodel.factory.PartnershipCompanyProfileViewModelFactory
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
