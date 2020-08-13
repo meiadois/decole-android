@@ -257,7 +257,7 @@ class AccountViewModel(
                 NotNullOrEmptyRule(
                     view.context.getString(
                         R.string.required_field_error_message,
-                        view.context.getString(R.string.account_me_name_hint)
+                        view.context.getString(R.string.profile_name_hint)
                     )
                 )
             )
@@ -292,7 +292,7 @@ class AccountViewModel(
                 NotNullOrEmptyRule(
                     view.context.getString(
                         R.string.required_field_error_message,
-                        view.context.getString(R.string.account_company_name_hint)
+                        view.context.getString(R.string.company_name_hint)
                     )
                 )
             )
@@ -310,7 +310,7 @@ class AccountViewModel(
                     1,
                     view.context.getString(
                         R.string.required_field_error_message,
-                        view.context.getString(R.string.account_company_segment_hint)
+                        view.context.getString(R.string.company_segment_hint)
                     )
                 )
             )
@@ -327,7 +327,7 @@ class AccountViewModel(
                 NotNullOrEmptyRule(
                     view.context.getString(
                         R.string.required_field_error_message,
-                        view.context.getString(R.string.account_company_description_hint)
+                        view.context.getString(R.string.company_description_hint)
                     )
                 )
             )
@@ -336,7 +336,7 @@ class AccountViewModel(
                     MAX_DESCRIPTION_SIZE,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.account_company_description_hint), MAX_DESCRIPTION_SIZE
+                        view.context.getString(R.string.company_description_hint), MAX_DESCRIPTION_SIZE
                     )
                 )
             )
@@ -363,7 +363,7 @@ class AccountViewModel(
                 NotNullOrEmptyRule(
                     view.context.getString(
                         R.string.required_field_error_message,
-                        view.context.getString(R.string.account_company_city_hint)
+                        view.context.getString(R.string.company_city_hint)
                     )
                 )
             )
@@ -372,7 +372,7 @@ class AccountViewModel(
                     maxLengthCity,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.account_company_city_hint),
+                        view.context.getString(R.string.company_city_hint),
                         maxLengthCity
                     )
                 )
@@ -390,7 +390,7 @@ class AccountViewModel(
                 NotNullOrEmptyRule(
                     view.context.getString(
                         R.string.required_field_error_message,
-                        view.context.getString(R.string.account_company_neighborhood_hint)
+                        view.context.getString(R.string.company_neighborhood_hint)
                     )
                 )
             )
@@ -399,7 +399,7 @@ class AccountViewModel(
                     maxLengthNeighborhood,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.account_company_neighborhood_hint),
+                        view.context.getString(R.string.company_neighborhood_hint),
                         maxLengthNeighborhood
                     )
                 )

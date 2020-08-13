@@ -202,7 +202,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="@string/partnership_bottom_no_internet_connection_message"
+                        android:text="@string/no_internet_error_message"
                         android:textAlignment="center"
                         app:layout_constraintTop_toBottomOf="@+id/text_title_no_internet"
                         app:layout_constraintEnd_toEndOf="parent"
