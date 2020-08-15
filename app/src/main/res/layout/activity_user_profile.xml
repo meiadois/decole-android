@@ -4,7 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="br.com.meiadois.decole.presentation.user.account.viewmodel.AccountProfileViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        tools:context=".presentation.user.account.AccountProfileActivity"
         android:id="@+id/profile_root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -82,7 +89,8 @@
                             android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            tools:ignore="UselessParent">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -126,7 +134,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textCapWords|textNoSuggestions"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:text="@={viewModel.userData.name}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -142,7 +151,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textEmailAddress|textNoSuggestions"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:text="@={viewModel.userData.email}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
@@ -204,7 +214,8 @@
                 style="@style/btn_primary"
                 android:text="@string/save_changes"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:onClick="@{viewModel::onSaveButtonClick}" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"

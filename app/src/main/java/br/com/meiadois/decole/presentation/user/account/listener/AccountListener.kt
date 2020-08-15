@@ -1,4 +1,4 @@
-package br.com.meiadois.decole.presentation.user.account
+package br.com.meiadois.decole.presentation.user.account.listener
 
 import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
 

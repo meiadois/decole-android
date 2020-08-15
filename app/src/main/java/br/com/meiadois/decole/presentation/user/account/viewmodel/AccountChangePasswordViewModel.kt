@@ -7,7 +7,7 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.repository.UserRepository
-import br.com.meiadois.decole.presentation.user.account.AccountListener
+import br.com.meiadois.decole.presentation.user.account.listener.AccountListener
 import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
 import br.com.meiadois.decole.presentation.user.account.validation.*
 import br.com.meiadois.decole.util.Coroutines
@@ -17,7 +17,7 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 
-class ChangePasswordViewModel(private val userRepository: UserRepository) : ViewModel() {
+class AccountChangePasswordViewModel(private val userRepository: UserRepository) : ViewModel() {
     var currentPassword: String? = String()
     var newPassword: String? = String()
     var confirmPassword: String? = String()
@@ -28,26 +28,32 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
     fun onTextFieldChange(textInputLayout: TextInputLayout): TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable) {}
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) { textInputLayout.error = null }
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            textInputLayout.error = null
+        }
     }
 
-    fun onSaveButtonClick(view: View){
-        if (validateModel(view)){
+    fun onSaveButtonClick(view: View) {
+        if (validateModel(view)) {
             Coroutines.main {
-                try{
+                try {
                     accountListener?.onActionStarted()
                     userRepository.changeUserPassword(currentPassword!!, newPassword!!)
                     accountListener?.onActionSuccess()
                 } catch (ex: ClientException) {
                     accountListener?.onActionError(if (ex.code == 404) ex.message else null)
-                    Log.i("ChangePassword.Cli", "\nmessage: ${ex.message ?: "no message"}" +
-                            "\ncode: ${ex.code}" +
-                            "\ncause: ${ex.cause ?: "no cause"}")
-                } catch (ex: Exception){
+                    Log.i(
+                        "ChangePassword.Cli", "\nmessage: ${ex.message ?: "no message"}" +
+                                "\ncode: ${ex.code}" +
+                                "\ncause: ${ex.cause ?: "no cause"}"
+                    )
+                } catch (ex: Exception) {
                     Firebase.crashlytics.recordException(ex)
                     accountListener?.onActionError(null)
-                    Log.i("ChangePassword.Ex", "\nmessage: ${ex.message ?: "no message"}" +
-                            "\nmessage: ${ex.cause ?: "no cause"}")
+                    Log.i(
+                        "ChangePassword.Ex", "\nmessage: ${ex.message ?: "no message"}" +
+                                "\nmessage: ${ex.cause ?: "no cause"}"
+                    )
                 }
             }
         }
@@ -55,29 +61,44 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
     // endregion
 
     // region validations
-    private fun validateModel(view: View): Boolean{
+    private fun validateModel(view: View): Boolean {
         val minPasswordLength = 6
         val maxPasswordLength = 128
         var isValid = StringValidator(currentPassword)
             .addValidation(
                 NotNullOrEmptyRule(
-                view.context.getString(
-                    R.string.required_field_error_message,
-                    view.context.getString(R.string.changePassword_currentPass_hint)))
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.changePassword_currentPass_hint)
+                    )
+                )
             )
             .addValidation(
-                MinLengthRule(minPasswordLength,
+                MinLengthRule(
+                    minPasswordLength,
                     view.context.getString(
                         R.string.min_text_length_error_message,
-                        view.context.getString(R.string.changePassword_currentPass_hint), minPasswordLength))
+                        view.context.getString(R.string.changePassword_currentPass_hint),
+                        minPasswordLength
+                    )
+                )
             )
             .addValidation(
-                MaxLengthRule(maxPasswordLength,
+                MaxLengthRule(
+                    maxPasswordLength,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.changePassword_currentPass_hint), maxPasswordLength))
+                        view.context.getString(R.string.changePassword_currentPass_hint),
+                        maxPasswordLength
+                    )
+                )
             )
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_CURRENTPASSWORD, it.error) }
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.USER_CURRENTPASSWORD,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(newPassword)
@@ -85,21 +106,36 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
                 NotNullOrEmptyRule(
                     view.context.getString(
                         R.string.required_field_error_message,
-                        view.context.getString(R.string.changePassword_newPass_hint)))
+                        view.context.getString(R.string.changePassword_newPass_hint)
+                    )
+                )
             )
             .addValidation(
-                MinLengthRule(minPasswordLength,
+                MinLengthRule(
+                    minPasswordLength,
                     view.context.getString(
                         R.string.min_text_length_error_message,
-                        view.context.getString(R.string.changePassword_newPass_hint), minPasswordLength))
+                        view.context.getString(R.string.changePassword_newPass_hint),
+                        minPasswordLength
+                    )
+                )
             )
             .addValidation(
-                MaxLengthRule(maxPasswordLength,
+                MaxLengthRule(
+                    maxPasswordLength,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.changePassword_newPass_hint), maxPasswordLength))
+                        view.context.getString(R.string.changePassword_newPass_hint),
+                        maxPasswordLength
+                    )
+                )
             )
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_NEWPASSWORD, it.error) }
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.USER_NEWPASSWORD,
+                    it.error
+                )
+            }
             .validate()
 
         isValid = isValid and StringValidator(confirmPassword)
@@ -107,28 +143,46 @@ class ChangePasswordViewModel(private val userRepository: UserRepository) : View
                 NotNullOrEmptyRule(
                     view.context.getString(
                         R.string.required_field_error_message,
-                        view.context.getString(R.string.changePassword_confirmNewPass_hint)))
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint)
+                    )
+                )
             )
             .addValidation(
-                MinLengthRule(minPasswordLength,
+                MinLengthRule(
+                    minPasswordLength,
                     view.context.getString(
                         R.string.min_text_length_error_message,
-                        view.context.getString(R.string.changePassword_confirmNewPass_hint), minPasswordLength))
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint),
+                        minPasswordLength
+                    )
+                )
             )
             .addValidation(
-                MaxLengthRule(maxPasswordLength,
+                MaxLengthRule(
+                    maxPasswordLength,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.changePassword_confirmNewPass_hint), maxPasswordLength))
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint),
+                        maxPasswordLength
+                    )
+                )
             )
             .addValidation(
-                EqualsTo(newPassword,
+                EqualsTo(
+                    newPassword,
                     view.context.getString(
                         R.string.fields_are_not_equals_error_message,
                         view.context.getString(R.string.changePassword_newPass_hint),
-                        view.context.getString(R.string.changePassword_confirmNewPass_hint)))
+                        view.context.getString(R.string.changePassword_confirmNewPass_hint)
+                    )
+                )
             )
-            .addErrorCallback { accountListener?.riseValidationError(FieldsEnum.USER_CONFIRMPASSWORD, it.error) }
+            .addErrorCallback {
+                accountListener?.riseValidationError(
+                    FieldsEnum.USER_CONFIRMPASSWORD,
+                    it.error
+                )
+            }
             .validate()
 
         return isValid

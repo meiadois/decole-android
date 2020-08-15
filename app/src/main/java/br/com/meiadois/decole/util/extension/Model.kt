@@ -9,18 +9,17 @@ import br.com.meiadois.decole.data.localdb.entity.Route
 import br.com.meiadois.decole.data.localdb.entity.User
 import br.com.meiadois.decole.data.model.*
 import br.com.meiadois.decole.data.network.response.*
-import br.com.meiadois.decole.presentation.user.account.binding.CompanyAccountData
+import br.com.meiadois.decole.presentation.user.account.binding.CompanyData
 import br.com.meiadois.decole.presentation.user.account.binding.ImageData
-import br.com.meiadois.decole.presentation.user.account.binding.UserAccountData
-import br.com.meiadois.decole.presentation.user.account.binding.UserSocialNetwork
+import br.com.meiadois.decole.presentation.user.account.binding.UserData
 import br.com.meiadois.decole.presentation.user.education.binding.LessonItem
 import br.com.meiadois.decole.presentation.user.education.binding.RouteItem
 
 fun UserDTO.parseToUserEntity() = User(this.jwt, this.name, this.email, this.introduced)
 
-fun UserAccountData.parseToUserEntity() = User(jwt, name, email, introduced)
+fun UserData.parseToUserEntity() = User(jwt, name, email, introduced)
 
-fun User.parseToUserAccountData() = UserAccountData(name, email, jwt, introduced)
+fun User.parseToUserAccountData() = UserData(name, email, jwt, introduced)
 
 fun RouteDTO.parseEntity() = Route(
     this.id,
@@ -159,8 +158,8 @@ fun CompanyResponse.toMyCompany(): MyCompany {
     )
 }
 
-fun MyCompany.toCompanyAccountData(): CompanyAccountData {
-    return CompanyAccountData(
+fun MyCompany.toCompanyAccountData(): CompanyData {
+    return CompanyData(
         company.id,
         company.name,
         company.cep,
@@ -291,5 +290,3 @@ fun List<Account>.toAccountEntityList(): List<AccountEntity> {
         it.toAccountEntity()
     }
 }
-
-fun UserSocialNetwork.toAccountModel(): Account = Account(id, userName, channelName, category)

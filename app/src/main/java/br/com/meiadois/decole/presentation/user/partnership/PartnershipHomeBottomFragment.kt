@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Like
-import br.com.meiadois.decole.presentation.user.account.AccountActivity
+import br.com.meiadois.decole.presentation.user.account.AccountCompanyActivity
 import br.com.meiadois.decole.presentation.user.partnership.PartnerBottomSheetDialog.Companion.INVITE_DETAILS_KEY
 import br.com.meiadois.decole.presentation.user.partnership.PartnershipDiscoveryActivity.Companion.PARTNERSHIP_SEARCH_COMPANY_ID
 import br.com.meiadois.decole.presentation.user.partnership.viewmodel.PartnershipHomeBottomViewModel
@@ -73,7 +73,7 @@ class PartnershipHomeBottomFragment : Fragment(), KodeinAware {
         }
 
         btn_register_business.setOnClickListener {
-            Intent(view.context, AccountActivity::class.java).also {
+            Intent(view.context, AccountCompanyActivity::class.java).also {
                 view.context.startActivity(it)
             }
         }

@@ -135,7 +135,6 @@
     <string name="company_mail_hint">e-mail para contato</string>
     <string name="company_neighborhood_hint">bairro</string>
     <string name="company_city_hint">cidade</string>
-    <string name="account_company_banner">imagem promocional</string>
     <string name="account_company_logo_hint">logo da empresa</string>
     <string name="account_company_promotional_photo_hint">foto promocional</string>
     <string name="storage_permission_rationale_title">Deseja selecionar uma imagem?</string>
@@ -149,6 +148,7 @@
 
     <!-- Validations Messages -->
     <string name="required_field_error_message">O campo %1$s é obrigatório.</string>
+    <string name="required_image_error_message">Selecione uma imagem para a %1$s.</string>
     <string name="invalid_email_error_message">O e-mail não está em um formato válido.</string>
     <string name="invalid_cep_error_message">O CEP não está em um formato válido.</string>
     <string name="invalid_cnpj_error_message">O CNPJ não está em um formato válido.</string>

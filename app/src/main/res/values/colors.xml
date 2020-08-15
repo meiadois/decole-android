@@ -25,5 +25,5 @@
     <!-- popup colors -->
     <color name="text_filed_error_color">#FF8E85</color>
 
-    <color name="transparent_white">#CCFFFFFF</color>
+    <color name="transparent_white">#F2FFFFFF</color>
 </resources>

@@ -46,10 +46,16 @@
             android:name=".presentation.user.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.user.account.AccountActivity"
+            android:name=".presentation.user.account.AccountMenuActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.user.account.ChangePasswordActivity"
+            android:name=".presentation.user.account.AccountProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.user.account.AccountCompanyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.user.account.AccountChangePasswordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.instagram.HasInstagramAccountActivity"

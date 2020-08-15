@@ -13,8 +13,7 @@
         android:id="@+id/account_root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
-        tools:context=".presentation.user.account.AccountActivity">
+        android:background="@color/background" >
 
         <RelativeLayout
             android:layout_width="0dp"

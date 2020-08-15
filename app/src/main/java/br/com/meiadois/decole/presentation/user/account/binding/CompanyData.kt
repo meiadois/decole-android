@@ -4,7 +4,7 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import br.com.meiadois.decole.BR
 
-class CompanyAccountData() : BaseObservable() {
+class CompanyData() : BaseObservable() {
     var id: Int = -1
     var name: String = ""
     var cep: String = ""

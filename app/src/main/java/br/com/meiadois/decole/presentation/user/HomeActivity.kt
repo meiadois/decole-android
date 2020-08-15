@@ -6,14 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentTransaction
-import androidx.viewpager.widget.ViewPager
 import br.com.meiadois.decole.R
-import br.com.meiadois.decole.presentation.user.account.AccountActivity
-import br.com.meiadois.decole.presentation.user.education.EducationHomeTopFragment
+import br.com.meiadois.decole.presentation.user.account.AccountMenuActivity
 import br.com.meiadois.decole.presentation.user.education.RouteListFragment
 import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeBottomFragment
-import br.com.meiadois.decole.presentation.user.partnership.PartnershipHomeTopFragment
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -37,7 +33,7 @@ class HomeActivity : AppCompatActivity() {
         tab_layout.setupWithViewPager(bottom_view_pager)
 
         account_configuration_button.setOnClickListener {
-            Intent(this, AccountActivity::class.java).also {
+            Intent(this, AccountMenuActivity::class.java).also {
                 startActivity(it)
             }
         }

@@ -9,15 +9,21 @@ import androidx.lifecycle.ViewModel
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Segment
 import br.com.meiadois.decole.data.network.response.CepResponse
-import br.com.meiadois.decole.data.repository.*
+import br.com.meiadois.decole.data.repository.CepRepository
+import br.com.meiadois.decole.data.repository.CompanyRepository
+import br.com.meiadois.decole.data.repository.SegmentRepository
+import br.com.meiadois.decole.data.repository.UserRepository
+import br.com.meiadois.decole.presentation.user.account.binding.CompanyData
+import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
+import br.com.meiadois.decole.presentation.user.account.binding.UserData
 import br.com.meiadois.decole.presentation.user.account.listener.AccountListener
-import br.com.meiadois.decole.presentation.user.account.binding.*
 import br.com.meiadois.decole.presentation.user.account.validation.*
-import br.com.meiadois.decole.service.LogOutService
 import br.com.meiadois.decole.util.Coroutines
 import br.com.meiadois.decole.util.exception.ClientException
 import br.com.meiadois.decole.util.exception.NoInternetException
-import br.com.meiadois.decole.util.extension.*
+import br.com.meiadois.decole.util.extension.parseToSegmentModelList
+import br.com.meiadois.decole.util.extension.parseToUserAccountData
+import br.com.meiadois.decole.util.extension.toCompanyAccountData
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
@@ -26,34 +32,24 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
-class AccountViewModel(
+class AccountCompanyViewModel(
     private val segmentRepository: SegmentRepository,
     private val companyRepository: CompanyRepository,
     private val userRepository: UserRepository,
-    private val cepRepository: CepRepository,
-    private val logOutService: LogOutService
+    private val cepRepository: CepRepository
 ) : ViewModel() {
-    var companyData: MutableLiveData<CompanyData> = MutableLiveData<CompanyData>()
-    var userData: MutableLiveData<UserData> = MutableLiveData<UserData>()
-
-    var segments: MutableLiveData<List<Segment>> = MutableLiveData<List<Segment>>()
+    var companyData: MutableLiveData<CompanyData> = MutableLiveData()
+    var segments: MutableLiveData<List<Segment>> = MutableLiveData()
+    var userData: MutableLiveData<UserData> = MutableLiveData()
 
     var accountListener: AccountListener? = null
     private var isUpdatingCompany: Boolean = false
 
-    // region initializer methods
+    // region Initializer Methods
     suspend fun init() {
         getUser()
         getSegments()
         getUserCompany()
-    }
-
-    private suspend fun getSegments() {
-        segmentRepository.getAllSegments().observeForever {
-            it?.let {
-                segments.value = it.parseToSegmentModelList()
-            }
-        }
     }
 
     private fun getUser() {
@@ -64,6 +60,14 @@ class AccountViewModel(
         } catch (ex: Exception) {
             userData.value = UserData()
             throw ex
+        }
+    }
+
+    private suspend fun getSegments() {
+        segmentRepository.getAllSegments().observeForever {
+            it?.let {
+                segments.value = it.parseToSegmentModelList()
+            }
         }
     }
 
@@ -103,9 +107,11 @@ class AccountViewModel(
                     companyData.value?.setNeighborhoodAndNotify(cepResponse.neighborhood)
                     companyData.value?.setCityAndNotify(cepResponse.city)
                 } catch (ex: Exception) {
-                    Log.i("CepException", "\nmessage: ${ex.message ?: "no error message"}\n" +
-                            "cause: ${ex.cause ?: "no cause"}\n" +
-                            "class: ${ex.javaClass.name}")
+                    Log.i(
+                        "CepException", "\nmessage: ${ex.message ?: "no error message"}\n" +
+                                "cause: ${ex.cause ?: "no cause"}\n" +
+                                "class: ${ex.javaClass.name}"
+                    )
                     if (ex !is ClientException)
                         Firebase.crashlytics.recordException(ex)
                 }
@@ -121,65 +127,61 @@ class AccountViewModel(
         }
     }
 
-    suspend fun onLogOutButtonClick() = logOutService.perform().join()
-
     fun onSaveButtonClick(view: View) {
         trimProperties()
-        if (validateModels(view)) {
+        if (validateCompanyModel(view)) {
             Coroutines.main {
                 accountListener?.onActionStarted()
                 try {
-                    val company = companyData.value!!
-                    if (isUpdatingCompany) companyRepository.updateUserCompany(
-                        company.name,
-                        company.cep,
-                        company.cnpj,
-                        company.description,
-                        company.segmentId,
-                        company.cellphone,
-                        company.email,
-                        company.visible,
-                        company.city,
-                        company.neighborhood,
-                        if (company.thumbnail.updated)
+                    companyData.value!!.apply {
+                        if (isUpdatingCompany) companyRepository.updateUserCompany(
+                            name,
+                            cep,
+                            cnpj,
+                            description,
+                            segmentId,
+                            cellphone,
+                            email,
+                            visible,
+                            city,
+                            neighborhood,
+                            if (thumbnail.updated)
+                                getMultipartBodyPart(
+                                    thumbnail.path,
+                                    thumbnail.type,
+                                    "thumbnail"
+                                )
+                            else null,
+                            if (banner.updated)
+                                getMultipartBodyPart(
+                                    banner.path,
+                                    banner.type,
+                                    "banner"
+                                )
+                            else null
+                        ) else companyRepository.insertUserCompany(
+                            name,
+                            cep,
+                            cnpj,
+                            description,
+                            segmentId,
+                            cellphone,
+                            email,
+                            visible,
+                            city,
+                            neighborhood,
                             getMultipartBodyPart(
-                                company.thumbnail.path,
-                                company.thumbnail.type,
+                                thumbnail.path,
+                                thumbnail.type,
                                 "thumbnail"
-                            )
-                        else null,
-                        if (company.banner.updated)
+                            ),
                             getMultipartBodyPart(
-                                company.banner.path,
-                                company.banner.type,
+                                banner.path,
+                                banner.type,
                                 "banner"
                             )
-                        else null
-                    ) else companyRepository.insertUserCompany(
-                        company.name,
-                        company.cep,
-                        company.cnpj,
-                        company.description,
-                        company.segmentId,
-                        company.cellphone,
-                        company.email,
-                        company.visible,
-                        company.city,
-                        company.neighborhood,
-                        getMultipartBodyPart(
-                            company.thumbnail.path,
-                            company.thumbnail.type,
-                            "thumbnail"
-                        ),
-                        getMultipartBodyPart(
-                            company.banner.path,
-                            company.banner.type,
-                            "banner"
                         )
-                    )
-
-                    userRepository.updateUser(userData.value!!.name, userData.value!!.email)
-                    userRepository.saveUser(userData.value!!.parseToUserEntity())
+                    }
 
                     accountListener?.onActionSuccess()
                 } catch (ex: NoInternetException) {
@@ -211,28 +213,27 @@ class AccountViewModel(
             }
         }
     }
+    // endregion
 
-    private fun getMultipartBodyPart(
-        imagePath: String,
-        imageType: String,
-        parameterName: String
-    ): MultipartBody.Part {
-        val file = File(imagePath)
+    // region Util
+    private fun getMultipartBodyPart(path: String, type: String, name: String): MultipartBody.Part {
+        val file = File(path)
         return MultipartBody.Part.createFormData(
-            parameterName,
+            name,
             file.name,
             RequestBody.create(
-                MediaType.parse(imageType),
+                MediaType.parse(type),
                 file
             )
         )
     }
 
+    fun getFileName(filePath: String): String = Regex(FILE_NAME_IN_DIRECTORY_REGEX_PATTERN)
+        .find(filePath)?.value.toString()
+    // endregion
+
+    // region Validation
     private fun trimProperties() {
-        if (userData.value != null) {
-            userData.value!!.name = userData.value!!.name.trim()
-            userData.value!!.email = userData.value!!.email.trim()
-        }
         if (companyData.value != null) {
             companyData.value!!.name = companyData.value!!.name.trim()
             companyData.value!!.city = companyData.value!!.city.trim()
@@ -240,46 +241,6 @@ class AccountViewModel(
             companyData.value!!.description = companyData.value!!.description.trim()
             companyData.value!!.neighborhood = companyData.value!!.neighborhood.trim()
         }
-    }
-    // endregion
-
-    // region Validation
-    private fun validateModels(view: View): Boolean {
-        val isValid = validateUserModel(view)
-        return validateCompanyModel(view) and isValid
-    }
-
-    private fun validateUserModel(view: View): Boolean {
-        val user: UserData = userData.value!!
-
-        var isValid = StringValidator(user.name)
-            .addValidation(
-                NotNullOrEmptyRule(
-                    view.context.getString(
-                        R.string.required_field_error_message,
-                        view.context.getString(R.string.profile_name_hint)
-                    )
-                )
-            )
-            .addErrorCallback {
-                accountListener?.riseValidationError(
-                    FieldsEnum.USER_NAME,
-                    it.error
-                )
-            }
-            .validate()
-
-        isValid = isValid and StringValidator(user.email)
-            .addValidation(ValidEmailRule(view.context.getString(R.string.invalid_email_error_message)))
-            .addErrorCallback {
-                accountListener?.riseValidationError(
-                    FieldsEnum.USER_EMAIL,
-                    it.error
-                )
-            }
-            .validate()
-
-        return isValid
     }
 
     private fun validateCompanyModel(view: View): Boolean {
@@ -333,10 +294,11 @@ class AccountViewModel(
             )
             .addValidation(
                 MaxLengthRule(
-                    MAX_DESCRIPTION_SIZE,
+                    AccountViewModel.MAX_DESCRIPTION_SIZE,
                     view.context.getString(
                         R.string.max_text_length_error_message,
-                        view.context.getString(R.string.company_description_hint), MAX_DESCRIPTION_SIZE
+                        view.context.getString(R.string.company_description_hint),
+                        AccountViewModel.MAX_DESCRIPTION_SIZE
                     )
                 )
             )
@@ -349,7 +311,19 @@ class AccountViewModel(
             .validate()
 
         isValid = isValid and StringValidator(company.cep)
-            .addValidation(ValidCepRule(view.context.getString(R.string.invalid_cep_error_message)))
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.company_cep_hint)
+                    )
+                )
+            )
+            .addValidation(
+                ValidCepRule(
+                    view.context.getString(R.string.invalid_cep_error_message)
+                )
+            )
             .addErrorCallback {
                 accountListener?.riseValidationError(
                     FieldsEnum.COMPANY_CEP,
@@ -359,14 +333,6 @@ class AccountViewModel(
             .validate()
 
         isValid = isValid and StringValidator(company.city)
-            .addValidation(
-                NotNullOrEmptyRule(
-                    view.context.getString(
-                        R.string.required_field_error_message,
-                        view.context.getString(R.string.company_city_hint)
-                    )
-                )
-            )
             .addValidation(
                 MaxLengthRule(
                     maxLengthCity,
@@ -387,14 +353,6 @@ class AccountViewModel(
 
         isValid = isValid and StringValidator(company.neighborhood)
             .addValidation(
-                NotNullOrEmptyRule(
-                    view.context.getString(
-                        R.string.required_field_error_message,
-                        view.context.getString(R.string.company_neighborhood_hint)
-                    )
-                )
-            )
-            .addValidation(
                 MaxLengthRule(
                     maxLengthNeighborhood,
                     view.context.getString(
@@ -412,7 +370,7 @@ class AccountViewModel(
             }
             .validate()
 
-        isValid = isValid and StringValidator(company.cnpj)
+        isValid = isValid && (company.cnpj.isBlank() || StringValidator(company.cnpj)
             .addValidation(ValidCnpjRule(view.context.getString(R.string.invalid_cnpj_error_message)))
             .addErrorCallback {
                 accountListener?.riseValidationError(
@@ -420,10 +378,22 @@ class AccountViewModel(
                     it.error
                 )
             }
-            .validate()
+            .validate())
 
         isValid = isValid and StringValidator(company.cellphone)
-            .addValidation(ValidTelephoneRule(view.context.getString(R.string.invalid_telephone_error_message)))
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.company_telephone_hint)
+                    )
+                )
+            )
+            .addValidation(
+                ValidTelephoneRule(
+                    view.context.getString(R.string.invalid_telephone_error_message)
+                )
+            )
             .addErrorCallback {
                 accountListener?.riseValidationError(
                     FieldsEnum.COMPANY_CELLPHONE,
@@ -433,7 +403,21 @@ class AccountViewModel(
             .validate()
 
         isValid = isValid and StringValidator(company.email)
-            .addValidation(ValidEmailRule(view.context.getString(R.string.invalid_email_error_message)))
+            .addValidation(
+                NotNullOrEmptyRule(
+                    view.context.getString(
+                        R.string.required_field_error_message,
+                        view.context.getString(R.string.company_mail_hint)
+                    )
+                )
+            )
+            .addValidation(
+                ValidEmailRule(
+                    view.context.getString(
+                        R.string.invalid_email_error_message
+                    )
+                )
+            )
             .addErrorCallback {
                 accountListener?.riseValidationError(
                     FieldsEnum.COMPANY_EMAIL,
@@ -442,46 +426,28 @@ class AccountViewModel(
             }
             .validate()
 
-        isValid = isValid and StringValidator(company.thumbnail.path)
-            .addValidation(
-                NotNullOrEmptyRule(
-                    view.context.getString(
-                        R.string.required_field_error_message,
-                        view.context.getString(R.string.account_company_logo_hint)
-                    )
-                )
-            )
-            .addErrorCallback {
-                accountListener?.riseValidationError(
-                    FieldsEnum.COMPANY_THUMBNAIL,
-                    it.error
-                )
-            }
-            .validate()
-
-        /*isValid = isValid and StringValidator(company.banner.path)
-            .addValidation(
-                NotNullOrEmptyRule(
-                    view.context.getString(
-                        R.string.required_field_error_message,
-                        view.context.getString(R.string.account_company_banner)
-                    )
-                )
-            )
-            .addErrorCallback {
-                accountListener?.riseValidationError(
-                    FieldsEnum.COMPANY_BANNER,
-                    it.error
-                )
-            }
-            .validate()*/
+        isValid = isValid &&
+                !(!StringValidator(company.thumbnail.path)
+                    .addValidation(NotNullOrEmptyRule(view.context.getString(R.string.required_image_error_message, view.context.getString(R.string.account_company_logo_hint))))
+                    .addErrorCallback {
+                        accountListener?.riseValidationError(
+                            FieldsEnum.COMPANY_THUMBNAIL,
+                            it.error
+                        )
+                    }.validate() ||
+                !StringValidator(company.banner.path)
+                    .addValidation(NotNullOrEmptyRule(view.context.getString(R.string.required_image_error_message, view.context.getString(R.string.account_company_promotional_photo_hint))))
+                    .addErrorCallback {
+                        accountListener?.riseValidationError(
+                            FieldsEnum.COMPANY_BANNER,
+                            it.error
+                        )
+                    }
+                    .validate())
 
         return isValid
     }
     // endregion
-
-    fun getFileName(filePath: String): String = Regex(FILE_NAME_IN_DIRECTORY_REGEX_PATTERN)
-        .find(filePath)?.value.toString()
 
     companion object {
         private const val FILE_NAME_IN_DIRECTORY_REGEX_PATTERN = "[^/]*$"
