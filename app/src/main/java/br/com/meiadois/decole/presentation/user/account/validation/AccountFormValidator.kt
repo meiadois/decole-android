@@ -4,7 +4,7 @@ import android.text.TextUtils
 import android.util.Patterns
 
 // region Validators
-abstract class Validator<T>(private val value: T){
+abstract class Validator<T>(private val value: T) {
     var isValid: Boolean = true
         protected set
     var error: String = ""
@@ -12,19 +12,19 @@ abstract class Validator<T>(private val value: T){
     private var validations: List<BaseRule<T>> = listOf()
     private var errorCallback: ((Validator<T>) -> Unit)? = null
 
-    open fun addValidation(rule: BaseRule<T>): Validator<T>{
+    open fun addValidation(rule: BaseRule<T>): Validator<T> {
         validations = validations.plus(rule)
         return this
     }
 
-    open fun addErrorCallback(callback: (Validator<T>) -> Unit): Validator<T>{
+    open fun addErrorCallback(callback: (Validator<T>) -> Unit): Validator<T> {
         errorCallback = callback
         return this
     }
 
     open fun validate(): Boolean {
-        for (validation in validations){
-            if (!validation.validate(value)){
+        for (validation in validations) {
+            if (!validation.validate(value)) {
                 error = validation.errorMessage
                 isValid = false
                 break
@@ -38,64 +38,69 @@ abstract class Validator<T>(private val value: T){
     }
 }
 
-class StringValidator(value: String?): Validator<String?>(value)
+class StringValidator(value: String?) : Validator<String?>(value)
 
-class IntegerValidator(value: Int?): Validator<Int?>(value)
+class IntegerValidator(value: Int?) : Validator<Int?>(value)
 // endregion
-
 
 
 // region rules
 interface BaseRule<T> {
     val errorMessage: String
-    fun validate(value: T?) : Boolean
+    fun validate(value: T?): Boolean
 }
 
 // string validations
-class NotNullOrEmptyRule(override val errorMessage: String): BaseRule<String?>{
-    override fun validate(value: String?): Boolean = value != null && value.isNotEmpty()
+class NotNullOrEmptyRule(override val errorMessage: String) : BaseRule<String?> {
+    override fun validate(value: String?): Boolean = !value.isNullOrBlank()
 }
 
-class MinLengthRule(private val minLength: Int, override val errorMessage: String): BaseRule<String?>{
-    override fun validate(value: String?): Boolean = value != null && value.length >= minLength
+class MinLengthRule(private val minLength: Int, override val errorMessage: String) : BaseRule<String?> {
+    override fun validate(value: String?): Boolean = (value ?: "").length >= minLength
 }
 
-class MaxLengthRule(private val maxLength: Int, override val errorMessage: String): BaseRule<String?>{
-    override fun validate(value: String?): Boolean = value != null && value.length <= maxLength
+class MaxLengthRule(private val maxLength: Int, override val errorMessage: String) : BaseRule<String?> {
+    override fun validate(value: String?): Boolean = (value ?: "").length <= maxLength
 }
 
-class BetweenLengthRule(private val minLength: Int, private val maxLength: Int, override val errorMessage: String): BaseRule<String?>{
-    override fun validate(value: String?): Boolean = value != null && value.length >= minLength && value.length <= maxLength
+class BetweenLengthRule(private val minLength: Int, private val maxLength: Int, override val errorMessage: String) : BaseRule<String?> {
+    override fun validate(value: String?): Boolean = (value ?: "").length in minLength..maxLength
 }
 
-class ExactLengthRule(private val length: Int, override val errorMessage: String): BaseRule<String?>{
+class ExactLengthRule(private val length: Int, override val errorMessage: String) : BaseRule<String?> {
     override fun validate(value: String?): Boolean = value != null && value.length == length
 }
 
-class IsDigitsOnlyRule(override val errorMessage: String): BaseRule<String?>{
+class IsDigitsOnlyRule(override val errorMessage: String) : BaseRule<String?> {
     override fun validate(value: String?): Boolean = value != null && TextUtils.isDigitsOnly(value)
 }
 
-class EqualsTo(private val argument: String?, override val errorMessage: String): BaseRule<String?>{
+class EqualsTo(private val argument: String?, override val errorMessage: String) : BaseRule<String?> {
     override fun validate(value: String?): Boolean = value == argument
 }
 
-class ValidEmailRule(override val errorMessage: String): BaseRule<String?>{
-    override fun validate(value: String?): Boolean = value != null && Patterns.EMAIL_ADDRESS.matcher(value.trim()).matches()
+class ValidEmailRule(override val errorMessage: String) : BaseRule<String?> {
+    override fun validate(value: String?): Boolean = (value ?: "").let {
+        Patterns.EMAIL_ADDRESS.matcher(it.trim()).matches()
+    }
 }
 
-class ValidCepRule(override val errorMessage: String): BaseRule<String?>{
-    override fun validate(value: String?): Boolean{
+class ValidCepRule(override val errorMessage: String) : BaseRule<String?> {
+    override fun validate(value: String?): Boolean {
         val cep = value?.trim()?.replace("-", "")
-        return NotNullOrEmptyRule(String()).validate(cep) && ExactLengthRule(8, String()).validate(cep) && IsDigitsOnlyRule(String()).validate(cep)
+        return NotNullOrEmptyRule(String()).validate(cep) &&
+                ExactLengthRule(8, String()).validate(cep) &&
+                IsDigitsOnlyRule(String()).validate(cep)
     }
 }
 
-class ValidCnpjRule(override val errorMessage: String): BaseRule<String?>{
-    override fun validate(value: String?): Boolean{
-        val cnpj = value?.trim()?.replace(".", "")?.replace("/", "")?.replace("-", "")
-        return cnpj != null && isValid(cnpj)
-    }
+class ValidCnpjRule(override val errorMessage: String) : BaseRule<String?> {
+    override fun validate(value: String?): Boolean = isValid(
+        value?.trim()
+            ?.replace(".", "")
+            ?.replace("/", "")
+            ?.replace("-", "") ?: ""
+    )
 
     private fun isValid(value: String): Boolean {
         return validateCNPJLength(value) && validateCNPJRepeatedNumbers(value)
@@ -138,8 +143,8 @@ class ValidCnpjRule(override val errorMessage: String): BaseRule<String?>{
     }
 }
 
-class ValidTelephoneRule(override val errorMessage: String): BaseRule<String?>{
-    override fun validate(value: String?): Boolean{
+class ValidTelephoneRule(override val errorMessage: String) : BaseRule<String?> {
+    override fun validate(value: String?): Boolean {
         var tel = value?.trim()
         if (!NotNullOrEmptyRule(String()).validate(tel)) return false
         tel = tel!!
@@ -148,16 +153,17 @@ class ValidTelephoneRule(override val errorMessage: String): BaseRule<String?>{
             .replace(" ", "")
             .replace("-", "")
             .replace("+", "")
-        return ExactLengthRule(13, String()).validate(tel) && IsDigitsOnlyRule(String()).validate(tel)
+        return ExactLengthRule(13, String()).validate(tel) &&
+                IsDigitsOnlyRule(String()).validate(tel)
     }
 }
 
 // numeric validations
-class MaxRule(private val max: Int, override val errorMessage: String): BaseRule<Int?>{
+class MaxRule(private val max: Int, override val errorMessage: String) : BaseRule<Int?> {
     override fun validate(value: Int?): Boolean = value != null && value <= max
 }
 
-class MinRule(private val min: Int, override val errorMessage: String): BaseRule<Int?>{
+class MinRule(private val min: Int, override val errorMessage: String) : BaseRule<Int?> {
     override fun validate(value: Int?): Boolean = value != null && value >= min
 }
 // endregion
