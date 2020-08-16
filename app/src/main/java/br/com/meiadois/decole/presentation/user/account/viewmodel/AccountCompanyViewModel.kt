@@ -294,11 +294,11 @@ class AccountCompanyViewModel(
             )
             .addValidation(
                 MaxLengthRule(
-                    AccountViewModel.MAX_DESCRIPTION_SIZE,
+                    MAX_DESCRIPTION_SIZE,
                     view.context.getString(
                         R.string.max_text_length_error_message,
                         view.context.getString(R.string.company_description_hint),
-                        AccountViewModel.MAX_DESCRIPTION_SIZE
+                        MAX_DESCRIPTION_SIZE
                     )
                 )
             )

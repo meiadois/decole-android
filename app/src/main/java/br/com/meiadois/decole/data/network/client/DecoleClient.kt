@@ -141,7 +141,6 @@ interface DecoleClient {
 
     @Headers("Content-Type: application/json")
     @PUT("me/change_password")
-    // TODO: check if route and request and response types match with required
     suspend fun changeUserPassword(@Body request: UserChangePasswordRequest): Response<Unit>
 
     @Headers("Content-Type: application/json")
