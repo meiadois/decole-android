@@ -29,6 +29,8 @@ class AccountMenuActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun setOnClickListeners() {
+        toolbar_back_button.setOnClickListener { finish() }
+
         account_button.setOnClickListener {
             Intent(this, AccountProfileActivity::class.java)
                 .also { startActivity(it) }
