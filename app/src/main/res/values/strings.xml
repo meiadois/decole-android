@@ -75,7 +75,6 @@
     <string name="ask_for_nickname">seu nome (ex. Maria)</string>
     <string name="ask_for_new_password">sua senha</string>
     <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
-    <string name="wrong_login_form_data_error_message">E-mail ou senha incorretos</string>
 
     <!-- Legal description -->
     <string name="legal_description_first">AO SE CADASTRAR VOCÊ ESTÁ CONCORDANDO COM</string>
@@ -164,6 +163,8 @@
     <string name="email_invalid_error_message">Você precisa inserir um e-mail válido.</string>
     <string name="username_empty">Você precisa inserir um nome.</string>
     <string name="code_invalid_error_message">O código não é válido.</string>
+    <string name="wrong_login_form_data_error_message">E-mail ou senha incorretos</string>
+    <string name="change_password_error_message">Senha atual incorreta</string>
 
     <!-- Partnership -->
     <string name="partnership_no_account">Para habilitar essa ferramenta, você precisa ativar o descobrimento de parceiros na tela de configurações e ter seu perfil preenchido</string>

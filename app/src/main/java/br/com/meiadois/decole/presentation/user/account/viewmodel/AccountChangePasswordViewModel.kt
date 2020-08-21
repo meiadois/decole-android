@@ -41,7 +41,12 @@ class AccountChangePasswordViewModel(private val userRepository: UserRepository)
                     userRepository.changeUserPassword(currentPassword!!, newPassword!!)
                     accountListener?.onActionSuccess()
                 } catch (ex: ClientException) {
-                    accountListener?.onActionError(if (ex.code == 404) ex.message else null)
+                    accountListener?.onActionError(
+                        if (ex.code == 404)
+                            view.context.getString(R.string.change_password_error_message)
+                        else
+                            null
+                    )
                     Log.i(
                         "ChangePassword.Cli", "\nmessage: ${ex.message ?: "no message"}" +
                                 "\ncode: ${ex.code}" +
