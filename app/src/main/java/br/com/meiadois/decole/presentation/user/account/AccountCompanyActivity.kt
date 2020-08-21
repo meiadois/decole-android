@@ -24,6 +24,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.meiadois.decole.R
 import br.com.meiadois.decole.data.model.Segment
+import br.com.meiadois.decole.data.repository.CompanyRepository.Companion.BANNER_IMAGE_NAME
+import br.com.meiadois.decole.data.repository.CompanyRepository.Companion.IMAGES_FOLDER
+import br.com.meiadois.decole.data.repository.CompanyRepository.Companion.THUMBNAIL_IMAGE_NAME
 import br.com.meiadois.decole.databinding.ActivityUserCompanyBinding
 import br.com.meiadois.decole.presentation.user.account.binding.CompanyData
 import br.com.meiadois.decole.presentation.user.account.binding.FieldsEnum
@@ -40,6 +43,7 @@ import br.com.meiadois.decole.util.extension.longSnackbar
 import br.com.meiadois.decole.util.extension.shortSnackbar
 import br.com.meiadois.decole.util.receiver.NetworkChangeReceiver
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -57,6 +61,7 @@ import kotlinx.android.synthetic.main.activity_user_company.toolbar_back_button
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import java.io.File
 import kotlin.reflect.KClass
 
 class AccountCompanyActivity : AppCompatActivity(), KodeinAware, AccountListener {
@@ -171,7 +176,6 @@ class AccountCompanyActivity : AppCompatActivity(), KodeinAware, AccountListener
         image.path = getImageFromFilePath(data) ?: String()
         if (image.path.isNotEmpty()) {
             image.type = contentResolver.getType(data!!.data!!) ?: DEFAULT_IMAGE_TYPE
-            image.name = mViewModel.getFileName(mViewModel.companyData.value!!.banner.path)
             image.updated = true
         }
     }
@@ -198,7 +202,7 @@ class AccountCompanyActivity : AppCompatActivity(), KodeinAware, AccountListener
         Coroutines.main {
             try {
                 mViewModel.init()
-                updateCompanyimages(mViewModel.companyData.value)
+                updateCompanyImages(mViewModel.companyData.value)
                 setContentVisibility(CONTENT_FORM)
                 onFinish.invoke()
             } catch (ex: NoInternetException) {
@@ -214,11 +218,20 @@ class AccountCompanyActivity : AppCompatActivity(), KodeinAware, AccountListener
         }
     }
 
-    private fun updateCompanyimages(company: CompanyData?) {
+    private fun updateCompanyImages(company: CompanyData?) {
         company?.let {
-            Glide.with(company_banner_layout).load(it.banner.path)
+            val baseFile = File(this.filesDir, IMAGES_FOLDER)
+
+            val (thumbnailToLoad, bannerToLoad) = if (baseFile.exists())
+                Pair(File(baseFile, THUMBNAIL_IMAGE_NAME), File(baseFile, BANNER_IMAGE_NAME))
+            else
+                Pair(it.thumbnail.path, it.banner.path)
+
+            Glide.with(company_banner_layout).load(bannerToLoad)
+                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                 .centerCrop().into(comany_banner)
-            Glide.with(logo_image_layout).load(it.thumbnail.path)
+            Glide.with(logo_image_layout).load(thumbnailToLoad)
+                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                 .apply(RequestOptions.circleCropTransform()).into(company_logo)
         }
     }

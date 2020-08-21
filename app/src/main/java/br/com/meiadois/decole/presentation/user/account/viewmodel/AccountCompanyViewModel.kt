@@ -76,9 +76,6 @@ class AccountCompanyViewModel(
             companyRepository.getMyCompany().observeForever {
                 if (it != null) {
                     companyData.value = it.toCompanyAccountData()
-                    companyData.value!!.thumbnail.name =
-                        getFileName(companyData.value!!.thumbnail.path)
-                    companyData.value!!.banner.name = getFileName(companyData.value!!.banner.path)
                     isUpdatingCompany = true
                 } else
                     companyData.value = CompanyData(email = userData.value!!.email)
@@ -133,56 +130,38 @@ class AccountCompanyViewModel(
             Coroutines.main {
                 accountListener?.onActionStarted()
                 try {
-                    companyData.value!!.apply {
-                        if (isUpdatingCompany) companyRepository.updateUserCompany(
-                            name,
-                            cep,
-                            cnpj,
-                            description,
-                            segmentId,
-                            cellphone,
-                            email,
-                            visible,
-                            city,
-                            neighborhood,
-                            if (thumbnail.updated)
-                                getMultipartBodyPart(
-                                    thumbnail.path,
-                                    thumbnail.type,
-                                    "thumbnail"
-                                )
-                            else null,
-                            if (banner.updated)
-                                getMultipartBodyPart(
-                                    banner.path,
-                                    banner.type,
-                                    "banner"
-                                )
-                            else null
-                        ) else companyRepository.insertUserCompany(
-                            name,
-                            cep,
-                            cnpj,
-                            description,
-                            segmentId,
-                            cellphone,
-                            email,
-                            visible,
-                            city,
-                            neighborhood,
-                            getMultipartBodyPart(
-                                thumbnail.path,
-                                thumbnail.type,
-                                "thumbnail"
-                            ),
-                            getMultipartBodyPart(
-                                banner.path,
-                                banner.type,
-                                "banner"
-                            )
-                        )
-                    }
+                    companyData.value!!.let {
 
+                        val thumbnailPart: MultipartBody.Part =
+                            getMultipartBodyPart(it.thumbnail.path, it.thumbnail.type, "thumbnail")
+
+                        val bannerPart: MultipartBody.Part =
+                            getMultipartBodyPart(it.banner.path, it.banner.type, "banner")
+
+                        if (isUpdatingCompany) companyRepository.updateUserCompany(
+                            it,
+                            if (it.thumbnail.updated) thumbnailPart else null,
+                            if (it.banner.updated) bannerPart else null
+                        ) else companyRepository.insertUserCompany(
+                            it,
+                            thumbnailPart,
+                            bannerPart
+                        )
+
+                        if (it.thumbnail.updated)
+                            companyRepository.saveImageToInternalStorage(
+                                view.context,
+                                it.thumbnail.path,
+                                CompanyRepository.THUMBNAIL_IMAGE_NAME
+                            )
+
+                        if (it.banner.updated)
+                            companyRepository.saveImageToInternalStorage(
+                                view.context,
+                                it.banner.path,
+                                CompanyRepository.BANNER_IMAGE_NAME
+                            )
+                    }
                     accountListener?.onActionSuccess()
                 } catch (ex: NoInternetException) {
                     accountListener?.onActionError(
@@ -227,9 +206,6 @@ class AccountCompanyViewModel(
             )
         )
     }
-
-    fun getFileName(filePath: String): String = Regex(FILE_NAME_IN_DIRECTORY_REGEX_PATTERN)
-        .find(filePath)?.value.toString()
     // endregion
 
     // region Validation
@@ -450,8 +426,6 @@ class AccountCompanyViewModel(
     // endregion
 
     companion object {
-        private const val FILE_NAME_IN_DIRECTORY_REGEX_PATTERN = "[^/]*$"
-
         const val MAX_DESCRIPTION_SIZE = 144
     }
 }

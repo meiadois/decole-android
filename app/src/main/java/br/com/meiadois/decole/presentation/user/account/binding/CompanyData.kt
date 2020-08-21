@@ -67,28 +67,8 @@ class CompanyData() : BaseObservable() {
     }
 }
 
-class ImageData() : BaseObservable() {
-    var path: String = ""
-    var type: String = ""
+class ImageData(
+    var path: String = "",
+    var type: String = "",
     var updated: Boolean = false
-
-    @Bindable
-    var name: String = ""
-        set(value) {
-            if (field != value)
-                field = value
-            notifyPropertyChanged(BR.name)
-        }
-
-    constructor(
-        path: String = "",
-        type: String = "",
-        name: String = "",
-        updated: Boolean = false
-    ) : this() {
-        this.path = path
-        this.type = type
-        this.name = name
-        this.updated = updated
-    }
-}
+) : BaseObservable()

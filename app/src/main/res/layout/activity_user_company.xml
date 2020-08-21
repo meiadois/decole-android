@@ -132,6 +132,7 @@
 
                             <!-- Logo -->
                             <RelativeLayout
+                                android:background="@drawable/ic_round"
                                 android:id="@+id/logo_image_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
@@ -139,7 +140,6 @@
                                 <!-- Logo -->
                                 <ImageView
                                     android:id="@+id/company_logo"
-                                    android:src="@drawable/ic_round"
                                     android:layout_width="60sp"
                                     android:layout_height="60sp"
                                     tools:ignore="ContentDescription" />

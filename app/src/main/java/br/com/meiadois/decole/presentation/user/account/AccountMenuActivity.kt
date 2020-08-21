@@ -48,7 +48,7 @@ class AccountMenuActivity : AppCompatActivity(), KodeinAware {
 
         logout_button.setOnClickListener {
             Coroutines.main {
-                viewModel.onLogOutButtonClick()
+                viewModel.onLogOutButtonClick(this)
                 Intent(this, LoginActivity::class.java).also {
                     it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(it)

@@ -1,6 +1,7 @@
 package br.com.meiadois.decole
 
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import br.com.meiadois.decole.data.localdb.AppDatabase
@@ -78,6 +79,7 @@ class DecoleApplication() : Application(), KodeinAware {
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
         crashlytics = Firebase.crashlytics
 
         Thread.setDefaultUncaughtExceptionHandler { _, ex ->
@@ -103,5 +105,11 @@ class DecoleApplication() : Application(), KodeinAware {
             it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(it)
         }
+    }
+
+    companion object {
+        private var instance: DecoleApplication? = null
+
+        fun applicationContext(): Context? = instance?.applicationContext
     }
 }
