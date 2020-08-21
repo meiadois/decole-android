@@ -39,7 +39,12 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
                     }
                     authListener?.onFailure(res.message!!)
                 } catch (ex: ClientException) {
-                    authListener?.onFailure(if (ex.code == 404) ex.message!! else null)
+                    authListener?.onFailure(
+                        if (ex.code == 404)
+                            view.context.getString(R.string.wrong_login_form_data_error_message)
+                        else
+                            null
+                    )
                 } catch (ex: NoInternetException) {
                     authListener?.onFailure(ex.message!!)
                 } catch (ex: Exception) {

@@ -75,6 +75,7 @@
     <string name="ask_for_nickname">seu nome (ex. Maria)</string>
     <string name="ask_for_new_password">sua senha</string>
     <string name="ask_for_password_confirmation">confirme a senha escolhida</string>
+    <string name="wrong_login_form_data_error_message">E-mail ou senha incorretos</string>
 
     <!-- Legal description -->
     <string name="legal_description_first">AO SE CADASTRAR VOCÊ ESTÁ CONCORDANDO COM</string>
